@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title></title>
+</head>
+<body dir="ltr" lang="de-CH">
+<h1>Menü</h1>
+<p>Die meisten Menüpunkte sind selbsterklärend. </p>
+<p><br>
+<br>
+</p>
+<h3>Programm</h3>
+<h4><img src="../../../../Fachwerk/gui/icons/fileprint.png" align="bottom" border="0" height="16" width="16">
+Drucken System</h4>
+<p>Der so erzeugte Ausdruck beinhaltet viele Informationen und eignet
+sich gut zur Dokumentation der Modellierung.<br>
+Der obere Drittel des
+Blattes ist reserviert für die Graphik des Fachwerkmodells
+(«zoom alles»). Die Layer Knoten- und Stabnummern werden gedruckt.
+Darunter werden alle Knoten mit
+ihren Koordinaten und Lasten sowie alle Stäbe mit ihren Kräften
+aufgelistet. Bei grossen Modellen wird der Ausdruck unleserlich klein.
+Es empfiehlt sich dann, auf ein grösseres Format zu drucken oder die
+Funktion Zusätze - "Eingabedaten exportieren" zu nutzen.&nbsp;</p>
+<h4><img src="../../../../Fachwerk/gui/icons/fileprint.png" align="bottom" border="0" height="16" width="16">
+Drucken Graphik</h4>
+<p>Die Graphik des Modells wird ausgedruckt. Dabei werden das
+aktuelle Zoomfenster sowie die Layerwahl berücksichtigt. Der
+Massstab (bezogen auf die Projektionsebene) kann vorgegeben werden.</p>
+<h4><img src="../../../../Fachwerk/gui/icons/fileopen.png" align="bottom" border="0" height="18" width="18">
+laden</h4>
+<p>Beispiele findet man im Verzeichnis «fachwerk3d/bsp».</p>
+<h4><img src="../../../../Fachwerk/gui/icons/dxf.png" align="bottom"
+ border="0" height="16" width="16">
+Hintergrund laden</h4>
+<p>Hintergrundzeichnungen können im Format <a
+ href="hintergrundzeichnung.html">dxf</a>,
+<a href="hintergrundzeichnung.html">bgd</a> und <a
+ href="hintergrundzeichnung.html">csv</a>
+eingelesen werden. Die Hintergrundzeichnung wird NICHT mit dem
+Fachwerkmodell abgespeichert.</p>
+<h4><img src="../../../../Fachwerk/gui/icons/locale.png" align="bottom" border="0" height="16" width="16">
+Sprache</h4>
+<p>Hier kann die Sprache gewählt werden. Der Eintrag «system»
+fragt die Spracheinstellung des Computers ab. Mit dieser Einstellung
+startet das Programm standardmässig. Der Eintrag «...»
+erlaubt die Wahl der Sprache durch die Eingabe des zweistelligen
+Sprachkürzels: «de» für deutsch, «en»
+für englisch oder «fr» für französisch.
+Stehen weitere Übersetzungen zur Verfügung (z.B. russisch),
+kann man die entsprechende Sprache («ru») auf diesem Wege
+wählen.<br>
+Will man das Programm direkt auf deutsch starten,
+wenn die Computereinstellung englisch ist, kann man das beim
+Programmaufruf angeben: «fachwerk3d --language de».</p>
+<p><br>
+<br>
+</p>
+<h3>Ansicht</h3>
+<h4><img src="../../../../Fachwerk/gui/icons/zoom.png" align="bottom"
+ border="0" height="16" width="16">
+zoom xy</h4>
+<p>Das Zoomfenster kann durch Eingabe der begrenzenden ξ- und&nbsp;ζ-Koordinaten
+(Projektionsebene) gewählt werden.</p>
+<p><br>
+<br>
+</p>
+<h3>Fachwerk</h3>
+<h4><img src="../../../../Fachwerk/gui/icons/knotenselektieren.png" align="bottom" border="0" height="21" width="21">
+selektiere Knoten Nr..</h4>
+<p>Wenn mehrere Knoten übereinander liegen, kann es nützlich
+sein, einen Knoten über seine Nummer zu selektieren.</p>
+<h4><img src="../../../../Fachwerk/gui/icons/eraser.png" align="bottom" border="0" height="21" width="21">
+löschen</h4>
+<p>Zuvor muss ein Knoten oder ein Stab ausgewählt worden sein,
+sonst passiert nichts. Wird ein Knoten gelöscht, werden auch
+alle mit ihm verbundenen Stäbe entfernt.</p>
+<h4><img src="../../../../Fachwerk/gui/icons/clear_left.png" align="bottom" border="0" height="21" width="21">
+alles zurücksetzen</h4>
+<p>Setzt die Berechnung zurück und löscht alle gesetzten
+Stabkräfte.</p>
+<h4><img src="../../../../Fachwerk/gui/icons/designer.png" align="bottom" border="0" height="21" width="21">
+Eigenschaften</h4>
+<p>Öffnet den Eigenschaftsdialog des zuvor gewählten Stabes
+oder Knotens.</p>
+<table border="1" cellpadding="4" cellspacing="3" width="100%">
+  <col width="128*"> <col width="128*"> <thead> <tr valign="top">
+    <th width="50%">
+    <p>Knotendialog</p>
+    </th>
+    <th width="50%">
+    <p>Stabdialog</p>
+    </th>
+  </tr>
+  </thead> <tbody>
+    <tr valign="top">
+      <td width="50%">
+      <p>Koordinaten</p>
+      </td>
+      <td width="50%">
+      <p>Stabkraft setzen</p>
+      </td>
+    </tr>
+    <tr valign="top">
+      <td width="50%">
+      <p>Lagerung</p>
+      </td>
+      <td rowspan="2" width="50%">
+      <p>Stab auf «unbestimmt» setzen</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top" width="50%">
+      <p>Lasten</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p><br>
+<br>
+</p>
+<h3>Rechnen</h3>
+<p>Das Lösen des Gleichungssystems lässt sich ausschalten. Dann wird
+lediglich überprüft, ob das Gleichgewicht der bestimmten Knoten erfüllt
+ist. Ein Knoten gilt als bestimmt, wenn alle anschliessenden Stab- und
+Lagerkräfte bekannt sind.</p>
+<h4>Gleichungssystem lösen</h4>
+<p>Für jeden nicht bestimmten Knoten werden drei
+Gleichgewichtsbedingungen aufgestellt. Durch das äussere
+Gleichgewicht kommen sechs Gleichungen dazu. Weitere für Lager mit
+einer verschieblichen resp. blockierten Richtung.<br>
+Die
+Besonderheit dieses «Solvers» liegt daran, dass er nach
+eindeutig bestimmten Stab- oder Lagerkräften sucht, obwohl das
+System als Ganzes statisch unbestimmt ist.<br>
+In der Regel <i>muss
+diese Methode eingeschaltet</i> sein.</p>
+<p><br>
+<br>
+</p>
+<h3>Zusätze</h3>
+<p>Dieser Menüpunkt enthält Funktionen, welche über
+die Kernaufgabe des Programms – das Berechnen von Fachwerkmodellen
+– hinausgehen.</p>
+<h4>Koordinaten transformieren</h4>
+<p>Die Knotenkoordinaten werden zuerst skaliert, danach verschoben.</p>
+<h4>Hintergrundzeichnung transformieren</h4>
+<p>Skaliert und verschiebt die Hintergrundzeichnung. Die dxf-Datei
+bleibt dabei unverändert. Da die Hintergrundzeichnung nicht mit
+dem Fachwerkmodell abgespeichert wird, empfiehlt es sich, diese
+Transformation in einem Zeichnungsprogramm durchzuführen.</p>
+<h4>Lasten skalieren</h4>
+<p>Skaliert alle Lasten mit einem Faktor. Gesetzte Stabkräfte können auch skaliert werden.</p>
+<h4>Eingabedaten exportieren</h4>
+<p>Die Eingabedaten können in eine "komma-getrennte Werte"-Datei
+&lt;dateiname&gt;.out.csv exportiert werden. Die Datei kann mit einem
+Tabellenkalkulationsprogramm geöffnet werden. So lassen sich die
+Eingabedaten bei grossen Modellen ringer überprüfen und dokumentieren.</p>
+<p><br>
+<br>
+</p>
+<h3>Hilfe</h3>
+<h4><img src="../../../../Fachwerk/gui/icons/help.png" align="bottom"
+ border="0" height="24" width="21">
+Hilfe</h4>
+<ul>
+  <li>
+    <p>rechte Maustaste: zurück zur
+zuletzt besuchten Seite</p>
+  </li>
+  <li>
+    <p>mittlere Maustaste oder Doppelklick
+rechts: zurück zur Startseite der Hilfe</p>
+  </li>
+</ul>
+<h4><img src="../../../../Fachwerk/gui/icons/Bsp.png" align="bottom"
+ border="0" height="24" width="24">
+Beispiel laden</h4>
+<p>Ein fest eingebautes einfaches
+Beispiel. Geeignet zum ersten Ausprobieren des Programmes. Das
+Beispiel kann nicht irrtümlich überschrieben oder gelöscht
+werden.</p>
+</body>
+</html>
