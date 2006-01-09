@@ -1,0 +1,29 @@
+Beispiele
+
+Ein Beispiel ist fest in das Programm eingebaut (im Menü unter Hilfe - Beispiel laden).
+Es soll erlauben, das Programm schnell und einfach kennen zu lernen.
+Zum eingebauten Beispiel kann die Hintergrundzeichnung eingebautes_Bsp_3D.bgd eingelesen werden. Wenn man die bgd-Datei mit einem Texteditor öffnet, sieht man, wie einfach eine Hintergrundskizze (auch ohne CAD) erstellt werden kann.
+
+In diesem Verzeichnis sind weitere Beispiele enthalten:
+
+- 1-Pyramide.fwk3d
+  Einfaches Beispiel
+
+- 2-Ecke.fwk3d
+  Wandecke
+
+- 3-Kragarm.fwk3d
+  Einseitig eingespannter, gekrümmter Kragarm.
+
+- 4-Konsole.fwk3d
+  Konsole am oberen Ende einer Stahlbetonstütze.
+  Das Beispiel ist (leicht verändert) der Publikation [1] entnommen. Zu diesem Beispiel kann die Hintergrundzeichnung 4-Konsole.bgd eingelesen werden.
+
+- 5-Platte-8x8m.fwk3d
+  Quadratische Muster-Platte 8m x 8m, in der Mitte gestützt, mit 10 kN/m² gleichmässig belastet.
+  Nicht abgestufte obere Armierung, keine untere Armierung, vertikale (Schub-) Armierung.
+  Traglast. Aus Symmetriegründen ist nur ein Viertel der Platte modelliert.  
+  Zu diesem Beispiel kann die Hintergrundzeichnung 5-Platte-8x8m.bgd eingelesen werden.
+
+[1] "Aufgabensammlung Stahlbeton GZ"
+    Institut für Baustatik und Konstruktion, ETH Zürich, 2000

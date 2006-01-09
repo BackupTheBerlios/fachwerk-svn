@@ -1,0 +1,66 @@
+1. How to link files ".fwk3d" to Fachwerk3D:
+   -------------------------------------
+   
+   Windows (>= 2000)
+   -----------------
+   
+   - Somewhere in Explorer you can set file types 
+   - New:  fwk3d
+   - Name: Fachwerk3D
+   
+   - Process "Open"
+   - Application
+     Windows2000:
+     C:\WINNT\system32\CMD.EXE /c start /d C:\programs\fachwerk3d C:\Programme\fachwerk3d\fachwerk3d.bat "%1"
+     
+     WindowsXP:
+     C:\Windows\system32\CMD.EXE /c start /d C:\programs\fachwerk3d C:\Programme\fachwerk3d\fachwerk3d.bat "%1"
+     
+   - Other symbol - find - fachwerk3d/INFO/icon-fachwerk.ico
+     
+     
+   
+   KDE (Linux)   
+   -----------
+   
+   a) Zip file fachwerk3d*.zip extracted to /home/USER/programs
+      
+   - Right click on a fwk3d-file, Properties
+   - Click on small icon that shows a tool.
+   - Description: "Fachwerk3D"
+   - Click on icon - Other symbols
+     "PATHtoFachwerk3D/fachwerk3d/INFO/icon-fachwerk.png" - OK
+   - Add: (using the path to the location where you have installed Fachwerk3D)
+     konsole --workdir '/home/USER/programs/fachwerk3d/' -e '/home/USER/programs/fachwerk3d/fachwerk3d'
+     
+   b) rpm used for installation
+   
+   - Right click on a fwk3d-file, Properties
+   - Click on small icon that shows a tool.
+   - Description: "Fachwerk3D"
+   - Click on icon - Other symbols
+     "/usr/share/doc/packages/fachwerk3d/INFO/icon-fachwerk.png" - OK
+   - Add:
+     konsole -e fachwerk3d
+     
+       
+
+2. Printing Landscape/A3/etc. does not work
+-------------------------------------------
+
+2.1	Landscape (Windows, JRE 1.4)
+	Do upgrade the Java JRE to the newest version. Java JRE 1.5 fixes the problem.
+	
+2.2	A3 (Windows, JRE 1.5)
+	On some (actual) versions of JRE 1.5 printing on A3 paper does not work.
+	Work around: Use older JRE version.
+	
+2.3	Printing dialog does not open (Linux, JRE 1.5)
+	Do upgrade the Java JRE to the newest version.
+
+
+3. Development Status of Fachwerk3D (beta)
+-----------------------------------
+The development status of Fachwerk3D ist *BETA". In contrast, Fachwerk(2D) is *STABLE*.
+The reason is mainly, that Fachwerk3D has not been tested enough.
+If the entire model could be calculated (message OK, COMPLETE), one can admit that the result is correct.
