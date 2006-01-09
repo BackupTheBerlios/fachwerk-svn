@@ -1,0 +1,55 @@
+Beispiele
+
+Ein Beispiel ist fest in das Programm eingebaut (im Menü unter Hilfe - Beispiel laden).
+Es soll erlauben, das Programm schnell und einfach kennen zu lernen. Mit dem eigentlichen
+Einsatzgebiet des Programmes, Betonträgern, hat dieses Beispiel nichts zu tun.
+Zum eingebauten Beispiel kann die Hintergrundzeichnung eingebautes_Bsp.dxf resp. eingebautes_Bsp.bgd eingelesen werden. Wenn man diese bgd-Datei mit einem Texteditor öffnet, sieht man, wie einfach eine Hintergrundskizze (auch ohne CAD) erstellt werden kann.
+
+In diesem Verzeichnis sind weitere Beispiele enthalten:
+
+- 1-Startbeispiel.fwk
+  Indirekt gelagerter, vorgespannter Träger.
+  Einfaches Beispiel. Die Modellierung der Vorspannung ist rudimentär.
+
+- 2-Ausklinkung.fwk
+  Auflagerbereich eines vorfabrizierten Betonträgers mit Ausklinkung.
+  An diesem Beispiel kann die Funktion "Knotenposition suchen" (im Menü Zusätze)
+  ausprobiert werden. Der Knoten Nr. 15 kann horizontal verschoben werden, bis der
+  "Nullstab" Nr. 19 effektiv die Kraft null erhält. Der Stab kann danach entfernt werden.
+  Zu diesem Beispiel kann die Hintergrundzeichnung 2-Ausklinkung.dxf eingelesen werden.
+
+- 3-NurVorspannung.fwk
+  Einfacher Balken mit parabolisch geführtem Vorspannkabel. Ohne schlaffer Armierung.
+  Das Beispiel ist der Publikation [1] entnommen.
+  Zu diesem Beispiel kann die Hintergrundzeichnung 4-Vorspannung.dxf eingelesen werden.
+
+- 4-Vorspannung.fwk
+  Einfacher Balken mit schlaffer und vorgespannter Bewehrung.
+  Das Beispiel zeigt eine gute Modellierung der Vorspannung. Es ist (leicht verändert)
+  der Publikation [1] entnommen.
+  Zu diesem Beispiel kann die Hintergrundzeichnung 4-Vorspannung.dxf eingelesen werden.
+
+- 5-Druckbogen.fwk
+  Ein einfacher Druckbogen. 
+  Das Beispiel illustriert die Fähigkeit des Programmes, instabile Systeme zu berechnen.
+  Verschiebt man die Knoten 4-7 in vertikaler Richtung, hat man eine Übungsaufgabe zur
+  Formfindung. Mit Hilfe der Funktion "Knotenposition suchen" und etwas Strategie kann
+  man die richtige Form des Druckbogens wieder finden.
+
+- 6-Rad.fwk
+  Vélorad mit einer vorgespannten Speiche.
+  Dieses Beispiel hat natürlich nichts direkt mit dem Eisatzgebiet des Programmes zu tun.
+  
+- 7-Scheibenoeffnung.fwk
+  Wandartiger Träger mit grosser einseitiger Öffnung.
+  Zwei statisch zulässige Fachwerkmodelle sind einander überlagert. Die Fliesskraft der
+  diagonalen Eisen kann dem entsprechenden Stab zugewiesen werden, wodurch das Modell
+  statisch bestimmt wird. Das Beispiel ist (leicht verändert) dem Betonkalender [2] entnommen.
+  Zu diesem Beispiel kann die Hintergrundzeichnung 7-Scheibenoeffnung.dxf eingelesen werden.
+
+
+
+[1] "Beurteilung der Tragsicherheit bestehender Betonbauten", Ph. Stoffel, P. Marti
+    Institut für Baustatik und Konstruktion, ETH Zürich, 1999
+    
+[2] "Konstruieren im Stahlbetonbau", J.Schlaich, K.Schäfer, Stuttgart, Betonkalender 1998
