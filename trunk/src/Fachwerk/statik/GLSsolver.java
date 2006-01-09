@@ -1,0 +1,302 @@
+/*
+ * GLSsolver.java
+ *
+ * Created on 26. August 2003, 22:09
+ */
+
+package Fachwerk.statik;
+
+import cern.colt.matrix.*;
+import cern.colt.matrix.impl.*;
+import cern.colt.matrix.linalg.*;
+import java.math.*;
+
+
+
+/**
+ * Fachwerk - treillis
+ *
+ * Copyright (c) 2003 - 2005 A.Vontobel <qwert2003@users.sourceforge.net>
+ *                                                                      <qwert2003@users.berlios.de>
+ *
+ * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
+ *
+ * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
+ * Gleichgewichtsbedingungen zur Bestimmung der Stabkräfte.
+ * Bei statisch unbestimmten Systemen können die überzähligen Stabkräfte
+ * zugewiesen werden.
+ * Das Programm bezweckt, die Anwendung des unteren (statischen)
+ * Grenzwertsatzes der Plastizitätstheorie zu erleichtern.
+ *
+ * -------------------------------------------------------------
+ *
+ * Deses Programm ist freie Software. Sie können es unter den Bedingungen
+ * der GNU General Public License, Version 2, wie von der Free Software
+ * Foundation herausgegeben, weitergeben und/oder modifizieren.
+ *
+ * Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, dass es
+ * Ihnen von Nutzen sein wird, aber OHNE JEDE GEWÄHRLEISTUNG - sogar ohne
+ * die implizite Gewährleistung der MARKTREIFE oder der EIGNUNG FüR EINEN
+ * BESTIMMTEN ZWECK.  Details finden Sie in der GNU General Public License.
+ *
+ * Sie sollten eine Kopie der GNU General Public License zusammen  mit
+ * diesem Programm erhalten haben. Falls nicht, schreiben Sie an die
+ * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
+ */
+public final class GLSsolver {
+    
+    /* ZUTUN
+     * - Beim Entdecken von Widersprüchen ursprüngliche Zeile und so betroffenen Knoten angeben
+     * - Umwandlung in nicht-statische Methode
+     * - In Klasse Infos zum Berechnungsablauf speichern, insb. Fehler
+     * - Methoden einbauen, welche Infos zu Fehlern und Widersprüchen und Warnungen liefern.
+     */
+    
+    /** Creates a new instance of testmatrix */
+    public GLSsolver() {
+    }
+    
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {  // Beispiel aus Stoffer,1994,"Lineare Algebra" S.49
+        double[][] gls = new double[7][6];
+        gls[0][0] =  2; gls[0][1] = -1; gls[0][2] =  3; gls[0][3] = -1; gls[0][4] =  1;
+        gls[1][0] =  2; gls[1][1] = -1; gls[1][2] =  3; gls[1][3] =  0; gls[1][4] = -1;
+        gls[2][0] = -4; gls[2][1] =  2; gls[2][2] = -4; gls[2][3] =  5; gls[2][4] = -5;
+        gls[3][0] =  0; gls[3][1] =  0; gls[3][2] = -2; gls[3][3] =  2; gls[3][4] = -7;
+        gls[4][0] = -2; gls[4][1] =  1; gls[4][2] = -1; gls[4][3] =  0; gls[4][4] =  4;
+        // Zeile 5: alles Nullen
+        // Zeile 6: selbe Gleichung wie Zeile 0
+        gls[6][0] =  2; gls[6][1] = -1; gls[6][2] =  3; gls[6][3] = -1; gls[6][4] =  1;
+        
+        
+        gls[0][5] =  2; gls[1][5] =  3;gls[2][5] = -3; gls[3][5] =  4; gls[4][5] = -5; 
+        // Zeile 5: Null, Zeile 6: wie Zeile 0
+        gls[6][5] =  2;
+        
+        solve(gls, true);
+    }
+    
+    public static final double[][] solve(double[][] p_MatrixgleichNull, boolean debug) 
+    throws IllegalArgumentException, ArithmeticException {
+        
+        // --------------------------------------
+        // Variablendeklararion und EINSTELLUNGEN
+        // --------------------------------------
+                
+        double[][] xLsg; // Lösung x: nur eindeutige (d.h. parameterunabhängige xi) werden zurückgegeben
+                         // index 0: Wert = 0 bedeutet xi unbestimmt,  Wert = 1 bedeutet xi bestimmt
+                         // index 1: eigentlicher Wert (nur wenn xi bestimmt, dh index 0 = 1, sonst Wert 0)
+        
+        double TOL = inKonstante.TOL_gls;
+       // double TOL = 1E-10; //bis ver005devE 1E-11;
+        // womöglich wird der Toleranzcheck mittels der in colt eigebauten Toleranz über cardinality 
+        // durchgeführt. Ist vorteilhaft, da der Rang des GLS mit dieser internen Toleranz bestimmt wird.
+        // dieser Wert muss grösser (ev. >=) sein als in clFachwerk zB +E-11
+        
+        //boolean debug = true;
+        
+        
+        // --------------------------------------
+        // Kontrolle, ob Eingabematrix rechteckig
+        // --------------------------------------
+        
+        int nplus1 =  p_MatrixgleichNull[0].length;
+        for (int i = 1; i < p_MatrixgleichNull.length; i++) {  // Zeilen i
+            if  (p_MatrixgleichNull[i].length != nplus1) {
+                System.err.println("Programmfehler: Matrix des GLS ist nicht rechteckig! (im solver entdeckt)");
+                throw new IllegalArgumentException();
+            }
+        }
+        if (nplus1 <=1) throw new IllegalArgumentException("keine Unbekannte"); // keine Unbekannte!!!
+        
+        
+        // -------------------------
+        // Daten in A und b einlesen
+        // -------------------------
+        
+        // so dass A*x = b
+        DenseDoubleMatrix2D A = new DenseDoubleMatrix2D(p_MatrixgleichNull.length, (nplus1-1));
+        DenseDoubleMatrix2D b = new DenseDoubleMatrix2D(p_MatrixgleichNull.length, 1);
+        
+        for (int i = 0; i < p_MatrixgleichNull.length; i++) {  // Zeilen i
+            for (int j = 0; j < nplus1 - 1; j++) { // Spalten
+                A.set(i, j,  p_MatrixgleichNull[i][j]);
+            }
+            b.set(i,0, -p_MatrixgleichNull[i][nplus1-1]);
+        }
+        
+        //System.out.println(A.toString());
+        //System.out.println(b.toString());
+        //System.out.println("");
+        
+        
+        // --------------
+        // LR - Zerlegung
+        // --------------
+        
+        LUDecomposition ALU = new LUDecomposition(A);
+        //System.out.println(ALU.toString());
+        
+        DoubleMatrix2D L = ALU.getL();
+        DoubleMatrix2D R = ALU.getU();
+        int[] piv = ALU.getPivot();
+        
+        
+        Algebra alg = new Algebra();
+        //System.out.println("Kontrolle L*R = " + alg.mult(L,R).toString());
+        //System.out.println("Kontrolle P*b = " + alg.permute(b, piv, null) );
+        
+        if (debug) System.out.println("Rx = c: R = " + R.toString());
+        
+        DoubleMatrix2D c = alg.solve(L,  alg.permute(b, piv, null));
+        if (debug) System.out.println("Lc = Pb:  c = " + c.toString());
+        
+        if (debug) {
+            System.out.println("Rang A: " + alg.rank(A));
+            System.out.println("Rang R: " + alg.rank(R));
+        }
+        
+        assert (alg.rank(A) == alg.rank(R)) : "Rang von A ungleich Rang von R --> Programmfehler";
+        
+        
+        
+        // --------------------------------------------------------------------------
+        // EIGENTLICHER SOLVER für bestimmte Lösungsvariablen in unbestimmen Systemen
+        // --------------------------------------------------------------------------
+        
+        int anzUnbestParam = A.columns() - alg.rank(A);
+        if (debug) System.out.println("Anz unbest Parameter: " + anzUnbestParam);
+        
+        int gebrauchteUnbestParam = 0;
+        double[][] x = new double[A.columns()][2 + anzUnbestParam]; // Status 1 (bestimmt), kN, alpha, beta (Parameter)
+        
+        int z = A.rows()-1; // Zeilenvariable, beginnt zuunterst
+        
+        while (R.viewRow(z).cardinality() == 0 // nachfolgende Tests massgebend, dieser jedoch schnell
+        || (Fkt.max(R.viewRow(z).toArray()) < TOL && Fkt.min(R.viewRow(z).toArray()) > -TOL)) {
+            double cwert;
+            if (z < c.rows()) cwert = c.get(z, 0);
+            else cwert = 0;
+            if (Math.abs(cwert) > TOL) {
+                System.out.println("widersprüchliche Gleichungen im System! Zeile "+z);
+                throw new ArithmeticException("Widerspruch im Gleichungssystem!");
+            }
+            z--;
+            assert z > 0 : "lauter Nullen im GLS";
+        }
+        
+        for (z = z; z >= 0; z--) {
+            // finde erste nicht-Null in Zeile (Pivot)
+            int p = -1 ; // Pivot: erste Zahl welche nicht null ist
+            pivotfinden:
+            for (int i = 0; i < R.columns(); i++) {
+                
+                //if (R.viewPart(z,i,1,1).cardinality() == 1) {
+                if (Math.abs(R.get(z,i)) > TOL) { // Versuch, numerische Probleme (Überbestimmtheit) zu vermeiden
+                    p = i;
+                    break pivotfinden;
+                }
+            }
+            
+            if (p < 0) {
+                System.out.println("Warnung: kein Pivot gefunden in Zeile " + z);
+                // Kontrolle, ob rechte Seite (c) auch null --> ok, sonst Widerspruch im GLS
+                if (Math.abs(c.get(z, 0)) > TOL) {
+                    System.out.println("widersprüchliche Gleichungen im System! Zeile "+z);
+                    throw new ArithmeticException("Widerspruch im Gleichungssystem!");
+                }
+                else {
+                    System.out.println("Entwarnung: Zeile " + z + " besteht aus lauter Nullen (ok)");
+                    continue;
+                }
+            }
+            
+            if (x[p][0] > 0) { // Pivot schon bestimmt! (Zeile "+z+"): auf Widerspruch überprüfen!
+                // CHECKEN, ob nicht widersprüchlich
+                double[] kontrolle = new double[1 + anzUnbestParam];
+                for (int j = 0; j < kontrolle.length; j++) kontrolle[j] = 0;
+                for (int i = p; i < R.columns(); i++) {
+                    for (int j = 0; j < kontrolle.length; j++) {
+                        kontrolle[j] += R.viewRow(z).get(i) * x[i][j+1];
+                    }
+                }
+                double obnull = Math.abs(kontrolle[0] - c.get(z,0));
+                if (obnull > TOL) {
+                    System.out.println("Widerspruch im Gleichungssystem! (Zeile "+z+") " + obnull +" ungleich 0"); // URSPRÜNGLICH ZEILE (piv) ANGEBEN!
+                    throw new ArithmeticException("Widerspruch im Gleichungssystem!");
+                }
+                for (int j = 1; j < kontrolle.length; j++) {
+                    if (Math.abs(kontrolle[j]) > TOL) {
+                        System.out.println("Widerspruch im Gleichungssystem! (Zeile "+z+") Parameter "+j+" ungleich 0");
+                                                
+                        throw new ArithmeticException("Widerspruch im Gleichungssystem!");
+                    }
+                }
+            }
+            
+            else {
+                // unbekannte
+                x[p][1] = c.get(z,0) / R.viewRow(z).get(p);
+                for (int i = R.columns()-1; i > p; i--) { // R.Spalten, da dies AnzUnbek x entspricht
+                    if (x[i][0] == 0) {
+                        if (gebrauchteUnbestParam >= anzUnbestParam) {
+                            System.err.println("Programmfehler in solver: gebrauchteUnbestParam >= anzUnbestParam");
+                            throw new AssertionError("Programmfehler in solver: gebrauchteUnbestParam >= anzUnbestParam");
+                        }
+                        x[i][gebrauchteUnbestParam + 2] = 1;
+                        x[i][0] = 1;
+                        
+                        gebrauchteUnbestParam++;
+                    }
+                    
+                    x[p][1] += -R.viewRow(z).get(i) * x[i][1] / R.viewRow(z).get(p);
+                    for (int j = 0; j < gebrauchteUnbestParam; j++) {
+                        x[p][2+j] += -R.viewRow(z).get(i) * x[i][2+j] / R.viewRow(z).get(p);
+                    }
+                }
+                x[p][0] = 1;
+            } 
+        }   
+        
+        
+        if (debug) {
+            System.out.println("");
+            for (int i = 0; i < x.length; i++) {
+                System.out.print("x"+i+" = " + Fkt.fix(x[i][1],3));
+                for (int j = 2; j < x[i].length; j++) {
+                    System.out.print(", P" + (j-1) + " = " + Fkt.fix(x[i][j],3));
+                }
+                System.out.println("");
+            }
+        }
+        
+        // ------------------
+        // Lösung zurückgeben
+        // ------------------
+        
+                // Lösung x: nur eindeutige (d.h. parameterunabhängige xi) werden zurückgegeben
+                // index 0: Wert = 0 bedeutet xi unbestimmt,  Wert = 1 bedeutet xi bestimmt
+                // index 1: eigentlicher Wert (nur wenn xi bestimmt, dh index 0 = 1, sonst Wert 0)
+        xLsg = new double[R.columns()][2];
+        
+        for (int i = 0; i < x.length; i++) {
+            boolean bestimmt = true;
+            
+            // schauen, ob Lösungsvariable xi bestimmt, dh unabhängig von überzähligen Parametern
+            for (int j = 2; j < x[i].length; j++) {
+                if (Math.abs(x[i][j]) > TOL) bestimmt = false;
+            }
+            
+            if (bestimmt) {
+                xLsg[i][0] = 1;
+                xLsg[i][1] = x[i][1];
+            }
+            else xLsg[i][0] = 0;
+        }
+        
+        return xLsg;
+    }
+}
