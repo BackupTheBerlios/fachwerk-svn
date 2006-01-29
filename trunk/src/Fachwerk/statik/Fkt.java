@@ -6,10 +6,8 @@
 
 package Fachwerk.statik;
 
-import java.math.*;
-
 /** 
- * Copyright (c) 2003 - 2005 A.Vontobel <qwert2003@users.berlios.de>
+ * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.berlios.de>
  *                                      <qwert2003@users.sourceforge.net>
  * 
  * Dieses Programm ist freie Software. Sie können es unter den Bedingungen
@@ -154,6 +152,11 @@ public final class Fkt {
     /** Gibt einen Zahlenwert als formatierten String zurück.
      */
     public static String nf(double zahl, int AnzNachkommaStellen) {
+	if (Double.isNaN(zahl)) return "NaN";
+	if (Double.isInfinite(zahl)) {
+            if (zahl == Double.NEGATIVE_INFINITY) return "-oo";
+            else return "+oo";
+	}
         StringBuffer ausg = new StringBuffer();
         if (AnzNachkommaStellen < 0) {
             System.err.print("Formatierungsfehler: Anzahl Nachkommastellen: ");
