@@ -23,7 +23,7 @@ import java.awt.print.*;
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2005 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -55,12 +55,13 @@ public class treillis extends clOberflaeche implements inKonstante {
     
     private static final String PROGNAME = "Fachwerk"; // in clOberflaeche nochmals hart kodiert (Titel)
     private static final int HAUPTVER = 0;
-    private static final int UNTERVER = 13; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
+    private static final int UNTERVER = 14; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
     private final String FILEPROGNAME = "treillis";
     private final int FILEVER = 1;
     
     public boolean OptionVorber = true;
     public boolean OptionGLS = true;
+    public boolean OptionMechanismus = false; // TODO wenn genügend getestet true
     private boolean OptionVerbose = false;
     
     private boolean keinWIDERSPRUCH = true;
@@ -349,7 +350,7 @@ public class treillis extends clOberflaeche implements inKonstante {
         try {
             clFachwerk fachwerk = new clFachwerk(Knotenarray, Stabarray, Topologie);
             fachwerk.setVerbose(OptionVerbose);
-            keinWIDERSPRUCH = fachwerk.rechnen(OptionVorber,OptionGLS);
+            keinWIDERSPRUCH = fachwerk.rechnen(OptionVorber,OptionGLS,OptionMechanismus);
             fachwerk.resultatausgabe_direkt();
             if (keinWIDERSPRUCH) VOLLSTÄNDIGGELÖST_OK = fachwerk.istvollständiggelöst(false); // false, das resutatcheck() soeben in .rechnen() durchgeführt
             aktualisieren(true, true);
@@ -831,6 +832,10 @@ public class treillis extends clOberflaeche implements inKonstante {
     
     protected void befehlOptionGLS(boolean status) {
         OptionGLS = status;
+    }
+    
+    protected void befehlOptionMechanismus(boolean status) {
+        OptionMechanismus = status;
     }
     
     protected void befehlOptionVerbose(boolean verbose){

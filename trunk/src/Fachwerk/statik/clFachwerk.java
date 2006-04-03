@@ -6,12 +6,10 @@
 
 package Fachwerk.statik;
 
-import java.math.*;
-
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2005 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -75,7 +73,6 @@ public class clFachwerk implements inKonstante {
     private double[][] ax, az; // x und z Komponenten der Stäbe. [von Knoten][bis Knoten]
     
     // Programmtechnische Variablen
-    // private int kni, knj, i, j; // Zählervariablen
     //private int anzFG; // verbleibende Freiheitsgrade (unbestimmte Stabkräfte)
     
     
@@ -214,16 +211,16 @@ public class clFachwerk implements inKonstante {
         
         clFachwerk fw = new clFachwerk(testKn, testSt, testTop);
         fw.setVerbose(true);
-        fw.rechnen(true,true);
+        fw.rechnen(true,true,true);
         fw.resultatausgabe_direkt();
     }
     
     //------------------------------------------------------------------------------------------------------------
     
     /** Berechnet das Fachwerkmodell
-     * @return false: Widerspruch aufgetreten. true: Berechnung durchgeführt.
+     * @return false: Widerspruch aufgetreten. true: Berechnung durchgeführt ohne Widerspruch.
      */
-    public boolean rechnen(boolean optionVORBER, boolean optionGLS) throws Exception {
+    public boolean rechnen(boolean optionVORBER, boolean optionGLS, boolean optionMECHANISMUS) throws Exception {
                 
         if (check() == false) {
             System.err.println("Fehler beim check: clFachwerk.rechnen");
@@ -238,10 +235,18 @@ public class clFachwerk implements inKonstante {
         if (optionGLS && !WIDERSPRUCHaufgetreten) rGleichgewichtsGLS();
         
         rKnotenstatusSetzen();
+        
+        boolean OKkomplett = false;
         if (resultatcheck()) { // falls keine Widerspruch entdeckt wird:
-            istvollständiggelöst(false); // false, da resultatcheck() soeben durchgeführt
+            OKkomplett = istvollständiggelöst(false); // false, da resultatcheck() soeben durchgeführt
         }
         else verbose = true; // gibt mehr Infos aus, wenn resultatausgabe_direkt() aufgerufen wird.
+        
+        if (optionMECHANISMUS && !OKkomplett) {
+            
+            WIDERSPRUCHaufgetreten = rMechanismusVerletztGlgew(); // TODO: nicht immer korrekt (konservativ)
+                                                                  // bei mehrfachverschieblichen Systemen
+        }
         
         return !WIDERSPRUCHaufgetreten;
     }
@@ -317,7 +322,7 @@ public class clFachwerk implements inKonstante {
         else return true;
     }
     
-    private void rGeometrie(){ // x und z - Komponenten der Stabkräfte berechnen
+    private void rGeometrie() { // x und z - Komponenten der Stabkräfte berechnen
         ax = new double[Kn.length][Kn.length];
         az = new double[Kn.length][Kn.length];
         for (int von = 1; von < Kn.length; von++) {
@@ -986,6 +991,26 @@ public class clFachwerk implements inKonstante {
         
         System.out.println("Das Fachwerkmodell ist VOLLSTAENDIG GELOEST. --- COMPLETELY SOLVED");
         return true;
+    }
+    
+    private boolean rMechanismusVerletztGlgew() throws Exception {
+        clMechanismus mech = new clMechanismus(Kn, St, Top);
+        mech.setVerbose(verbose);
+        mech.setModellSchonGeprüft(true);
+        boolean fertigberechnet = mech.rechnen();
+        
+        if (!fertigberechnet) System.out.println("[clFachwerk] Warnung: Mechanismen nicht fertig gerechnet.");
+        if (verbose) {
+            System.out.println("");
+            if (mech.istStabil()) System.out.println("Das System ist STABIL.");
+            else System.out.println("Das System ist nicht stabil.");
+        }
+        if (mech.verletztGleichgewicht()) {
+            System.out.println("");
+            System.out.println("Das System ist vermutlich NICHT IM GLEICHGEWICHT!");
+            System.out.println("");
+        }
+        return mech.verletztGleichgewicht();
     }
     
     public void resultatausgabe_direkt() {

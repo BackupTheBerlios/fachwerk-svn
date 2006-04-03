@@ -154,6 +154,7 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         buttonVerbose = new javax.swing.JCheckBoxMenuItem();
         buttonVorberechnung = new javax.swing.JRadioButtonMenuItem();
         buttonGLS = new javax.swing.JRadioButtonMenuItem();
+        buttonMechanismus = new javax.swing.JRadioButtonMenuItem();
         menuAddins = new javax.swing.JMenu();
         itemKoordTransFWK = new javax.swing.JMenuItem();
         itemKoordTransDXF = new javax.swing.JMenuItem();
@@ -319,7 +320,7 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
 
         StatusLeistePanel.setLayout(new java.awt.GridBagLayout());
 
-        StatusLeistePanel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0)));
+        StatusLeistePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         StatusTextPanel.setLayout(new java.awt.GridLayout(1, 0));
 
         feldStatuszeile.setEditable(false);
@@ -842,6 +843,16 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
 
         menuRechnen.add(buttonGLS);
 
+        buttonMechanismus.setText("Mechanismen testen");
+        buttonMechanismus.setToolTipText("Sucht Mechanismen, die eine Gleichgewichtsverletzung belegen. (Experimentell)");
+        buttonMechanismus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonMechanismusActionPerformed(evt);
+            }
+        });
+
+        menuRechnen.add(buttonMechanismus);
+
         jMenuBar1.add(menuRechnen);
 
         menuAddins.setText("Zus\u00e4tze");
@@ -923,8 +934,11 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         setJMenuBar(jMenuBar1);
 
         pack();
-    }
-    // </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void buttonMechanismusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMechanismusActionPerformed
+        befehlOptionMechanismus(buttonMechanismus.isSelected());
+    }//GEN-LAST:event_buttonMechanismusActionPerformed
 
     private void buttonVerboseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonVerboseActionPerformed
         befehlOptionVerbose(buttonVerbose.isSelected());
@@ -1523,6 +1537,7 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
     protected abstract void befehlOptionVerbose(boolean verbose);
     protected abstract void befehlOptionVorberechnung(boolean status);
     protected abstract void befehlOptionGLS(boolean status);
+    protected abstract void befehlOptionMechanismus(boolean status);
     
     protected abstract void befehlAddinKoordTransFWK();
     protected abstract void befehlAddinKoordTransDXF();
@@ -1668,6 +1683,7 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
     private javax.swing.JPanel StatusTextPanel;
     private javax.swing.JPanel WerkzeugPanel;
     private javax.swing.JRadioButtonMenuItem buttonGLS;
+    private javax.swing.JRadioButtonMenuItem buttonMechanismus;
     private javax.swing.JCheckBoxMenuItem buttonVerbose;
     private javax.swing.JRadioButtonMenuItem buttonVorberechnung;
     protected javax.swing.JTextField feldStatusFw;

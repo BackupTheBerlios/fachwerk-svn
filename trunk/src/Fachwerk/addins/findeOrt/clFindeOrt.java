@@ -195,7 +195,7 @@ public class clFindeOrt implements inKonstante {
         zurücksetzen();
         try {
             clFachwerk fachwerk = new clFachwerk(Kn, St, Top);
-            keinWIDERSPRUCH = fachwerk.rechnen(OptionVorber,OptionGLS);
+            keinWIDERSPRUCH = fachwerk.rechnen(OptionVorber,OptionGLS, false);
             //if (debug) fachwerk.resultatausgabe_direkt();  // wirklich nur zum debuggen!
         }
         catch (Exception e) {

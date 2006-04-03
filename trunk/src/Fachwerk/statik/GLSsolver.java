@@ -112,14 +112,21 @@ public final class GLSsolver {
         }
         if (nplus1 <=1) throw new IllegalArgumentException("keine Unbekannte"); // keine Unbekannte!!!
         
+        // Umgeht einen Fehler in der colt-Bibliothek // TODO wenn behoben, Workaround entfernen
+        // ------
+        int anzGl = p_MatrixgleichNull.length;   
+        if (anzGl < nplus1-1) { // anzGleichungen < anz Unbekannte
+            if (debug) System.out.println("WorkAround fuer Fehler in colt: 0 = 0 Gleichungen anhaengen");
+            anzGl = nplus1-1; // = Anzahl Unbek, 0 0 0 ... 0 = 0 Zeile angehängt
+        }
         
         // -------------------------
         // Daten in A und b einlesen
         // -------------------------
         
         // so dass A*x = b
-        DenseDoubleMatrix2D A = new DenseDoubleMatrix2D(p_MatrixgleichNull.length, (nplus1-1));
-        DenseDoubleMatrix2D b = new DenseDoubleMatrix2D(p_MatrixgleichNull.length, 1);
+        DenseDoubleMatrix2D A = new DenseDoubleMatrix2D(anzGl, (nplus1-1));
+        DenseDoubleMatrix2D b = new DenseDoubleMatrix2D(anzGl, 1);
         
         for (int i = 0; i < p_MatrixgleichNull.length; i++) {  // Zeilen i
             for (int j = 0; j < nplus1 - 1; j++) { // Spalten
@@ -128,17 +135,18 @@ public final class GLSsolver {
             b.set(i,0, -p_MatrixgleichNull[i][nplus1-1]);
         }
         
-        //System.out.println(A.toString());
-        //System.out.println(b.toString());
-        //System.out.println("");
-        
+        if (debug) {
+            System.out.println(" A = " + A.toString());
+            System.out.println(" b = " + b.toString());
+            System.out.println("");
+        }
         
         // --------------
         // LR - Zerlegung
         // --------------
         
         LUDecomposition ALU = new LUDecomposition(A);
-        //System.out.println(ALU.toString());
+        if (debug) System.out.println(ALU.toString());
         
         DoubleMatrix2D L = ALU.getL();
         DoubleMatrix2D R = ALU.getU();
@@ -146,12 +154,16 @@ public final class GLSsolver {
         
         
         Algebra alg = new Algebra();
-        //System.out.println("Kontrolle L*R = " + alg.mult(L,R).toString());
-        //System.out.println("Kontrolle P*b = " + alg.permute(b, piv, null) );
+//        if (debug) System.out.println("L = " + L.toString());
+//        if (debug) System.out.println("Kontrolle L*R = " + alg.mult(L,R).toString());
+//        if (debug) System.out.println("Kontrolle P*b = " + alg.permute(b, piv, null) );
+//        
+//        if (debug) System.out.println("Rx = c: R = " + R.toString());
+//        if (debug) System.out.println("alg.permute(b, piv, null) = " + alg.permute(b, piv, null).toString());
         
-        if (debug) System.out.println("Rx = c: R = " + R.toString());
+        DoubleMatrix2D c = alg.solve(L,  alg.permute(b, piv, null)); // TODO: kann zu Problemen führen, 
+                                                                     // wenn weniger Gleichungen als Unbek --> s.Workaround oben
         
-        DoubleMatrix2D c = alg.solve(L,  alg.permute(b, piv, null));
         if (debug) System.out.println("Lc = Pb:  c = " + c.toString());
         
         if (debug) {
