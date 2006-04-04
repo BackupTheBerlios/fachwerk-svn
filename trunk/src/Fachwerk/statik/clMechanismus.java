@@ -141,9 +141,31 @@ public class clMechanismus implements inKonstante {
         clStab[] testSt;
         int [][] testTop;
         
-        int bsp = 1;
+        int bsp = 2;
         if (args.length > 0) bsp = Integer.parseInt(args[0]);
         switch (bsp) {
+            case 2:
+                testKn = new clKnoten[2+1];
+                testSt = new clStab[1+1];
+                testTop = new int[testKn.length][testKn.length];
+                
+                testKn[1] = new clKnoten(0d,0d);
+                testKn[2] = new clKnoten(10d,0d);
+                
+                for (int i = 1 ; i < testSt.length; i++) {
+                    testSt[i] = new clStab();
+                }
+                
+                // Topologie schreiben
+                testTop[1][2] = 1;
+                
+                
+                // Lasten und Auflagerkräfte zuordnen
+                testKn[1].setLager(VERSCHIEBLICH, 0d);
+                testKn[2].setLager(VERSCHIEBLICH, 0d);
+                testKn[2].setLast(0d,100d);
+                break;
+                
             case 1:
                 testKn = new clKnoten[2+1];
                 testSt = new clStab[1+1];
@@ -480,11 +502,11 @@ public class clMechanismus implements inKonstante {
                     GLS[gl][ausKnoten[kn][1]] = -1; // z-Rtg
                     gl++;
                     break;
-                case VERSCHIEBLICH: // TODO kontrollieren
+                case VERSCHIEBLICH:
                     // Vorsicht: Gleitrichtung im Uhrzeigersinn von x-Achse definiert
-                    double alpha = Kn[kn].getRalpha();
-                    GLS[gl][ausKnoten[kn][0]] = Math.cos(alpha); // Rx
-                    GLS[gl][ausKnoten[kn][1]] = Math.sin(alpha); // Rz
+                    double alpha = Kn[kn].getRalpha()*Math.PI/180d;
+                    GLS[gl][ausKnoten[kn][0]] = Math.sin(alpha); // *dx
+                    GLS[gl][ausKnoten[kn][1]] = -Math.cos(alpha); // *dz
                     gl++;
                     break;
                 case LOS:
