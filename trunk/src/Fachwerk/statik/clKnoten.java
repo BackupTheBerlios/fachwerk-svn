@@ -66,7 +66,7 @@ public class clKnoten implements Serializable, inKonstante {
     private double X, Z; // Koordinaten (x nach rechts, z nach unten)
     
     private double Rx = 0, Rz = 0; // Auflagerkraft
-    private double Ralpha = 0;     // Lagerrichtung bei verschieblichem Lager (Rtg der Verschiebung)
+    private double Ralpha = 0;     // Lagerrichtung bei verschieblichem Lager (Rtg der Verschiebung) in Rad
     private double Lx = 0, Lz = 0; // Knotenlast
     private int Lagerbed = LOS;
     private int Lagerstatus = GESETZT; // da LOS, TODO unklar, stiftet Verwirrung
@@ -238,7 +238,7 @@ public class clKnoten implements Serializable, inKonstante {
     }
     
     /** Gibt die Gleitrichtung des Lagers an. Nur bei verschieblichen Lagern von Belang.
-    * @return Gleitrichtung in Altgrad
+    * @return Gleitrichtung in Radianten
     */
     public double getRalpha() {
         if (Lagerbed == VERSCHIEBLICH) {

@@ -226,8 +226,19 @@ public final class GLSsolver {
                 }
             }
             
-            if (x[p][0] > 0) { // Pivot schon bestimmt! (Zeile "+z+"): auf Widerspruch überprüfen!
-                // CHECKEN, ob nicht widersprüchlich
+            // kontrollieren, ob es in der Gleichung (Zeile) eine neue Unbestimmte Variable (i.d.R. Pivot) hat.
+            boolean alleVarBestimmt = true;
+            int effPivot = p; // effektiver Pivot (1. Unbestimmte Variable der Zeile), i.d.R. Pivot
+            for (int i = p; i < R.columns(); i++) {
+                if (x[i][0] == 0 && Math.abs(R.viewRow(z).get(i)) > 0) { // TODO zweite Bed. kontr.
+                    alleVarBestimmt = false;
+                    effPivot = i; // i.d.R. effPivot=p, aber nicht immer.
+                    break;
+                }
+            }
+            
+            if (alleVarBestimmt) { // alle Variablen (inkl.Pivot) schon bestimmt! 
+                // CHECKEN, ob (Zeile "+z+") nicht widersprüchlich
                 double[] kontrolle = new double[1 + anzUnbestParam];
                 for (int j = 0; j < kontrolle.length; j++) kontrolle[j] = 0;
                 for (int i = p; i < R.columns(); i++) {
@@ -242,7 +253,7 @@ public final class GLSsolver {
                 }
                 for (int j = 1; j < kontrolle.length; j++) {
                     if (Math.abs(kontrolle[j]) > TOL) {
-                        System.out.println("Widerspruch im Gleichungssystem! (Zeile "+z+") Parameter "+j+" ungleich 0");
+                        System.out.println("Widerspruch im Gleichungssystem! (Zeile "+z+") Parameter "+j+" ungleich 0: " + kontrolle[j]);
                                                 
                         throw new ArithmeticException("Widerspruch im Gleichungssystem!");
                     }
@@ -250,27 +261,31 @@ public final class GLSsolver {
             }
             
             else {
+                
                 // unbekannte
-                x[p][1] = c.get(z,0) / R.viewRow(z).get(p);
-                for (int i = R.columns()-1; i > p; i--) { // R.Spalten, da dies AnzUnbek x entspricht
+                x[effPivot][1] = c.get(z,0) / R.viewRow(z).get(effPivot);
+                for (int i = R.columns()-1; i >= p; i--) { // R.Spalten, da dies AnzUnbek x entspricht
+                    if (i == effPivot) continue;
                     if (x[i][0] == 0) {
-                        if (gebrauchteUnbestParam >= anzUnbestParam) {
-                            System.err.println("Programmfehler in solver: gebrauchteUnbestParam >= anzUnbestParam");
-                            throw new AssertionError("Programmfehler in solver: gebrauchteUnbestParam >= anzUnbestParam");
+                        if (Math.abs(R.viewRow(z).get(i)) > TOL ) { // TODO testen!!!
+                            if (gebrauchteUnbestParam >= anzUnbestParam) {
+                                System.err.println("Programmfehler in solver: gebrauchteUnbestParam >= anzUnbestParam");
+                                throw new AssertionError("Programmfehler in solver: gebrauchteUnbestParam >= anzUnbestParam");
+                            }
+                            x[i][gebrauchteUnbestParam + 2] = 1;
+                            x[i][0] = 1;
+                            
+                            gebrauchteUnbestParam++;
                         }
-                        x[i][gebrauchteUnbestParam + 2] = 1;
-                        x[i][0] = 1;
-                        
-                        gebrauchteUnbestParam++;
                     }
                     
-                    x[p][1] += -R.viewRow(z).get(i) * x[i][1] / R.viewRow(z).get(p);
+                    x[effPivot][1] += -R.viewRow(z).get(i) * x[i][1] / R.viewRow(z).get(effPivot);
                     for (int j = 0; j < gebrauchteUnbestParam; j++) {
-                        x[p][2+j] += -R.viewRow(z).get(i) * x[i][2+j] / R.viewRow(z).get(p);
+                        x[effPivot][2+j] += -R.viewRow(z).get(i) * x[i][2+j] / R.viewRow(z).get(effPivot);
                     }
                 }
-                x[p][0] = 1;
-            } 
+                x[effPivot][0] = 1;
+            }
         }   
         
         
@@ -295,12 +310,15 @@ public final class GLSsolver {
         xLsg = new double[R.columns()][2];
         
         for (int i = 0; i < x.length; i++) {
-            boolean bestimmt = true;
-            
-            // schauen, ob Lösungsvariable xi bestimmt, dh unabhängig von überzähligen Parametern
-            for (int j = 2; j < x[i].length; j++) {
-                if (Math.abs(x[i][j]) > TOL) bestimmt = false;
+            boolean bestimmt;
+            if (x[i][0] > 0) {
+                bestimmt = true;
+                // schauen, ob Lösungsvariable xi bestimmt, dh unabhängig von überzähligen Parametern
+                for (int j = 2; j < x[i].length; j++) {
+                    if (Math.abs(x[i][j]) > TOL) bestimmt = false;
+                }
             }
+            else bestimmt = false;
             
             if (bestimmt) {
                 xLsg[i][0] = 1;

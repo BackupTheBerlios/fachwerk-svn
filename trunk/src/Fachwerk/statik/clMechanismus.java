@@ -161,8 +161,8 @@ public class clMechanismus implements inKonstante {
                 
                 
                 // Lasten und Auflagerkräfte zuordnen
-                testKn[1].setLager(VERSCHIEBLICH, 0d);
-                testKn[2].setLager(VERSCHIEBLICH, 0d);
+                testKn[1].setLager(VERSCHIEBLICH, Math.toRadians(180d));
+                testKn[2].setLager(VERSCHIEBLICH, Math.toRadians(180d));
                 testKn[2].setLast(0d,100d);
                 break;
                 
@@ -504,9 +504,15 @@ public class clMechanismus implements inKonstante {
                     break;
                 case VERSCHIEBLICH:
                     // Vorsicht: Gleitrichtung im Uhrzeigersinn von x-Achse definiert
-                    double alpha = Kn[kn].getRalpha()*Math.PI/180d;
-                    GLS[gl][ausKnoten[kn][0]] = Math.sin(alpha); // *dx
+                    double alpha = Kn[kn].getRalpha();
+                    GLS[gl][ausKnoten[kn][0]] = Math.sin(alpha); // *dx // TODO ev. besser wie neuen Stab behandeln.
                     GLS[gl][ausKnoten[kn][1]] = -Math.cos(alpha); // *dz
+                    // numerische Fehler im Solver vermeiden, die entstehen durch
+                    // Math.sin(Math.PI) = 1.2246467991473532E-16  != 0
+                    if (Math.abs(GLS[gl][ausKnoten[kn][0]]) < TOL) GLS[gl][ausKnoten[kn][0]] = 0;
+                    if (Math.abs(GLS[gl][ausKnoten[kn][1]]) < TOL) GLS[gl][ausKnoten[kn][1]] = 0;
+                    // debug
+                    System.out.println("Knoten " + kn + ": alpha=" + alpha+" "+ GLS[gl][ausKnoten[kn][0]] + ", " + GLS[gl][ausKnoten[kn][1]]);
                     gl++;
                     break;
                 case LOS:
@@ -557,6 +563,7 @@ public class clMechanismus implements inKonstante {
             }
             else {
                 System.out.println("Gleichgewichtsbedingung verletzt");
+                System.out.println("Leistung der aeusseren Lasten: " + xLsg[0][1]);
                 INSTABIL_KEIN_GLGEW = true;
             }
         }
