@@ -127,8 +127,8 @@ public class clMechanismus implements inKonstante {
             return INSTABIL_KEIN_GLGEW;
         }
         else {
-            assert false;
-            throw new Exception("[clMechanismus] Programmfehler: zuerst berechnen, dann Stabilitaet abfragen.");
+//            assert false;
+            throw new Exception("Mechanismusberechnung konnte nicht durchgefuehrt werden."); // TODO übersetzen
         }
     }
     
@@ -235,12 +235,12 @@ public class clMechanismus implements inKonstante {
      */
     public boolean rechnen() throws Exception {
         
-        if (verbose) {
-            System.out.println("");
-            System.out.println("--------------");
-            System.out.println("Mechanismuspruefung");
-            System.out.println("Modell mit " + anzSt + " Staeben und " + anzKn + " Knoten.");
-        }
+        
+        System.out.println("");
+        System.out.println("--------------");
+        System.out.println("Mechanismuspruefung");
+        System.out.println("Modell mit " + anzSt + " Staeben und " + anzKn + " Knoten.");
+        
                 
         if (!modellgeprüft) {
             if (check() == false) {
@@ -381,16 +381,15 @@ public class clMechanismus implements inKonstante {
         // - Leistung der äusseren Kräfte PL
         // - Knotenverschiebungen: 2 (x,z-Rtg) pro Knoten
         // - Stabrotationen: 1 (um Y-Achse) pro Stab
+        // - fiktive Stabrotation der Gleitlager: 1 pro Gleitlager
         
         // das GLS enthält folgende Gleichungen: (in dieser Reihenfolge)
         // - Leistung der äusseren Kräfte
         // - Knotenverschiebungen: 2 (in x- und z-Rtg) pro Stab
-        // - bekannte Verschiebungen (=0) der Lager: 2 (x,z-Rtg fix), 1 (verschiebliche Lager)
+        // - bekannte Verschiebungen (=0) der Lager: 2 (x,z-Rtg fix)
+        // - Knotenverschiebungen bei Gleitlager: 2 pro verschiebliche Lager
         
-        int anzSt = St.length-1;
-        int anzKn = Kn.length-1;
-        int anzUnbek = 1 + 2*anzKn + 1*anzSt;
-        
+        // Zählen der fixen und verschieblichen Lager
         int anzFixeKn = 0; // Startwerte
         int anzVerschKn = 0;
         for (int kn = 1; kn < Kn.length; kn++) {
@@ -406,7 +405,12 @@ public class clMechanismus implements inKonstante {
                     assert false;
             }
         }
-        int anzGL = 1 + 2*anzSt + 2*anzFixeKn + 1*anzVerschKn;
+        
+        int anzSt = St.length-1;
+        int anzKn = Kn.length-1;
+        int anzUnbek = 1 + 2*anzKn + anzSt + anzVerschKn;
+        
+        int anzGL = 1 + 2*anzSt + 2*anzFixeKn + 2*anzVerschKn;
         
         // Abzählkriterium. Der umgekehrte Schluss ist jedoch nicht zwingend richtig!
         if (anzGL < anzUnbek) INSTABIL = true;
@@ -429,9 +433,11 @@ public class clMechanismus implements inKonstante {
         
         int[] ausStab = new int[St.length]; // liefert den Index der Unbekannten (Stabrotation) aus der Stabnummer
         int[][] ausKnoten = new int[Kn.length][2]; // liefert den Index der Unbekannten aus der Knotennummer
-                                              // zweiter Index: Verschiebung in x-Rtg, zRtg: 
+                                              // zweiter Index: Verschiebung in x-Rtg, zRtg:
+        int[] ausLager = new int[Kn.length]; // liefert den Index der Unbekannten (fikt. Lagerrot) aus der Knotennummer
         int[] stabnr = new int[anzUnbek]; // liefert die Stabnummer aus dem Index
         int[] knnr = new int[anzUnbek]; // liefert die Knotennummer aus dem Index
+        int[] lagerknnr = new int[anzUnbek]; // liefert die Knotennummer des Gleitlagers aus dem Index
         
         // Index-Zähler für Unbekannte im GLS (d.h. UnbekNr)
         int index = 1; // 0 ist PL: Leistung der äusseren Lasten
@@ -451,6 +457,21 @@ public class clMechanismus implements inKonstante {
             ausStab[st] = index;
             stabnr[index] = st;
             index++;
+        }
+        
+        for (int kn = 1; kn < Kn.length; kn++) {
+            switch(Kn[kn].getLagerbed()) {
+                case VERSCHIEBLICH:
+                    ausLager[kn] = index;
+                    lagerknnr[index] = kn;
+                    index++;
+                    break;
+                case FIX:
+                case LOS:
+                    break;
+                default:
+                    assert false;
+            }
         }
         
         
@@ -505,14 +526,11 @@ public class clMechanismus implements inKonstante {
                 case VERSCHIEBLICH:
                     // Vorsicht: Gleitrichtung im Uhrzeigersinn von x-Achse definiert
                     double alpha = Kn[kn].getRalpha();
-                    GLS[gl][ausKnoten[kn][0]] = Math.sin(alpha); // *dx // TODO ev. besser wie neuen Stab behandeln.
-                    GLS[gl][ausKnoten[kn][1]] = -Math.cos(alpha); // *dz
-                    // numerische Fehler im Solver vermeiden, die entstehen durch
-                    // Math.sin(Math.PI) = 1.2246467991473532E-16  != 0
-                    if (Math.abs(GLS[gl][ausKnoten[kn][0]]) < TOL) GLS[gl][ausKnoten[kn][0]] = 0;
-                    if (Math.abs(GLS[gl][ausKnoten[kn][1]]) < TOL) GLS[gl][ausKnoten[kn][1]] = 0;
-                    // debug
-                    System.out.println("Knoten " + kn + ": alpha=" + alpha+" "+ GLS[gl][ausKnoten[kn][0]] + ", " + GLS[gl][ausKnoten[kn][1]]);
+                    GLS[gl][ausKnoten[kn][0]] = -1; // x-Rtg
+                    GLS[gl][ausLager[kn]] = -Math.cos(alpha);
+                    gl++;
+                    GLS[gl][ausKnoten[kn][1]] = -1; // x-Rtg
+                    GLS[gl][ausLager[kn]] = -Math.sin(alpha);
                     gl++;
                     break;
                 case LOS:
@@ -548,7 +566,19 @@ public class clMechanismus implements inKonstante {
         
         // GLS lösen
         if (verbose) System.out.print("Beginne das Gleichungssystem fuer Mechanismen zu loesen... ");
-        double[][] xLsg = GLSsolver.solve(GLS, debug);
+        double[][] xLsg;
+        try {
+            xLsg = GLSsolver.solve(GLS, debug);
+        }
+        catch (ArithmeticException e) {
+            System.err.println("Die Berechnung der Mechanismen hat nicht geklappt,");
+            System.err.println("vermutlich aus numerischen Gruenden.");
+            System.err.println("Meldung (oft nichtssagend): " + e.toString());
+            System.err.println("");
+            verbose = true;
+            return false;
+        }
+        
         assert (xLsg.length == anzUnbek) : "xLsg.length = " + xLsg.length + " ungleich anzUnbek " + anzUnbek;
         if (verbose) System.out.println("fertig.");
         
@@ -558,18 +588,23 @@ public class clMechanismus implements inKonstante {
         // Leistung der äusseren Lasten. Wenn = 0 --> System im Gleichgewicht
         if (xLsg[0][0] > 0) { // Lösung bestimmt
             if (Math.abs(xLsg[0][1]) < TOL) {
-                if (verbose) System.out.println("OK, kein Mechanismus gefunden, der das Glgew verletzt.");
+                if (verbose) {
+                    System.out.println("");
+                    System.out.println("OK, kein Mechanismus gefunden, der das Glgew verletzt.");
+                }
                 assert !INSTABIL_KEIN_GLGEW;
             }
             else {
+                System.out.println("");
                 System.out.println("Gleichgewichtsbedingung verletzt");
                 System.out.println("Leistung der aeusseren Lasten: " + xLsg[0][1]);
                 INSTABIL_KEIN_GLGEW = true;
             }
         }
         else { // nicht eindeutig
-                System.out.println("Gleichgewichtsbedingung vermutlich verletzt"); // TODO
-                INSTABIL_KEIN_GLGEW = true;
+            System.out.println("");
+            System.out.println("Gleichgewichtsbedingung vermutlich verletzt"); // TODO
+            INSTABIL_KEIN_GLGEW = true;
         }
         
         
@@ -597,7 +632,7 @@ public class clMechanismus implements inKonstante {
                     assert false; // ist nicht möglich, ohne dass die Skalierung (=eine Unbek) vorgeg.
                 }
                 else {
-                    if (verbose) System.out.println("Knoten " + knnr[i] + ": " + rtg + " stabil");
+                    if (debug) System.out.println("Knoten " + knnr[i] + ": " + rtg + " stabil");
                 }
             }
         }

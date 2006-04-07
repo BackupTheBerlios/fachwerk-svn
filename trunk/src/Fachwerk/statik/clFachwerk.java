@@ -244,8 +244,7 @@ public class clFachwerk implements inKonstante {
         
         if (optionMECHANISMUS && !OKkomplett) {
             
-            WIDERSPRUCHaufgetreten = rMechanismusVerletztGlgew(); // TODO: nicht immer korrekt (konservativ)
-                                                                  // bei mehrfachverschieblichen Systemen
+            WIDERSPRUCHaufgetreten = rMechanismusVerletztGlgew();
         }
         
         return !WIDERSPRUCHaufgetreten;
@@ -1000,14 +999,17 @@ public class clFachwerk implements inKonstante {
         boolean fertigberechnet = mech.rechnen();
         
         if (!fertigberechnet) System.out.println("[clFachwerk] Warnung: Mechanismen nicht fertig gerechnet.");
-        if (verbose) {
+        if (true) { // verbose
             System.out.println("");
-            if (mech.istStabil()) System.out.println("Das System ist STABIL.");
-            else System.out.println("Das System ist nicht stabil.");
+            if (mech.istStabil()) System.out.println("Das System ist STABIL."); // TODO übersetzen
+            else System.out.println("Das System ist instabil.");
         }
         if (mech.verletztGleichgewicht()) {
+            System.out.println("Das System ist vermutlich NICHT IM GLEICHGEWICHT!"); // TODO übersetzen
             System.out.println("");
-            System.out.println("Das System ist vermutlich NICHT IM GLEICHGEWICHT!");
+        }
+        else {
+            System.out.println("OK, kein Mechanismus gefunden, der das Glgew verletzt."); // TODO übersetzen
             System.out.println("");
         }
         return mech.verletztGleichgewicht();
