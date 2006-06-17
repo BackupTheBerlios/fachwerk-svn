@@ -83,6 +83,7 @@ public class clFachwerk implements inKonstante {
     //private final double TOLresultatcheck = 1E-10; // dito, jedoch lascherer Wert, zB. TOL des GLS-Solvers
     
     private boolean WIDERSPRUCHaufgetreten = false;
+    private int statischeUnbestimmtheit = Integer.MIN_VALUE; // zum Erkennen ob berechnet.
     
     private boolean verbose = false;
     private boolean debug = false;
@@ -841,7 +842,10 @@ public class clFachwerk implements inKonstante {
         
         // GLS lösen
         if (verbose) System.out.print("Beginne das Gleichungssystem zu loesen... ");
-        double[][] xLsg = GLSsolver.solve(GLS, debug);
+        GLSsolver solver = new GLSsolver();
+        solver.debug = debug;
+        double[][] xLsg = solver.solve(GLS);
+        statischeUnbestimmtheit = solver.getAnzUnbestParam(); // TODO überprüfen
         assert (xLsg.length == anzUnbek) : "xLsg.length = " + xLsg.length + " ungleich anzUnbek " + anzUnbek;
         if (verbose) System.out.println("fertig.");
         
@@ -957,6 +961,10 @@ public class clFachwerk implements inKonstante {
         // Überprüfung, ob alle Knoten fertig gelöst sind
         for (int kni = 1; kni < Kn.length; kni++) {
             if (Kn[kni].getKnotenstatus() != FERTIG) {
+                if (statischeUnbestimmtheit == Integer.MIN_VALUE) { // d.h. nicht berechnet.
+                    if (verbose) System.out.println("statische Unbestimmtheit: unbekannt");
+                }
+                else System.out.println("statische Unbestimmtheit: " + statischeUnbestimmtheit);
                 System.out.println("THE EQUILIBRIUM CHECK IS ONLY COMPLETE IF ALL FORCES ARE KNOWN!");
                 return false;
             }

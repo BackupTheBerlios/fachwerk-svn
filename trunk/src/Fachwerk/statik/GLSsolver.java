@@ -53,9 +53,34 @@ public final class GLSsolver {
      * - Methoden einbauen, welche Infos zu Fehlern und Widersprüchen und Warnungen liefern.
      */
     
+    // --------------------------------------
+    // Variablendeklararion und EINSTELLUNGEN
+    // --------------------------------------
+    
+    private double[][] xLsg; // Lösung x: nur eindeutige (d.h. parameterunabhängige xi) werden zurückgegeben
+    // index 0: Wert = 0 bedeutet xi unbestimmt,  Wert = 1 bedeutet xi bestimmt
+    // index 1: eigentlicher Wert (nur wenn xi bestimmt, dh index 0 = 1, sonst Wert 0)
+    
+    private double[][] x; // vollständige Lösung x: bei unbestimmten xi werden die Abhängigkeiten von den unbek. Parametern angegeben.
+    // Status1 (bestimmt), kN, alpha, beta (Parameter)
+    
+    private int anzUnbestParam; // Anzahl unbestimmter Parameter (d.h. Anz. fehlende unabh. Gl.)
+    
+    private final double TOL = inKonstante.TOL_gls; // double TOL = 1E-10;
+    // womöglich wird der Toleranzcheck mittels der in colt eigebauten Toleranz über cardinality
+    // durchgeführt. Ist vorteilhaft, da der Rang des GLS mit dieser internen Toleranz bestimmt wird.
+    // dieser Wert muss grösser (ev. >=) sein als in clFachwerk zB +E-11
+    
+    public boolean debug = true;
+    private boolean solved = false;
+    
+        
+    
     /** Creates a new instance of testmatrix */
     public GLSsolver() {
     }
+    
+    
     
     /**
      * @param args the command line arguments
@@ -76,28 +101,17 @@ public final class GLSsolver {
         // Zeile 5: Null, Zeile 6: wie Zeile 0
         gls[6][5] =  2;
         
-        solve(gls, true);
+        GLSsolver myglssolver = new GLSsolver();
+        myglssolver.debug = true;
+        myglssolver.solve(gls);
     }
     
-    public static final double[][] solve(double[][] p_MatrixgleichNull, boolean debug) 
+    /** Gibt die Lösung x des Gleichungssystems zurück: nur eindeutige (d.h. parameterunabhängige xi) werden zurückgegeben.
+                 index 0: Wert = 0 bedeutet xi unbestimmt,  Wert = 1 bedeutet xi bestimmt
+                 index 1: eigentlicher Wert (nur wenn xi bestimmt, dh index 0 = 1, sonst Wert 0)
+     */
+    public final double[][] solve(double[][] p_MatrixgleichNull) 
     throws IllegalArgumentException, ArithmeticException {
-        
-        // --------------------------------------
-        // Variablendeklararion und EINSTELLUNGEN
-        // --------------------------------------
-                
-        double[][] xLsg; // Lösung x: nur eindeutige (d.h. parameterunabhängige xi) werden zurückgegeben
-                         // index 0: Wert = 0 bedeutet xi unbestimmt,  Wert = 1 bedeutet xi bestimmt
-                         // index 1: eigentlicher Wert (nur wenn xi bestimmt, dh index 0 = 1, sonst Wert 0)
-        
-        double TOL = inKonstante.TOL_gls;
-       // double TOL = 1E-10; //bis ver005devE 1E-11;
-        // womöglich wird der Toleranzcheck mittels der in colt eigebauten Toleranz über cardinality 
-        // durchgeführt. Ist vorteilhaft, da der Rang des GLS mit dieser internen Toleranz bestimmt wird.
-        // dieser Wert muss grösser (ev. >=) sein als in clFachwerk zB +E-11
-        
-        //boolean debug = true;
-        
         
         // --------------------------------------
         // Kontrolle, ob Eingabematrix rechteckig
@@ -179,11 +193,11 @@ public final class GLSsolver {
         // EIGENTLICHER SOLVER für bestimmte Lösungsvariablen in unbestimmen Systemen
         // --------------------------------------------------------------------------
         
-        int anzUnbestParam = A.columns() - alg.rank(A);
+        anzUnbestParam = A.columns() - alg.rank(A);
         if (debug) System.out.println("Anz unbest Parameter: " + anzUnbestParam);
         
         int gebrauchteUnbestParam = 0;
-        double[][] x = new double[A.columns()][2 + anzUnbestParam]; // Status 1 (bestimmt), kN, alpha, beta (Parameter)
+        x = new double[A.columns()][2 + anzUnbestParam]; // Status 1 (bestimmt), kN, alpha, beta (Parameter)
         
         int z = A.rows()-1; // Zeilenvariable, beginnt zuunterst
         
@@ -327,6 +341,22 @@ public final class GLSsolver {
             else xLsg[i][0] = 0;
         }
         
+        solved = true;
         return xLsg;
+    }
+    
+    /** Gibt die vollständige Lösung des Gleichungssystems zurück.
+    index 0: Wert = 0 bedeutet xi unbestimmt,  Wert = 1 bedeutet xi bestimmt
+    index 1: eigentlicher Wert (wenn xi bestimmt, dh index 0 = 1), sonst Wert ohne den Anteil der Unbekannten)
+    index 2..Ende: Parameter*Unbekannte */
+    public double[][] getCompleteSolution() {
+        assert solved: "ERROR: Call solve() first!";
+        return x;
+    }
+    
+    /** @return Anzahl unbestimmter Parameter. D.h. Anzahl fehlender unabhängiger Gleichungen.*/
+    public int getAnzUnbestParam() {
+        assert solved: "ERROR: Call solve() first!";
+        return anzUnbestParam;
     }
 }

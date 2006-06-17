@@ -81,6 +81,8 @@ public class clMechanismus implements inKonstante {
     
     private boolean INSTABIL = false; // i.d.R. harmlos, da Glgew. trotzdem eingehalten sein kann.
     private boolean INSTABIL_KEIN_GLGEW = false; // Gleichgewichtsbedingung verletzt
+    double[][] xLsgvollst; // vollständige Lösung (siehe GLSsolver)
+    double[][] relativeKnotenVerschiebung; // ZUFÄLLIG kombinierter Mechanismus
     
     private boolean modellgeprüft = false;
     private boolean fertigberechnet = false;
@@ -141,7 +143,7 @@ public class clMechanismus implements inKonstante {
         clStab[] testSt;
         int [][] testTop;
         
-        int bsp = 2;
+        int bsp = 0;
         if (args.length > 0) bsp = Integer.parseInt(args[0]);
         switch (bsp) {
             case 2:
@@ -226,6 +228,10 @@ public class clMechanismus implements inKonstante {
         if (mech.istStabil()) System.out.println("Das System ist STABIL.");
         else System.out.println("Das System ist nicht stabil.");
         if (mech.verletztGleichgewicht()) System.out.println("Das System ist NICHT IM GLEICHGEWICHT!");
+        
+        System.out.println("");
+        if (mech.verletztGleichgewicht()) mech.getVerschobeneLage();
+        
     }
     
     //------------------------------------------------------------------------------------------------------------
@@ -568,7 +574,10 @@ public class clMechanismus implements inKonstante {
         if (verbose) System.out.print("Beginne das Gleichungssystem fuer Mechanismen zu loesen... ");
         double[][] xLsg;
         try {
-            xLsg = GLSsolver.solve(GLS, debug);
+            GLSsolver solver = new GLSsolver();
+            solver.debug = debug;
+            xLsg = solver.solve(GLS);
+            xLsgvollst = solver.getCompleteSolution();
         }
         catch (ArithmeticException e) {
             System.err.println("Die Berechnung der Mechanismen hat nicht geklappt,");
@@ -618,7 +627,9 @@ public class clMechanismus implements inKonstante {
             if (xLsg[i][0] == 0) { // unbestimmt
                 if (INSTABIL_KEIN_GLGEW || verbose) {
                     System.out.print("Knoten " + knnr[i] + ": ");
-                    System.out.println(rtg + " instabil");
+                    System.out.print(rtg + " instabil");
+                    if (INSTABIL_KEIN_GLGEW) System.out.println(" !");
+                    else System.out.println("");
                 }
                 INSTABIL = true;
             }
@@ -626,7 +637,9 @@ public class clMechanismus implements inKonstante {
                 if (Math.abs(xLsg[i][1]) > TOL) { // ungleich null
                     if (INSTABIL_KEIN_GLGEW || verbose) {
                         System.out.print("Knoten " + knnr[i] + ": ");
-                        System.out.println(rtg + " instabil:" + xLsg[i][1]);
+                        System.out.print(rtg + " instabil:" + xLsg[i][1]);
+                        if (INSTABIL_KEIN_GLGEW) System.out.println(" !");
+                        else System.out.println("");
                     }
                     INSTABIL = true;
                     assert false; // ist nicht möglich, ohne dass die Skalierung (=eine Unbek) vorgeg.
@@ -638,5 +651,76 @@ public class clMechanismus implements inKonstante {
         }
         
         return true;
+    }
+    
+    /** Diese Methode liefert einen zufälligen Mechanismus, der das Gleichgewicht verletzt.
+     Die Methode darf nicht aufgerufen werden, wenn keiner vorliegt:
+     * Mit verletztGleichgewicht() überprüfen.*/
+    double[][] getVerschobeneLage() {
+        assert fertigberechnet: "ERROR: Call clMechanismus.rechnen() first.";
+        if (!INSTABIL_KEIN_GLGEW) {
+            assert false;
+            return null;
+        }
+        // Finden der Parameter (d.h. Freiheitsgrade), welche eine virt. Leistung verursachen,
+        // d.h. das Gleichgewicht verletzen. Andere instabile Mechanismen interessieren hier nicht.
+        java.util.HashSet freiheitsgrade = new java.util.HashSet();
+        for (int i=2; i < xLsgvollst[0].length; i++) {
+            if (Math.abs(xLsgvollst[0][i]) > TOL) freiheitsgrade.add(new Integer(i-2));
+        }
+        
+        // Festlegen eines verformten Zustandes
+        // Willkürliche Wahl. Zufällig.
+        // TODO Idealerweise mit grösster Leistung für Einheitsrotationen.
+        java.util.Random zufallsgenerator = new java.util.Random();
+        double param[] = new double[xLsgvollst[0].length-2];
+        for (int i = 0; i < param.length; i++) {
+            if (freiheitsgrade.contains(new Integer(i))) {
+                param[i] = zufallsgenerator.nextDouble();
+                if (zufallsgenerator.nextInt(2) < 1) param[i] *= -1;
+            }
+            else param[i] = 0; // leisten keine Arbeit.
+        }
+        
+        double unbek[] = new double[xLsgvollst.length];
+        for (int i = 0; i < unbek.length; i++) {
+            unbek[i] = xLsgvollst[i][1];
+            for (int j = 0; j < param.length; j++) {
+                unbek[i] += xLsgvollst[i][2+j] * param[j];
+            }
+        }
+        
+        // Kontrolle
+        if (Math.abs(unbek[0]) < TOL) {
+            System.err.println("WARNUNG: P = 0. Programmfehler oder unwahrscheinlicher Zufall.");
+            assert false: "WARNUNG: P = 0. Programmfehler oder unwahrscheinlicher Zufall.";
+        }
+        
+        // Skalieren, damit die grösste Stabrotation = 1
+        double maxwert = 1E-10; // nicht 0, wg. div 0
+        for (int unb = 1 + 2*anzKn; unb < unbek.length; unb++) { // nur Stabrotationen! Siehe Aufbau Unbekannte.
+            if (Math.abs(unbek[unb]) > maxwert) maxwert = Math.abs(unbek[unb]);
+        }
+        if (unbek[0] < 0) maxwert *= -1; // damit eine positive Leistung entsteht.
+        for (int unb = 0; unb < unbek.length; unb++) unbek[unb] /= maxwert;
+        
+        // Relativverschiebung aller Knoten für eine Stabrotation von 1.
+        relativeKnotenVerschiebung = new double[anzKn+1][2]; // Knoten 0 gibt es nicht
+        for (int i = 1; i <= anzKn; i++) {
+            relativeKnotenVerschiebung[i][0] = unbek[2*i-1]; // Verschiebung in x-Rtg
+            relativeKnotenVerschiebung[i][1] = unbek[2*i];   // Verschiebung in z-Rtg
+        }
+        
+        if (verbose) {
+            for (int i = 1; i <= anzKn; i++) {
+                if (Math.abs(relativeKnotenVerschiebung[i][0]) > TOL || Math.abs(relativeKnotenVerschiebung[i][1]) > TOL) {
+                    System.out.print("Kn " + i + " dx = " + relativeKnotenVerschiebung[i][0]);
+                    System.out.println("  dz = " + relativeKnotenVerschiebung[i][1]);
+                }
+            }
+        }
+        
+        // TODO verschobene Lage kontrollieren
+        return relativeKnotenVerschiebung;
     }
 }
