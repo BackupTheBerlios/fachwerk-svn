@@ -6,7 +6,6 @@
 
 package Fachwerk3D.statik3D;
 
-import java.math.*;
 import Fachwerk.statik.Fkt;
 import Fachwerk.statik.clStab;
 import Fachwerk.statik.GLSsolver;
@@ -14,7 +13,7 @@ import Fachwerk.statik.GLSsolver;
 /**
  * Fachwerk3D - treillis3D
  *
- * Copyright (c) 2004 - 2005 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2004 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -90,6 +89,7 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
     //private final double TOLresultatcheck = 1E-10; // dito, jedoch lascherer Wert, zB. TOL des GLS-Solvers
     
     private boolean WIDERSPRUCHaufgetreten = false;
+    private int statischeUnbestimmtheit = Integer.MIN_VALUE; // zum Erkennen ob berechnet.
     
     private boolean verbose = false;
     private boolean debug = false;
@@ -363,7 +363,7 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
         else return true;
     }
     
-    private void rGeometrie(){ // x, y und z - Komponenten der Stabkräfte berechnen
+    private void rGeometrie() { // x, y und z - Komponenten der Stabkräfte berechnen
         ax = new double[Kn.length][Kn.length];
         ay = new double[Kn.length][Kn.length];
         az = new double[Kn.length][Kn.length];
@@ -689,7 +689,9 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
         
         // GLS lösen
         System.out.print("Beginne das Gleichungssystem zu loesen... ");
-        double[][] xLsg = GLSsolver.solve(GLS, debug);
+        GLSsolver solver = new GLSsolver();
+        solver.debug = debug;
+        double[][] xLsg = solver.solve(GLS);
         assert (xLsg.length == anzUnbek) : "xLsg.length = " + xLsg.length + " ungleich anzUnbek " + anzUnbek;
         System.out.println("fertig.");
         
@@ -814,6 +816,10 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
         // Überprüfung, ob alle Knoten fertig gelöst sind
         for (int kni = 1; kni < Kn.length; kni++) {
             if (Kn[kni].getKnotenstatus() != FERTIG) {
+                if (statischeUnbestimmtheit == Integer.MIN_VALUE) { // d.h. nicht berechnet.
+                    if (verbose) System.out.println("statische Unbestimmtheit: unbekannt");
+                }
+                else System.out.println("statische Unbestimmtheit: " + statischeUnbestimmtheit);
                 System.out.println("THE EQUILIBRIUM CHECK IS ONLY COMPLETE IF ALL FORCES ARE KNOWN!");
                 return false;
             }
