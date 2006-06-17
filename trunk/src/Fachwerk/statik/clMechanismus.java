@@ -81,8 +81,8 @@ public class clMechanismus implements inKonstante {
     
     private boolean INSTABIL = false; // i.d.R. harmlos, da Glgew. trotzdem eingehalten sein kann.
     private boolean INSTABIL_KEIN_GLGEW = false; // Gleichgewichtsbedingung verletzt
-    double[][] xLsgvollst; // vollständige Lösung (siehe GLSsolver)
-    double[][] relativeKnotenVerschiebung; // ZUFÄLLIG kombinierter Mechanismus
+    private double[][] xLsgvollst; // vollständige Lösung (siehe GLSsolver)
+    private double[][] relativeKnotenVerschiebung; // ZUFÄLLIG kombinierter Mechanismus
     
     private boolean modellgeprüft = false;
     private boolean fertigberechnet = false;
@@ -655,7 +655,8 @@ public class clMechanismus implements inKonstante {
     
     /** Diese Methode liefert einen zufälligen Mechanismus, der das Gleichgewicht verletzt.
      Die Methode darf nicht aufgerufen werden, wenn keiner vorliegt:
-     * Mit verletztGleichgewicht() überprüfen.*/
+     * Mit verletztGleichgewicht() überprüfen.
+     @return Relativverschiebung in x und z Rtg. für jeden Knoten (Knoten 1: Index1).*/
     double[][] getVerschobeneLage() {
         assert fertigberechnet: "ERROR: Call clMechanismus.rechnen() first.";
         if (!INSTABIL_KEIN_GLGEW) {

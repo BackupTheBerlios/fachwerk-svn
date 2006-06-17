@@ -354,6 +354,7 @@ public class treillis extends clOberflaeche implements inKonstante {
             fachwerk.resultatausgabe_direkt();
             if (keinWIDERSPRUCH) VOLLSTÄNDIGGELÖST_OK = fachwerk.istvollständiggelöst(false); // false, das resutatcheck() soeben in .rechnen() durchgeführt
             aktualisieren(true, true);
+            if (!keinWIDERSPRUCH) LayerMechanismius(true, fachwerk.getMechanismus());
             LayerStKraft(true);
             LayerAuflKraft(true);
             LayerLasten(true);
@@ -1275,6 +1276,7 @@ public class treillis extends clOberflaeche implements inKonstante {
         VOLLSTÄNDIGGELÖST_OK = false;
         
         Selektion[0] = DESELEKT;
+        LayerMechanismius(false, null);
         // Aktualisiert Hauptpanel. Falls man die Standardsicht (2.Param) will, aktualisieren(false,true) separat aufrufen.
         aktualisieren(false, false);
         setKnopfKnoten(false); setKnopfStab(false);
@@ -1304,6 +1306,9 @@ public class treillis extends clOberflaeche implements inKonstante {
     void LayerAuflKraft(boolean status) {
         hp.ZeigeAuflagerkräfte(status);
         setLayerAuflKraft(status);
+    }    
+    void LayerMechanismius(boolean status, double[][] mechanismusRelKnVersch) {
+        hp.ZeigeMechanismus(status, mechanismusRelKnVersch);
     }
     
     void selektionAnpassen() {

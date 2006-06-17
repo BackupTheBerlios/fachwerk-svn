@@ -84,6 +84,7 @@ public class clFachwerk implements inKonstante {
     
     private boolean WIDERSPRUCHaufgetreten = false;
     private int statischeUnbestimmtheit = Integer.MIN_VALUE; // zum Erkennen ob berechnet.
+    private double[][] mechanismusRelKnVersch;
     
     private boolean verbose = false;
     private boolean debug = false;
@@ -1015,6 +1016,7 @@ public class clFachwerk implements inKonstante {
         if (mech.verletztGleichgewicht()) {
             System.out.println("Das System ist vermutlich NICHT IM GLEICHGEWICHT!"); // TODO übersetzen
             System.out.println("");
+            mechanismusRelKnVersch = mech.getVerschobeneLage();
         }
         else {
             System.out.println("OK, kein Mechanismus gefunden, der das Glgew verletzt."); // TODO übersetzen
@@ -1148,6 +1150,13 @@ public class clFachwerk implements inKonstante {
             System.out.println("oder allenfalls um einen Programmfehler handeln.");
         }
         System.out.println("");
+    }
+    
+    /** Diese Methode liefert einen zufälligen Mechanismus, der das Gleichgewicht verletzt.
+     Gibt es keinen oder wurde die Mechanismusberechnung nicht durchgeführt, gibt die Methode null zurück.
+     @return Relativverschiebung in x und z Rtg. für jeden Knoten (Knoten 1: Index1).*/
+    public double[][] getMechanismus() {
+        return mechanismusRelKnVersch;
     }
     
 }

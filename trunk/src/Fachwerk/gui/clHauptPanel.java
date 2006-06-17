@@ -52,6 +52,7 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
     protected clWissenderStab[] St;
     
     protected clDXF dxf; // Hintergrund
+    protected double[][] mechanismusRelKnVersch; // Mechanismus (1.Index Knoten, 2. Index Rtg, Wert Relativverschiebung)
     
     // Zustandsvariablen
     protected boolean MIT_KnNr = false;
@@ -60,6 +61,7 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
     protected boolean MIT_Lasten = false;
     protected boolean MIT_Stabkräften = false;
     protected boolean MIT_Hintergrund = false;
+    protected boolean MIT_Mechanismus = false;
     private boolean MIT_Hilfslinie = false;
     private boolean MIT_Hilfsrechteck = false;
     
@@ -184,6 +186,7 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
             if (MIT_Lasten) darstellenLasten();
             if (MIT_Auflagerkräften) darstellenAuflagerkräfte();
             if (MIT_Stabkräften) darstellenStabkräfte();
+            if (MIT_Mechanismus) darstellenMechanismus();
             if (MIT_Hilfslinie || MIT_Hilfsrechteck) darstellenHilfslinien();
             darstellenHilfspunkt();
         }
@@ -200,10 +203,7 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
         Point2D pkt2 = new Point2D.Double(); // jeweils aktueller Pkt;
         double durchmesser;
         
-        //if (debug)  System.out.println("darstellenFachwerk läuft. Anz Knoten: " + (Kn.length-1));
-        //if (debug) testZeigeKn();
-        
-        // Stäbe    // bis und mit version 0.07: nach Knoten
+        // Stäbe
         for (int i = 1; i < St.length; i++) {
             pkt.setLocation(Kn[St[i].von].getX(), Kn[St[i].von].getZ());
             pkt2.setLocation(Kn[St[i].bis].getX(), Kn[St[i].bis].getZ());
@@ -487,6 +487,30 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
         g.setPaint(Color.black); g.setStroke(new BasicStroke(1f));
     }
     
+    protected void darstellenMechanismus() { // TODO darstellenMechanismus
+        // Durchlaufvariablen
+        Point2D pkt = new Point2D.Double(); // jeweils aktueller Pkt;
+        Point2D pkt2 = new Point2D.Double(); // jeweils aktueller Pkt;
+        double dx1; double dz1; // Relativverschiebung des Mechanismus; jeweils aktueller Pkt;
+        double dx2; double dz2; // Relativverschiebung des Mechanismus; jeweils aktueller Pkt;
+        double skal = 1; // TODO gegebenfalls Skalierung anpassen
+        g.setPaint(Color.red); g.setStroke(new BasicStroke(2f));
+        
+        // Stäbe
+        for (int i = 1; i < St.length; i++) {
+            dx1 = mechanismusRelKnVersch[St[i].von][0];
+            dz1 = mechanismusRelKnVersch[St[i].von][1];
+            dx2 = mechanismusRelKnVersch[St[i].bis][0];
+            dz2 = mechanismusRelKnVersch[St[i].bis][1];
+            pkt.setLocation(Kn[St[i].von].getX() + dx1*skal, Kn[St[i].von].getZ() + dz1*skal);
+            pkt2.setLocation(Kn[St[i].bis].getX() + dx2*skal, Kn[St[i].bis].getZ() + dz2*skal);
+            
+            Line2D.Double linie = new Line2D.Double(koord.panel(pkt),koord.panel(pkt2));
+            g.draw(linie);
+        }
+        g.setPaint(Color.black); g.setStroke(new BasicStroke(1f));
+    }
+    
     private void darstellenHilfslinien() {
         g.setPaint(Color.black); g.setStroke(new BasicStroke(1f));
         if (MIT_Hilfslinie) {
@@ -617,6 +641,14 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
         neuzeichnen();
     }
     
+    public void ZeigeMechanismus(boolean zeigen, double[][] mechanismusRelKnVersch) {
+        if (zeigen && mechanismusRelKnVersch != null) {
+            MIT_Mechanismus = true;
+            this.mechanismusRelKnVersch = mechanismusRelKnVersch;
+        }
+        else MIT_Mechanismus = false;
+    }
+    
     public void ZeigeHilfslinie(boolean zeigen) {
         assert zeigen == false;
         MIT_Hilfslinie = false;
@@ -712,16 +744,17 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
     
     
     /** Gibt an, welche Layer aktiv sind. Nötig für befehlDruckenGraph.
-     * Reihenfolge: KnNr, StabNr, Auflagerkräfte, Lasten, Stabkräfte
+     * Reihenfolge: KnNr, StabNr, Auflagerkräfte, Lasten, Stabkräfte, Hintergrund, Mechanismus
     */
     public boolean[] getAktiveLayer() {
-        boolean layer[] = new boolean[6];
+        boolean layer[] = new boolean[7];
         layer[0] = MIT_KnNr;
         layer[1] = MIT_StabNr;
         layer[2] = MIT_Lasten;
         layer[3] = MIT_Auflagerkräften;
         layer[4] = MIT_Stabkräften;
         layer[5] = MIT_Hintergrund;
+        layer[6] = MIT_Mechanismus;
         return layer;
     }
     
