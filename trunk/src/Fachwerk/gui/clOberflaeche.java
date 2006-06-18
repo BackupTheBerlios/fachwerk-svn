@@ -152,9 +152,9 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         itemZurücksetzen = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JSeparator();
         buttonVerbose = new javax.swing.JCheckBoxMenuItem();
-        buttonVorberechnung = new javax.swing.JRadioButtonMenuItem();
-        buttonGLS = new javax.swing.JRadioButtonMenuItem();
-        buttonMechanismus = new javax.swing.JRadioButtonMenuItem();
+        buttonVorberechnung = new javax.swing.JCheckBoxMenuItem();
+        buttonGLS = new javax.swing.JCheckBoxMenuItem();
+        buttonMechanismus = new javax.swing.JCheckBoxMenuItem();
         menuAddins = new javax.swing.JMenu();
         itemKoordTransFWK = new javax.swing.JMenuItem();
         itemKoordTransDXF = new javax.swing.JMenuItem();
@@ -1684,10 +1684,10 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
     private javax.swing.JPanel StatusLeistePanel;
     private javax.swing.JPanel StatusTextPanel;
     private javax.swing.JPanel WerkzeugPanel;
-    private javax.swing.JRadioButtonMenuItem buttonGLS;
-    private javax.swing.JRadioButtonMenuItem buttonMechanismus;
+    private javax.swing.JCheckBoxMenuItem buttonGLS;
+    private javax.swing.JCheckBoxMenuItem buttonMechanismus;
     private javax.swing.JCheckBoxMenuItem buttonVerbose;
-    private javax.swing.JRadioButtonMenuItem buttonVorberechnung;
+    private javax.swing.JCheckBoxMenuItem buttonVorberechnung;
     protected javax.swing.JTextField feldStatusFw;
     protected javax.swing.JTextField feldStatuszeile;
     protected javax.swing.JTextField feldX;

@@ -2,7 +2,6 @@
 <html><head>
 	<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
 	<title></title></head>
-
 <body dir="ltr" lang="de-CH">
 <h1>Algorithmus, Programmierung</h1>
 <h3><br><br>
@@ -63,7 +62,20 @@ als vier Stellen vor dem Komma (≥
 die Berechnung mit einer Fehlermeldung abbricht.</p>
 <p>Für die L-U-Zerlegung wird die
 Mathematikbibliothek «colt» des CERN verwendet.</p>
-<p><br><br>
+<h4><br></h4><h4>Mechanismus suchen (kinematische Methode)</h4><p>Das Programm sucht systematisch nach Mechanismen, die die Gleichgewichtsbedingungen verletzen.</p><p>Konkret
+werden die kinematischen Beziehungen aufgestellt: Einheitsrotationen
+der (nicht gesetzen) Stäbe und Lagerbedingungen. Unbekannt sind die
+Rotationen und Knotenverschiebungen. Weiter wird die Gleichung für die
+Leistung der Mechanismen (Leistung der äusseren Lasten sowie der
+gesetzen Stabkräfte) aufgestellt. Das Gleichungssystem wird gelöst
+(siehe Solver). Wenn die Leistung ungleich Null ist, resp. von
+unbekannten Variablen abhängt, ist bewiesen, dass das System nicht im
+Gleichgewicht ist. Mechanismen die keinen Beitrag an die Leistung
+bringen ("normale Instablilitäten") werden vernachlässigt. Hat das
+System mehrere Freiheitsgrade (die zu einer Gleichgewichtsverletzung
+führen), &nbsp;wird für die graphische Darstellung mittels
+Zufallsgenerator ein Mechanismus kombiniert (keine physikalisches
+Kriterium).</p><p><br>
 </p>
 <h2>Datenstruktur</h2>
 <p>Die benutzte Datenstruktur macht Gebrauch von der

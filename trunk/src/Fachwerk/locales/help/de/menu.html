@@ -1,8 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html><head>
 	<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
-	<title></title>
-</head>
+	<title></title></head>
 <body dir="ltr" lang="de-CH">
 <h1>Menü</h1>
 <p>Die meisten Menüpunkte sind selbsterklärend. 
@@ -115,14 +114,14 @@ oder Knotens.</p>
 <h3>Rechnen</h3>
 <p>Die nachfolgenden <a href="algorithmus.html">Berechnungsmethoden</a>
 lassen sich je ein- oder ausschalten. Standardmässig sind beide
-Methoden eingeschaltet.</p>
-<h4>Vorberechnung</h4>
+statischen Methoden eingeschaltet.</p>
+<h4>Vorberechnung (statische Methode)</h4>
 <p>Häufig kann die <i>Anzahl der unbekannten Stabkräfte</i>
 durch dieses Verfahren <i>reduziert</i> werden. <br>Der Algorithmus
 kann ausserdem der <i>Ortung von Widersprüchen</i> im
 Knotengleichgewicht dienen. <br>In der Regel kann die
 Vorberechnungsmethode folgenlos ausgeschaltet werden.</p>
-<h4>Gleichungssystem lösen</h4>
+<h4>Gleichungssystem lösen (statische Methode)</h4>
 <p>Für jeden nicht bestimmten Knoten werden zwei
 Gleichgewichtsbedingungen aufgestellt. Durch das äussere
 Gleichgewicht kommen drei Gleichungen dazu.
@@ -131,7 +130,10 @@ Besonderheit dieses «Solvers» liegt daran, dass er nach
 eindeutig bestimmten Stab- oder Lagerkräften sucht, obwohl das
 System als Ganzes statisch unbestimmt ist.<br>In der Regel <i>muss
 diese Methode eingeschaltet</i> sein.</p>
-<p><br><br>
+<h4>Mechnismus suchen (kinematische Methode)</h4>Das Programm sucht
+nach Mechanismen, die eine Gleichgewichtsverletzung beweisen. Ein
+gefundener Mechanismus wird graphisch dargestellt. Mechanismen aus
+Instabilitäten, die das Gleichgewicht nicht verletzen, werden ignoriert.<p><br>
 </p>
 <h3>Zusätze</h3>
 <p>Dieser Menüpunkt enthält Funktionen, welche über
