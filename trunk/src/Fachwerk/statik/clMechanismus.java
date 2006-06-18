@@ -117,9 +117,9 @@ public class clMechanismus implements inKonstante {
         if (fertigberechnet) {
             return !INSTABIL;
         }
-        else {
-            assert false;
-            throw new Exception("[clMechanismus] Programmfehler: zuerst berechnen, dann Stabilitaet abfragen.");
+        else { // Berechnung nicht fertig durchgeführt.
+            if (INSTABIL) return false; // Durch Abzählkriterien gefundene Instabilität.
+            else throw new Exception("Mechanismusberechnung fehlgeschlagen."); // Text nicht ändern, resp. in treillis.java anpassen.
         }
     }
     
@@ -128,10 +128,7 @@ public class clMechanismus implements inKonstante {
         if (fertigberechnet) {
             return INSTABIL_KEIN_GLGEW;
         }
-        else {
-//            assert false;
-            throw new Exception("Mechanismusberechnung konnte nicht durchgefuehrt werden."); // TODO übersetzen
-        }
+        else throw new Exception("Mechanismusberechnung fehlgeschlagen."); // Text nicht ändern, resp. in treillis.java anpassen.
     }
     
     /**
@@ -678,7 +675,7 @@ public class clMechanismus implements inKonstante {
         for (int i = 0; i < param.length; i++) {
             if (freiheitsgrade.contains(new Integer(i))) {
                 param[i] = zufallsgenerator.nextDouble();
-                if (zufallsgenerator.nextInt(2) < 1) param[i] *= -1;
+                if (xLsgvollst[0][i+2] < 0) param[i] *= -1;
             }
             else param[i] = 0; // leisten keine Arbeit.
         }
@@ -702,7 +699,7 @@ public class clMechanismus implements inKonstante {
         for (int unb = 1 + 2*anzKn; unb < unbek.length; unb++) { // nur Stabrotationen! Siehe Aufbau Unbekannte.
             if (Math.abs(unbek[unb]) > maxwert) maxwert = Math.abs(unbek[unb]);
         }
-        if (unbek[0] < 0) maxwert *= -1; // damit eine positive Leistung entsteht.
+        if (unbek[0] < 0) maxwert *= -1; // damit eine positive Leistung entsteht. Kommt wahrscheinlich nicht vor.
         for (int unb = 0; unb < unbek.length; unb++) unbek[unb] /= maxwert;
         
         // Relativverschiebung aller Knoten für eine Stabrotation von 1.

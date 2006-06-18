@@ -211,7 +211,7 @@ public class clKnoten implements Serializable, inKonstante {
                         else {
                             System.out.println("Widerspruch in Lagerkraft: neuer Wert widerspricht schon berechnetem!");
                             System.err.println("Programmfehler: clKnoten.setLagerkraft: zuerst Lagerstatus zurücksetzen");
-                            assert false;
+                            assert false: "ungleich 0: " + Math.abs(Rx - p_Rx);
                             return false;
                         }
                         break;

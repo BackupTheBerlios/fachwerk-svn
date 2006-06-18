@@ -359,24 +359,27 @@ public class treillis extends clOberflaeche implements inKonstante {
             LayerAuflKraft(true);
             LayerLasten(true);
         }
-        catch (ArithmeticException e) {
-            String meldung;
-            if (e.getMessage() != null) meldung = e.getMessage();
-            else meldung = e.toString();
-            System.out.println(meldung);
-            aktualisieren(true, true);
-            // im Statusfeld WIDERSPRUCH anzeigen, in Statuszeile Fehlermeldung
-            feldStatusFw.setText(tr("WIDERSPRUCH"));
-            keinWIDERSPRUCH = false;
-            feldStatuszeile.setText(meldung);
-        }
+//        catch (ArithmeticException e) { // TODO entfernen, falls bewährt. Funktion in Fw0.14 nach clFachwerk verlegt.
+//            String meldung;
+//            if (e.getMessage() != null) meldung = e.getMessage();
+//            else meldung = e.toString();
+//            System.out.println(meldung);
+//            aktualisieren(true, true);
+//            // im Statusfeld WIDERSPRUCH anzeigen, in Statuszeile Fehlermeldung
+//            feldStatusFw.setText(tr("WIDERSPRUCH"));
+//            keinWIDERSPRUCH = false;
+//            feldStatuszeile.setText(meldung);
+//        }
         catch (Exception e) {
             System.out.println(e.toString());
             aktualisieren(true, true);
             // im Statusfeld FEHLER anzeigen, in Statuszeile Fehlermeldung
             feldStatusFw.setText(tr("FEHLER"));
             keinFEHLER = false;
-            feldStatuszeile.setText(e.toString());
+            if (e.getMessage().equals("Mechanismusberechnung fehlgeschlagen.")) {
+                feldStatuszeile.setText(tr("errMechanismusberFehlgeschlagen"));
+            }
+            else feldStatuszeile.setText(e.toString());
         }
         
         if (keinWIDERSPRUCH && keinFEHLER) {

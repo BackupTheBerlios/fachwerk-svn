@@ -493,7 +493,7 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
         Point2D pkt2 = new Point2D.Double(); // jeweils aktueller Pkt;
         double dx1; double dz1; // Relativverschiebung des Mechanismus; jeweils aktueller Pkt;
         double dx2; double dz2; // Relativverschiebung des Mechanismus; jeweils aktueller Pkt;
-        double skal = 1; // TODO gegebenfalls Skalierung anpassen
+        final double skal = 0.5; // TODO gegebenfalls Skalierung anpassen
         g.setPaint(Color.red); g.setStroke(new BasicStroke(2f));
         
         // Stäbe

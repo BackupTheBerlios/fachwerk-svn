@@ -54,7 +54,7 @@ public class clFachwerk implements inKonstante {
     private static final int OFFEN = 0;
     private static final int FERTIG = 1;
     private static final int WIDERSPRUCH = 3;
-    */
+     */
     
     // Datensatz:
     private int anzKn;
@@ -78,7 +78,6 @@ public class clFachwerk implements inKonstante {
     
     private final double TOL = TOL_vorberechnung;
     //private final double TOL = 1E-11; // um Gleichheit von Stabkräften zu erkennen (in rVorberechnung)
-                                      // Vorschlag 1E-11
     private final double TOLresultatcheck = TOL_resultatcheck;
     //private final double TOLresultatcheck = 1E-10; // dito, jedoch lascherer Wert, zB. TOL des GLS-Solvers
     
@@ -111,7 +110,7 @@ public class clFachwerk implements inKonstante {
     }
     
     /**
-     * 
+     *
      * zu Testzwecken
      */
     public static void main(String[] args) throws Exception {
@@ -223,7 +222,7 @@ public class clFachwerk implements inKonstante {
      * @return false: Widerspruch aufgetreten. true: Berechnung durchgeführt ohne Widerspruch.
      */
     public boolean rechnen(boolean optionVORBER, boolean optionGLS, boolean optionMECHANISMUS) throws Exception {
-                
+        
         if (check() == false) {
             System.err.println("Fehler beim check: clFachwerk.rechnen");
             return false;
@@ -234,7 +233,14 @@ public class clFachwerk implements inKonstante {
         
         if (optionVORBER) rVorberechnung();
         
-        if (optionGLS && !WIDERSPRUCHaufgetreten) rGleichgewichtsGLS();
+        try {
+            if (optionGLS && !WIDERSPRUCHaufgetreten) rGleichgewichtsGLS();
+        }
+        catch (ArithmeticException wid_e) {
+            WIDERSPRUCHaufgetreten = true;
+            if (wid_e.getMessage() != null) System.out.println(wid_e.getMessage());
+            else System.out.println(wid_e.toString());
+        }
         
         rKnotenstatusSetzen();
         
@@ -246,7 +252,14 @@ public class clFachwerk implements inKonstante {
         
         if (optionMECHANISMUS && !OKkomplett) {
             
-            WIDERSPRUCHaufgetreten = rMechanismusVerletztGlgew();
+            try {
+                WIDERSPRUCHaufgetreten = rMechanismusVerletztGlgew();
+            }
+            catch (Exception e) {
+                // wenn WIDERSPRUCHaufgetreten (in vorheriger statischer Berechnung), 
+                // soll dies angezeigt werden (statt FEHLER), auch wenn die Mechanismusber fehlgeschlagen ist.
+                if (!WIDERSPRUCHaufgetreten) throw e;
+            }
         }
         
         return !WIDERSPRUCHaufgetreten;
@@ -341,76 +354,76 @@ public class clFachwerk implements inKonstante {
             }
         }
     }
-   
+    
     private void rVorberechnung() {     // Knoten durchlaufen
-                                        // wenn bei einem Kn nur 2 FG:
-                                        // Stäbe berechnen (Knotengleichgew, Matrix invertieren)
-                                        // von Neuem beginnen, bis anzFG = konst
+        // wenn bei einem Kn nur 2 FG:
+        // Stäbe berechnen (Knotengleichgew, Matrix invertieren)
+        // von Neuem beginnen, bis anzFG = konst
         if (verbose) System.out.print("Beginne die Vorberechnung...");
         
         boolean neu;
         
         grosseSchlaufe:
-        do {
-            // alle Knoten durchlaufen
-            
-            neu = false;
-            for (int kni = 1; kni < Kn.length; kni++) {
-                int anzUnbekStäbe = 0;
-                int anzLagerkräfte = 0;
-                double resultX, resultZ, alpha;
-                int knk1, knk2;
-                double Sk[];
+            do {
+                // alle Knoten durchlaufen
                 
-                for (int knk = 1; knk < Kn.length; knk++) {
-                    if ((Top[kni][knk] > 0) 
-                    && (St[Top[kni][knk]].getStatus() == UNBEST) ) {
-                        anzUnbekStäbe ++;
-                    }
-                }
-                if (Kn[kni].getLagerbed() == FIX) anzLagerkräfte = 2;
-                if (Kn[kni].getLagerbed() == VERSCHIEBLICH) anzLagerkräfte = 1;
-                
-                // NOCH UNVOLLSTÄNDIG !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                switch (anzUnbekStäbe) {
+                neu = false;
+                for (int kni = 1; kni < Kn.length; kni++) {
+                    int anzUnbekStäbe = 0;
+                    int anzLagerkräfte = 0;
+                    double resultX, resultZ, alpha;
+                    int knk1, knk2;
+                    double Sk[];
                     
-                    // alle Stabkräfte bekannt
-                    case 0: // alle Stabkräfte bekannt
+                    for (int knk = 1; knk < Kn.length; knk++) {
+                        if ((Top[kni][knk] > 0)
+                        && (St[Top[kni][knk]].getStatus() == UNBEST) ) {
+                            anzUnbekStäbe ++;
+                        }
+                    }
+                    if (Kn[kni].getLagerbed() == FIX) anzLagerkräfte = 2;
+                    if (Kn[kni].getLagerbed() == VERSCHIEBLICH) anzLagerkräfte = 1;
+                    
+                    // NOCH UNVOLLSTÄNDIG !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    switch (anzUnbekStäbe) {
                         
-                        switch (anzLagerkräfte) {
-                            case 2: // Lagerkräfte berechnen
-                                resultX = Kn[kni].getLx();
-                                resultZ = Kn[kni].getLz();
-                                
-                                for (int knk = 1; knk < Kn.length; knk++) {
-                                    if (Top[kni][knk] > 0)  {
-                                        if ((St[Top[kni][knk]].getStatus() == BER)
-                                        || (St[Top[kni][knk]].getStatus() == GESETZT)) {
-                                            resultX += ax[kni][knk] * St[Top[kni][knk]].getKraft();
-                                            resultZ += az[kni][knk] * St[Top[kni][knk]].getKraft();
+                        // alle Stabkräfte bekannt
+                        case 0: // alle Stabkräfte bekannt
+                            
+                            switch (anzLagerkräfte) {
+                                case 2: // Lagerkräfte berechnen
+                                    resultX = Kn[kni].getLx();
+                                    resultZ = Kn[kni].getLz();
+                                    
+                                    for (int knk = 1; knk < Kn.length; knk++) {
+                                        if (Top[kni][knk] > 0)  {
+                                            if ((St[Top[kni][knk]].getStatus() == BER)
+                                            || (St[Top[kni][knk]].getStatus() == GESETZT)) {
+                                                resultX += ax[kni][knk] * St[Top[kni][knk]].getKraft();
+                                                resultZ += az[kni][knk] * St[Top[kni][knk]].getKraft();
+                                            }
+                                            if (St[Top[kni][knk]].getStatus() == UNBEST) {
+                                                System.err.println("Programmfehler in Fachwerk.rVorberechnung");
+                                            }
                                         }
-                                        if (St[Top[kni][knk]].getStatus() == UNBEST) {
-                                            System.err.println("Programmfehler in Fachwerk.rVorberechnung");
-                                        }
+                                    } // Schlaufenende
+                                    
+                                    Kn[kni].setLagerkraft(BER,-resultX,-resultZ);
+                                    Kn[kni].setKnotenstatus(FERTIG);
+                                    
+                                    break;
+                                case 1: // Lagerkraft berechnen + Knotenkontrolle nach Widerspruch
+                                    if (Kn[kni].getLagerbed() != VERSCHIEBLICH) {
+                                        System.err.println("Programmfehler in Fachwerk.rVorberechnung: verschiebliches Lager erwartet");
                                     }
-                                } // Schlaufenende
-                                
-                                Kn[kni].setLagerkraft(BER,-resultX,-resultZ);
-                                Kn[kni].setKnotenstatus(FERTIG);
-                                
-                                break;
-                            case 1: // Lagerkraft berechnen + Knotenkontrolle nach Widerspruch
-                                if (Kn[kni].getLagerbed() != VERSCHIEBLICH) {
-                                    System.err.println("Programmfehler in Fachwerk.rVorberechnung: verschiebliches Lager erwartet");
-                                }
-                                //  ENTHÄLT EV FEHLER!!!!!!! KONTROLLIEREN
+                                    //  ENTHÄLT EV FEHLER!!!!!!! KONTROLLIEREN
                                 /*
                                 resultX = Kn[kni].getLx();
                                 resultZ = Kn[kni].getLz();
-                                
+                                 
                                 for (int knk = 1; knk < Kn.length; knk++) {
                                     if (Top[kni][knk] > 0)  {
-                                        if ((St[Top[kni][knk]].getStatus() == BER) 
+                                        if ((St[Top[kni][knk]].getStatus() == BER)
                                         || (St[Top[kni][knk]].getStatus() == GESETZT)) {
                                             resultX += ax[kni][knk] * St[Top[kni][knk]].getKraft();
                                             resultZ += az[kni][knk] * St[Top[kni][knk]].getKraft();
@@ -420,8 +433,8 @@ public class clFachwerk implements inKonstante {
                                         }
                                     }
                                 } // Schlaufenende
-                                
-                                
+                                 
+                                 
                                 alpha = Kn[kni].getRalpha();
                                 // Kontrolle  // Kontrolle führt zu falschen Fehlermeldungen
                                 double resultGleitrtg = -resultX * Math.sin(alpha) + resultZ * Math.cos(alpha);
@@ -431,119 +444,119 @@ public class clFachwerk implements inKonstante {
                                     WIDERSPRUCHaufgetreten = true;
                                     break grosseSchlaufe;
                                 }
-                                
+                                 
                                 // Lagerkraft berechnen
                                 double R = - (resultX * Math.cos(alpha) + resultZ * Math.sin(alpha));
                                 Kn[kni].setLagerkraft(BER,R * Math.cos(alpha), R * Math.sin(alpha));
                                 Kn[kni].setKnotenstatus(FERTIG);
-                                */
-                                break;
-                            default: // Knotenkontrolle nach Widerspruch
-                                resultX = Kn[kni].getLx();
-                                resultZ = Kn[kni].getLz();
-                                
-                                for (int knk = 1; knk < Kn.length; knk++) {
-                                    if (Top[kni][knk] > 0)  {
-                                        if ((St[Top[kni][knk]].getStatus() == BER)
-                                        || (St[Top[kni][knk]].getStatus() == GESETZT)) {
-                                            resultX += ax[kni][knk] * St[Top[kni][knk]].getKraft();
-                                            resultZ += az[kni][knk] * St[Top[kni][knk]].getKraft();
+                                 */
+                                    break;
+                                default: // Knotenkontrolle nach Widerspruch
+                                    resultX = Kn[kni].getLx();
+                                    resultZ = Kn[kni].getLz();
+                                    
+                                    for (int knk = 1; knk < Kn.length; knk++) {
+                                        if (Top[kni][knk] > 0)  {
+                                            if ((St[Top[kni][knk]].getStatus() == BER)
+                                            || (St[Top[kni][knk]].getStatus() == GESETZT)) {
+                                                resultX += ax[kni][knk] * St[Top[kni][knk]].getKraft();
+                                                resultZ += az[kni][knk] * St[Top[kni][knk]].getKraft();
+                                            }
+                                            if (St[Top[kni][knk]].getStatus() == UNBEST) {
+                                                System.err.println("Programmfehler in Fachwerk.rVorberechnung");
+                                            }
                                         }
-                                        if (St[Top[kni][knk]].getStatus() == UNBEST) {
-                                            System.err.println("Programmfehler in Fachwerk.rVorberechnung");
-                                        }
-                                    }
-                                } // Schlaufenende
-                                if (Math.abs(resultX) > TOL) {
-                                    System.out.println("Knoten "+kni+": Widerspruch entdeckt: Resultierende X: "+resultX +" ungleich 0  (0 unbekSt,0 Lager)");
-                                    Kn[kni].setKnotenstatus(WIDERSPRUCH);
-                                    WIDERSPRUCHaufgetreten = true;
-                                    break grosseSchlaufe;
-                                }
-                                if (Math.abs(resultZ) > TOL) {
-                                    System.out.println("Knoten "+kni+": Widerspruch entdeckt: Resultierende Z: "+resultZ +" ungleich 0  (0 unbekSt,0 Lager)");
-                                    Kn[kni].setKnotenstatus(WIDERSPRUCH);
-                                    WIDERSPRUCHaufgetreten = true;
-                                    break grosseSchlaufe;
-                                }
-                                if ((resultX < TOL)&&(resultZ < TOL)) Kn[kni].setKnotenstatus(FERTIG);
-                                
-                        }
-                        break;
-                        
-                        
-                    // 1 Stab unbekannt
-                    case 1: // unbekannte Stabkraft berechnen + Knotenkontrolle nach Widerspruch
-                        switch (anzLagerkräfte) {
-                            case 0: // fehlende Stabkraft berechnen + Knotenkontrolle nach Widerspruch
-                                resultX = Kn[kni].getLx();
-                                resultZ = Kn[kni].getLz();
-                                knk1 = 0; // Zielknoten des unbekannten Stabes
-                                for (int knk = 1; knk < Kn.length; knk++) {
-                                    if (Top[kni][knk] > 0)  {
-                                        if ((St[Top[kni][knk]].getStatus() == BER)
-                                        || (St[Top[kni][knk]].getStatus() == GESETZT)) {
-                                            resultX += ax[kni][knk] * St[Top[kni][knk]].getKraft();
-                                            resultZ += az[kni][knk] * St[Top[kni][knk]].getKraft();
-                                        }
-                                        if (St[Top[kni][knk]].getStatus() == UNBEST) {
-                                            if (knk1 == 0) knk1 = knk;
-                                            else System.err.println("Programmfehler in Fachwerk.rVorberechnung");
-                                        }
-                                    }
-                                } // Schlaufenende
-                                if (Math.abs(ax[kni][knk1]) > 0.707) { // unbekannte Stabkraft über Glgew in x-Rtg bestimmen
-                                    St[Top[kni][knk1]].setKraft(BER,-resultX/ax[kni][knk1]);
-                                    //Kontrolle
-                                    if (Math.abs(resultZ+az[kni][knk1]*St[Top[kni][knk1]].getKraft()) > TOL) {
-                                        System.out.println("Knoten "+kni+": Widerspruch entdeckt: Resultierende Z: "+resultZ +" ungleich 0  (1 unbekSt,0 Lager)");
+                                    } // Schlaufenende
+                                    if (Math.abs(resultX) > TOL) {
+                                        System.out.println("Knoten "+kni+": Widerspruch entdeckt: Resultierende X: "+resultX +" ungleich 0  (0 unbekSt,0 Lager)");
                                         Kn[kni].setKnotenstatus(WIDERSPRUCH);
                                         WIDERSPRUCHaufgetreten = true;
                                         break grosseSchlaufe;
                                     }
-                                    else Kn[kni].setKnotenstatus(FERTIG);
-                                }
-                                else { // unbekannte Stabkraft über Glgew in z-Rtg bestimmen
-                                    St[Top[kni][knk1]].setKraft(BER,-resultZ/az[kni][knk1]);
-                                    //Kontrolle
-                                    if (Math.abs(resultX+ax[kni][knk1]*St[Top[kni][knk1]].getKraft()) > TOL) {
-                                        System.out.println("Knoten "+kni+": Widerspruch entdeckt: Resultierende X: "+resultX +" ungleich 0  (1 unbekSt,0 Lager)");
+                                    if (Math.abs(resultZ) > TOL) {
+                                        System.out.println("Knoten "+kni+": Widerspruch entdeckt: Resultierende Z: "+resultZ +" ungleich 0  (0 unbekSt,0 Lager)");
                                         Kn[kni].setKnotenstatus(WIDERSPRUCH);
                                         WIDERSPRUCHaufgetreten = true;
                                         break grosseSchlaufe;
                                     }
-                                    else Kn[kni].setKnotenstatus(FERTIG);
-                                }
-                                
-                                
-                                neu = true;
-                                break;
-                            case 1: // NOCH OFFEN:  UND FEHLERBEHAFTET
-                                //fehlende Stabkraft + Lagerkraft berechnen
-                                if (Kn[kni].getLagerbed() != VERSCHIEBLICH) {
-                                    System.err.println("Programmfehler in Fachwerk.rVorberechnung: verschiebliches Lager erwartet");
-                                }
-                                resultX = Kn[kni].getLx();
-                                resultZ = Kn[kni].getLz();
-                                knk1 = 0; // Zielknoten des unbekannten Stabes
-                                for (int knk = 1; knk < Kn.length; knk++) {
-                                    if (Top[kni][knk] > 0)  {
-                                        if ((St[Top[kni][knk]].getStatus() == BER)
-                                        || (St[Top[kni][knk]].getStatus() == GESETZT)) {
-                                            resultX += ax[kni][knk] * St[Top[kni][knk]].getKraft();
-                                            resultZ += az[kni][knk] * St[Top[kni][knk]].getKraft();
+                                    if ((resultX < TOL)&&(resultZ < TOL)) Kn[kni].setKnotenstatus(FERTIG);
+                                    
+                            }
+                            break;
+                            
+                            
+                            // 1 Stab unbekannt
+                        case 1: // unbekannte Stabkraft berechnen + Knotenkontrolle nach Widerspruch
+                            switch (anzLagerkräfte) {
+                                case 0: // fehlende Stabkraft berechnen + Knotenkontrolle nach Widerspruch
+                                    resultX = Kn[kni].getLx();
+                                    resultZ = Kn[kni].getLz();
+                                    knk1 = 0; // Zielknoten des unbekannten Stabes
+                                    for (int knk = 1; knk < Kn.length; knk++) {
+                                        if (Top[kni][knk] > 0)  {
+                                            if ((St[Top[kni][knk]].getStatus() == BER)
+                                            || (St[Top[kni][knk]].getStatus() == GESETZT)) {
+                                                resultX += ax[kni][knk] * St[Top[kni][knk]].getKraft();
+                                                resultZ += az[kni][knk] * St[Top[kni][knk]].getKraft();
+                                            }
+                                            if (St[Top[kni][knk]].getStatus() == UNBEST) {
+                                                if (knk1 == 0) knk1 = knk;
+                                                else System.err.println("Programmfehler in Fachwerk.rVorberechnung");
+                                            }
                                         }
-                                        if (St[Top[kni][knk]].getStatus() == UNBEST) {
-                                            if (knk1 == 0) knk1 = knk;
-                                            else System.err.println("Programmfehler in Fachwerk.rVorberechnung");
+                                    } // Schlaufenende
+                                    if (Math.abs(ax[kni][knk1]) > 0.707) { // unbekannte Stabkraft über Glgew in x-Rtg bestimmen
+                                        St[Top[kni][knk1]].setKraft(BER,-resultX/ax[kni][knk1]);
+                                        //Kontrolle
+                                        if (Math.abs(resultZ+az[kni][knk1]*St[Top[kni][knk1]].getKraft()) > TOL) {
+                                            System.out.println("Knoten "+kni+": Widerspruch entdeckt: Resultierende Z: "+resultZ +" ungleich 0  (1 unbekSt,0 Lager)");
+                                            Kn[kni].setKnotenstatus(WIDERSPRUCH);
+                                            WIDERSPRUCHaufgetreten = true;
+                                            break grosseSchlaufe;
                                         }
+                                        else Kn[kni].setKnotenstatus(FERTIG);
                                     }
-                                } // Schlaufenende
-                                alpha = Kn[kni].getRalpha(); // ev alpha verkehrt herum genommen!!!!!!!!
-                                
-                                if(Math.abs(ax[kni][knk1] * Math.cos(alpha) - az[kni][knk1] * Math.sin(alpha)) < TOL)
-                                    break; // Stab senkrecht zu Gleitrichtung
-                                
+                                    else { // unbekannte Stabkraft über Glgew in z-Rtg bestimmen
+                                        St[Top[kni][knk1]].setKraft(BER,-resultZ/az[kni][knk1]);
+                                        //Kontrolle
+                                        if (Math.abs(resultX+ax[kni][knk1]*St[Top[kni][knk1]].getKraft()) > TOL) {
+                                            System.out.println("Knoten "+kni+": Widerspruch entdeckt: Resultierende X: "+resultX +" ungleich 0  (1 unbekSt,0 Lager)");
+                                            Kn[kni].setKnotenstatus(WIDERSPRUCH);
+                                            WIDERSPRUCHaufgetreten = true;
+                                            break grosseSchlaufe;
+                                        }
+                                        else Kn[kni].setKnotenstatus(FERTIG);
+                                    }
+                                    
+                                    
+                                    neu = true;
+                                    break;
+                                case 1: // NOCH OFFEN:  UND FEHLERBEHAFTET
+                                    //fehlende Stabkraft + Lagerkraft berechnen
+                                    if (Kn[kni].getLagerbed() != VERSCHIEBLICH) {
+                                        System.err.println("Programmfehler in Fachwerk.rVorberechnung: verschiebliches Lager erwartet");
+                                    }
+                                    resultX = Kn[kni].getLx();
+                                    resultZ = Kn[kni].getLz();
+                                    knk1 = 0; // Zielknoten des unbekannten Stabes
+                                    for (int knk = 1; knk < Kn.length; knk++) {
+                                        if (Top[kni][knk] > 0)  {
+                                            if ((St[Top[kni][knk]].getStatus() == BER)
+                                            || (St[Top[kni][knk]].getStatus() == GESETZT)) {
+                                                resultX += ax[kni][knk] * St[Top[kni][knk]].getKraft();
+                                                resultZ += az[kni][knk] * St[Top[kni][knk]].getKraft();
+                                            }
+                                            if (St[Top[kni][knk]].getStatus() == UNBEST) {
+                                                if (knk1 == 0) knk1 = knk;
+                                                else System.err.println("Programmfehler in Fachwerk.rVorberechnung");
+                                            }
+                                        }
+                                    } // Schlaufenende
+                                    alpha = Kn[kni].getRalpha(); // ev alpha verkehrt herum genommen!!!!!!!!
+                                    
+                                    if(Math.abs(ax[kni][knk1] * Math.cos(alpha) - az[kni][knk1] * Math.sin(alpha)) < TOL)
+                                        break; // Stab senkrecht zu Gleitrichtung
+                                    
                                 /* ev verkehrt
                                 // det-Kontrolle fehlt
                                 Sk = Fkt.GLS2x2(ax[kni][knk1], Math.cos(alpha), -resultX,
@@ -551,70 +564,70 @@ public class clFachwerk implements inKonstante {
                                 St[Top[kni][knk1]].setKraft(BER,Sk[0]);
                                 Kn[kni].setLagerkraft(BER,Sk[1] * Math.cos(alpha), Sk[1] * Math.sin(alpha));
                                  **/
-                                // noch testen!!!!!!!!!!
+                                    // noch testen!!!!!!!!!!
                                 /*
                                 // det-Kontrolle fehlt
                                 Sk = Fkt.GLS2x2(ax[kni][knk1], -Math.sin(alpha), -resultX,
                                                 az[kni][knk1], Math.cos(alpha), -resultZ);
                                 St[Top[kni][knk1]].setKraft(BER,Sk[0]);
                                 Kn[kni].setLagerkraft(BER,Sk[1] * -Math.sin(alpha), Sk[1] * Math.cos(alpha));
-                                
+                                 
                                 Kn[kni].setKnotenstatus(FERTIG);
-                                
-                                
+                                 
+                                 
                                 neu = true; //false; // sobald programmiert --> true
-                                */
-                                break;
-                            default: // zu viele unbekannte: wird nicht in der Vorberechnung behandelt
-                        }
-                        break;
-                        
-                        
-                    // 2 Stäbe unbekannt
-                    case 2: // unbekannte Stabkräfte berechnen, falls Knoten nicht gelagert
-                        if (anzLagerkräfte == 0) { // sonst zuviele Unbekannte
-                            resultX = Kn[kni].getLx();
-                            resultZ = Kn[kni].getLz();
-                            knk1 = 0; // Zielknoten des ersten unbekannten Stabes
-                            knk2 = 0; // Zielknoten des zweiten unbekannten Stabes
-                            for (int knk = 1; knk < Kn.length; knk++) {
-                                if (Top[kni][knk] > 0)  {
-                                    if ((St[Top[kni][knk]].getStatus() == BER)
-                                    || (St[Top[kni][knk]].getStatus() == GESETZT)) {
-                                        resultX += ax[kni][knk] * St[Top[kni][knk]].getKraft();
-                                        resultZ += az[kni][knk] * St[Top[kni][knk]].getKraft();
-                                    }
-                                    if (St[Top[kni][knk]].getStatus() == UNBEST) {
-                                        if (knk1 == 0) knk1 = knk;
-                                        else {
-                                            if (knk2 == 0) knk2 = knk;
-                                            else System.err.println("Programmfehler in Fachwerk.rVorberechnung");
-                                        }
-                                    }                                
-                                }
-                            } // Schlaufenende
-                            // Kontrolle, ob die beiden unbek Stäbe nicht auf einer Geraden liegen
-                            if (Fkt.det2x2(ax[kni][knk1], ax[kni][knk2], az[kni][knk1], az[kni][knk2]) == 0d) break;
-                            Sk = Fkt.GLS2x2(ax[kni][knk1], ax[kni][knk2], -resultX, 
-                                                     az[kni][knk1], az[kni][knk2], -resultZ);
-                            St[Top[kni][knk1]].setKraft(BER,Sk[0]);
-                            St[Top[kni][knk2]].setKraft(BER,Sk[1]);
-                            Kn[kni].setKnotenstatus(FERTIG);
-                            neu = true;
+                                 */
+                                    break;
+                                default: // zu viele unbekannte: wird nicht in der Vorberechnung behandelt
+                            }
+                            break;
                             
-                                                        
-                        } // else: zu viele unbekannte: wird nicht in der Vorberechnung behandelt
-                        break;
-                        
-                        
-                    default: // mehr als zwei Stäbe unbekannt: wird nicht in der Vorberechnung behandelt
-                        
-                } 
+                            
+                            // 2 Stäbe unbekannt
+                        case 2: // unbekannte Stabkräfte berechnen, falls Knoten nicht gelagert
+                            if (anzLagerkräfte == 0) { // sonst zuviele Unbekannte
+                                resultX = Kn[kni].getLx();
+                                resultZ = Kn[kni].getLz();
+                                knk1 = 0; // Zielknoten des ersten unbekannten Stabes
+                                knk2 = 0; // Zielknoten des zweiten unbekannten Stabes
+                                for (int knk = 1; knk < Kn.length; knk++) {
+                                    if (Top[kni][knk] > 0)  {
+                                        if ((St[Top[kni][knk]].getStatus() == BER)
+                                        || (St[Top[kni][knk]].getStatus() == GESETZT)) {
+                                            resultX += ax[kni][knk] * St[Top[kni][knk]].getKraft();
+                                            resultZ += az[kni][knk] * St[Top[kni][knk]].getKraft();
+                                        }
+                                        if (St[Top[kni][knk]].getStatus() == UNBEST) {
+                                            if (knk1 == 0) knk1 = knk;
+                                            else {
+                                                if (knk2 == 0) knk2 = knk;
+                                                else System.err.println("Programmfehler in Fachwerk.rVorberechnung");
+                                            }
+                                        }
+                                    }
+                                } // Schlaufenende
+                                // Kontrolle, ob die beiden unbek Stäbe nicht auf einer Geraden liegen
+                                if (Fkt.det2x2(ax[kni][knk1], ax[kni][knk2], az[kni][knk1], az[kni][knk2]) == 0d) break;
+                                Sk = Fkt.GLS2x2(ax[kni][knk1], ax[kni][knk2], -resultX,
+                                        az[kni][knk1], az[kni][knk2], -resultZ);
+                                St[Top[kni][knk1]].setKraft(BER,Sk[0]);
+                                St[Top[kni][knk2]].setKraft(BER,Sk[1]);
+                                Kn[kni].setKnotenstatus(FERTIG);
+                                neu = true;
+                                
+                                
+                            } // else: zu viele unbekannte: wird nicht in der Vorberechnung behandelt
+                            break;
+                            
+                            
+                        default: // mehr als zwei Stäbe unbekannt: wird nicht in der Vorberechnung behandelt
+                            
+                    }
+                }
             }
-        }
-        while (neu && !WIDERSPRUCHaufgetreten);
-        
-        if (verbose) System.out.println("fertig.");
+            while (neu && !WIDERSPRUCHaufgetreten);
+            
+            if (verbose) System.out.println("fertig.");
     }
     
     
@@ -671,7 +684,7 @@ public class clFachwerk implements inKonstante {
         
         int[] ausStab = new int[St.length]; // liefert den Index der Unbekannten (Stabkraft) aus der Stabnummer
         int[][] ausKnoten = new int[Kn.length][2]; // liefert den Index der Unbekannten aus der Knotennummer
-                                              // zweiter Index:   Wert = 0: Lagerkraft in x-Rtg, Wert = 1: z-Rtg: 
+                                                   // zweiter Index:   Wert = 0: Lagerkraft in x-Rtg, Wert = 1: z-Rtg:
         int[] stabnr = new int[anzUnbek]; // liefert die Stabnummer aus dem Index
         int[] knnr = new int[anzUnbek]; // liefert die Knotennummer aus dem Index
         
@@ -718,7 +731,7 @@ public class clFachwerk implements inKonstante {
         // ---------------------------
         
         double[][] GLS;
-        try{
+        try { // TODO wozu dieser try-Block?
             GLS = new double[anzGL][anzUnbek+1];
         }
         catch (Exception e) {
@@ -879,7 +892,7 @@ public class clFachwerk implements inKonstante {
                             // kontrollieren ob alle Stäbe rundum bestimmt sind.
                             int anzUnbekStäbe = 0;
                             for (int knk = 1; knk < Kn.length; knk++) {
-                                if ((Top[kni][knk] > 0) 
+                                if ((Top[kni][knk] > 0)
                                 && (St[Top[kni][knk]].getStatus() == UNBEST) ) {
                                     anzUnbekStäbe ++;
                                 }
@@ -1153,8 +1166,8 @@ public class clFachwerk implements inKonstante {
     }
     
     /** Diese Methode liefert einen zufälligen Mechanismus, der das Gleichgewicht verletzt.
-     Gibt es keinen oder wurde die Mechanismusberechnung nicht durchgeführt, gibt die Methode null zurück.
-     @return Relativverschiebung in x und z Rtg. für jeden Knoten (Knoten 1: Index1).*/
+     * Gibt es keinen oder wurde die Mechanismusberechnung nicht durchgeführt, gibt die Methode null zurück.
+     * @return Relativverschiebung in x und z Rtg. für jeden Knoten (Knoten 1: Index1).*/
     public double[][] getMechanismus() {
         return mechanismusRelKnVersch;
     }
