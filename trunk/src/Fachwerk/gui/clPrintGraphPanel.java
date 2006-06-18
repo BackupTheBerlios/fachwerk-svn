@@ -80,6 +80,7 @@ public class clPrintGraphPanel extends clHauptPanel implements Printable {
         super(hp.getKn(), hp.getSt(), true);
         this.parent = parent;
         dxf = hp.dxf;
+        mechanismusRelKnVersch = hp.mechanismusRelKnVersch;
         
         Point2D[] zoomPkte = hp.getZoomPkte();
         ZoomPkt1 = zoomPkte[0];
@@ -93,6 +94,7 @@ public class clPrintGraphPanel extends clHauptPanel implements Printable {
         MIT_Auflagerkräften = aktiveLayer[3];
         MIT_Stabkräften = aktiveLayer[4];
         MIT_Hintergrund = aktiveLayer[5];
+        MIT_Mechanismus = aktiveLayer[6];
         
         maxPfeil = maxPfeil * druckvergr;
         spitzenlängeMax = spitzenlängeMax * druckvergr;// / (0.5d + printskal/2d);
@@ -198,6 +200,7 @@ public class clPrintGraphPanel extends clHauptPanel implements Printable {
             if (MIT_Lasten) darstellenLasten();
             if (MIT_Auflagerkräften) darstellenAuflagerkräfte();
             if (MIT_Stabkräften) darstellenStabkräfte();
+            if (MIT_Mechanismus) darstellenMechanismus();
         }
         
         // -------------------------

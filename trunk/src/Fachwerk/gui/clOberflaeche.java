@@ -844,7 +844,7 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         menuRechnen.add(buttonGLS);
 
         buttonMechanismus.setText("Mechanismen testen");
-        buttonMechanismus.setToolTipText("Sucht Mechanismen, die eine Gleichgewichtsverletzung belegen. (Experimentell)");
+        buttonMechanismus.setToolTipText("Sucht Mechanismen, die eine Gleichgewichtsverletzung belegen. Kinematische Methode.");
         buttonMechanismus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonMechanismusActionPerformed(evt);
@@ -1438,6 +1438,8 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         buttonVorberechnung.setToolTipText(tr("ttipVorber"));
         buttonGLS.setText(tr("itemGLS"));
         buttonGLS.setToolTipText(tr("ttipGLS"));
+        buttonMechanismus.setText(tr("itemMechanismus"));
+        buttonMechanismus.setToolTipText(tr("ttipMechanismus"));
         
         menuAddins.setText(tr("menuAddins"));
         itemKoordTransFWK.setText(tr("itemKoordTransFWK"));

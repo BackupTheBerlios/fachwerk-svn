@@ -387,8 +387,8 @@ public class clMechanismus implements inKonstante {
         // - fiktive Stabrotation der Gleitlager: 1 pro Gleitlager
         
         // das GLS enthält folgende Gleichungen: (in dieser Reihenfolge)
-        // - Leistung der äusseren Kräfte
-        // - Knotenverschiebungen: 2 (in x- und z-Rtg) pro Stab
+        // - Leistung der äusseren Kräfte und der gesetzten Stabkräfte
+        // - Knotenverschiebungen: 2 (in x- und z-Rtg) pro Stab, ohne gesetzte Stäbe
         // - bekannte Verschiebungen (=0) der Lager: 2 (x,z-Rtg fix)
         // - Knotenverschiebungen bei Gleitlager: 2 pro verschiebliche Lager
         
@@ -408,12 +408,17 @@ public class clMechanismus implements inKonstante {
                     assert false;
             }
         }
+        // Zählen der Stäbe mit gesetzten Kräften
+        int anzGesSt = 0; // Startwert
+        for (int st = 1; st < St.length; st++) {
+            if(St[st].getStatus() == GESETZT) anzGesSt++;
+        }
         
         int anzSt = St.length-1;
         int anzKn = Kn.length-1;
         int anzUnbek = 1 + 2*anzKn + anzSt + anzVerschKn;
         
-        int anzGL = 1 + 2*anzSt + 2*anzFixeKn + 2*anzVerschKn;
+        int anzGL = 1 + 2*(anzSt-anzGesSt) + 2*anzFixeKn + 2*anzVerschKn;
         
         // Abzählkriterium. Der umgekehrte Schluss ist jedoch nicht zwingend richtig!
         if (anzGL < anzUnbek) INSTABIL = true;
@@ -490,11 +495,26 @@ public class clMechanismus implements inKonstante {
         GLS = new double[anzGL][anzUnbek+1];
         int gl = 0; // Zähler für Gleichungsnummer: Startwert
         
-        // Leistung der äussseren Arbeit
+        // Leistung der äusseren Arbeit
         GLS[0][0] = -1; // aus -1*PL + dix*Lix+diz*Liz = 0
         for (int kni = 1; kni < Kn.length; kni++) {
             GLS[0][ausKnoten[kni][0]] = Kn[kni].getLx();
             GLS[0][ausKnoten[kni][1]] = Kn[kni].getLz();
+        }
+        // Leistung der gesetzten Stäbe
+        for (int kni = 1; kni < Kn.length; kni++) {
+            for (int knk = 1; knk < Kn.length; knk++) {
+                if (Top[kni][knk] > 0)  {  // sonst kein Stab vorhanden
+                    if (St[Top[kni][knk]].getStatus() != GESETZT) continue;
+                    double stabkraft = St[Top[kni][knk]].getKraft();
+                    double dx = Kn[knk].getX() - Kn[kni].getX();
+                    double dz = Kn[knk].getZ() - Kn[kni].getZ();
+                    double ax = dx / Math.sqrt(Math.pow(dx,2d) + Math.pow(dz,2d));
+                    double az = dz/ Math.sqrt(Math.pow(dx,2d) + Math.pow(dz,2d));
+                    GLS[0][ausKnoten[kni][0]] += ax*stabkraft;
+                    GLS[0][ausKnoten[kni][1]] += az*stabkraft;
+                }
+            }
         }
         gl++;
         
@@ -503,6 +523,7 @@ public class clMechanismus implements inKonstante {
             for (int knk = 1; knk < Kn.length; knk++) {
                     if (Top[kni][knk] > 0)  {  // sonst kein Stab vorhanden
                         if (knk > kni) { // sonst Gleichung für diesen Stab schon aufgestellt.
+                            if (St[Top[kni][knk]].getStatus() == GESETZT) continue; // keine Gleichung für GESETZTe Stäbe!
                             GLS[gl][ausKnoten[kni][0]] = 1; // x-Rtg
                             GLS[gl][ausKnoten[knk][0]] = -1;
                             GLS[gl][ausStab[Top[kni][knk]]] = rYx[knk][kni];
@@ -594,11 +615,9 @@ public class clMechanismus implements inKonstante {
         // Leistung der äusseren Lasten. Wenn = 0 --> System im Gleichgewicht
         if (xLsg[0][0] > 0) { // Lösung bestimmt
             if (Math.abs(xLsg[0][1]) < TOL) {
-                if (verbose) {
-                    System.out.println("");
-                    System.out.println("OK, kein Mechanismus gefunden, der das Glgew verletzt.");
-                }
-                assert !INSTABIL_KEIN_GLGEW;
+                System.out.println("");
+                System.out.println("OK, kein Mechanismus gefunden, der das Glgew verletzt.");
+                assert!INSTABIL_KEIN_GLGEW;
             }
             else {
                 System.out.println("");
@@ -622,23 +641,23 @@ public class clMechanismus implements inKonstante {
             if (ausKnoten[knnr[i]][1] == i) rtg = "z";
             
             if (xLsg[i][0] == 0) { // unbestimmt
-                if (INSTABIL_KEIN_GLGEW || verbose) {
+                INSTABIL = true;
+                if (verbose) {
                     System.out.print("Knoten " + knnr[i] + ": ");
                     System.out.print(rtg + " instabil");
                     if (INSTABIL_KEIN_GLGEW) System.out.println(" !");
                     else System.out.println("");
                 }
-                INSTABIL = true;
             }
             else { // bestimmte Verschiebung
                 if (Math.abs(xLsg[i][1]) > TOL) { // ungleich null
-                    if (INSTABIL_KEIN_GLGEW || verbose) {
+                    INSTABIL = true;
+                    if (verbose) {
                         System.out.print("Knoten " + knnr[i] + ": ");
                         System.out.print(rtg + " instabil:" + xLsg[i][1]);
                         if (INSTABIL_KEIN_GLGEW) System.out.println(" !");
                         else System.out.println("");
                     }
-                    INSTABIL = true;
                     assert false; // ist nicht möglich, ohne dass die Skalierung (=eine Unbek) vorgeg.
                 }
                 else {

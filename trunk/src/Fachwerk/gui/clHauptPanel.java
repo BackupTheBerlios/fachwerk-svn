@@ -487,7 +487,7 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
         g.setPaint(Color.black); g.setStroke(new BasicStroke(1f));
     }
     
-    protected void darstellenMechanismus() { // TODO darstellenMechanismus
+    protected void darstellenMechanismus() { // TODO fliessende gesetzte Stäbe dick
         // Durchlaufvariablen
         Point2D pkt = new Point2D.Double(); // jeweils aktueller Pkt;
         Point2D pkt2 = new Point2D.Double(); // jeweils aktueller Pkt;

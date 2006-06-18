@@ -404,7 +404,7 @@
             <MenuItem class="javax.swing.JRadioButtonMenuItem" name="buttonMechanismus">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Mechanismen testen"/>
-                <Property name="toolTipText" type="java.lang.String" value="Sucht Mechanismen, die eine Gleichgewichtsverletzung belegen. (Experimentell)"/>
+                <Property name="toolTipText" type="java.lang.String" value="Sucht Mechanismen, die eine Gleichgewichtsverletzung belegen. Kinematische Methode."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonMechanismusActionPerformed"/>
