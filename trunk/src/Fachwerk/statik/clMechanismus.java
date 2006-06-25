@@ -346,6 +346,8 @@ public class clMechanismus implements inKonstante {
                 }
             }
             if (anzangeschlStäbe < 1) {
+                if (Kn[kni].getLagerbed() != LOS) continue; // Lager vorhanden
+                
                 if (verbose) System.out.println("WARNUNG: Der Knoten " + kni +" ist mit keinem Stab verbunden!");
                 INSTABIL = true;
                 
@@ -592,9 +594,8 @@ public class clMechanismus implements inKonstante {
         if (verbose) System.out.print("Beginne das Gleichungssystem fuer Mechanismen zu loesen... ");
         double[][] xLsg;
         try {
-            GLSsolver solver = new GLSsolver();
-            solver.debug = debug;
-            xLsg = solver.solve(GLS);
+            GLSsolver solver = new GLSsolver(GLS);
+            xLsg = solver.solve();
             xLsgvollst = solver.getCompleteSolution();
         }
         catch (ArithmeticException e) {

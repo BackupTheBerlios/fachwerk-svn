@@ -9,7 +9,6 @@ package Fachwerk.statik;
 import cern.colt.matrix.*;
 import cern.colt.matrix.impl.*;
 import cern.colt.matrix.linalg.*;
-import java.math.*;
 
 
 
@@ -57,6 +56,10 @@ public final class GLSsolver {
     // Variablendeklararion und EINSTELLUNGEN
     // --------------------------------------
     
+    private DenseDoubleMatrix2D A;
+    private DoubleMatrix2D R;
+    private DoubleMatrix2D c;
+    
     private double[][] xLsg; // Lösung x: nur eindeutige (d.h. parameterunabhängige xi) werden zurückgegeben
     // index 0: Wert = 0 bedeutet xi unbestimmt,  Wert = 1 bedeutet xi bestimmt
     // index 1: eigentlicher Wert (nur wenn xi bestimmt, dh index 0 = 1, sonst Wert 0)
@@ -71,47 +74,13 @@ public final class GLSsolver {
     // durchgeführt. Ist vorteilhaft, da der Rang des GLS mit dieser internen Toleranz bestimmt wird.
     // dieser Wert muss grösser (ev. >=) sein als in clFachwerk zB +E-11
     
-    public boolean debug = true;
+    public boolean debug = false;
     private boolean solved = false;
     
         
     
     /** Creates a new instance of testmatrix */
-    public GLSsolver() {
-    }
-    
-    
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {  // Beispiel aus Stoffer,1994,"Lineare Algebra" S.49
-        double[][] gls = new double[7][6];
-        gls[0][0] =  2; gls[0][1] = -1; gls[0][2] =  3; gls[0][3] = -1; gls[0][4] =  1;
-        gls[1][0] =  2; gls[1][1] = -1; gls[1][2] =  3; gls[1][3] =  0; gls[1][4] = -1;
-        gls[2][0] = -4; gls[2][1] =  2; gls[2][2] = -4; gls[2][3] =  5; gls[2][4] = -5;
-        gls[3][0] =  0; gls[3][1] =  0; gls[3][2] = -2; gls[3][3] =  2; gls[3][4] = -7;
-        gls[4][0] = -2; gls[4][1] =  1; gls[4][2] = -1; gls[4][3] =  0; gls[4][4] =  4;
-        // Zeile 5: alles Nullen
-        // Zeile 6: selbe Gleichung wie Zeile 0
-        gls[6][0] =  2; gls[6][1] = -1; gls[6][2] =  3; gls[6][3] = -1; gls[6][4] =  1;
-        
-        
-        gls[0][5] =  2; gls[1][5] =  3;gls[2][5] = -3; gls[3][5] =  4; gls[4][5] = -5; 
-        // Zeile 5: Null, Zeile 6: wie Zeile 0
-        gls[6][5] =  2;
-        
-        GLSsolver myglssolver = new GLSsolver();
-        myglssolver.debug = true;
-        myglssolver.solve(gls);
-    }
-    
-    /** Gibt die Lösung x des Gleichungssystems zurück: nur eindeutige (d.h. parameterunabhängige xi) werden zurückgegeben.
-                 index 0: Wert = 0 bedeutet xi unbestimmt,  Wert = 1 bedeutet xi bestimmt
-                 index 1: eigentlicher Wert (nur wenn xi bestimmt, dh index 0 = 1, sonst Wert 0)
-     */
-    public final double[][] solve(double[][] p_MatrixgleichNull) 
-    throws IllegalArgumentException, ArithmeticException {
+    public GLSsolver(double[][] p_MatrixgleichNull) throws IllegalArgumentException {
         
         // --------------------------------------
         // Kontrolle, ob Eingabematrix rechteckig
@@ -139,7 +108,7 @@ public final class GLSsolver {
         // -------------------------
         
         // so dass A*x = b
-        DenseDoubleMatrix2D A = new DenseDoubleMatrix2D(anzGl, (nplus1-1));
+        A = new DenseDoubleMatrix2D(anzGl, (nplus1-1));
         DenseDoubleMatrix2D b = new DenseDoubleMatrix2D(anzGl, 1);
         
         for (int i = 0; i < p_MatrixgleichNull.length; i++) {  // Zeilen i
@@ -163,7 +132,7 @@ public final class GLSsolver {
         if (debug) System.out.println(ALU.toString());
         
         DoubleMatrix2D L = ALU.getL();
-        DoubleMatrix2D R = ALU.getU();
+        R = ALU.getU();
         int[] piv = ALU.getPivot();
         
         
@@ -175,7 +144,7 @@ public final class GLSsolver {
 //        if (debug) System.out.println("Rx = c: R = " + R.toString());
 //        if (debug) System.out.println("alg.permute(b, piv, null) = " + alg.permute(b, piv, null).toString());
         
-        DoubleMatrix2D c = alg.solve(L,  alg.permute(b, piv, null)); // TODO: kann zu Problemen führen, 
+        c = alg.solve(L,  alg.permute(b, piv, null)); // TODO: kann zu Problemen führen, 
                                                                      // wenn weniger Gleichungen als Unbek --> s.Workaround oben
         
         if (debug) System.out.println("Lc = Pb:  c = " + c.toString());
@@ -186,15 +155,45 @@ public final class GLSsolver {
         }
         
         assert (alg.rank(A) == alg.rank(R)) : "Rang von A ungleich Rang von R --> Programmfehler";
+        anzUnbestParam = A.columns() - alg.rank(A);
+        if (debug) System.out.println("Anz unbest Parameter: " + anzUnbestParam);
+    }
+    
+    
+    
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {  // Beispiel aus Stoffer,1994,"Lineare Algebra" S.49
+        double[][] gls = new double[7][6];
+        gls[0][0] =  2; gls[0][1] = -1; gls[0][2] =  3; gls[0][3] = -1; gls[0][4] =  1;
+        gls[1][0] =  2; gls[1][1] = -1; gls[1][2] =  3; gls[1][3] =  0; gls[1][4] = -1;
+        gls[2][0] = -4; gls[2][1] =  2; gls[2][2] = -4; gls[2][3] =  5; gls[2][4] = -5;
+        gls[3][0] =  0; gls[3][1] =  0; gls[3][2] = -2; gls[3][3] =  2; gls[3][4] = -7;
+        gls[4][0] = -2; gls[4][1] =  1; gls[4][2] = -1; gls[4][3] =  0; gls[4][4] =  4;
+        // Zeile 5: alles Nullen
+        // Zeile 6: selbe Gleichung wie Zeile 0
+        gls[6][0] =  2; gls[6][1] = -1; gls[6][2] =  3; gls[6][3] = -1; gls[6][4] =  1;
         
         
+        gls[0][5] =  2; gls[1][5] =  3;gls[2][5] = -3; gls[3][5] =  4; gls[4][5] = -5; 
+        // Zeile 5: Null, Zeile 6: wie Zeile 0
+        gls[6][5] =  2;
+        
+        GLSsolver myglssolver = new GLSsolver(gls);
+        myglssolver.debug = true;
+        myglssolver.solve();
+    }
+    
+    /** Gibt die Lösung x des Gleichungssystems zurück: nur eindeutige (d.h. parameterunabhängige xi) werden zurückgegeben.
+                 index 0: Wert = 0 bedeutet xi unbestimmt,  Wert = 1 bedeutet xi bestimmt
+                 index 1: eigentlicher Wert (nur wenn xi bestimmt, dh index 0 = 1, sonst Wert 0)
+     */
+    public final double[][] solve() throws ArithmeticException {
         
         // --------------------------------------------------------------------------
         // EIGENTLICHER SOLVER für bestimmte Lösungsvariablen in unbestimmen Systemen
         // --------------------------------------------------------------------------
-        
-        anzUnbestParam = A.columns() - alg.rank(A);
-        if (debug) System.out.println("Anz unbest Parameter: " + anzUnbestParam);
         
         int gebrauchteUnbestParam = 0;
         x = new double[A.columns()][2 + anzUnbestParam]; // Status 1 (bestimmt), kN, alpha, beta (Parameter)
@@ -306,9 +305,9 @@ public final class GLSsolver {
         if (debug) {
             System.out.println("");
             for (int i = 0; i < x.length; i++) {
-                System.out.print("x"+i+" = " + Fkt.fix(x[i][1],3));
+                System.out.print("x"+i+" = " + Fkt.nf(x[i][1],3));
                 for (int j = 2; j < x[i].length; j++) {
-                    System.out.print(", P" + (j-1) + " = " + Fkt.fix(x[i][j],3));
+                    System.out.print(", P" + (j-1) + " = " + Fkt.nf(x[i][j],3));
                 }
                 System.out.println("");
             }
@@ -356,7 +355,6 @@ public final class GLSsolver {
     
     /** @return Anzahl unbestimmter Parameter. D.h. Anzahl fehlender unabhängiger Gleichungen.*/
     public int getAnzUnbestParam() {
-        assert solved: "ERROR: Call solve() first!";
         return anzUnbestParam;
     }
 }

@@ -856,10 +856,10 @@ public class clFachwerk implements inKonstante {
         
         // GLS lösen
         if (verbose) System.out.print("Beginne das Gleichungssystem zu loesen... ");
-        GLSsolver solver = new GLSsolver();
-        solver.debug = debug;
-        double[][] xLsg = solver.solve(GLS);
-        statischeUnbestimmtheit = solver.getAnzUnbestParam(); // TODO überprüfen
+        GLSsolver solver = new GLSsolver(GLS);
+        statischeUnbestimmtheit = solver.getAnzUnbestParam();
+        double[][] xLsg = solver.solve();
+        
         assert (xLsg.length == anzUnbek) : "xLsg.length = " + xLsg.length + " ungleich anzUnbek " + anzUnbek;
         if (verbose) System.out.println("fertig.");
         
