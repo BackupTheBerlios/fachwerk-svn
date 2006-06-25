@@ -15,7 +15,7 @@ import cern.colt.matrix.linalg.*;
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2005 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -200,6 +200,7 @@ public final class GLSsolver {
         
         int z = A.rows()-1; // Zeilenvariable, beginnt zuunterst
         
+        // Gleichungen mit lauter Nullen
         while (R.viewRow(z).cardinality() == 0 // nachfolgende Tests massgebend, dieser jedoch schnell
         || (Fkt.max(R.viewRow(z).toArray()) < TOL && Fkt.min(R.viewRow(z).toArray()) > -TOL)) {
             double cwert;
@@ -213,28 +214,28 @@ public final class GLSsolver {
             assert z > 0 : "lauter Nullen im GLS";
         }
         
+        // Verarbeiten der Gleichungen (von unten her)
         for (z = z; z >= 0; z--) {
             // finde erste nicht-Null in Zeile (Pivot)
             int p = -1 ; // Pivot: erste Zahl welche nicht null ist
             pivotfinden:
             for (int i = 0; i < R.columns(); i++) {
-                
-                //if (R.viewPart(z,i,1,1).cardinality() == 1) {
                 if (Math.abs(R.get(z,i)) > TOL) { // Versuch, numerische Probleme (Überbestimmtheit) zu vermeiden
                     p = i;
                     break pivotfinden;
                 }
             }
             
+            // Fall Kein Pivot gefunden (d.h. linker Teil der Gleichung aus lauter Nullen)
             if (p < 0) {
-                System.out.println("Warnung: kein Pivot gefunden in Zeile " + z);
+                if (debug ) System.out.println("Warnung: kein Pivot gefunden in Zeile " + z);
                 // Kontrolle, ob rechte Seite (c) auch null --> ok, sonst Widerspruch im GLS
                 if (Math.abs(c.get(z, 0)) > TOL) {
                     System.out.println("widersprüchliche Gleichungen im System! Zeile "+z);
                     throw new ArithmeticException("Widerspruch im Gleichungssystem!");
                 }
                 else {
-                    System.out.println("Entwarnung: Zeile " + z + " besteht aus lauter Nullen (ok)");
+                    if (debug) System.out.println("Entwarnung: Zeile " + z + " besteht aus lauter Nullen (ok)");
                     continue;
                 }
             }
@@ -243,7 +244,7 @@ public final class GLSsolver {
             boolean alleVarBestimmt = true;
             int effPivot = p; // effektiver Pivot (1. Unbestimmte Variable der Zeile), i.d.R. Pivot
             for (int i = p; i < R.columns(); i++) {
-                if (x[i][0] == 0 && Math.abs(R.viewRow(z).get(i)) > 0) { // TODO zweite Bed. kontr.
+                if (x[i][0] == 0 && Math.abs(R.viewRow(z).get(i)) > TOL) {
                     alleVarBestimmt = false;
                     effPivot = i; // i.d.R. effPivot=p, aber nicht immer.
                     break;
@@ -259,34 +260,80 @@ public final class GLSsolver {
                         kontrolle[j] += R.viewRow(z).get(i) * x[i][j+1];
                     }
                 }
-                double obnull = Math.abs(kontrolle[0] - c.get(z,0));
-                if (obnull > TOL) {
-                    System.out.println("Widerspruch im Gleichungssystem! (Zeile "+z+") " + obnull +" ungleich 0"); // URSPRÜNGLICH ZEILE (piv) ANGEBEN!
-                    throw new ArithmeticException("Widerspruch im Gleichungssystem!");
-                }
-                for (int j = 1; j < kontrolle.length; j++) {
+//                double obnull = Math.abs(kontrolle[0] - c.get(z,0));
+//                if (obnull > TOL) {
+//                    System.out.println("Widerspruch im Gleichungssystem! (Zeile "+z+") " + obnull +" ungleich 0"); // URSPRÜNGLICH ZEILE (piv) ANGEBEN!
+//                    throw new ArithmeticException("Widerspruch im Gleichungssystem!");
+//                }
+//                for (int j = 1; j < kontrolle.length; j++) {
+//                    if (Math.abs(kontrolle[j]) > TOL) {
+//                        System.out.println("Widerspruch im Gleichungssystem! (Zeile "+z+") Parameter "+j+" ungleich 0: " + kontrolle[j]);
+//                                                
+//                        throw new ArithmeticException("Widerspruch im Gleichungssystem!");
+//                    }
+//                }
+                
+                // TODO TESTEN!
+                boolean alleParamNull = true;
+                int bekParam = -1; // Parameter der aus der Gleichung bestimmt werden kann.
+                for (int j = kontrolle.length - 1; j > 0; j--) {
                     if (Math.abs(kontrolle[j]) > TOL) {
-                        System.out.println("Widerspruch im Gleichungssystem! (Zeile "+z+") Parameter "+j+" ungleich 0: " + kontrolle[j]);
-                                                
-                        throw new ArithmeticException("Widerspruch im Gleichungssystem!");
+                        alleParamNull = false;
+                        if (bekParam < 0) bekParam = j;
                     }
                 }
+                // Überprüfen, ob Gleichung widersprüchlich ist
+                if (alleParamNull) {
+                    double obnull = Math.abs(kontrolle[0] - c.get(z,0));
+                    if (obnull > TOL) {
+                        System.out.println("Widerspruch im Gleichungssystem! (Zeile "+z+") " + obnull +" ungleich 0"); // TODO: URSPRÜNGLICH ZEILE (piv) ANGEBEN!
+                        throw new ArithmeticException("Widerspruch im Gleichungssystem!");
+                    }
+                    else continue; // nächste Gleichung
+                }
+                // else
+                // Ein schon vergebener Parameter kann ausgerechnet werden
+                
+                // Schlaufe über bisherige Lösung
+                assert bekParam > 0; 
+                for (int xi = 0; xi < x.length; xi++) {
+                    double faktor = x[xi][1+bekParam];
+                    if (Math.abs(faktor) < TOL) continue;
+                    // Einsetzen
+                    assert x[xi][0] > 0; // bestimmt
+                    for (int j = 0; j < kontrolle.length; j++) {
+                        if (j != bekParam) {
+                            x[xi][j+1] += -kontrolle[j] * faktor / kontrolle[bekParam];
+                        }
+                    }
+                    // Parameter nachrutschen
+                    if (bekParam < anzUnbestParam) { // d.h. nicht der letzte zu vergebende Parameter.
+                        for (int j = bekParam; j < anzUnbestParam; j++) {
+                            x[xi][j+1] = x[xi][j+2];
+                            x[xi][j+2] = 0;
+                        }
+                    }
+                    else x[xi][bekParam+1] = 0;
+                }
+                System.err.println("VORSICHT, neues UNGETESTETES Modul des Solvers im Einsatz."); // TODO Warnung entfernen
+                gebrauchteUnbestParam --;
             }
             
+            // Normalfall, unbestimmter (effektiver) Pivot vorhanden
             else {
                 
                 // unbekannte
                 x[effPivot][1] = c.get(z,0) / R.viewRow(z).get(effPivot);
                 for (int i = R.columns()-1; i >= p; i--) { // R.Spalten, da dies AnzUnbek x entspricht
                     if (i == effPivot) continue;
-                    if (x[i][0] == 0) {
+                    if (x[i][0] == 0) { // unbestimmt, aber nicht Pivot
                         if (Math.abs(R.viewRow(z).get(i)) > TOL ) { // TODO testen!!!
                             if (gebrauchteUnbestParam >= anzUnbestParam) {
                                 System.err.println("Programmfehler in solver: gebrauchteUnbestParam >= anzUnbestParam");
                                 throw new AssertionError("Programmfehler in solver: gebrauchteUnbestParam >= anzUnbestParam");
                             }
-                            x[i][gebrauchteUnbestParam + 2] = 1;
-                            x[i][0] = 1;
+                            x[i][gebrauchteUnbestParam + 2] = 1; // neuer Parameter (alpha, beta) setzen
+                            x[i][0] = 1; // bestimmt (auch wenn von Parameter abhängig).
                             
                             gebrauchteUnbestParam++;
                         }

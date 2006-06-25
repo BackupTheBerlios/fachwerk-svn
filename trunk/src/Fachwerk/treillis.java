@@ -154,7 +154,7 @@ public class treillis extends clOberflaeche implements inKonstante {
         if (UNTERVER < 10) titel += "0";
         titel += Integer.toString(UNTERVER);
         System.out.println(titel);
-        System.out.println("Copyright (C) 2003-2005 A. Vontobel");
+        System.out.println("Copyright (C) 2003-2006 A. Vontobel");
         System.out.println("Fachwerk comes with ABSOLUTELY NO WARRANTY;");
         System.out.println("for details read the GNU General Public Licence (GPL) version 2.");
         System.out.println("All results must be verified CAREFULLY in order to state that they");

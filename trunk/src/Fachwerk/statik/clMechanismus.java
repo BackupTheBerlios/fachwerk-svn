@@ -595,6 +595,7 @@ public class clMechanismus implements inKonstante {
         double[][] xLsg;
         try {
             GLSsolver solver = new GLSsolver(GLS);
+            System.out.println("Anzahl Freiheitsgrade: " +solver.getAnzUnbestParam());
             xLsg = solver.solve();
             xLsgvollst = solver.getCompleteSolution();
         }
@@ -707,6 +708,7 @@ public class clMechanismus implements inKonstante {
                 unbek[i] += xLsgvollst[i][2+j] * param[j];
             }
         }
+        if (verbose) System.out.println("Leistung des zufaelligen Mechanismus. P = " + unbek[0]);
         
         // Kontrolle
         if (Math.abs(unbek[0]) < TOL) {
