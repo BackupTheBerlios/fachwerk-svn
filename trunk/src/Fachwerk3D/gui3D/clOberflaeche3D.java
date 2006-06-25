@@ -12,7 +12,7 @@ import Fachwerk.gui.clStringDialog;
 /**
  * Fachwerk3D - treillis3D
  *
- * Copyright (c) 2003 - 2005 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -141,7 +141,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
         itemZurücksetzen = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JSeparator();
         buttonVerbose = new javax.swing.JCheckBoxMenuItem();
-        buttonGLS = new javax.swing.JRadioButtonMenuItem();
+        buttonGLS = new javax.swing.JCheckBoxMenuItem();
         menuAddins = new javax.swing.JMenu();
         itemKoordTransFWK = new javax.swing.JMenuItem();
         itemKoordTransDXF = new javax.swing.JMenuItem();
@@ -1719,7 +1719,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     private javax.swing.JPanel StatusLeistePanel;
     private javax.swing.JPanel StatusTextPanel;
     private javax.swing.JPanel WerkzeugPanel;
-    private javax.swing.JRadioButtonMenuItem buttonGLS;
+    private javax.swing.JCheckBoxMenuItem buttonGLS;
     private javax.swing.JCheckBoxMenuItem buttonVerbose;
     protected javax.swing.JTextField feldStatusFw;
     protected javax.swing.JTextField feldStatuszeile;

@@ -689,9 +689,9 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
         
         // GLS lösen
         System.out.print("Beginne das Gleichungssystem zu loesen... ");
-        GLSsolver solver = new GLSsolver();
-        solver.debug = debug;
-        double[][] xLsg = solver.solve(GLS);
+        GLSsolver solver = new GLSsolver(GLS);
+        statischeUnbestimmtheit = solver.getAnzUnbestParam();
+        double[][] xLsg = solver.solve();
         assert (xLsg.length == anzUnbek) : "xLsg.length = " + xLsg.length + " ungleich anzUnbek " + anzUnbek;
         System.out.println("fertig.");
         
