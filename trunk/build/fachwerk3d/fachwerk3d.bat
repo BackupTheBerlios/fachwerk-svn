@@ -1,3 +1,3 @@
 
 COLOR F0
-java -jar fachwerk3d010.jar %*
+java -jar fachwerk3d011.jar %*
