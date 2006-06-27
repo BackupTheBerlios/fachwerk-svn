@@ -18,7 +18,7 @@ public class clInfo extends javax.swing.JDialog {
     private int UNTERVER;
     
     private final String Copyright =
-    "Copyright (c) 2003 - 2005 A.Vontobel <qwert2003@users.berlios.de>" + '\n' +
+    "Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.berlios.de>" + '\n' +
     "                                     <qwert2003@users.sourceforge.net>" + '\n' + '\n';
     
     private final String Lizenz_de =
