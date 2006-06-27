@@ -61,7 +61,7 @@ public class treillis extends clOberflaeche implements inKonstante {
     
     public boolean OptionVorber = true;
     public boolean OptionGLS = true;
-    public boolean OptionMechanismus = false; // TODO wenn genügend getestet true
+    public boolean OptionMechanismus = true;
     private boolean OptionVerbose = false;
     
     private boolean keinWIDERSPRUCH = true;

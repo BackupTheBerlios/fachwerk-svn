@@ -306,6 +306,8 @@ public final class GLSsolver {
                             x[xi][j+1] += -kontrolle[j] * faktor / kontrolle[bekParam];
                         }
                     }
+                }
+                for (int xi = 0; xi < x.length; xi++) {
                     // Parameter nachrutschen
                     if (bekParam < anzUnbestParam) { // d.h. nicht der letzte zu vergebende Parameter.
                         for (int j = bekParam; j < anzUnbestParam; j++) {
@@ -315,7 +317,7 @@ public final class GLSsolver {
                     }
                     else x[xi][bekParam+1] = 0;
                 }
-                System.err.println("VORSICHT, neues UNGETESTETES Modul des Solvers im Einsatz."); // TODO Warnung entfernen
+                if (debug) System.err.println("VORSICHT, wenig GETESTETES Modul des Solvers im Einsatz."); // TODO Warnung entfernen
                 gebrauchteUnbestParam --;
             }
             

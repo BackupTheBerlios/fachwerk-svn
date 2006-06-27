@@ -843,6 +843,7 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
 
         menuRechnen.add(buttonGLS);
 
+        buttonMechanismus.setSelected(true);
         buttonMechanismus.setText("Mechanismen testen");
         buttonMechanismus.setToolTipText("Sucht Mechanismen, die eine Gleichgewichtsverletzung belegen. Kinematische Methode.");
         buttonMechanismus.addActionListener(new java.awt.event.ActionListener() {

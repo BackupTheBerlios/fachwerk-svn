@@ -717,9 +717,15 @@ public class clMechanismus implements inKonstante {
         }
         
         // Skalieren, damit die grösste Stabrotation = 1
-        double maxwert = 1E-10; // nicht 0, wg. div 0
+        final double startwert = 1E-10; // nicht 0, wg. div 0
+        double maxwert = startwert;
         for (int unb = 1 + 2*anzKn; unb < unbek.length; unb++) { // nur Stabrotationen! Siehe Aufbau Unbekannte.
             if (Math.abs(unbek[unb]) > maxwert) maxwert = Math.abs(unbek[unb]);
+        }
+        if (maxwert == startwert) { // keine Stabrotation ungleich 0, kann vorkommen bei lauter gesetzten Stäben. Max. Knotenverschiebung = 1
+            for (int unb = 1; unb < 1 + 2*anzKn; unb++) { // Knotenverschiebungen
+                if (Math.abs(unbek[unb]) > maxwert) maxwert = Math.abs(unbek[unb]);
+            }
         }
         if (unbek[0] < 0) maxwert *= -1; // damit eine positive Leistung entsteht. Kommt wahrscheinlich nicht vor.
         for (int unb = 0; unb < unbek.length; unb++) unbek[unb] /= maxwert;
