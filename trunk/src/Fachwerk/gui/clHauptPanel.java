@@ -83,6 +83,7 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
     protected Point2D ZoomPkt2 = new Point2D.Double();
     private Point2D hilfslin_von = new Point2D.Double(); // für Hilfslinie und -rechteck in Panelkoord.
     private Point2D hilfslin_bis = new Point2D.Double();
+    protected double maxMechSkal; // max. Skalierfaktor für Mechanismen (durch zoomall bestimmt)
     
     // maximale Pfeillänge
     protected double maxPfeil = 80; // hängt mit ZoomAll() zusammen.
@@ -94,6 +95,9 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
     protected int schriftgrStd = 10; // Standartschriftgrösse
     protected double faktorza = 1.2; // Zeilensabstand
     private final double bzuh = 0.61; // Breite zur Höhe eines Buchstabens
+    
+    // Mechanismus, max. dargestellte Verschiebung: Max(Zoomausschnittbreite,-höhe)/mechDarstFaktor
+    protected final double mechDarstFaktor = 15;
     
     /*
      // Lagerattribute
@@ -493,7 +497,11 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
         Point2D pkt2 = new Point2D.Double(); // jeweils aktueller Pkt;
         double dx1; double dz1; // Relativverschiebung des Mechanismus; jeweils aktueller Pkt;
         double dx2; double dz2; // Relativverschiebung des Mechanismus; jeweils aktueller Pkt;
-        final double skal = 0.5; // TODO gegebenfalls Skalierung anpassen
+        double[] ausschnitt = new double[2];
+        ausschnitt[0] = Math.abs(ZoomPkt2.getX()-ZoomPkt1.getX());
+        ausschnitt[1] = Math.abs(ZoomPkt2.getY()-ZoomPkt1.getY());
+        double skal = (Fkt.max(ausschnitt) / mechDarstFaktor + maxMechSkal) / 2d;
+        if (skal > maxMechSkal) skal = maxMechSkal;
         g.setPaint(Color.red); g.setStroke(new BasicStroke(2f));
         
         // Stäbe
@@ -583,6 +591,11 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
         Point2D untenrechts = new Point2D.Double();
         obenlinks.setLocation(minX, minZ);
         untenrechts.setLocation(maxX, maxZ);
+        
+        final double Lx = untenrechts.getX() - obenlinks.getX();
+        final double Lz = untenrechts.getY() - obenlinks.getY();
+        if (Lx>Lz) maxMechSkal = Lx/mechDarstFaktor;
+        else maxMechSkal = Lz/mechDarstFaktor;
         
         ZoomPkt1 = obenlinks;
         ZoomPkt2 = untenrechts;

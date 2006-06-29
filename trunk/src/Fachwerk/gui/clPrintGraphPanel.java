@@ -86,6 +86,7 @@ public class clPrintGraphPanel extends clHauptPanel implements Printable {
         ZoomPkt1 = zoomPkte[0];
         ZoomPkt2 = zoomPkte[1];
         ZOOMALL = hp.ZOOMALL;
+        maxMechSkal = hp.maxMechSkal;
         
         boolean[] aktiveLayer = hp.getAktiveLayer();
         MIT_KnNr = aktiveLayer[0];
