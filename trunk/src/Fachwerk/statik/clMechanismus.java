@@ -404,6 +404,7 @@ public class clMechanismus implements inKonstante {
                     break;
                 case VERSCHIEBLICH:
                     anzVerschKn++;
+                    break;
                 case LOS:
                     break;
                 default:
@@ -431,8 +432,8 @@ public class clMechanismus implements inKonstante {
             System.out.println("Anzahl Gleichungen: " + anzGL);
         }
         
-        if (anzUnbek == 0) {
-            System.out.println("Gleichungssystem der Mechanismen: keine Unbekannten");
+        if (anzUnbek == 1) {  // keine Knoten vorhanden
+            System.out.println("Gleichungssystem der Mechanismen: keine Knoten");
             assert INSTABIL_KEIN_GLGEW = false;
             return true;
         }

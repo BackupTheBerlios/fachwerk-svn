@@ -1309,7 +1309,7 @@ public class treillis extends clOberflaeche implements inKonstante {
     void LayerAuflKraft(boolean status) {
         hp.ZeigeAuflagerkräfte(status);
         setLayerAuflKraft(status);
-    }    
+    }
     void LayerMechanismius(boolean status, double[][] mechanismusRelKnVersch) {
         hp.ZeigeMechanismus(status, mechanismusRelKnVersch);
     }
