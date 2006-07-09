@@ -78,18 +78,17 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
     private double[][] ax, ay, az; // x, y und z Komponenten der Stäbe. [von Knoten][bis Knoten]
     
     // Programmtechnische Variablen
-    // private int kni, knj, i, j; // Zählervariablen
     //private int anzFG; // verbleibende Freiheitsgrade (unbestimmte Stabkräfte)
     
     
     private final double TOL = TOL_vorberechnung;
     //private final double TOL = 1E-11; // um Gleichheit von Stabkräften zu erkennen (in rVorberechnung)
-                                      // Vorschlag 1E-11
     private final double TOLresultatcheck = TOL_resultatcheck;
     //private final double TOLresultatcheck = 1E-10; // dito, jedoch lascherer Wert, zB. TOL des GLS-Solvers
     
     private boolean WIDERSPRUCHaufgetreten = false;
     private int statischeUnbestimmtheit = Integer.MIN_VALUE; // zum Erkennen ob berechnet.
+    private double[][] mechanismusRelKnVersch;
     
     private boolean verbose = false;
     private boolean debug = false;
@@ -260,16 +259,16 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
         
         clFachwerk3D fw = new clFachwerk3D(testKn, testSt, testTop);
         fw.setVerbose(true);
-        fw.rechnen(false,true);
+        fw.rechnen(false,true,true);
         fw.resultatausgabe_direkt();
     }
     
     //------------------------------------------------------------------------------------------------------------
     
     /** Berechnet das Fachwerkmodell
-     * @return false: Widerspruch aufgetreten. true: Berechnung durchgeführt.
+     * @return false: Widerspruch aufgetreten. true: Berechnung durchgeführt ohne Widerspruch.
      */
-    public boolean rechnen(boolean optionVORBER, boolean optionGLS) throws Exception {
+    public boolean rechnen(boolean optionVORBER, boolean optionGLS, boolean optionMECHANISMUS) throws Exception {
                 
         if (check() == false) {
             System.err.println("Fehler beim check: clFachwerk.rechnen");
@@ -281,13 +280,34 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
         
         if (optionVORBER) rVorberechnung();
         
-        if (optionGLS && !WIDERSPRUCHaufgetreten) rGleichgewichtsGLS();
+        try {
+            if (optionGLS && !WIDERSPRUCHaufgetreten) rGleichgewichtsGLS();
+        }
+        catch (ArithmeticException wid_e) {
+            WIDERSPRUCHaufgetreten = true;
+            if (wid_e.getMessage() != null) System.out.println(wid_e.getMessage());
+            else System.out.println(wid_e.toString());
+        }
         
         rKnotenstatusSetzen();
+        
+        boolean OKkomplett = false;
         if (resultatcheck()) { // falls keine Widerspruch entdeckt wird:
-            istvollständiggelöst(false); // false, da resultatcheck() soeben durchgeführt
+            OKkomplett = istvollständiggelöst(false); // false, da resultatcheck() soeben durchgeführt
         }
         else verbose = true; // gibt mehr Infos aus, wenn resultatausgabe_direkt() aufgerufen wird.
+        
+        if (optionMECHANISMUS && !OKkomplett) {
+            
+            try {
+                WIDERSPRUCHaufgetreten = rMechanismusVerletztGlgew();
+            }
+            catch (Exception e) {
+                // wenn WIDERSPRUCHaufgetreten (in vorheriger statischer Berechnung), 
+                // soll dies angezeigt werden (statt FEHLER), auch wenn die Mechanismusber fehlgeschlagen ist.
+                if (!WIDERSPRUCHaufgetreten) throw e;
+            }
+        }
         
         return !WIDERSPRUCHaufgetreten;
     }
@@ -865,6 +885,29 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
         return true;
     }
     
+    private boolean rMechanismusVerletztGlgew() throws Exception {
+        clMechanismus3D mech = new clMechanismus3D(Kn, St, Top);
+        mech.setVerbose(verbose);
+        mech.setModellSchonGeprüft(true);
+        boolean fertigberechnet = mech.rechnen();
+        
+        if (!fertigberechnet) System.out.println("[clFachwerk] Warnung: Mechanismen nicht fertig gerechnet.");
+        if (true) { // verbose
+            System.out.println("");
+            if (mech.istStabil()) System.out.println("Das System ist STABIL."); // TODO übersetzen
+            else System.out.println("Das System ist instabil.");
+        }
+        if (mech.verletztGleichgewicht()) {
+            System.out.println("Das System ist vermutlich NICHT IM GLEICHGEWICHT!"); // TODO übersetzen
+            System.out.println("");
+            mechanismusRelKnVersch = mech.getVerschobeneLage();
+        }
+        else {
+            System.out.println("OK, kein Mechanismus gefunden, der das Glgew verletzt."); // TODO übersetzen
+            System.out.println("");
+        }
+        return mech.verletztGleichgewicht();
+    }
     
     public void resultatausgabe_direkt() {
         // Knotenstatus
@@ -1009,6 +1052,13 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
             System.out.println("oder allenfalls um einen Programmfehler handeln.");
         }
         System.out.println("");
+    }
+    
+    /** Diese Methode liefert einen zufälligen Mechanismus, der das Gleichgewicht verletzt.
+     * Gibt es keinen oder wurde die Mechanismusberechnung nicht durchgeführt, gibt die Methode null zurück.
+     * @return Relativverschiebung in x und z Rtg. für jeden Knoten (Knoten 1: Index1).*/
+    public double[][] getMechanismus() {
+        return mechanismusRelKnVersch;
     }
     
 }

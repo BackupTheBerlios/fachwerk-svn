@@ -111,7 +111,7 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="itemFr">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="français"/>
+                    <Property name="text" type="java.lang.String" value="fran&#xe7;ais"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemFrActionPerformed"/>
@@ -228,7 +228,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="itemKraftAnzeigen">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Stabkräfte anzeigen"/>
+                <Property name="text" type="java.lang.String" value="Stabkr&#xe4;fte anzeigen"/>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Fachwerk/gui/icons/anschreiben.png"/>
                 </Property>
@@ -250,7 +250,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="itemLagerKrAnzeigen">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Auflagerkräfte anzeigen"/>
+                <Property name="text" type="java.lang.String" value="Auflagerkr&#xe4;fte anzeigen"/>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Fachwerk/gui/icons/Lager.png"/>
                 </Property>
@@ -310,28 +310,28 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemNeuerStabActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="itemLöschen">
+            <MenuItem class="javax.swing.JMenuItem" name="itemL&#xf6;schen">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Fachwerk/gui/icons/eraser.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="löschen"/>
-                <Property name="toolTipText" type="java.lang.String" value="selektierten Stab oder Knoten löschen"/>
+                <Property name="text" type="java.lang.String" value="l&#xf6;schen"/>
+                <Property name="toolTipText" type="java.lang.String" value="selektierten Stab oder Knoten l&#xf6;schen"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemLöschenActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemL&#xf6;schenActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="itemAllesZurücksetzen">
+            <MenuItem class="javax.swing.JMenuItem" name="itemAllesZur&#xfc;cksetzen">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Fachwerk/gui/icons/clear_left.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="alles zurücksetzen"/>
-                <Property name="toolTipText" type="java.lang.String" value="alle gesetzten Stabkräfte löschen"/>
+                <Property name="text" type="java.lang.String" value="alles zur&#xfc;cksetzen"/>
+                <Property name="toolTipText" type="java.lang.String" value="alle gesetzten Stabkr&#xe4;fte l&#xf6;schen"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemAllesZurücksetzenActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemAllesZur&#xfc;cksetzenActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="jSeparator1">
@@ -366,16 +366,16 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemBerechnenActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="itemZurücksetzen">
+            <MenuItem class="javax.swing.JMenuItem" name="itemZur&#xfc;cksetzen">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Fachwerk/gui/icons/rotation.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="zurücksetzen"/>
-                <Property name="toolTipText" type="java.lang.String" value="Berechnung zurücksetzen"/>
+                <Property name="text" type="java.lang.String" value="zur&#xfc;cksetzen"/>
+                <Property name="toolTipText" type="java.lang.String" value="Berechnung zur&#xfc;cksetzen"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemZurücksetzenActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemZur&#xfc;cksetzenActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="jSeparator2">
@@ -392,18 +392,28 @@
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="buttonGLS">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" value="Gleichungssystem lösen"/>
-                <Property name="toolTipText" type="java.lang.String" value="Bestimmt die statisch bestimmten Stabkräfte durch num. Lösen einen GLS."/>
+                <Property name="text" type="java.lang.String" value="Gleichungssystem l&#xf6;sen"/>
+                <Property name="toolTipText" type="java.lang.String" value="Bestimmt die statisch bestimmten Stabkr&#xe4;fte durch num. L&#xf6;sen einen GLS."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonGLSActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="buttonMechanismus">
+              <Properties>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="Mechanismen testen"/>
+                <Property name="toolTipText" type="java.lang.String" value="Sucht Mechanismen, die eine Gleichgewichtsverletzung belegen. Kinematische Methode."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonMechanismusActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="menuAddins">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Zusätze"/>
+            <Property name="text" type="java.lang.String" value="Zus&#xe4;tze"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="itemKoordTransFWK">
@@ -571,15 +581,15 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="knopfBerechnenActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="knopfZurücksetzen">
+        <Component class="javax.swing.JButton" name="knopfZur&#xfc;cksetzen">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/Fachwerk/gui/icons/rotation.png"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Berechnung zurücksetzen"/>
+            <Property name="toolTipText" type="java.lang.String" value="Berechnung zur&#xfc;cksetzen"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="knopfZurücksetzenActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="knopfZur&#xfc;cksetzenActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JToggleButton" name="knopfKnoten">
@@ -672,7 +682,7 @@
               <Image iconType="3" name="/Fachwerk/gui/icons/anschreiben.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="kN"/>
-            <Property name="toolTipText" type="java.lang.String" value="Stabkräfte anzeigen"/>
+            <Property name="toolTipText" type="java.lang.String" value="Stabkr&#xe4;fte anzeigen"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="knopfKraftActionPerformed"/>
@@ -702,7 +712,7 @@
               <Image iconType="3" name="/Fachwerk/gui/icons/Lager.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="kN"/>
-            <Property name="toolTipText" type="java.lang.String" value="Lagerkräfte anzeigen"/>
+            <Property name="toolTipText" type="java.lang.String" value="Lagerkr&#xe4;fte anzeigen"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="knopfLagerKrActionPerformed"/>
@@ -930,26 +940,26 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="knopfNeuerStabActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="knopfLöschen">
+        <Component class="javax.swing.JButton" name="knopfL&#xf6;schen">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/Fachwerk/gui/icons/eraser.png"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="markierten Knoten/Stab löschen"/>
+            <Property name="toolTipText" type="java.lang.String" value="markierten Knoten/Stab l&#xf6;schen"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="knopfLöschenActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="knopfL&#xf6;schenActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="knopfAllesZurücksetzen">
+        <Component class="javax.swing.JButton" name="knopfAllesZur&#xfc;cksetzen">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/Fachwerk/gui/icons/clear_left.png"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="alle gesetzten Stabkräfte löschen"/>
+            <Property name="toolTipText" type="java.lang.String" value="alle gesetzten Stabkr&#xe4;fte l&#xf6;schen"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="knopfAllesZurücksetzenActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="knopfAllesZur&#xfc;cksetzenActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="knopfEigenschaften">

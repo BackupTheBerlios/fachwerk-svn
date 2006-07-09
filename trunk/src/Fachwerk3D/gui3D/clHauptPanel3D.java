@@ -12,7 +12,6 @@ import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.*;
-import java.math.*;
 
 
 /**
@@ -55,6 +54,7 @@ public class clHauptPanel3D extends javax.swing.JPanel implements inKonstante3D 
     protected double[] projektionsrtg_n = {-0.3,-0.9, 0.2}; // Sichtrichtung zu Beginn  // TODO {0, -1, 0};
     
     protected clDXF3D dxf; // Hintergrund
+    protected double[][] mechanismusRelKnVersch; // Mechanismus (1.Index Knoten, 2. Index Rtg, Wert Relativverschiebung)
     
     // Zustandsvariablen
     protected boolean MIT_KnNr = false;
@@ -63,6 +63,7 @@ public class clHauptPanel3D extends javax.swing.JPanel implements inKonstante3D 
     protected boolean MIT_Lasten = false;
     protected boolean MIT_Stabkräften = false;
     protected boolean MIT_Hintergrund = false;
+    protected boolean MIT_Mechanismus = false;
     protected boolean MIT_MiniKoordSys = true;
     private boolean MIT_Hilfslinie = false;
     private boolean MIT_Hilfsrechteck = false;
@@ -85,6 +86,7 @@ public class clHauptPanel3D extends javax.swing.JPanel implements inKonstante3D 
     protected Point2D ZoomPkt2 = new Point2D.Double();
     private Point2D hilfslin_von = new Point2D.Double(); // für Hilfslinie und -rechteck in Panelkoord.
     private Point2D hilfslin_bis = new Point2D.Double();
+    protected double maxMechSkal; // max. Skalierfaktor für Mechanismen (durch zoomall bestimmt)
     
     // maximale Pfeillänge
     protected double maxPfeil = 80; // hängt mit ZoomAll() zusammen.
@@ -96,6 +98,9 @@ public class clHauptPanel3D extends javax.swing.JPanel implements inKonstante3D 
     protected int schriftgrStd = 10; // Standartschriftgrösse
     protected double faktorza = 1.2; // Zeilensabstand
     private final double bzuh = 0.61; // Breite zur Höhe eines Buchstabens
+    
+    // Mechanismus, max. dargestellte Verschiebung: Max(Zoomausschnittbreite,-höhe)/mechDarstFaktor
+    protected final double mechDarstFaktor = 15;
     
     /*
      // Lagerattribute
@@ -177,6 +182,7 @@ public class clHauptPanel3D extends javax.swing.JPanel implements inKonstante3D 
             if (MIT_Lasten) darstellenLasten();
             if (MIT_Auflagerkräften) darstellenAuflagerkräfte();
             if (MIT_Stabkräften) darstellenStabkräfte();
+            if (MIT_Mechanismus) darstellenMechanismus();
             if (MIT_Hilfslinie || MIT_Hilfsrechteck) darstellenHilfslinien();
             darstellenHilfspunkt();
         }
@@ -193,10 +199,7 @@ public class clHauptPanel3D extends javax.swing.JPanel implements inKonstante3D 
         Point3D pkt2 = new Point3D(); // jeweils aktueller Pkt;
         double durchmesser;
         
-        //if (debug)  System.out.println("darstellenFachwerk läuft. Anz Knoten: " + (Kn.length-1));
-        //if (debug) testZeigeKn();
-        
-        // Stäbe    // bis und mit version 0.07: nach Knoten
+        // Stäbe
         for (int i = 1; i < St.length; i++) {
             pkt.setLocation(Kn[St[i].von].getX(), Kn[St[i].von].getY(), Kn[St[i].von].getZ());
             pkt2.setLocation(Kn[St[i].bis].getX(), Kn[St[i].bis].getY(), Kn[St[i].bis].getZ());
@@ -470,6 +473,36 @@ public class clHauptPanel3D extends javax.swing.JPanel implements inKonstante3D 
         g.setPaint(Color.black); g.setStroke(new BasicStroke(1f));
     }
     
+    protected void darstellenMechanismus() { // TODO fliessende gesetzte Stäbe dick
+        // Durchlaufvariablen
+        Point3D pkt = new Point3D(); // jeweils aktueller Pkt;
+        Point3D pkt2 = new Point3D(); // jeweils aktueller Pkt;
+        double dx1; double dy1; double dz1; // Relativverschiebung des Mechanismus; jeweils aktueller Pkt;
+        double dx2; double dy2; double dz2; // Relativverschiebung des Mechanismus; jeweils aktueller Pkt;
+        double[] ausschnitt = new double[2];
+        ausschnitt[0] = Math.abs(ZoomPkt2.getX()-ZoomPkt1.getX());
+        ausschnitt[1] = Math.abs(ZoomPkt2.getY()-ZoomPkt1.getY());
+        double skal = (Fkt.max(ausschnitt) / mechDarstFaktor + maxMechSkal) / 2d;
+        if (skal > maxMechSkal) skal = maxMechSkal;
+        g.setPaint(Color.red); g.setStroke(new BasicStroke(2f));
+        
+        // Stäbe
+        for (int i = 1; i < St.length; i++) {
+            dx1 = mechanismusRelKnVersch[St[i].von][0];
+            dy1 = mechanismusRelKnVersch[St[i].von][1];
+            dz1 = mechanismusRelKnVersch[St[i].von][2];
+            dx2 = mechanismusRelKnVersch[St[i].bis][0];
+            dy2 = mechanismusRelKnVersch[St[i].bis][1];
+            dz2 = mechanismusRelKnVersch[St[i].bis][2];
+            pkt.setLocation(Kn[St[i].von].getX() + dx1*skal, Kn[St[i].von].getY() + dy1*skal, Kn[St[i].von].getZ() + dz1*skal);
+            pkt2.setLocation(Kn[St[i].bis].getX() + dx2*skal, Kn[St[i].bis].getY() + dy2*skal, Kn[St[i].bis].getZ() + dz2*skal);
+            
+            Line2D.Double linie = new Line2D.Double(koord.panel(pkt),koord.panel(pkt2));
+            g.draw(linie);
+        }
+        g.setPaint(Color.black); g.setStroke(new BasicStroke(1f));
+    }
+    
     protected void darstellenMiniKoordSys() {
         g.setPaint(Color.gray); g.setStroke(new BasicStroke(1f));
         Point2D.Double o = new Point2D.Double(30, 30);        
@@ -566,6 +599,11 @@ public class clHauptPanel3D extends javax.swing.JPanel implements inKonstante3D 
         obenlinks.setLocation(minX, minZ);
         untenrechts.setLocation(maxX, maxZ);
         
+        final double Lx = untenrechts.getX() - obenlinks.getX();
+        final double Lz = untenrechts.getY() - obenlinks.getY();
+        if (Lx>Lz) maxMechSkal = Lx/mechDarstFaktor;
+        else maxMechSkal = Lz/mechDarstFaktor;
+        
         ZoomPkt1 = obenlinks;
         ZoomPkt2 = untenrechts;
         if (befehl) neuzeichnen();
@@ -640,6 +678,14 @@ public class clHauptPanel3D extends javax.swing.JPanel implements inKonstante3D 
         }
         else MIT_Hintergrund = false;
         neuzeichnen();
+    }
+    
+    public void ZeigeMechanismus(boolean zeigen, double[][] mechanismusRelKnVersch) {
+        if (zeigen && mechanismusRelKnVersch != null) {
+            MIT_Mechanismus = true;
+            this.mechanismusRelKnVersch = mechanismusRelKnVersch;
+        }
+        else MIT_Mechanismus = false;
     }
     
     public void ZeigeMiniKoordSys(boolean zeigen) {
@@ -743,16 +789,17 @@ public class clHauptPanel3D extends javax.swing.JPanel implements inKonstante3D 
     
     
     /** Gibt an, welche Layer aktiv sind. Nötig für befehlDruckenGraph.
-     * Reihenfolge: KnNr, StabNr, Auflagerkräfte, Lasten, Stabkräfte
+     * Reihenfolge: KnNr, StabNr, Auflagerkräfte, Lasten, Stabkräfte, Mechanismus
     */
     public boolean[] getAktiveLayer() {
-        boolean layer[] = new boolean[6];
+        boolean layer[] = new boolean[7];
         layer[0] = MIT_KnNr;
         layer[1] = MIT_StabNr;
         layer[2] = MIT_Lasten;
         layer[3] = MIT_Auflagerkräften;
         layer[4] = MIT_Stabkräften;
         layer[5] = MIT_Hintergrund;
+        layer[6] = MIT_Mechanismus;
         return layer;
     }
     

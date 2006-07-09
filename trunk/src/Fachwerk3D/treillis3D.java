@@ -70,6 +70,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     
     public boolean OptionVorber = false;
     public boolean OptionGLS = true;
+    public boolean OptionMechanismus = true;
     private boolean OptionVerbose = false;
     
     private boolean keinWIDERSPRUCH = true;
@@ -357,25 +358,26 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
         try {
             clFachwerk3D fachwerk = new clFachwerk3D(Knotenarray, Stabarray, Topologie);
             fachwerk.setVerbose(OptionVerbose);
-            keinWIDERSPRUCH = fachwerk.rechnen(OptionVorber,OptionGLS);
+            keinWIDERSPRUCH = fachwerk.rechnen(OptionVorber,OptionGLS,OptionMechanismus);
             fachwerk.resultatausgabe_direkt();
             if (keinWIDERSPRUCH) VOLLSTÄNDIGGELÖST_OK = fachwerk.istvollständiggelöst(false); // false, das resutatcheck() soeben in .rechnen() durchgeführt
             aktualisieren(true, true);
+            if (!keinWIDERSPRUCH) LayerMechanismius(true, fachwerk.getMechanismus());
             LayerStKraft(true);
             LayerAuflKraft(true);
             LayerLasten(true);
         }
-        catch (ArithmeticException e) {
-            String meldung;
-            if (e.getMessage() != null) meldung = e.getMessage();
-            else meldung = e.toString();
-            System.out.println(meldung);
-            aktualisieren(true, true);
-            // im Statusfeld WIDERSPRUCH anzeigen, in Statuszeile Fehlermeldung
-            feldStatusFw.setText(tr("WIDERSPRUCH"));
-            keinWIDERSPRUCH = false;
-            feldStatuszeile.setText(meldung);
-        }
+//        catch (ArithmeticException e) {// TODO entfernen, falls bewährt. Funktion in Fw3d0.11 nach clFachwerk3D verlegt.
+//            String meldung;
+//            if (e.getMessage() != null) meldung = e.getMessage();
+//            else meldung = e.toString();
+//            System.out.println(meldung);
+//            aktualisieren(true, true);
+//            // im Statusfeld WIDERSPRUCH anzeigen, in Statuszeile Fehlermeldung
+//            feldStatusFw.setText(tr("WIDERSPRUCH"));
+//            keinWIDERSPRUCH = false;
+//            feldStatuszeile.setText(meldung);
+//        }
         catch (Exception e) {
             System.out.println(e.toString());
             aktualisieren(true, true);
@@ -383,6 +385,10 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
             feldStatusFw.setText(tr("FEHLER"));
             keinFEHLER = false;
             feldStatuszeile.setText(e.toString());
+            if (e.getMessage().equals("Mechanismusberechnung fehlgeschlagen.")) {
+                feldStatuszeile.setText(tr("errMechanismusberFehlgeschlagen"));
+            }
+            else feldStatuszeile.setText(e.toString());
         }
         
         if (keinWIDERSPRUCH && keinFEHLER) {
@@ -858,6 +864,10 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
         OptionGLS = status;
     }
     
+    protected void befehlOptionMechanismus(boolean status) {
+        OptionMechanismus = status;
+    }
+    
     protected void befehlOptionVerbose(boolean verbose){
         OptionVerbose = verbose;
     }
@@ -1289,6 +1299,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
         VOLLSTÄNDIGGELÖST_OK = false;
         
         Selektion[0] = DESELEKT;
+        LayerMechanismius(false, null);
         // Aktualisiert Hauptpanel. Falls man die Standardsicht (2.Param) will, aktualisieren(false,true) separat aufrufen.
         aktualisieren(false, false);
         setKnopfKnoten(false); setKnopfStab(false);
@@ -1318,6 +1329,9 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     void LayerAuflKraft(boolean status) {
         hp.ZeigeAuflagerkräfte(status);
         setLayerAuflKraft(status);
+    }
+    void LayerMechanismius(boolean status, double[][] mechanismusRelKnVersch) {
+        hp.ZeigeMechanismus(status, mechanismusRelKnVersch);
     }
     
     void selektionAnpassen() {

@@ -142,6 +142,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
         buttonVerbose = new javax.swing.JCheckBoxMenuItem();
         buttonGLS = new javax.swing.JCheckBoxMenuItem();
+        buttonMechanismus = new javax.swing.JCheckBoxMenuItem();
         menuAddins = new javax.swing.JMenu();
         itemKoordTransFWK = new javax.swing.JMenuItem();
         itemKoordTransDXF = new javax.swing.JMenuItem();
@@ -332,7 +333,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
 
         StatusLeistePanel.setLayout(new java.awt.GridBagLayout());
 
-        StatusLeistePanel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0)));
+        StatusLeistePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         StatusTextPanel.setLayout(new java.awt.GridLayout(1, 0));
 
         feldStatuszeile.setEditable(false);
@@ -864,6 +865,17 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
 
         menuRechnen.add(buttonGLS);
 
+        buttonMechanismus.setSelected(true);
+        buttonMechanismus.setText("Mechanismen testen");
+        buttonMechanismus.setToolTipText("Sucht Mechanismen, die eine Gleichgewichtsverletzung belegen. Kinematische Methode.");
+        buttonMechanismus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonMechanismusActionPerformed(evt);
+            }
+        });
+
+        menuRechnen.add(buttonMechanismus);
+
         jMenuBar1.add(menuRechnen);
 
         menuAddins.setText("Zus\u00e4tze");
@@ -955,8 +967,11 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
         setJMenuBar(jMenuBar1);
 
         pack();
-    }
-    // </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void buttonMechanismusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMechanismusActionPerformed
+        befehlOptionMechanismus(buttonMechanismus.isSelected());
+    }//GEN-LAST:event_buttonMechanismusActionPerformed
 
     private void itemSkaliereLastenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSkaliereLastenActionPerformed
         befehlAddinSkaliereLasten();
@@ -1469,6 +1484,8 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
         buttonVerbose.setToolTipText(tr("ttipVerbose"));
         buttonGLS.setText(tr("itemGLS"));
         buttonGLS.setToolTipText(tr("ttipGLS"));
+        buttonMechanismus.setText(tr("itemMechanismus"));
+        buttonMechanismus.setToolTipText(tr("ttipMechanismus"));
         
         menuAddins.setText(tr("menuAddins"));
         itemKoordTransFWK.setText(tr("itemKoordTransFWK"));
@@ -1570,6 +1587,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     protected abstract void befehlOptionVerbose(boolean verbose);
     protected abstract void befehlOptionVorberechnung(boolean status);
     protected abstract void befehlOptionGLS(boolean status);
+    protected abstract void befehlOptionMechanismus(boolean status);
     
     protected abstract void befehlAddinKoordTransFWK();
     protected abstract void befehlAddinKoordTransDXF();
@@ -1720,6 +1738,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     private javax.swing.JPanel StatusTextPanel;
     private javax.swing.JPanel WerkzeugPanel;
     private javax.swing.JCheckBoxMenuItem buttonGLS;
+    private javax.swing.JCheckBoxMenuItem buttonMechanismus;
     private javax.swing.JCheckBoxMenuItem buttonVerbose;
     protected javax.swing.JTextField feldStatusFw;
     protected javax.swing.JTextField feldStatuszeile;

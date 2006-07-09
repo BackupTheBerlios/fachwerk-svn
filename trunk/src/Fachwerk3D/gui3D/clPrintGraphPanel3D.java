@@ -12,7 +12,6 @@ import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.*;
-import java.math.*;
 import java.awt.print.*;
 
 
@@ -83,6 +82,7 @@ public class clPrintGraphPanel3D extends clHauptPanel3D implements Printable {
         super(hp.getKn(), hp.getSt(), true);
         this.parent = parent;
         dxf = hp.dxf;
+        mechanismusRelKnVersch = hp.mechanismusRelKnVersch;
         n = hp.getBlickRtg();
                
         
@@ -90,6 +90,7 @@ public class clPrintGraphPanel3D extends clHauptPanel3D implements Printable {
         ZoomPkt1 = zoomPkte[0];
         ZoomPkt2 = zoomPkte[1];
         ZOOMALL = hp.ZOOMALL;
+        maxMechSkal = hp.maxMechSkal;
         
         boolean[] aktiveLayer = hp.getAktiveLayer();
         MIT_KnNr = aktiveLayer[0];
@@ -98,6 +99,7 @@ public class clPrintGraphPanel3D extends clHauptPanel3D implements Printable {
         MIT_Auflagerkräften = aktiveLayer[3];
         MIT_Stabkräften = aktiveLayer[4];
         MIT_Hintergrund = aktiveLayer[5];
+        MIT_Mechanismus = aktiveLayer[6];
         
         maxPfeil = maxPfeil * druckvergr;
         spitzenlängeMax = spitzenlängeMax * druckvergr;
@@ -173,6 +175,7 @@ public class clPrintGraphPanel3D extends clHauptPanel3D implements Printable {
             if (MIT_Lasten) darstellenLasten();
             if (MIT_Auflagerkräften) darstellenAuflagerkräfte();
             if (MIT_Stabkräften) darstellenStabkräfte();  
+            if (MIT_Mechanismus) darstellenMechanismus();
         }
         
         // -------------------------
