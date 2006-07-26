@@ -694,10 +694,8 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
             }
         }
         
-        // assert (gl == anzGL) : gl + " ungleich " + anzGL; // TODO Zeile löschen?
         if (gl != anzGL) {
             System.err.println("Fehler (Anz. Gleichungen): " + gl + " ungleich " + anzGL);
-//            System.err.println("WARNUNG: Programm nicht unterbrochen. Vorsicht mit Resultaten.");
             WIDERSPRUCHaufgetreten = true; // TODO, ev nicht Widerspruch sondern Fehler
             throw new IllegalArgumentException("Die Anzahl Gleichungen stimmt nicht. Ev. Programmfehler.");
         }

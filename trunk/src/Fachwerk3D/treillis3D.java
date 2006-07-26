@@ -64,7 +64,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     
     private static final String PROGNAME = "Fachwerk3D"; // in clOberflaeche nochmals hart kodiert (Titel)
     private static final int HAUPTVER = 0;
-    private static final int UNTERVER = 11; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
+    private static final int UNTERVER = 20; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
     private final String FILEPROGNAME = "treillis3D";
     private final int FILEVER = 1;
     
@@ -263,13 +263,6 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
                 */
                 laf_gesetzt = true;
             }
-            /*
-            if (lookAndFeel.equalsIgnoreCase("Plastic")) {
-                UIManager.setLookAndFeel("com.jgoodies.looks.plastic.PlasticLookAndFeel");
-                laf_gesetzt = true;
-            }
-            */
-            
             if (!laf_gesetzt && lookAndFeel.equalsIgnoreCase("undef")) {
                 // nicht setzten, damit von Befehlszeile aus festlegbar
                 // z.B. java -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel ...
@@ -363,7 +356,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
             if (keinWIDERSPRUCH) VOLLSTÄNDIGGELÖST_OK = fachwerk.istvollständiggelöst(false); // false, das resutatcheck() soeben in .rechnen() durchgeführt
             aktualisieren(true, true);
             if (!keinWIDERSPRUCH) LayerMechanismius(true, fachwerk.getMechanismus());
-            LayerStKraft(true);
+            if (keinWIDERSPRUCH) LayerStKraft(true);
             LayerAuflKraft(true);
             LayerLasten(true);
         }

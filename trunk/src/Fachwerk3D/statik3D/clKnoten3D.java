@@ -6,12 +6,11 @@
 
 package Fachwerk3D.statik3D;
 import java.io.*;
-import java.math.*;
 
 /**
  * Fachwerk3D - treillis3D
  *
- * Copyright (c) 2003 - 2005 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -74,7 +73,7 @@ public class clKnoten3D implements Serializable, inKonstante3D {
     private int Lagerstatus = GESETZT; // da LOS, TODO unklar, stiftet Verwirrung
     private int Knotenstatus = OFFEN;
     
-    private final double TOL = 1E-12;
+    private final double TOL = TOL_resultatcheck;
     
     /** Creates a new instance of clKnoten3D */
     public clKnoten3D(double p_x, double p_y, double p_z) {
@@ -225,19 +224,17 @@ public class clKnoten3D implements Serializable, inKonstante3D {
                         
                     case GESETZT:
                         System.err.println("Programmfehler in clKnoten.setLagerkraft: GESETZT nicht implementiert");
-                    case BER:
-                        if (Math.abs(Rx - p_Rx) < TOL) {
-                            Lagerstatus = p_Status;
-                            Rx = p_Rx;
-                            Rz = p_Rz;
-                            Ry = p_Ry;
-                        }
-                        else {
-                            System.out.println("Widerspruch in Lagerkraft: neuer Wert widerspricht schon berechnetem!");
+                    case BER: // TODO: Warum kommt das vor? Lagerstatus könnte/sollte(?) zurückgesetzt werden.
+                        if (Math.abs(Rx - p_Rx) > TOL) {
+                            System.err.println("Widerspruch in Lagerkraft: neuer Wert widerspricht schon berechnetem!");
                             System.err.println("Programmfehler: clKnoten.setLagerkraft: zuerst Lagerstatus zurücksetzen");
-                            assert false;
-                            return false;
+                            assert false: "ungleich 0: " + Math.abs(Rx - p_Rx);
+                            // macht trotzdem weiter!
                         }
+                        Lagerstatus = p_Status;
+                        Rx = p_Rx;
+                        Rz = p_Rz;
+                        Ry = p_Ry;
                         break;
                     default:
                         System.err.println("Programmfehler in clKnoten.setLagerkraft");
