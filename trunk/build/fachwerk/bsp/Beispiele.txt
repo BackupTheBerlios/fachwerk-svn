@@ -47,6 +47,10 @@ In diesem Verzeichnis sind weitere Beispiele enthalten:
   statisch bestimmt wird. Das Beispiel ist (leicht verändert) dem Betonkalender [2] entnommen.
   Zu diesem Beispiel kann die Hintergrundzeichnung 7-Scheibenoeffnung.dxf eingelesen werden.
 
+- 8-Mechanismus.fwk
+  Unvollständiges Fachwerkmodell.
+  Die Mechanismusprüfung merkt, dass das Modell nicht im Gleichgewicht ist. Der Mechanismus wird angezeigt. Das Programm verwendet zur Überprüfung das Prinzip der virtuellen Leistung.
+
 
 
 [1] "Beurteilung der Tragsicherheit bestehender Betonbauten", Ph. Stoffel, P. Marti
