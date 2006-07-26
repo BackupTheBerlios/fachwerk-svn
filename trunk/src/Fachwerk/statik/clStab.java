@@ -11,7 +11,7 @@ import java.io.*;
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2005 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -80,7 +80,7 @@ public class clStab implements Serializable, inKonstante {
                         break;
                     case BER:
                         System.err.println("Programmfehler: clStab.setKraft: zuerst StabStatus zurücksetzen");
-                        assert false : "BERECHNETER Stab kann gesetzt werden";
+                        assert false : "BERECHNETER Stab kann nicht gesetzt werden";
                         break;
                     case NICHTSETZBAR:
                         System.out.println("NICHTSETZBAR !");
