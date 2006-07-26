@@ -1,0 +1,49 @@
+# encoding UTF-8
+
+
+Wunschliste
+-----------------------
+Es bestehen weder ein Zeitplan noch feste Absichten!
+
+prioritär
+
+- Beschriftung der Last- und Auflagerkraftpfeile.
+
+- Informationsdialog: Summe aller Lasten, etc (wie auf Ausdruck vorhanden)
+
+- Vervollständigung der Internationalisierung / Übersetzung:
+  NUR MIT IHRER MITHILFE! Übersetzen Sie Fachwerk in Ihre Sprache:
+  Die Dateien Fachwerk/locales/*_de.properties aus dem zip-Archiv fachwerk*.jar entpacken.
+  Diese Textdateien enthalten Listen mit Übersetzungen. Senden Sie mir die übersetzen Dateien,
+  damit sie der nächsten Version beigefügt werden können.
+  
+
+
+
+ev. nie
+
+- Berechnungseinstellungen
+  Dem Benutzer ermöglichen, die Nulltoleranz einzustellen.
+  (Ev. nicht nötig, da keine diesbezüglichen Probleme gemeldet wurden.)
+
+- Drucken auf Schwarzweiss-Druckern: Druckstäbe gestrichelt.
+
+- Druckstrebenbreite anzeigen, abhängig von Festigkeit fc*bw
+
+
+
+to do
+-------------------
+There are neither fix intentions nor a timetable!
+
+- Labelling of the load and bearing force arrows.
+
+- Information dialog: Sum of loads, etc.
+
+- Completion of the internationalisation / translation.
+  UP TO YOU! Translate Fachwerk to your language: 
+  Extract the files Fachwerk/locales/*_en.properties out of fachwerk*.jar, it's just a zip file.
+  Translate these text lists into your language, rename and send them to me. I'll add them to the next release.
+  Or translate the help files (html) into your language.
+
+- see above (German)

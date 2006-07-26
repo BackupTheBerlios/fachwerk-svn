@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="Generator" content="Kate, the KDE Advanced Text Editor" />
+<title>Fachwerk - changelog</title>
+</head>
+<body><pre>
+<span style='color=#000000'>
+<P><A HREF="changelog.html">→ GERMAN</A></P>
+
+Fachwerk - Changelog
+--------------------
+
+version		date		changes
+
+0.20		26.07.06	New functions
+				- Kinematic method (mechanisms)
+				  Fachwerk additionally applies the kinematic method to the model.
+				  If the model is instable *and* does not respect equilibrium conditions, an according mechanism is drawn.
+				  This feature simplifies finding errors in statically indeterminate models.
+
+				Details
+				- enhanced solver
+				- number of statical indeterminancy shown on console output
+
+0.13		13.11.05	New functions
+				- Pan
+				  middle mouse button or Ctrl-key and left mouse button
+				- Scaling of loads
+
+				Details
+				- Verbose console output
+				- Splitting of a member with set force
+				  One of the two new members inherits the set force
+				- Additional functions available in French
+				- Source code cleanup
+
+0.12		27.03.05	New functions
+				- Split members
+				- Status line for members
+				  In addition to the member force, its horizontal and vertical components are displayed.
+				
+				Details
+				- File name in title of program window.
+				- Keybord quick access: save, print and reset of calculation.
+				- Member and Node property dialogs
+				  The most frequently used field has the focus after opening the dialogs.
+				  Escape key aborts the dialogs.
+				- Node property dialog
+				  Enter key puts the cursor in the next field resp. closes the dialog (=OK).
+				- Open file dialog
+				  The first time a background drawing is loaded, the dialog shows the directory of the .fwk model file. 
+				  Previously the users home directory was shown instead, when the program was started by clicking on a fwk file.
+
+0.11		21.02.05	Usage and Look
+				- The zoom does not change when a new member is
+				  created or when the properties of a member are changed.
+				- A right click on a member or on a node opens its property
+				  dialog.
+				- The LookAndFeel for Java 1.5 is now the same as for Java 1.4.
+				  So it is easy to see if a button is pressed.
+				  The Java 1.5 default look can be obtained using the option 
+				  "fachwerk --look Ocean".
+				- dxf-drawings: Layers that are frozen or turned off are not shown anymore.
+				  
+				Details
+				- Keybord quick access: F9 calculate, F11 select node, F12 select member.
+				- The function "create node (snap)" gets deactivated when clicking
+				  somewhere else than on a background point.
+				- Member property dialog: Enter has the same effect as a click on the
+				  "change"-button.
+
+0.10		30.09.04	New functions
+				- New Node, Snap
+				  It is now possible to create a new node using the snap function. (Snap to the background drawing.)
+				- Move Node
+				  Snap to background points and lines.
+				- Background drawings
+				  In addition to the dxf-format, bgd and csv are supported. The new format bgd allows to create background drawings easily using a text editor. So background drawings can be used even if no CAD-program is available.
+				  
+				Usability
+				- Keybord quick access
+				  F5 New node, F7 New Member, DEL, etc.
+				- Move Node
+				  Moving in x- or z-direction.
+				  
+				Details
+				- Message: OK COMPLETE
+				  A message appears in the status line and on the printed system output, if all the member and bearing forces are known.
+				- Colt version 1.2.0 used (instead of 1.1.0).
+				  The new version is smaller.
+				- Console output
+				  The scope of the console output has been reduced, unless an error occurs.
+
+0.09		22.06.04	New functions
+				- Background drawing
+				  Drawings (dxf) can be read into the new background-layer. The layer can be
+				  switched on or off like the other layers and can be printed as well.
+				  The following dxf-entities are read in: Line, Polyline, LWPolyline, 
+				  Circle, Arc, Point. Text will not be shown. You can scale or move the
+				  drawing, but not modify it.
+				- Zoom Out button
+				- Transformation of coordinates
+				  You can scale or move the strut-and-tie model.
+				  
+				Usability
+				- Load / Save
+				  By default, only files with the ending ".fwk" are shown.
+				- New member / new node
+				  The choice of layers is restored after adding a new node or member.
+				- Arrows
+				  The length of the arrows now depends on the layers that are switched on.
+				  If you hide the bearing forces, you'll better see the loads.
+				  
+				Details
+				- Program icon for Windows (format "ico") added.
+				- Visual appearance: Some icons on buttons have got better contraste and font
+				  size has been increased.
+				- English and french translations: Abbreviation for node changed to "nd".
+				- Printing: Length of arrows shortened (see also above).
+					
+				Source code
+				- Recoded to Unicode UTF8.
+				  (Fachwerk and tcldxf. Colt unchanged.)
+				- Memory consumption to draw lines reduced. (In order to display large dxf-files
+				  on older computers.)
+			 
+
+0.08		11.05.04	New function
+				- Print graphic
+				  The graphical representation of the model can be printed as seen on the screen.
+				  The zoom and layer settings are respected. The scale can be specified.
+				  
+				Details
+				- Print system
+				  The arrows that indicate the external forces are drawn larger. The circles that
+				  represent the nodes are smaller. These mesures increase the visibility of small arrows.
+
+0.07		08.02.04	New functions
+				- Finding node position
+				  A node will be moved along a straight line, until a required member force
+				  is achieved. This function simplifies the modelling of deviated compression
+				  members (i.e. compression arch).
+				  The function may be used to find the exact node position so that the member 
+				  force in a «stabilizer» really is zero. Thus that member can be removed.
+				
+				Starting options
+				- "fachwerk file.fwk" directly opens the file.
+				  This allows you to link *.fwk - files to the program Fachwerk,
+				  i.e. in Konqueror (Linux/KDE) or Explorer (Windows). Therefore the working
+				  directory must be the directory where Fachwerk is installed.
+				- "fachwerk --help" shows the available options.
+				- "fachwerk -l fr" starts the program in French. Analogous "-l en", "-l de"
+				  (The previous option "fr" without "-l" or "--language" does not work anymore.)
+				
+				Simple installation / clear licence
+				- The library for mathematics "colt" is already included in the zip-file.
+				  It is not necessary to download it separately.
+				- Colt version 1.1.0 used (instead of 1.0.3). The new version is smaller.
+				- The new colt version contains only "free" licences. That's why the library
+				  is now delivered with the program.
+				  (The previous version contained a package that did not allow commercial use.
+				  The package however was not used by Fachwerk. Now the hole library is freely
+				  usable.)
+				  
+				Visual appearance
+				- Clear icons on the buttons "select a node" and "select a member".
+				- Member forces and numbers labeled parallel to the member.
+				- Bold font used for assigned member forces. Thus better recognisable on
+				  black-and-white print-out.
+				  
+				Details
+				- Inserting new node: Small visual bug fixed:
+				  In the previous version the snap-marking remained even when the mouse cursor
+				  was not over the node anymore.
+				- Node properties window (Bearing forces): Force rounded to one decimal place.
+				  (Previously by mistake rounded to integer.)
+				- Node properties window (Bearing condition): The node automatically gets marked
+				  "sliding" when the sliding direction has been changed.
+
+
+0.06		30.12.03	First multilingual release
+				- Internationalisation of most part of the code.
+				- French and English translations
+				- English help (not complete)
+
+
+
+0.05		29.11.03
+
+0.04		9.11.03
+
+0.04devD	28.9.03		Initial publication of the program (GPL)
+				- most of the planned features implemented
+
+</span></pre></body></html>
