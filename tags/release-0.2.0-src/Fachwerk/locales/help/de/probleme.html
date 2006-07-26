@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
+  <title></title>
+</head>
+<body dir="ltr" lang="de-CH">
+<h1>Ein Problem ist aufgetreten...</h1>
+<h2>Bedienung</h2>
+<h4>1. Probleme mit der Selektion von Knoten und Stäben</h4>
+<p>Normalerweise wird ein Stab oder Knoten markiert wenn sich der
+Mauszeiger darüber befindet. In der Statuszeile werden dann
+Informationen angezeigt, z.B. die Stabkraft. Dies ist immer dann der
+Fall, wenn der «automatische Selektionsmodus» aktiv ist.
+Teilweise wird dieser Modus durch das Programm abgeschaltet, z.B. um
+zu verhindern, dass in der Statuszeile erschienene Meldungen gleich
+wieder verschwinden.</p>
+<p>Um den automatischen Selektionsmodus wieder zu aktivieren genügt
+es, irgendwo ins Leere zu klicken. Mehr über die Selektionsmodi
+findet man <a href="maus.html">hier</a>.</p>
+<p><br>
+<br>
+</p>
+<h4>2. Überprüfung der Eingaben</h4>
+<p>Es kann auf verschiedene Art und Weise überprüft werden,
+ob die Eingabe der Lasten und Koordinaten korrekt erfolgt ist:</p>
+<ul>
+  <li>
+    <p>im <i>Programmfenster</i><br>
+Befindet sich der Mauszeiger über einem Knoten, werden in der
+Statuszeile Informationen über den Knoten angezeigt: Koordinaten,
+Lasten, Lagerung, Berechnungsstatus.<br>
+    <br>
+    <br>
+    </p>
+  </li>
+  <li>
+    <p>in der <i>Shell</i> (Eingabeaufforderung)<br>
+Falls «Fachwerk» wie empfohlen über die Shell gestartet worden ist, ist
+im Hintergrund ein Fenster offen, in welches Textmeldungen ausgegeben
+werden. Am Ende des Berechnungsvorgangs wird dort u.a. die <i>Summe
+aller Lasten</i> sowie die Summe der berechneten Lagerkräfte
+ausgegeben. So kann schnell überprüft werden, ob alle Lasten eingegeben
+worden sind.<br>
+    <br>
+    <br>
+    </p>
+  </li>
+  <li>
+    <p><i>Ausdruck</i><br>
+Der Ausdruck dient der Dokumentation der Modellierung, daher ist der
+Informationsgehalt hoch. Man findet dort u.a. die Knotenkoordinaten,
+Lasten und Lagerkräfte. Auch die Summe der Kräfte wird gedruckt (wie in
+der Shell).<br>
+Es lohnt sich daher, die Systemeingaben via Ausdruck zu überprüfen.
+Meist genügt ein Ausdruck in eine Datei (ps oder pdf), welche dann mit
+einem anderen Programm (GhostView, AcrobatReader) betrachtet werden
+kann. </p>
+  </li>
+</ul>
+<h3><br>
+<br>
+</h3>
+<h2>Resultate</h2>
+<h4>1. Ein Widerspruch wird angezeigt</h4>
+<p>Nach jeder Berechnung werden die bestimmten Knoten durchlaufen und
+darauf überprüft, ob das Gleichgewicht eingehalten ist. Ein
+Widerspruch wird angezeigt, indem ein oder mehrere Knoten rot
+markiert werden. Ausserdem steht in der Fensterecke unten rechts
+«WIDERSPRUCH».</p>
+<p>Mögliche Ursachen:</p>
+<ul>
+  <li>
+    <p>unvollständiges Fachwerkmodell (fehlende Stäbe, Lager, ..)</p>
+  </li>
+  <li>
+    <p>zu viele / falsche Stabkräfte gesetzt</p>
+  </li>
+</ul>
+<p>Falls alle Eingabe stimmen und trotzdem ein Widerspruch angezeigt
+wird, könnte es sich um ein numerisches Problem handeln. In
+diesem Falle bitte dem Autor einen <a href="impressum.html">Fehlerbericht</a>
+schicken. Weiter kann man versuchen, die Vorberechnung ein- resp.
+auszuschalten. Vor einem erneuten Versuch muss die Berechnung
+zurückgesetzt werden.</p>
+<h4>2. Ein Fehler wird angezeigt</h4>
+<p>Ein Fehler tritt auf, wenn während der Berechnung etwas
+Unerwartetes auftritt. Es muss nachgeschaut werden, ob eine Meldung
+in der Shell steht. </p>
+<p>Wenn ein Widerspruch durch den mathematischen «Solver»
+entdeckt wird, löst dies einen Fehler aus. Eine Fehlermeldung ist
+häufig ein Indiz für einen
+Widerspruch.</p>
+<p>Falls ausgeschlossen wird, dass der Fehler wegen einer
+widersprüchlichen Eingabe erfolgt, bitte dem Autor einen
+<a href="impressum.html">Fehlerbericht</a> senden.</p>
+</body>
+</html>

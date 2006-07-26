@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head>
+	<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
+	<title></title>
+</head>
+
+<body dir="ltr" lang="en-GB">
+<h1>Introduction</h1>
+<h4>Purpose of the program</h4>
+<p>The program «Fachwerk» addresses to structural
+engineers who are involved with analysing and designing <i>reinforced
+concrete structures</i>. It intends to simplify the application of
+discontinuous stress fields and strut-and-tie models.</p>
+<p>The program calculates strut-and-tie models. It only uses the
+equilibrium conditions. Thus, unlike common programs, it is not
+assuming elastic behaviour.</p>
+<p>If the system is statically indeterminate, the program calculates
+the forces of the members that are determinate anyway. You can assign
+forces to the remaining members. If you assign more forces to members
+than needed to accomplish a statically determinate system, the
+program will indicate that the system is inconsistent (except
+equilibrium is fulfilled anyway).</p>
+<h4><br><br>
+</h4>
+<h4>The program is <i>not </i>suitable...</h4>
+<ul>
+	<li><p>for <i>steel constructions</i>.<br>Of course the program can
+	calculate the axial forces of truss beams. However there are more
+	suited programs.<br><br><br>
+	</p>
+	</li><li><p>for calculations of <i>bending moments</i>.<br>The program
+	only knows compressive and tensile forces.<br><br><br>
+	</p>
+	</li><li><p>for calculations of <i>deformations</i>.<br>The program only
+	uses the equilibrium conditions. It doesn't know anything about
+	elasticity.<br><br><br>
+	</p>
+	</li><li><p>for <i>space</i> structures.<br>Except you are using plane
+	projections...<br>A three-dimensional version of this program
+	exists: Fachwerk3D.</p>
+</li></ul>
+<h4><br><br>
+</h4>
+<h4>Background</h4>
+<p>Discontinuous stress field models are suitable for designing and
+detailing of reinforced concrete structures. The method (based on the
+theory of plasticity) is graphic and clear. The ultimate resistance
+can be analysed in a consistent manner. In many cases this method can
+easily be applied by hand. Sometimes however a computer program would
+be helpful to calculate the model. The time saved could be used for
+the thorough development of stress fields and for the detailing.</p>
+<p>I suppose it is hard to programme an application that can
+calculate general (plane) discontinuous stress fields. A practicable
+procedure is to first draw the stress field model and then to convert
+it into a strut-and-tie model. The members of the truss represent the
+resultants of the fields.</p>
+<p><br><br>
+</p>
+<h4>Difference to other programs?</h4>
+<p>Every program for frame analysis can calculate trusses and
+therefore is able to find a possible solution that respects the
+equilibrium conditions. However, there is a problem if the system is
+statically indeterminate. The common linear-elastic programs
+calculate the forces according to the rigidity of the members. For
+the calculation of strut-and-tie models (for reinforced concrete
+structures) however, the rigidity of members has no meaning and
+therefore it should not be used. Instead, you may want to assign the
+yielding force of a number of reinforcement bars to a tie of the
+model. That is the function the present program «Fachwerk»
+is designed for.</p>
+<p>The <a href="algorithmus.html">algorithm</a> of the program is not
+based on the usual approach of inverting the stiffness matrix. For
+that reason, «Fachwerk» is able to calculate (internally
+or externally) <i>unstable systems</i>, assuming that the equilibrium
+conditions are not neglected. In practice that means that you don't
+have to introduce bearings or stabilizers that are not necessary for
+the equilibrium.</p>
+</body></html>

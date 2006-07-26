@@ -1,0 +1,12 @@
+[PropertyInfo]
+layerTable,ru.tcl.dxf.tables.LayerTable,false,false, , ,true,<default>
+lineTypeTable,ru.tcl.dxf.tables.LineTypeTable,false,false, , ,true,<default>
+styleTable,ru.tcl.dxf.tables.StyleTable,false,false, , ,true,<default>
+ucsTable,ru.tcl.dxf.tables.UCSTable,false,false, , ,true,<default>
+viewTable,ru.tcl.dxf.tables.ViewTable,false,false, , ,true,<default>
+vportTable,ru.tcl.dxf.tables.VportTable,false,false, , ,true,<default>
+[IconNames]
+
+
+
+
