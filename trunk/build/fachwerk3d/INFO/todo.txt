@@ -18,6 +18,10 @@ Es bestehen weder ein Zeitplan noch feste Absichten!
 - Markierung des Knotens, der beim Lösens des Gleichungssystems
   einen Fehler auslöst.
 
+- Dateien aus Fachwerk(2D) importieren
+
+- Dublizieren von Knoten/Stäben
+
 
 
 to do

@@ -25,5 +25,10 @@ In diesem Verzeichnis sind weitere Beispiele enthalten:
   Traglast. Aus Symmetriegründen ist nur ein Viertel der Platte modelliert.  
   Zu diesem Beispiel kann die Hintergrundzeichnung 5-Platte-8x8m.bgd eingelesen werden.
 
+- 6-Mechanismus-Konsole.fwk3d
+  Konsole eingespannt in Stahlbetonstütze.
+  Wie Beispiel 4, jedoch statisch unbestimmt, da Stütze oben weiterläuft. Vorne in der Konsole fehlen horizontale Bügel, respektive ein horizontaler Stab im Modell. Fachwerk3D meldet den Widerspruch im Modell und zeigt einen Bruchmechanismus.
+  Zu diesem Beispiel kann die Hintergrundzeichnung 4-Konsole.bgd eingelesen werden.
+
 [1] "Aufgabensammlung Stahlbeton GZ"
     Institut für Baustatik und Konstruktion, ETH Zürich, 2000

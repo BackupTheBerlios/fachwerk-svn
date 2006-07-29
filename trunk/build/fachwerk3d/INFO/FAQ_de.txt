@@ -1,4 +1,4 @@
-1. Dateien mit der Endung ".fwk3d" mit Fachwerk verknüpfen:
+1. Dateien mit der Endung ".fwk3d" mit Fachwerk3D verknüpfen:
 ---------------------------------------------------------
 
    Windows (ab 2000)
@@ -24,7 +24,7 @@
    KDE (Linux)
    -----------
    
-   a) Zipdatei fachwerk*.zip nach /home/USER/programs entpackt
+   a) Zipdatei fachwerk3d*.zip nach /home/USER/programs entpackt
    
    - Rechtsklick auf fwk3d-Datei, Eigenschaften
    - Auf kleines Werkzeugsymbol drücken (Dateityp bearbeiten)
