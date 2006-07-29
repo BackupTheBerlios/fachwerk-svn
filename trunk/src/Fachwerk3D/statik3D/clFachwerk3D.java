@@ -295,7 +295,7 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
         if (resultatcheck()) { // falls keine Widerspruch entdeckt wird:
             OKkomplett = istvollständiggelöst(false); // false, da resultatcheck() soeben durchgeführt
         }
-        else verbose = true; // gibt mehr Infos aus, wenn resultatausgabe_direkt() aufgerufen wird.
+//        else verbose = true; // gibt mehr Infos aus, wenn resultatausgabe_direkt() aufgerufen wird. // TODO entfernen falls bewährt.
         
         if (optionMECHANISMUS && !OKkomplett) {
             

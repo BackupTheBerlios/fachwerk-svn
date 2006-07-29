@@ -43,14 +43,27 @@ angenommen werden soll. Im Solver werden Zahlen mit einem Absolutwert
 kleiner als 10<sup>-10</sup> zu Null angenommen. Diese Toleranz wurde
 durch Ausprobieren festgelegt und muss sich durch den weiteren
 Einsatz des Programmes bestätigen. Falls Kräfte mit mehr
-als vier Stellen vor dem Komma (≥ 10000 kN !) 
-verwendet werden, vergrössert sich das Risiko, dass
+als vier Stellen vor dem Komma (≥
+10000 kN !) verwendet werden, vergrössert sich das Risiko, dass
 die Berechnung mit einer Fehlermeldung abbricht.</p>
 <p>Für die L-U-Zerlegung wird die
 Mathematikbibliothek «colt» des CERN verwendet.</p>
-<p><br>
-<br>
-</p>
+<h4><br></h4><h4>Mechanismus suchen (kinematische Methode)</h4>
+<p>Das Programm sucht systematisch nach Mechanismen, die die Gleichgewichtsbedingungen verletzen.</p>
+<p>Konkret werden die kinematischen Beziehungen aufgestellt: 
+(nicht gesetze) Stäbe und Lagerbedingungen. Unbekannt sind die
+Knotenverschiebungen. Weiter wird die Gleichung für die
+Leistung der Mechanismen (Leistung der äusseren Lasten sowie der
+gesetzen Stabkräfte) aufgestellt. Das Gleichungssystem wird gelöst
+(siehe Solver). Wenn die Leistung ungleich Null ist, resp. von
+unbekannten Variablen abhängt, ist bewiesen, dass das System nicht im
+Gleichgewicht ist. Mechanismen die keinen Beitrag an die Leistung
+bringen ("normale Instablilitäten") werden vernachlässigt. Hat das
+System mehrere Freiheitsgrade (die zu einer Gleichgewichtsverletzung
+führen), &nbsp;wird für die graphische Darstellung mittels
+Zufallsgenerator ein Mechanismus kombiniert (keine physikalisches
+Kriterium).</p>
+<p><br></p>
 <h2>Datenstruktur</h2>
 <p>Die benutzte Datenstruktur macht Gebrauch von der
 Objekt-Orientierung der Programmiersprache Java. Die nachfolgende

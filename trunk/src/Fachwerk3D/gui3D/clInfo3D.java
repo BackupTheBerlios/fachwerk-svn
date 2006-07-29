@@ -31,7 +31,6 @@ public class clInfo3D extends javax.swing.JDialog {
     '\n' +
     "VORSICHT:" + '\n' +
     "---------" + '\n' +
-    "FACHWERK3D IST ERST WENIG GETESTET WORDEN!!!" + '\n' + '\n' +
     "Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind " +
     "SORGFÄLTIG auf ihre PLAUSIBILITÄT zu prüfen!" +'\n' +
     '\n' +'\n' +
@@ -65,7 +64,6 @@ public class clInfo3D extends javax.swing.JDialog {
     '\n' +
     "CAUTION:" +'\n' +
     "--------" +'\n' +
-    "FACHWERK3D HAS NOT BEEN TESTED ENOUGH!!!" + '\n' + '\n' +
     "This program certainly contains some ERRORS. All results must be verified " +
     "CAREFULLY in order to state that they are PLAUSIBLE!" + '\n' +
     '\n' + '\n' +
