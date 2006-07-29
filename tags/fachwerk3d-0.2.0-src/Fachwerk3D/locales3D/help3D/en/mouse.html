@@ -1,0 +1,340 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title></title>
+</head>
+<body lang="en-GB" dir="ltr">
+<h1>Mouse controls</h1>
+<h3>Buttons</h3>
+<h4>left side:</h4>
+<table width="100%" border="1" bordercolor="#000000" cellpadding="2" cellspacing="0" rules="rows">
+	<col width="22*">
+	<col width="45*">
+	<col width="189*">
+	<tr>
+		<td width="9%" valign="top">
+			<p><img src="../../../../Fachwerk/gui/icons/rechnen.png" align="bottom" width="21" height="21" border="0"></p>
+		</td>
+		<td width="18%" valign="bottom">
+			<p>calculate</p>
+		</td>
+		<td width="74%" valign="bottom">
+			<p>Starts the calculation.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%" valign="top">
+			<p><img src="../../../../Fachwerk/gui/icons/rotation.png" align="middle" width="16" height="16" border="0"></p>
+		</td>
+		<td width="18%" valign="bottom">
+			<p>reset</p>
+		</td>
+		<td width="74%" valign="bottom">
+			<p>Resets all calculated member and bearing forces to
+			&laquo;indeterminate&raquo;.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%" valign="top">
+			<p><img src="../../../../Fachwerk/gui/icons/knotenselektieren.png" align="bottom" width="21" height="21" border="0"></p>
+		</td>
+		<td width="18%" valign="bottom">
+			<p>select a node</p>
+		</td>
+		<td width="74%" valign="bottom">
+			<p>Left click on the node you want to select.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%" valign="top">
+			<p><img src="../../../../Fachwerk/gui/icons/stabselektieren.png" align="bottom" width="21" height="21" border="0"></p>
+		</td>
+		<td width="18%" valign="bottom">
+			<p>select a member</p>
+		</td>
+		<td width="74%" valign="bottom">
+			<p>Left click on the member you want to select.</p>
+		</td>
+	</tr>
+</TABLE>
+<h4>right side (layers):</h4>
+<TABLE WIDTH=100% BORDER=1 BORDERCOLOR="#000000" CELLPADDING=2 CELLSPACING=0 RULES=ROWS>
+	<COL WIDTH=22*>
+	<COL WIDTH=45*>
+	<COL WIDTH=189*>
+	<tr>
+		<td width="9%" valign="top">
+			<p><img src="../../../../Fachwerk/gui/icons/dxf.png" align=bottom width="16" height="16" border="0">
+			<font size="1">dxf</font></p>
+		</td>
+		<td width="18%" valign="bottom">
+			<p><br>
+			</p>
+		</td>
+		<td width="74%" valign="bottom">
+			<p>Shows the <A HREF="backgrounddrawing.html">background drawing</A>.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%" valign="top">
+			<p><img src="../../../../Fachwerk/gui/icons/Knoten.png" align="bottom" width="21" height="21" border="0">
+			<font size="1">Nr</font></p>
+		</td>
+		<td width="18%" valign="bottom">
+			<p><br>
+			</p>
+		</td>
+		<td width="74%" valign="bottom">
+			<p>Shows the node numbers.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%" valign="top">
+			<p><img src="../../../../Fachwerk/gui/icons/Stab.png" align="bottom" width="21" height="21" border="0">
+			<font size="1">Nr</font></p>
+		</td>
+		<td width="18%" valign="bottom">
+			<p><br>
+			</p>
+		</td>
+		<td width="74%" valign="bottom">
+			<p>Shows the member numbers.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%" valign="top">
+			<p><img src="../../../../Fachwerk/gui/icons/anschreiben.png" ALIGN=BOTTOM WIDTH=24 HEIGHT=24 BORDER=0>
+			<font size="1">kN</font></p>
+		</td>
+		<td width="18%" valign="bottom">
+			<p><br>
+			</p>
+		</td>
+		<td width="74%" valign="bottom">
+			<p>Shows the member forces if they are known.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%" valign="top">
+			<p><img src="../../../../Fachwerk/gui/icons/Last.png" ALIGN=BOTTOM WIDTH=29 HEIGHT=29 BORDER=0><font size="1">kN</font></p>
+		</td>
+		<td width="18%" valign="bottom">
+			<p><br>
+			</p>
+		</td>
+		<td width="74%" valign="bottom">
+			<p>Draws the load vectors.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%" valign="top">
+			<p><img src="../../../../Fachwerk/gui/icons/Lager.png" ALIGN=BOTTOM WIDTH=22 HEIGHT=21 BORDER=0>
+			<font size="1">kN</font></p>
+		</td>
+		<td width="18%" valign="bottom">
+			<p><br>
+			</p>
+		</td>
+		<td width="74%" valign="bottom">
+			<p>Draws the bearing force vectors if they are known.</p>
+		</td>
+	</tr>
+</TABLE>
+<p><br><br>
+</p>
+<h4>top row:</h4>
+<TABLE WIDTH=100% BORDER=1 BORDERCOLOR="#000000" CELLPADDING=2 CELLSPACING=0 RULES=ROWS>
+	<COL WIDTH=22*>
+	<COL WIDTH=46*>
+	<COL WIDTH=188*>
+	<tr>
+		<td width="9%">
+			<p><img src="../../../../Fachwerk/gui/icons/center.png" align=bottom width="16" height="16" border="0"></p>
+		</td>
+		<td width="18%">
+			<p>zoom all</p>
+		</td>
+		<td width="73%">
+			<p><br>
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%">
+			<p><img src="../../../../Fachwerk/gui/icons/zoomout.png" align=bottom width="16" height="16" border="0"></p>
+		</td>
+		<td width="18%">
+			<p>zoom out</p>
+		</td>
+		<td width="73%">
+			<p><br>
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%">
+			<p><img src="../../../../Fachwerk/gui/icons/zoom.png" align=bottom width="16" height="16" border="0"></p>
+		</td>
+		<td width="18%">
+			<p>zoom</p>
+		</td>
+		<td width="73%">
+			<p>Press the left mouse button and drag a window around the region
+			you want to zoom in.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%">
+			<p><img src="../../../../Fachwerk/gui/icons/Knoten.png" align="bottom" width="21" height="21" border="0"><font size="1">new</font></p>
+		</td>
+		<td width="18%">
+			<p>new node</p>
+		</td>
+		<td width="73%">
+			<p>A new node is inserted and its properties window opens.<br>If
+			you click on the abort button in the properties window, the node
+			remains (at 0/0). To remove it, just press the 
+			<img src="../../../../Fachwerk/gui/icons/eraser.png" align="bottom" width="21" height="21" border="0">
+			button.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%">
+			<p><img src="../../../../Fachwerk/gui/icons/Knoten.png" align="bottom" width="21" height="21" border="0"><font size="1">snap</font></p>
+		</td>
+		<td width="18%">
+			<p>new node, snap</p>
+		</td>
+		<td width="73%">
+			<p>Snaps to background points. A new node is inserted at that
+			place.<br>
+			If the background drawing is turned off, this function is used to split an existing member in two parts.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%">
+			<p><img src="../../../../Fachwerk/gui/icons/Stab.png" align="bottom" width="21" height="21" border="0"><font size="1">new</font></p>
+		</td>
+		<td width="18%">
+			<p>new member</p>
+		</td>
+		<td width="73%">
+			<p>Press the left mouse button over the first node and release it
+			over the second node.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%">
+			<p><img src="../../../../Fachwerk/gui/icons/eraser.png" align="bottom" width="21" height="21" border="0"></p>
+		</td>
+		<td width="18%">
+			<p>remove</p>
+		</td>
+		<td width="73%">
+			<p>First select a node or a member. Then press this button to
+			remove the selected object.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%">
+			<p><img src="../../../../Fachwerk/gui/icons/move.png" align="bottom" width="21" height="21" border="0"></p>
+		</td>
+		<td width="18%">
+			<p>move a node</p>
+		</td>
+		<td width="73%">
+			<p>Press the left mouse button over the node you want to move and
+			release it at the new position.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%">
+			<p><img src="../../../../Fachwerk/gui/icons/clear_left.png" align="bottom" width="21" height="21" border="0"></p>
+		</td>
+		<td width="18%">
+			<p>reset all</p>
+		</td>
+		<td width="73%">
+			<p>Resets the calculation and resets all the assigned member
+			forces to indeterminate.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%">
+			<p><img src="../../../../Fachwerk/gui/icons/designer.png" align="bottom" width="21" height="21" border="0"></p>
+		</td>
+		<td width="18%">
+			<p>properties</p>
+		</td>
+		<td width="73%">
+			<p>First select a node or a member. Then press this button to open
+			its properties window..</p>
+		</td>
+	</tr>
+</TABLE>
+<p><br><br>
+</p>
+<h3>Selecting</h3>
+<p>There are four different selecting modes:</p>
+<TABLE WIDTH=100% BORDER=1 CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=67*>
+	<COL WIDTH=189*>
+	<tr>
+		<td width="26%">
+			<p>AUTOMATIC (Info)</p>
+		</td>
+		<td width="74%">
+			<p>When you move the mouse cursor over a node or member, the
+			object gets highlighted and you'll see information about it in the
+			status line. When you move the cursor away, the yellow marking
+			disappears. <i>In this mode you can't select any node or member.</i></p>
+		</td>
+	</tr>
+	<tr>
+		<td width="26%">
+			<p>DOING NOTHING</p>
+		</td>
+		<td width="74%">
+			<p><br>
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="26%">
+			<p>NODE</p>
+		</td>
+		<td width="74%">
+			<p>When you move the mouse cursor over a node, it gets highlighted
+			and you'll see information about it in the status line. Press the
+			<i>left</i> mouse button to <i>select</i> the highlighted node.
+			The marking remains.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="26%">
+			<p>MEMBER</p>
+		</td>
+		<td width="74%">
+			<p>When you move the mouse cursor over a member, it gets
+			highlighted and you'll see information about it in the status
+			line. Press the <i>left</i> mouse button to <i>select</i> the
+			highlighted member. The marking remains.</p>
+		</td>
+	</tr>
+</table>
+<p><br><br>
+</p>
+<p>Once a node or a member has been selected, the yellow marking
+remains, even if you move the mouse cursor away (mode &laquo;DOING
+NOTHING&raquo;). Now you can open the object's properties window,
+just click the right mouse button or 
+<img src="../../../../Fachwerk/gui/icons/designer.png" align="bottom" width="21" height="21" border="0">
+.</p>
+<p>In order to re-enter the AUTOMATIC mode, left click anywhere in
+the main window.</p>
+<p><br></p>
+<h3>Pan</h3>
+<p>Press the middle mouse button to pan the view of the model. Or hold down the Ctrl-key and drag the view while pressing the left mouse button.</p>
+</body>
+</html>
