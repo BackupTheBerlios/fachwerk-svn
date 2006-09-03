@@ -17,7 +17,7 @@ import java.awt.geom.*;
 /**
  * Fachwerk3D - treillis3D
  *
- * Copyright (c) 2003 - 2005 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -179,8 +179,8 @@ public class clHauptPanel3D extends javax.swing.JPanel implements inKonstante3D 
             darstellenFachwerk(true);
             if (MIT_KnNr) darstellenKnNr();
             if (MIT_StabNr) darstellenStabNr();
-            if (MIT_Lasten) darstellenLasten();
-            if (MIT_Auflagerkräften) darstellenAuflagerkräfte();
+            if (MIT_Lasten) darstellenLasten(MIT_Stabkräften);
+            if (MIT_Auflagerkräften) darstellenAuflagerkräfte(MIT_Stabkräften);
             if (MIT_Stabkräften) darstellenStabkräfte();
             if (MIT_Mechanismus) darstellenMechanismus();
             if (MIT_Hilfslinie || MIT_Hilfsrechteck) darstellenHilfslinien();
@@ -327,45 +327,124 @@ public class clHauptPanel3D extends javax.swing.JPanel implements inKonstante3D 
         }
     }
     
-    protected void darstellenLasten() {
+    protected void darstellenLasten(boolean kN_beschriften) {
         double TOL = maxkraft()/100d;
-        double l; // Pfeillänge
-        double L; // projizierte Kraft
+        double Lproj; // projizierte Kraft
+        double L; // Resultierende totale Kraft
         double x, z;
         Point3D pkt = new Point3D();
         Point2D pkt_pix = new Point2D.Double();
+        // Beschriftung
+        int schriftgr = schriftgrStd + 2;
+        g.setFont(new Font("Monospaced", Font.BOLD, schriftgr));
+        g.setPaint(Color.blue); // gilt für Schrift, Pfeilfarbe wird direkt gesetzt
+        AffineTransform aT = g.getTransform(); // ursprünglicher Zustand vor dem Rotieren
+        AffineTransform rotiert;
+        double alphaRot; // Rotationswinkel
+        String beschriftung;
+        
         for (int i = 1; i < Kn.length; i++) {
             pkt.setLocation(Kn[i].getX(), Kn[i].getY(), Kn[i].getZ());
             pkt_pix = koord.panel(pkt);
             x = pkt_pix.getX();
             z = pkt_pix.getY();
-            //L = Math.sqrt(Math.pow(Kn[i].getLx(), 2) + Math.pow(Kn[i].getLz(), 2));
+            L = Math.sqrt(Math.pow(Kn[i].getLx(), 2) + Math.pow(Kn[i].getLy(), 2) + Math.pow(Kn[i].getLz(), 2));
             Point2D pfeilrtg = koord.projiziere(new Point3D(Kn[i].getLx(), Kn[i].getLy(), Kn[i].getLz()));
-            L = Math.sqrt(Math.pow(pfeilrtg.getX(), 2) + Math.pow(pfeilrtg.getY(), 2));
-            if (L > TOL) pfeil(x, z, 
+            Lproj = Math.sqrt(Math.pow(pfeilrtg.getX(), 2) + Math.pow(pfeilrtg.getY(), 2));
+            // Pfeil zeichnen
+            if (Lproj > TOL) pfeil(x, z, 
             x + pfeilrtg.getX() / maxkraft() * maxPfeil, 
             z + pfeilrtg.getY() / maxkraft() * maxPfeil,Color.blue);
+            
+            // Beschriften aller Lasten
+            if (!kN_beschriften || L == 0d ) continue;
+            beschriftung = Fkt.nf(L,0);
+            // Rotationswinkel ermitteln
+            if (Math.abs(pfeilrtg.getX()) < TOL_resultatcheck) {
+                if (Math.abs(Lproj) < TOL_resultatcheck) {
+                    alphaRot = 0;
+                    beschriftung = "("+beschriftung+")";
+                }
+                else alphaRot = -Math.PI/2d;
+            }
+            else alphaRot = Math.atan(pfeilrtg.getY()/pfeilrtg.getX());
+            // Zentrum platzieren, rotieren und schieben    // TODO
+            double pfeillänge_pix = Lproj / maxkraft() * maxPfeil;
+            double spitzenlänge = pfeillänge_pix / 4d;
+            if (spitzenlänge > spitzenlängeMax) spitzenlänge = spitzenlängeMax;
+            if (spitzenlänge < spitzenlängeMin) spitzenlänge = spitzenlängeMin;
+            double rotpkt = pfeillänge_pix - spitzenlänge;
+            if (rotpkt < 0) rotpkt = 0;
+            rotpkt -= bzuh*schriftgr*beschriftung.length() / 2d - 1d; // von Pfeilbeginn in Pfeilrtg gemessen
+            if (Math.abs(Lproj) < TOL_resultatcheck) pkt_pix.setLocation(x + rotpkt, z);
+            else pkt_pix.setLocation(x + pfeilrtg.getX() / Lproj * rotpkt, z + pfeilrtg.getY() / Lproj * rotpkt);
+            rotiert = AffineTransform.getRotateInstance(alphaRot, (float) pkt_pix.getX(),(float) pkt_pix.getY());
+            g.transform(rotiert);
+            g.translate(-bzuh*schriftgr*beschriftung.length() / 2d, -schriftgrStd/4d);
+            g.drawString(beschriftung, (float) pkt_pix.getX(), (float) pkt_pix.getY());
+            g.setTransform(aT); // Rotation und Verschiebung zurückstellen
         }
+        g.setPaint(Color.black);
     }
     
-    protected void darstellenAuflagerkräfte() {
+    protected void darstellenAuflagerkräfte(boolean kN_beschriften) {
         double TOL = maxkraft()/100d;
-        double l; // Pfeillänge
-        double A; // projizierte Kraft
+        double Aproj; // projizierte Kraft
+        double A; // Resultierende totale Kraft
         double x, z;
         Point3D pkt = new Point3D();
         Point2D pkt_pix = new Point2D.Double();
+        // Beschriftung
+        int schriftgr = schriftgrStd + 2;
+        g.setFont(new Font("Monospaced", Font.PLAIN, schriftgr));
+        g.setPaint(Color.red); // gilt für Schrift, Pfeilfarbe wird direkt gesetzt
+        AffineTransform aT = g.getTransform(); // ursprünglicher Zustand vor dem Rotieren
+        AffineTransform rotiert;
+        double alphaRot; // Rotationswinkel
+        String beschriftung;
+        
         for (int i = 1; i < Kn.length; i++) {
             pkt.setLocation(Kn[i].getX(), Kn[i].getY(), Kn[i].getZ());
             pkt_pix = koord.panel(pkt);
             x = pkt_pix.getX();
             z = pkt_pix.getY();
+            A = Math.sqrt(Math.pow(Kn[i].getRx(), 2) + Math.pow(Kn[i].getRy(), 2) + Math.pow(Kn[i].getRz(), 2));
             Point2D pfeilrtg = koord.projiziere(new Point3D(Kn[i].getRx(), Kn[i].getRy(), Kn[i].getRz()));
-            A = Math.sqrt(Math.pow(pfeilrtg.getX(), 2) + Math.pow(pfeilrtg.getY(), 2));
-            if (A > TOL) pfeil(x, z, 
+            Aproj = Math.sqrt(Math.pow(pfeilrtg.getX(), 2) + Math.pow(pfeilrtg.getY(), 2));
+            // Pfeil zeichnen
+            if (Aproj > TOL) pfeil(x, z, 
             x + pfeilrtg.getX() / maxkraft() * maxPfeil, 
             z + pfeilrtg.getY() / maxkraft() * maxPfeil,Color.red);
+            
+            // Beschriften aller (bekannter) Auflagerkräfte
+            if (!kN_beschriften || A == 0d ) continue;
+            beschriftung = Fkt.nf(A,0);
+            // Rotationswinkel ermitteln
+            if (Math.abs(pfeilrtg.getX()) < TOL_resultatcheck) {
+                if (Math.abs(Aproj) < TOL_resultatcheck) {
+                    alphaRot = 0;
+                    beschriftung = "("+beschriftung+")";
+                }
+                else alphaRot = -Math.PI/2d;
+            }
+            else alphaRot = Math.atan(pfeilrtg.getY()/pfeilrtg.getX());
+            // Zentrum platzieren, rotieren und schieben    // TODO
+            double pfeillänge_pix = A / maxkraft() * maxPfeil;
+            double spitzenlänge = pfeillänge_pix / 4d;
+            if (spitzenlänge > spitzenlängeMax) spitzenlänge = spitzenlängeMax;
+            if (spitzenlänge < spitzenlängeMin) spitzenlänge = spitzenlängeMin;
+            double rotpkt = pfeillänge_pix - spitzenlänge;
+            if (rotpkt < 0) rotpkt = 0;
+            rotpkt -= bzuh*schriftgr*beschriftung.length() / 2d - 1d; // von Pfeilbeginn in Pfeilrtg gemessen
+            if (Math.abs(Aproj) < TOL_resultatcheck) pkt_pix.setLocation(x + rotpkt, z);
+            else pkt_pix.setLocation(x + pfeilrtg.getX() / Aproj * rotpkt, z + pfeilrtg.getY() / Aproj * rotpkt);
+            rotiert = AffineTransform.getRotateInstance(alphaRot, (float) pkt_pix.getX(),(float) pkt_pix.getY());
+            g.transform(rotiert);
+            g.translate(-bzuh*schriftgr*beschriftung.length() / 2d, -schriftgrStd/3d);
+            g.drawString(beschriftung, (float) pkt_pix.getX(), (float) pkt_pix.getY());
+            g.setTransform(aT); // Rotation und Verschiebung zurückstellen
         }
+        g.setPaint(Color.black);
     }
     
     protected void darstellenStabkräfte() {
@@ -396,7 +475,7 @@ public class clHauptPanel3D extends javax.swing.JPanel implements inKonstante3D 
             // Rotieren und schieben
             rotiert = AffineTransform.getRotateInstance(alphaRot, (float) pkt_pix.getX(),(float) pkt_pix.getY());
             g.transform(rotiert);
-            g.translate(0d, -schriftgr/3);
+            g.translate(0d, -schriftgr/3d);
             
             switch (St[i].stab.getStatus()) {
                 case UNBEST:
@@ -474,6 +553,7 @@ public class clHauptPanel3D extends javax.swing.JPanel implements inKonstante3D 
     }
     
     protected void darstellenMechanismus() { // TODO fliessende gesetzte Stäbe dick
+        if (mechanismusRelKnVersch == null) return; // erlaubt den generellen Aufruf von darstellenMechanismus(), in clPrintPanel3D
         // Durchlaufvariablen
         Point3D pkt = new Point3D(); // jeweils aktueller Pkt;
         Point3D pkt2 = new Point3D(); // jeweils aktueller Pkt;
@@ -828,28 +908,29 @@ public class clHauptPanel3D extends javax.swing.JPanel implements inKonstante3D 
     }
     
     private void pfeil(double vonX, double vonZ, double bisX, double bisZ, Paint farbe) {
-        g.setPaint(farbe); g.setStroke(new BasicStroke(2.0f));        
-        double spitzenlänge = Math.sqrt(Math.pow((bisZ-vonZ),2)+Math.pow((bisX-vonX),2)) / 4d;
-        if (spitzenlänge > spitzenlängeMax) spitzenlänge = spitzenlängeMax; //15;
-        if (spitzenlänge < spitzenlängeMin) spitzenlänge = spitzenlängeMin; //7;
+        Paint origPaint = g.getPaint(); Stroke origStroke = g.getStroke(); // ursprüngliche Stricheinstellungen
+        g.setPaint(farbe); g.setStroke(new BasicStroke(2.0f));
+        double spitzenlänge = Math.sqrt(Math.pow((bisZ-vonZ),2)+Math.pow((bisX-vonX),2)) / 4d; // bei allfälliger Anpassung, auch darstellenLasten() resp. Auflkr. anpassen
+        if (spitzenlänge > spitzenlängeMax) spitzenlänge = spitzenlängeMax;
+        if (spitzenlänge < spitzenlängeMin) spitzenlänge = spitzenlängeMin;
         double dx = spitzenlänge * (bisX-vonX) / Math.sqrt(Math.pow((bisZ-vonZ),2)+Math.pow((bisX-vonX),2));
         double dz = spitzenlänge * (bisZ-vonZ) / Math.sqrt(Math.pow((bisZ-vonZ),2)+Math.pow((bisX-vonX),2));
-        if (Math.sqrt(Math.pow((bisZ-vonZ),2)+Math.pow((bisX-vonX),2)) >= spitzenlänge) { // NEU IN VER 0.05
+        if (Math.sqrt(Math.pow((bisZ-vonZ),2)+Math.pow((bisX-vonX),2)) >= spitzenlänge) {
             g.draw(new Line2D.Double(vonX,vonZ,bisX - dx/2d ,bisZ - dz/2d));
-        }    
+        }
         GeneralPath spitze = new GeneralPath();
         spitze.moveTo((float)bisX, (float)bisZ);
         spitze.lineTo((float)(bisX - dx + dz/2d), (float)(bisZ - dz - dx/2d));
         spitze.lineTo((float)(bisX - dx - dz/2d), (float)(bisZ - dz + dx/2d));
         spitze.closePath();
         g.fill(spitze);
-        g.setPaint(Color.black); g.setStroke(new BasicStroke(1.0f));
+        g.setPaint(origPaint); g.setStroke(origStroke); // ursprüngliche Stricheinstellungen setzen
     }
     
-        
+    
     private GeneralPath Lagerfix(Point2D pkt) {
-        float höhe = lagerhöhe; //14;
-        GeneralPath polygon = new GeneralPath();        
+        float höhe = lagerhöhe;
+        GeneralPath polygon = new GeneralPath();
         polygon.moveTo((float) pkt.getX(), (float) pkt.getY());
         polygon.lineTo((float) (pkt.getX() - 0.6f * höhe), (float) (pkt.getY() + höhe));
         polygon.lineTo((float) (pkt.getX() + 0.6f * höhe), (float) (pkt.getY() + höhe));

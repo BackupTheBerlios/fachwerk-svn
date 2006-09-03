@@ -64,7 +64,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     
     private static final String PROGNAME = "Fachwerk3D"; // in clOberflaeche nochmals hart kodiert (Titel)
     private static final int HAUPTVER = 0;
-    private static final int UNTERVER = 20; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
+    private static final int UNTERVER = 21; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
     private final String FILEPROGNAME = "treillis3D";
     private final int FILEVER = 1;
     
@@ -435,7 +435,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
             i++;
         }
         
-        clPrintPanel3D printpanel = new clPrintPanel3D(Knotenarray, Stabarray,
+        clPrintPanel3D printpanel = new clPrintPanel3D(Knotenarray, Stabarray, hp,
                                     WIDERSPRUCHmelden, !keinFEHLER, VOLLSTÄNDIGGELÖST_OK, locale);
         
         PrinterJob pj = PrinterJob.getPrinterJob();

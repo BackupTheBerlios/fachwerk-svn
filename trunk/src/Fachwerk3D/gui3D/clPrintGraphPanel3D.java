@@ -18,8 +18,8 @@ import java.awt.print.*;
 /**
  * Fachwerk3D - treillis3D
  *
- * Copyright (c) 2003, 2004 A.Vontobel <qwert2003@users.sourceforge.net>
- *                                     <qwert2003@users.berlios.de>
+ * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
+ *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
@@ -46,17 +46,16 @@ import java.awt.print.*;
  * diesem Programm erhalten haben. Falls nicht, schreiben Sie an die
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA. 
  */
-public class clPrintGraphPanel3D extends clHauptPanel3D implements Printable {    
+public class clPrintGraphPanel3D extends clHauptPanel3D implements Printable {
     
     // Aufteilung des Blattes
-    final double antGraph = 0.9; 
+    final double antGraph = 0.9;
     
     final double printskal = 0.5;
     final int schriftgrText = 10;
-    final int schriftgrGraph = 7; //8;
-    //final int schriftgrSys = 6;
+    final int schriftgrGraph = 7;
     
-    double antTxt = 1d - antGraph; 
+    double antTxt = 1d - antGraph;
     double antVertikal;
     double antHorizontal;
     
@@ -69,14 +68,14 @@ public class clPrintGraphPanel3D extends clHauptPanel3D implements Printable {
     double druckvergr = 300d/dpi * (20.8-2*2.5)/(33.5-5.); // Druckaufl/Bildschirmaufl * BreiteA4/BreiteBildschirm
     
     Frame parent;
-    PageFormat pf; 
+    PageFormat pf;
     //private boolean schongedruckt = false;
     ResourceBundle druckRB;
     Locale locale;
     
     double[] n; // Projektionsrichtung
     
-            
+    
     /** Creates a new instance of clPrintGraphPanel */
     public clPrintGraphPanel3D(java.awt.Frame parent, clHauptPanel3D hp, Locale lc) {
         super(hp.getKn(), hp.getSt(), true);
@@ -84,7 +83,7 @@ public class clPrintGraphPanel3D extends clHauptPanel3D implements Printable {
         dxf = hp.dxf;
         mechanismusRelKnVersch = hp.mechanismusRelKnVersch;
         n = hp.getBlickRtg();
-               
+        
         
         Point2D[] zoomPkte = hp.getZoomPkte();
         ZoomPkt1 = zoomPkte[0];
@@ -104,7 +103,7 @@ public class clPrintGraphPanel3D extends clHauptPanel3D implements Printable {
         maxPfeil = maxPfeil * druckvergr;
         spitzenlängeMax = spitzenlängeMax * druckvergr;
         spitzenlängeMin = spitzenlängeMin * druckvergr; 
-        lagerhöhe = lagerhöhe  * (float)druckvergr; //
+        lagerhöhe = lagerhöhe  * (float)druckvergr;
         
         locale = lc;
         druckRB = ResourceBundle.getBundle("Fachwerk3D/locales3D/gui3D-drucken", locale);
@@ -119,19 +118,19 @@ public class clPrintGraphPanel3D extends clHauptPanel3D implements Printable {
     
             
     public int print(Graphics graphics, PageFormat pageformat, int pageIndex) throws PrinterException {
-        if (pageIndex >= 1) return Printable.NO_SUCH_PAGE;      
+        if (pageIndex >= 1) return Printable.NO_SUCH_PAGE;
         
-        this.pf = pageformat;           
+        this.pf = pageformat;
         g = (Graphics2D) graphics;
         g.scale(printskal, printskal);
-                   
+        
         //auf den sichtbaren Bereich ausrichten
-        g.translate(pf.getImageableX() / printskal, pf.getImageableY() / printskal);  
-                       
-                
+        g.translate(pf.getImageableX() / printskal, pf.getImageableY() / printskal);
+        
+        
         // -----------------
         // 1. Teil: Graphik
-        // -----------------        
+        // -----------------
         antVertikal = antGraph; antHorizontal = 1.0d;
         schriftgrStd = (int) (schriftgrGraph / printskal);
         
@@ -147,34 +146,32 @@ public class clPrintGraphPanel3D extends clHauptPanel3D implements Printable {
                 koord.zoome(ZoomPkt1, ZoomPkt2, this, zusRandabst);
             }
             else koord.zoome(ZoomPkt1, ZoomPkt2, this);
-            // maximalen Massstab bestimmen        
+            // maximalen Massstab bestimmen
             double minzoomfaktor = koord.m(dpi/zoll);
             
             // Massstab abfragen
             clPrintGraphDialog dialog = new clPrintGraphDialog(parent, minzoomfaktor, locale);
             if (dialog.abgebrochen()) throw new PrinterException(tr("druckenabgebrochen")); //return Printable.NO_SUCH_PAGE; // abgebrochen
             einheit = dialog.getEinheit();
-            mst = dialog.getMst();             
-            // debug
-            //mst = 100d;
+            mst = dialog.getMst();
             MASSSTABABGEFRAGT = true;
             //debug
             //System.out.println("minzoomfaktor " + Fkt.nf(minzoomfaktor,1));
-            //System.out.println("Massstab 1:" + Fkt.nf(mst,1) + "  Einheit " + Fkt.nf(einheit,3) + "m");            
-        }                
+            //System.out.println("Massstab 1:" + Fkt.nf(mst,1) + "  Einheit " + Fkt.nf(einheit,3) + "m");
+        }
         
         koord.zoome(ZoomPkt1, ZoomPkt2, this, true, einheit*(dpi/zoll)/mst);
-                        
+        
         g.setPaint(Color.black);
-                       
+        
         if (Kn != null) {
             if (MIT_Hintergrund) darstellenHintergrund();
             darstellenFachwerk(true);
             if (MIT_KnNr) darstellenKnNr();
             if (MIT_StabNr) darstellenStabNr();
-            if (MIT_Lasten) darstellenLasten();
-            if (MIT_Auflagerkräften) darstellenAuflagerkräfte();
-            if (MIT_Stabkräften) darstellenStabkräfte();  
+            if (MIT_Lasten) darstellenLasten(MIT_Stabkräften);
+            if (MIT_Auflagerkräften) darstellenAuflagerkräfte(MIT_Stabkräften);
+            if (MIT_Stabkräften) darstellenStabkräfte();
             if (MIT_Mechanismus) darstellenMechanismus();
         }
         
@@ -185,13 +182,13 @@ public class clPrintGraphPanel3D extends clHauptPanel3D implements Printable {
         antVertikal = antTxt; antHorizontal = 1.0d;
         double Feldhöhe = antVertikal * pf.getImageableHeight() / printskal;
         double Feldbreite = antHorizontal * pf.getImageableWidth() / printskal;
-        int anzmöglzeilen = 2; // mind. eine Zeile am Schluss freilassen 
+        int anzmöglzeilen = 2; // mind. eine Zeile am Schluss freilassen
         int anzmöglbuchst = 30;
-        int schriftgr = schriftskal(Feldhöhe,Feldbreite, anzmöglzeilen,anzmöglbuchst, (int) (schriftgrText / printskal));      
+        int schriftgr = schriftskal(Feldhöhe,Feldbreite, anzmöglzeilen,anzmöglbuchst, (int) (schriftgrText / printskal));
         float za = (float)faktorza * (float)schriftgr;
         g.setFont(new Font("Monospaced", Font.PLAIN, schriftgr));
         
-        // Zoomfaktor bestimmen        
+        // Zoomfaktor bestimmen
         double zoomfaktor = koord.m(dpi/zoll) * einheit;
         g.drawString("1 : " + Fkt.nf(zoomfaktor,1), 0f, (float)schriftgr+ 1f*za);
      
@@ -217,13 +214,13 @@ public class clPrintGraphPanel3D extends clHauptPanel3D implements Printable {
         return (int) (pf.getImageableHeight() / printskal * antVertikal);
     }
     
-    private String tr(String key) {        
+    private String tr(String key) {
         String übersetzt;
         try {übersetzt = druckRB.getString(key);}
         catch (MissingResourceException e) {
             System.err.println("Schluesselwort " + key + " nicht gefunden fuer " + locale.toString() + " ; " + e.toString());
             return key;
-        }        
+        }
         return übersetzt;
     }
     
