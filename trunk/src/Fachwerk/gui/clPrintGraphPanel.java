@@ -17,8 +17,8 @@ import java.awt.print.*;
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003, 2004 A.Vontobel <qwert2003@users.sourceforge.net>
- *                                     <qwert2003@users.berlios.de>
+ * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
+ *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
@@ -197,8 +197,8 @@ public class clPrintGraphPanel extends clHauptPanel implements Printable {
             darstellenFachwerk(true);
             if (MIT_KnNr) darstellenKnNr();
             if (MIT_StabNr) darstellenStabNr();
-            if (MIT_Lasten) darstellenLasten();
-            if (MIT_Auflagerkräften) darstellenAuflagerkräfte();
+            if (MIT_Lasten) darstellenLasten(MIT_Stabkräften);
+            if (MIT_Auflagerkräften) darstellenAuflagerkräfte(MIT_Stabkräften);
             if (MIT_Stabkräften) darstellenStabkräfte();
             if (MIT_Mechanismus) darstellenMechanismus();
         }

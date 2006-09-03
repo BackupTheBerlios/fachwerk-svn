@@ -55,7 +55,7 @@ public class treillis extends clOberflaeche implements inKonstante {
     
     private static final String PROGNAME = "Fachwerk"; // in clOberflaeche nochmals hart kodiert (Titel)
     private static final int HAUPTVER = 0;
-    private static final int UNTERVER = 20; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
+    private static final int UNTERVER = 21; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
     private final String FILEPROGNAME = "treillis";
     private final int FILEVER = 1;
     
@@ -405,7 +405,7 @@ public class treillis extends clOberflaeche implements inKonstante {
             Stabarray[i] = (clWissenderStab) it.next();
             i++;
         }
-        clPrintPanel printpanel = new clPrintPanel(Knotenarray, Stabarray,
+        clPrintPanel printpanel = new clPrintPanel(Knotenarray, Stabarray, hp,
                                   WIDERSPRUCHmelden, !keinFEHLER, VOLLSTÄNDIGGELÖST_OK, locale);
         
         PrinterJob pj = PrinterJob.getPrinterJob();

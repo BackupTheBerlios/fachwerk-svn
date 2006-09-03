@@ -16,7 +16,7 @@ import java.awt.geom.*;
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2005 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -186,8 +186,8 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
             darstellenFachwerk(true);
             if (MIT_KnNr) darstellenKnNr();
             if (MIT_StabNr) darstellenStabNr();
-            if (MIT_Lasten) darstellenLasten();
-            if (MIT_Auflagerkräften) darstellenAuflagerkräfte();
+            if (MIT_Lasten) darstellenLasten(MIT_Stabkräften);
+            if (MIT_Auflagerkräften) darstellenAuflagerkräfte(MIT_Stabkräften);
             if (MIT_Stabkräften) darstellenStabkräfte();
             if (MIT_Mechanismus) darstellenMechanismus();
             if (MIT_Hilfslinie || MIT_Hilfsrechteck) darstellenHilfslinien();
@@ -324,7 +324,7 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
             else alphaRot = Math.atan(dy/dx);
             // Rotieren und schieben
             rotiert = AffineTransform.getRotateInstance(alphaRot, (float) pkt_pix.getX(),(float) pkt_pix.getY());
-            g.transform(rotiert);            
+            g.transform(rotiert);
             g.translate(0d, -schriftgrStd/3);
             //pkt_pix.setLocation(pkt_pix.getX(),pkt_pix.getY() - schriftgrStd/2);
             g.drawString(""+i, (float) pkt_pix.getX(), (float) pkt_pix.getY());
@@ -332,32 +332,72 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
         }
     }
     
-    protected void darstellenLasten() {
+    protected void darstellenLasten(boolean kN_beschriften) {
+        // Pfeile
         double TOL = maxkraft()/100d;
         double l; // Pfeillänge
         double L; // Kraft
         double x, z;
         Point2D pkt = new Point2D.Double();
         Point2D pkt_pix = new Point2D.Double();
+        // Beschriftung
+        int schriftgr = schriftgrStd + 2;
+        g.setFont(new Font("Monospaced", Font.BOLD, schriftgr));
+        g.setPaint(Color.blue); // gilt für Schrift, Pfeilfarbe wird direkt gesetzt
+        AffineTransform aT = g.getTransform(); // ursprünglicher Zustand vor dem Rotieren
+        AffineTransform rotiert;
+        double alphaRot; // Rotationswinkel
+        String beschriftung;
+        
         for (int i = 1; i < Kn.length; i++) {
             pkt.setLocation(Kn[i].getX(), Kn[i].getZ());
             pkt_pix = koord.panel(pkt);
             x = pkt_pix.getX();
             z = pkt_pix.getY();
             L = Math.sqrt(Math.pow(Kn[i].getLx(), 2) + Math.pow(Kn[i].getLz(), 2));
+            // Pfeil zeichnen
             if (L > TOL) pfeil(x, z, 
             x + Kn[i].getLx() / maxkraft() * maxPfeil, 
             z + Kn[i].getLz() / maxkraft() * maxPfeil,Color.blue);
+            
+            // Beschriften aller Lasten     // TODO
+            if (!kN_beschriften || L == 0d ) continue;
+            beschriftung = Fkt.nf(L,0);
+            // Rotationswinkel ermitteln
+            if (Kn[i].getLx() == 0d) alphaRot = -Math.PI/2d;
+            else alphaRot = Math.atan(Kn[i].getLz()/Kn[i].getLx());
+            // Zentrum platzieren, rotieren und schieben
+            double pfeillänge_pix = L / maxkraft() * maxPfeil;
+            double spitzenlänge = pfeillänge_pix / 4d;
+            if (spitzenlänge > spitzenlängeMax) spitzenlänge = spitzenlängeMax;
+            if (spitzenlänge < spitzenlängeMin) spitzenlänge = spitzenlängeMin;
+            double rotpkt = pfeillänge_pix - spitzenlänge - bzuh*schriftgr*beschriftung.length() / 2d - 1d; // von Pfeilbeginn in Pfeilrtg gemessen
+            pkt_pix.setLocation(x + Kn[i].getLx() / L * rotpkt, z + Kn[i].getLz() / L * rotpkt);
+            rotiert = AffineTransform.getRotateInstance(alphaRot, (float) pkt_pix.getX(),(float) pkt_pix.getY());
+            g.transform(rotiert);
+            g.translate(-bzuh*schriftgr*beschriftung.length() / 2d, -schriftgrStd/4d);
+            g.drawString(beschriftung, (float) pkt_pix.getX(), (float) pkt_pix.getY());
+            g.setTransform(aT); // Rotation und Verschiebung zurückstellen
         }
+        g.setPaint(Color.black);
     }
     
-    protected void darstellenAuflagerkräfte() {
+    protected void darstellenAuflagerkräfte(boolean kN_beschriften) {
         double TOL = maxkraft()/100d;
         double l; // Pfeillänge
         double A; // Kraft
         double x, z;
         Point2D pkt = new Point2D.Double();
         Point2D pkt_pix = new Point2D.Double();
+        // Beschriftung
+        int schriftgr = schriftgrStd + 2;
+        g.setFont(new Font("Monospaced", Font.PLAIN, schriftgr));
+        g.setPaint(Color.red); // gilt für Schrift, Pfeilfarbe wird direkt gesetzt
+        AffineTransform aT = g.getTransform(); // ursprünglicher Zustand vor dem Rotieren
+        AffineTransform rotiert;
+        double alphaRot; // Rotationswinkel
+        String beschriftung;
+        
         for (int i = 1; i < Kn.length; i++) {
             pkt.setLocation(Kn[i].getX(), Kn[i].getZ());
             pkt_pix = koord.panel(pkt);
@@ -367,7 +407,30 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
             if (A > TOL) pfeil(x, z, 
             x + Kn[i].getRx() / maxkraft() * maxPfeil, 
             z + Kn[i].getRz() / maxkraft() * maxPfeil,Color.red);
+            
+            // Beschriften aller Lasten     // TODO
+            if (!kN_beschriften || A == 0d ) continue;
+            beschriftung = Fkt.nf(A,0);
+            // Rotationswinkel ermitteln
+            if (Math.abs(Kn[i].getRx()) < TOL_resultatcheck) {
+                if (Math.abs(Kn[i].getRz()) < TOL_resultatcheck) alphaRot = 0;
+                else alphaRot = -Math.PI/2d;
+            }
+            else alphaRot = Math.atan(Kn[i].getRz()/Kn[i].getRx());
+            // Zentrum platzieren, rotieren und schieben
+            double pfeillänge_pix = A / maxkraft() * maxPfeil;
+            double spitzenlänge = pfeillänge_pix / 4d;
+            if (spitzenlänge > spitzenlängeMax) spitzenlänge = spitzenlängeMax;
+            if (spitzenlänge < spitzenlängeMin) spitzenlänge = spitzenlängeMin;
+            double rotpkt = pfeillänge_pix - spitzenlänge - bzuh*schriftgr*beschriftung.length() / 2d - 1d; // von Pfeilbeginn in Pfeilrtg gemessen
+            pkt_pix.setLocation(x + Kn[i].getRx() / A * rotpkt, z + Kn[i].getRz() / A * rotpkt);
+            rotiert = AffineTransform.getRotateInstance(alphaRot, (float) pkt_pix.getX(),(float) pkt_pix.getY());
+            g.transform(rotiert);
+            g.translate(-bzuh*schriftgr*beschriftung.length() / 2d, -schriftgrStd/4d);
+            g.drawString(beschriftung, (float) pkt_pix.getX(), (float) pkt_pix.getY());
+            g.setTransform(aT); // Rotation und Verschiebung zurückstellen
         }
+        g.setPaint(Color.black);
     }
     
     protected void darstellenStabkräfte() {
@@ -491,6 +554,7 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
     }
     
     protected void darstellenMechanismus() { // TODO fliessende gesetzte Stäbe dick
+        if (mechanismusRelKnVersch == null) return; // erlaubt den generellen Aufruf von darstellenMechanismus(), in clPrintPanel
         // Durchlaufvariablen
         Point2D pkt = new Point2D.Double(); // jeweils aktueller Pkt;
         Point2D pkt2 = new Point2D.Double(); // jeweils aktueller Pkt;
@@ -795,28 +859,29 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
     }
     
     private void pfeil(double vonX, double vonZ, double bisX, double bisZ, Paint farbe) {
-        g.setPaint(farbe); g.setStroke(new BasicStroke(2.0f));        
-        double spitzenlänge = Math.sqrt(Math.pow((bisZ-vonZ),2)+Math.pow((bisX-vonX),2)) / 4d;
+        Paint origPaint = g.getPaint(); Stroke origStroke = g.getStroke(); // ursprüngliche Stricheinstellungen
+        g.setPaint(farbe); g.setStroke(new BasicStroke(2.0f));
+        double spitzenlänge = Math.sqrt(Math.pow((bisZ-vonZ),2)+Math.pow((bisX-vonX),2)) / 4d; // bei allfälliger Anpassung, auch darstellenLasten() resp. Auflkr. anpassen
         if (spitzenlänge > spitzenlängeMax) spitzenlänge = spitzenlängeMax; //15;
         if (spitzenlänge < spitzenlängeMin) spitzenlänge = spitzenlängeMin; //7;
         double dx = spitzenlänge * (bisX-vonX) / Math.sqrt(Math.pow((bisZ-vonZ),2)+Math.pow((bisX-vonX),2));
         double dz = spitzenlänge * (bisZ-vonZ) / Math.sqrt(Math.pow((bisZ-vonZ),2)+Math.pow((bisX-vonX),2));
         if (Math.sqrt(Math.pow((bisZ-vonZ),2)+Math.pow((bisX-vonX),2)) >= spitzenlänge) { // NEU IN VER 0.05
             g.draw(new Line2D.Double(vonX,vonZ,bisX - dx/2d ,bisZ - dz/2d));
-        }    
+        }
         GeneralPath spitze = new GeneralPath();
         spitze.moveTo((float)bisX, (float)bisZ);
         spitze.lineTo((float)(bisX - dx + dz/2d), (float)(bisZ - dz - dx/2d));
         spitze.lineTo((float)(bisX - dx - dz/2d), (float)(bisZ - dz + dx/2d));
         spitze.closePath();
         g.fill(spitze);
-        g.setPaint(Color.black); g.setStroke(new BasicStroke(1.0f));
+        g.setPaint(origPaint); g.setStroke(origStroke); // ursprüngliche Stricheinstellungen setzen
     }
     
-        
+    
     private GeneralPath Lagerfix(Point2D pkt) {
-        float höhe = lagerhöhe; //14;
-        GeneralPath polygon = new GeneralPath();        
+        float höhe = lagerhöhe;
+        GeneralPath polygon = new GeneralPath();
         polygon.moveTo((float) pkt.getX(), (float) pkt.getY());
         polygon.lineTo((float) (pkt.getX() - 0.6f * höhe), (float) (pkt.getY() + höhe));
         polygon.lineTo((float) (pkt.getX() + 0.6f * höhe), (float) (pkt.getY() + höhe));
@@ -825,7 +890,7 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
     }
     
     private GeneralPath Lagerversch(Point2D pkt, double alpha) {
-        float h = lagerhöhe; //14;
+        float h = lagerhöhe;
         float b = 0.6f * h;
         float c = (float) Math.cos(alpha);
         float s = (float) Math.sin(alpha);

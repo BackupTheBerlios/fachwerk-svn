@@ -18,8 +18,8 @@ import java.awt.print.*;
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003, 2004 A.Vontobel <qwert2003@users.sourceforge.net>
- *                                     <qwert2003@users.berlios.de>
+ * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
+ *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
@@ -46,15 +46,15 @@ import java.awt.print.*;
  * diesem Programm erhalten haben. Falls nicht, schreiben Sie an die
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA. 
  */
-public class clPrintPanel extends clHauptPanel implements Printable {    
+public class clPrintPanel extends clHauptPanel implements Printable {
     
     // Aufteilung des Blattes
-    final double antRes = 0.33; 
+    final double antRes = 0.33;
     final double antHorLinks = 0.5;
     
     final double printskal = 0.5;
     final int schriftgrText = 10;
-    final int schriftgrRes = 7; //8;
+    final int schriftgrRes = 7;
     final int schriftgrSys = 6;
     
     double dpi = 72d / printskal;
@@ -62,7 +62,7 @@ public class clPrintPanel extends clHauptPanel implements Printable {
     
     double antSys = 1d - antRes;
     double antSysgra = antHorLinks * antRes;
-    double antSystxt = antSys - antSysgra;    
+    double antSystxt = antSys - antSysgra;
     double antVertikal;
     double antHorizontal;
     
@@ -71,27 +71,27 @@ public class clPrintPanel extends clHauptPanel implements Printable {
     private boolean WIDERSPRUCHmelden;
     private boolean KOMPLETTmelden;
     
-    PageFormat pf; 
+    PageFormat pf;
     //private boolean schongedruckt = false;
     ResourceBundle druckRB;
     Locale locale;
     
-            
+    
     /** Creates a new instance of clPrintPanel */
-    public clPrintPanel(clKnoten[] p_Knotenarray, clWissenderStab[] p_Stabarray,
+    public clPrintPanel(clKnoten[] p_Knotenarray, clWissenderStab[] p_Stabarray, clHauptPanel hp,
                         boolean WIDERSPRUCHmelden, boolean FEHLERmelden, boolean KOMPLETTmelden, Locale lc) {
         super(p_Knotenarray, p_Stabarray, true);
         this.FEHLERmelden = FEHLERmelden;
         this.WIDERSPRUCHmelden = WIDERSPRUCHmelden;
         this.KOMPLETTmelden = KOMPLETTmelden;
-        //assert Math.abs(antRes + antSysgra + antSystxt - 1d) < 1e-10;  
+        mechanismusRelKnVersch = hp.mechanismusRelKnVersch;
         
         // Skalierung der Pfeillänge
         MIT_Lasten = true;
         MIT_Auflagerkräften = true;
-        maxPfeil = maxPfeil*druckvergr; // / (0.5d + printskal/2d);
-        spitzenlängeMax = spitzenlängeMax*druckvergr; // / (0.5d + printskal/2d);
-        spitzenlängeMin = spitzenlängeMin*druckvergr; // / (0.5d + printskal/2d);
+        maxPfeil = maxPfeil*druckvergr;
+        spitzenlängeMax = spitzenlängeMax*druckvergr;
+        spitzenlängeMin = spitzenlängeMin*druckvergr;
         
         locale = lc;
         druckRB = ResourceBundle.getBundle("Fachwerk/locales/gui-drucken", locale);
@@ -106,53 +106,51 @@ public class clPrintPanel extends clHauptPanel implements Printable {
         
         
     public int print(Graphics graphics, PageFormat pageformat, int pageIndex) throws PrinterException {
-        if (pageIndex >= 1) return Printable.NO_SUCH_PAGE; 
+        if (pageIndex >= 1) return Printable.NO_SUCH_PAGE;
         /*if (schongedruckt) {
             paint(g);
             return Printable.PAGE_EXISTS;
-        }*/        
-        this.pf = pageformat;           
+        }*/
+        this.pf = pageformat;
         g = (Graphics2D) graphics;
         g.scale(printskal, printskal);
-                   
+        
         //auf den sichtbaren Bereich ausrichten
-        g.translate(pf.getImageableX() / printskal, pf.getImageableY() / printskal);  
+        g.translate(pf.getImageableX() / printskal, pf.getImageableY() / printskal);
         
         
         // -----------------
         // 1. Teil: Resultat
         // -----------------
-        zoomAll(false); 
+        zoomAll(false);
         antVertikal = antRes; antHorizontal = 1.0d;
-        //schriftgrStd = (int) ( (double)schriftgrStd / printskal * 0.7d);  
+        //schriftgrStd = (int) ( (double)schriftgrStd / printskal * 0.7d);
         schriftgrStd = (int) (schriftgrRes / printskal);
         
-        koord = new clKoord(ZoomPkt1, ZoomPkt2, this, maxPfeil);                                
+        koord = new clKoord(ZoomPkt1, ZoomPkt2, this, maxPfeil);
         g.setPaint(Color.black);
         if (Kn != null) {
-            darstellenFachwerk(true);            
-            darstellenLasten();
-            darstellenAuflagerkräfte();
-            darstellenStabkräfte();            
+            darstellenFachwerk(true);
+            darstellenLasten(false);
+            darstellenAuflagerkräfte(false);
+            darstellenStabkräfte();
+            darstellenMechanismus();
         }
-                
+        
         // -------------------------
         // 2. Teil: System graphisch
         // -------------------------
         g.translate(0d,  antRes * pf.getImageableHeight() / printskal);
         antVertikal = antSysgra; antHorizontal = antHorLinks;
-        //schriftgrStd = (int) ( (double)schriftgrStd * (antHorizontal / 0.7d + 0.9d) / 2d);
         schriftgrStd = (int) (schriftgrSys / printskal);
-        //maxPfeil = antHorizontal * maxPfeil;
-        zoomAll(false);        
-        koord = new clKoord(ZoomPkt1, ZoomPkt2, this, 2d*schriftgrStd); //maxPfeil);                                
+        zoomAll(false);
+        koord = new clKoord(ZoomPkt1, ZoomPkt2, this, 2d*schriftgrStd); //maxPfeil);
         g.setPaint(Color.black);
         if (Kn != null) {
             darstellenFachwerk(false);
+            darstellenLasten(true);
             darstellenKnNr();
             darstellenStabNr();
-            //darstellenLasten();
-            //darstellenAuflagerkräfte();                      
         }
         
         // --------------------------------------------------------------
@@ -164,11 +162,11 @@ public class clPrintPanel extends clHauptPanel implements Printable {
         antHorizontal = 1d - antHorLinks;
         double Feldhöhe = antVertikal * pf.getImageableHeight() / printskal;
         double Feldbreite = antHorizontal * pf.getImageableWidth() / printskal;
-        int anzmöglzeilen = 9; // mind. eine Zeile am Schluss freilassen 
+        int anzmöglzeilen = 9; // mind. eine Zeile am Schluss freilassen
         String[] summenLR = summenkontrolle();
         double[] liste = {summenLR[0].length(), summenLR[1].length(), 35};
         int anzmöglbuchst = (int) Fkt.max(liste);
-        int schriftgr = schriftskal(Feldhöhe,Feldbreite, anzmöglzeilen,anzmöglbuchst, (int) (schriftgrText / printskal));      
+        int schriftgr = schriftskal(Feldhöhe,Feldbreite, anzmöglzeilen,anzmöglbuchst, (int) (schriftgrText / printskal));
         float za = (float)faktorza * (float)schriftgr;
         g.setFont(new Font("Monospaced", Font.PLAIN, schriftgr));
         g.drawString(" " + tr("SummeLasten") + ":", 0f, (float)schriftgr+ 1f*za);
@@ -218,20 +216,16 @@ public class clPrintPanel extends clHauptPanel implements Printable {
                     }
                     else {
                         sb.append(Fkt.nf(Kn[kn].getX(), 2, 2) +" ");
-                        sb.append(Fkt.nf(Kn[kn].getZ(), 2, 2) +" ");                        
+                        sb.append(Fkt.nf(Kn[kn].getZ(), 2, 2) +" ");
                     }
                     sb.append(" " + tr("OFFEN"));
                     break;
-                case FERTIG:                    
-                    //if (Fkt.fix(Kn[kn].getX(), 2) >= 0) sb.append(" "); // Leerschlag, wenn kein "-" davor steht
+                case FERTIG:
                     sb.append(Fkt.nf(Kn[kn].getX(), 2, 2) +" ");
-                    //sb.append(Fkt.fix(Kn[kn].getX(), 2) +" ");
-                    //if (Fkt.fix(Kn[kn].getZ(), 2) >= 0) sb.append(" ");
                     sb.append(Fkt.nf(Kn[kn].getZ(), 2, 2) +" ");
-                    //sb.append(Fkt.fix(Kn[kn].getZ(), 2) +" ");// FERTIG");                     
                     break;
                 case WIDERSPRUCH:
-                    sb.append(Fkt.fix(Kn[kn].getX(), 2) +" "+ Fkt.fix(Kn[kn].getZ(), 2) +" "+tr("WIDERSPRUCH"));                    
+                    sb.append(Fkt.fix(Kn[kn].getX(), 2) +" "+ Fkt.fix(Kn[kn].getZ(), 2) +" "+tr("WIDERSPRUCH"));
                     break;
                 default:
                     sb.append(Fkt.fix(Kn[kn].getX(), 2) +" "+ Fkt.fix(Kn[kn].getZ(), 2));
@@ -245,9 +239,9 @@ public class clPrintPanel extends clHauptPanel implements Printable {
             sb = new StringBuffer();
         }
         // Leerzeile
-        knotenspalte[zeile] = ""; liste[zeile] = knotenspalte[zeile].length(); zeile++; 
+        knotenspalte[zeile] = ""; liste[zeile] = knotenspalte[zeile].length(); zeile++;
         
-        // Lager      
+        // Lager
         knotenspalte[zeile] = tr("Lager"); liste[zeile] = knotenspalte[zeile].length(); zeile++;
         for (int kn = 1; kn < Kn.length; kn++) {
             switch (Kn[kn].getLagerbed()) {
@@ -263,10 +257,10 @@ public class clPrintPanel extends clHauptPanel implements Printable {
                             break;
                         case UNBEST:
                             sb.append("Rx, Ry = ???, " + tr("Status") + " " + tr("UNBESTIMMT"));
-                            break;                            
+                            break;
                         default:
                             sb.append(tr("Status") + " " + Kn[kn].getLagerstatus() );
-                    } 
+                    }
                     knotenspalte[zeile] = sb.toString();
                     liste[zeile] = sb.length();
                     zeile++;
@@ -299,15 +293,14 @@ public class clPrintPanel extends clHauptPanel implements Printable {
         assert zeile == anzmöglzeilen : "Anz.Zeilen stimmt nicht (Knotenspalte)";
         
         anzmöglbuchst = (int) Fkt.max(liste);
-        schriftgr = schriftskal(Feldhöhe,Feldbreite, anzmöglzeilen,anzmöglbuchst, (int) (schriftgrText / printskal));      
+        schriftgr = schriftskal(Feldhöhe,Feldbreite, anzmöglzeilen,anzmöglbuchst, (int) (schriftgrText / printskal));
         za = (float)faktorza * (float)schriftgr;
-        g.setFont(new Font("Monospaced", Font.PLAIN, schriftgr));        
+        g.setFont(new Font("Monospaced", Font.PLAIN, schriftgr));
         for (int i = 0; i < knotenspalte.length; i++) {
-            //System.out.println("Zeile " + i + ": " + knotenspalte[i]);            
             g.drawString(knotenspalte[i], 0f, (float) schriftgr + ((float) i) * za);
         }
         
-                
+        
         
         // ---------------------------------------------
         // 5. Teil: Text unter "System graphisch": Stäbe
@@ -323,22 +316,17 @@ public class clPrintPanel extends clHauptPanel implements Printable {
         sb = new StringBuffer();
         
         stabspalte[0] = " " + tr("Staebe");
-        for (int st = 1; st < St.length; st++) {              
+        for (int st = 1; st < St.length; st++) {
             sb.append(" Nr " + Fkt.nf(st, 2));
-            //sb.append(" Nr " + st);
             sb.append(" ("+tr("Kn")+" " + Fkt.nf(St[st].von, 2) + " - " + Fkt.nf(St[st].bis, 2) + "): ");
             switch (St[st].stab.getStatus()) {
                 case BER:
                     sb.append("N = ");
-                    //if (St[st].stab.getKraft() >= 0) sb.append(" ");
-                    //sb.append(Fkt.fix(St[st].stab.getKraft(), 1));
                     sb.append(Fkt.nf(St[st].stab.getKraft(), 1, 5));
                     sb.append(" kN"); //Status BERECHNET");
                     break;
                 case GESETZT:
                     sb.append("N = ");
-                    //if (St[st].stab.getKraft() >= 0) sb.append(" ");
-                    //sb.append(Fkt.fix(St[st].stab.getKraft(), 1));
                     sb.append(Fkt.nf(St[st].stab.getKraft(), 1, 5));
                     sb.append(" kN " + tr("GESETZT"));
                     break;
@@ -353,11 +341,10 @@ public class clPrintPanel extends clHauptPanel implements Printable {
             sb = new StringBuffer();
         }          
         anzmöglbuchst = (int) Fkt.max(liste);
-        schriftgr = schriftskal(Feldhöhe,Feldbreite, anzmöglzeilen,anzmöglbuchst, (int) (schriftgrText / printskal));      
+        schriftgr = schriftskal(Feldhöhe,Feldbreite, anzmöglzeilen,anzmöglbuchst, (int) (schriftgrText / printskal));
         za = (float)faktorza * (float)schriftgr;
-        g.setFont(new Font("Monospaced", Font.PLAIN, schriftgr));        
+        g.setFont(new Font("Monospaced", Font.PLAIN, schriftgr));
         for (int i = 0; i < stabspalte.length; i++) {
-            //System.out.println("Zeile " + i + ": " + stabspalte[i]);            
             g.drawString(stabspalte[i], 0f, (float) schriftgr + ((float) i) * za);
         }
         
@@ -377,7 +364,7 @@ public class clPrintPanel extends clHauptPanel implements Printable {
             SummeLx += Kn[kn].getLx();
             SummeLz += Kn[kn].getLz();
             // das Moment sei positiv im Gegenuhrzeigersinn.
-            SummeML += Kn[kn].getZ() * Kn[kn].getLx() - Kn[kn].getX() * Kn[kn].getLz();            
+            SummeML += Kn[kn].getZ() * Kn[kn].getLx() - Kn[kn].getX() * Kn[kn].getLz();
             if (Kn[kn].getLagerbed() == FIX || Kn[kn].getLagerbed() == VERSCHIEBLICH) {
                 SummeAx += Kn[kn].getRx();
                 SummeAz += Kn[kn].getRz();
@@ -436,7 +423,7 @@ public class clPrintPanel extends clHauptPanel implements Printable {
         catch (MissingResourceException e) {
             System.err.println("Schluesselwort " + key + " nicht gefunden fuer " + locale.toString() + " ; " + e.toString());
             return key;
-        }        
+        }
         return übersetzt;
     }
 }
