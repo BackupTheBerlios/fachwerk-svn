@@ -360,7 +360,7 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
             x + Kn[i].getLx() / maxkraft() * maxPfeil, 
             z + Kn[i].getLz() / maxkraft() * maxPfeil,Color.blue);
             
-            // Beschriften aller Lasten     // TODO
+            // Beschriften aller Lasten
             if (!kN_beschriften || L == 0d ) continue;
             beschriftung = Fkt.nf(L,0);
             // Rotationswinkel ermitteln
@@ -408,12 +408,12 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
             x + Kn[i].getRx() / maxkraft() * maxPfeil, 
             z + Kn[i].getRz() / maxkraft() * maxPfeil,Color.red);
             
-            // Beschriften aller Lasten     // TODO
+            // Beschriften aller (bekannter) Auflagerkräfte
             if (!kN_beschriften || A == 0d ) continue;
             beschriftung = Fkt.nf(A,0);
             // Rotationswinkel ermitteln
             if (Math.abs(Kn[i].getRx()) < TOL_resultatcheck) {
-                if (Math.abs(Kn[i].getRz()) < TOL_resultatcheck) alphaRot = 0;
+                if (Math.abs(A) < TOL_resultatcheck) alphaRot = 0;
                 else alphaRot = -Math.PI/2d;
             }
             else alphaRot = Math.atan(Kn[i].getRz()/Kn[i].getRx());
@@ -866,7 +866,7 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
         if (spitzenlänge < spitzenlängeMin) spitzenlänge = spitzenlängeMin; //7;
         double dx = spitzenlänge * (bisX-vonX) / Math.sqrt(Math.pow((bisZ-vonZ),2)+Math.pow((bisX-vonX),2));
         double dz = spitzenlänge * (bisZ-vonZ) / Math.sqrt(Math.pow((bisZ-vonZ),2)+Math.pow((bisX-vonX),2));
-        if (Math.sqrt(Math.pow((bisZ-vonZ),2)+Math.pow((bisX-vonX),2)) >= spitzenlänge) { // NEU IN VER 0.05
+        if (Math.sqrt(Math.pow((bisZ-vonZ),2)+Math.pow((bisX-vonX),2)) >= spitzenlänge) {
             g.draw(new Line2D.Double(vonX,vonZ,bisX - dx/2d ,bisZ - dz/2d));
         }
         GeneralPath spitze = new GeneralPath();
