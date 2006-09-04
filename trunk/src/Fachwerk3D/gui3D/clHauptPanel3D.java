@@ -368,14 +368,12 @@ public class clHauptPanel3D extends javax.swing.JPanel implements inKonstante3D 
                 else alphaRot = -Math.PI/2d;
             }
             else alphaRot = Math.atan(pfeilrtg.getY()/pfeilrtg.getX());
-            // Zentrum platzieren, rotieren und schieben    // TODO
+            // Zentrum platzieren, rotieren und schieben
             double pfeillänge_pix = Lproj / maxkraft() * maxPfeil;
             double spitzenlänge = pfeillänge_pix / 4d;
             if (spitzenlänge > spitzenlängeMax) spitzenlänge = spitzenlängeMax;
             if (spitzenlänge < spitzenlängeMin) spitzenlänge = spitzenlängeMin;
-            double rotpkt = pfeillänge_pix - spitzenlänge;
-            if (rotpkt < 0) rotpkt = 0;
-            rotpkt -= bzuh*schriftgr*beschriftung.length() / 2d - 1d; // von Pfeilbeginn in Pfeilrtg gemessen
+            double rotpkt = pfeillänge_pix - spitzenlänge -bzuh*schriftgr*beschriftung.length() / 2d - 1d; // von Pfeilbeginn in Pfeilrtg gemessen
             if (Math.abs(Lproj) < TOL_resultatcheck) pkt_pix.setLocation(x + rotpkt, z);
             else pkt_pix.setLocation(x + pfeilrtg.getX() / Lproj * rotpkt, z + pfeilrtg.getY() / Lproj * rotpkt);
             rotiert = AffineTransform.getRotateInstance(alphaRot, (float) pkt_pix.getX(),(float) pkt_pix.getY());
@@ -423,19 +421,17 @@ public class clHauptPanel3D extends javax.swing.JPanel implements inKonstante3D 
             if (Math.abs(pfeilrtg.getX()) < TOL_resultatcheck) {
                 if (Math.abs(Aproj) < TOL_resultatcheck) {
                     alphaRot = 0;
-                    beschriftung = "("+beschriftung+")";
+                    if (Math.abs(A) > TOL_resultatcheck) beschriftung = "("+beschriftung+")";
                 }
                 else alphaRot = -Math.PI/2d;
             }
             else alphaRot = Math.atan(pfeilrtg.getY()/pfeilrtg.getX());
-            // Zentrum platzieren, rotieren und schieben    // TODO
-            double pfeillänge_pix = A / maxkraft() * maxPfeil;
+            // Zentrum platzieren, rotieren und schieben
+            double pfeillänge_pix = Aproj / maxkraft() * maxPfeil;
             double spitzenlänge = pfeillänge_pix / 4d;
             if (spitzenlänge > spitzenlängeMax) spitzenlänge = spitzenlängeMax;
             if (spitzenlänge < spitzenlängeMin) spitzenlänge = spitzenlängeMin;
-            double rotpkt = pfeillänge_pix - spitzenlänge;
-            if (rotpkt < 0) rotpkt = 0;
-            rotpkt -= bzuh*schriftgr*beschriftung.length() / 2d - 1d; // von Pfeilbeginn in Pfeilrtg gemessen
+            double rotpkt = pfeillänge_pix - spitzenlänge - bzuh*schriftgr*beschriftung.length() / 2d - 1d; // von Pfeilbeginn in Pfeilrtg gemessen
             if (Math.abs(Aproj) < TOL_resultatcheck) pkt_pix.setLocation(x + rotpkt, z);
             else pkt_pix.setLocation(x + pfeilrtg.getX() / Aproj * rotpkt, z + pfeilrtg.getY() / Aproj * rotpkt);
             rotiert = AffineTransform.getRotateInstance(alphaRot, (float) pkt_pix.getX(),(float) pkt_pix.getY());
