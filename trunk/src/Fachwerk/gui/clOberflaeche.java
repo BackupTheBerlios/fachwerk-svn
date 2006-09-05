@@ -168,6 +168,14 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         itemBsp = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                formMouseDragged(evt);
+            }
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                formMouseMoved(evt);
+            }
+        });
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 formKeyPressed(evt);
@@ -184,12 +192,9 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
                 formMouseReleased(evt);
             }
         });
-        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                formMouseDragged(evt);
-            }
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                formMouseMoved(evt);
+        addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                formMouseWheelMoved(evt);
             }
         });
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -937,6 +942,10 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void formMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_formMouseWheelMoved
+        nachrichtMausRadGedreht(evt);
+    }//GEN-LAST:event_formMouseWheelMoved
+
     private void buttonMechanismusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMechanismusActionPerformed
         befehlOptionMechanismus(buttonMechanismus.isSelected());
     }//GEN-LAST:event_buttonMechanismusActionPerformed
@@ -1566,8 +1575,9 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
     protected abstract void nachrichtMausGezogen(java.awt.event.MouseEvent evt);
     protected abstract void nachrichtMausGedrückt(java.awt.event.MouseEvent evt);
     protected abstract void nachrichtMausLosgelassen(java.awt.event.MouseEvent evt);
+    protected abstract void nachrichtMausRadGedreht(java.awt.event.MouseWheelEvent evt);
     
-    protected abstract void nachrichtTasteGedrückt(int taste); //java.awt.event.KeyEvent evt);
+    protected abstract void nachrichtTasteGedrückt(int taste);
     
     
     protected boolean KnopfStabistgedrückt() {

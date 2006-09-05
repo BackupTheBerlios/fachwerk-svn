@@ -1024,7 +1024,7 @@ public class treillis extends clOberflaeche implements inKonstante {
         
         Point2D pkt1 = new Point2D.Double();
         Point2D pkt2 = new Point2D.Double();
-        // Zoomfenster verdoppeln
+        // Zoomfenster halbieren
         pkt1.setLocation(pktm.getX() - dx/4d, pktm.getY() - dz/4d);
         pkt2.setLocation(pktm.getX() + dx/4d, pktm.getY() + dz/4d);
         if (!pkt1.equals(pkt2)) hp.zoomxy(pkt1, pkt2);
@@ -1828,6 +1828,36 @@ public class treillis extends clOberflaeche implements inKonstante {
                     hp.zoomxy(pan.getOL(mzp(maus.getPoint())), pan.getUR(mzp(maus.getPoint())));
                     PAN = false;
                 }
+        }
+    }
+    
+    protected void nachrichtMausRadGedreht(java.awt.event.MouseWheelEvent maus) {
+        if (hp == null) return;
+        if (hp.getKoord() == null) return;
+        if (!mausimPanel(maus)) return;
+        int rtg = maus.getWheelRotation();
+        if (rtg == 0) assert false;
+        
+        Point2D pktm = new Point2D.Double(); // Mittelpunkt
+        pktm.setLocation(((hp.getZoomPkte()[0]).getX() + (hp.getZoomPkte()[1]).getX()) / 2d,
+        ((hp.getZoomPkte()[0]).getY() + (hp.getZoomPkte()[1]).getY()) / 2d);
+        
+        double dx = Math.abs((hp.getZoomPkte()[1]).getX() - (hp.getZoomPkte()[0]).getX());
+        double dz = Math.abs((hp.getZoomPkte()[1]).getY() - (hp.getZoomPkte()[0]).getY());
+        
+        Point2D pkt1 = new Point2D.Double();
+        Point2D pkt2 = new Point2D.Double();
+        if (rtg > 0) { // hinauszoomen          TODO
+        // Zoomfenster vergrössern: mit vier Klicks verdoppeln
+        pkt1.setLocation(pktm.getX() - Math.pow(2d, 0.25)/2d*dx, pktm.getY() - Math.pow(2d, 0.25)/2d*dz);
+        pkt2.setLocation(pktm.getX() + Math.pow(2d, 0.25)/2d*dx, pktm.getY() + Math.pow(2d, 0.25)/2d*dz);
+        if (!pkt1.equals(pkt2)) hp.zoomxy(pkt1, pkt2);
+        }
+        if (rtg < 0) { // hineinzoomen          TODO
+        // Zoomfenster verkleinern: mit vier Klicks halbieren
+        pkt1.setLocation(pktm.getX() - Math.pow(0.5, 0.25)/2d*dx, pktm.getY() - Math.pow(0.5, 0.25)/2d*dz);
+        pkt2.setLocation(pktm.getX() + Math.pow(0.5, 0.25)/2d*dx, pktm.getY() + Math.pow(0.5, 0.25)/2d*dz);
+        if (!pkt1.equals(pkt2)) hp.zoomxy(pkt1, pkt2);
         }
     }
     
