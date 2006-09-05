@@ -7,8 +7,6 @@ Es bestehen weder ein Zeitplan noch feste Absichten!
 
 prioritär
 
-- Beschriftung der Last- und Auflagerkraftpfeile.
-
 - Informationsdialog: Summe aller Lasten, etc (wie auf Ausdruck vorhanden)
 
 - Vervollständigung der Internationalisierung / Übersetzung:
@@ -35,8 +33,6 @@ ev. nie
 to do
 -------------------
 There are neither fix intentions nor a timetable!
-
-- Labelling of the load and bearing force arrows.
 
 - Information dialog: Sum of loads, etc.
 
