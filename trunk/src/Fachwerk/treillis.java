@@ -1838,25 +1838,27 @@ public class treillis extends clOberflaeche implements inKonstante {
         int rtg = maus.getWheelRotation();
         if (rtg == 0) assert false;
         
-        Point2D pktm = new Point2D.Double(); // Mittelpunkt
-        pktm.setLocation(((hp.getZoomPkte()[0]).getX() + (hp.getZoomPkte()[1]).getX()) / 2d,
-        ((hp.getZoomPkte()[0]).getY() + (hp.getZoomPkte()[1]).getY()) / 2d);
+        Point2D pktm = new Point2D.Double(); // Zoomzentrum (Punkt, der nicht verschoben wird.)
+        clKoord koord = hp.getKoord();
+        pktm = koord.m(mzp(maus.getPoint()));
         
-        double dx = Math.abs((hp.getZoomPkte()[1]).getX() - (hp.getZoomPkte()[0]).getX());
-        double dz = Math.abs((hp.getZoomPkte()[1]).getY() - (hp.getZoomPkte()[0]).getY());
+        double dxl = Math.abs(pktm.getX() - (hp.getZoomPkte()[0]).getX());
+        double dxr = Math.abs((hp.getZoomPkte()[1]).getX() - pktm.getX());
+        double dzo = Math.abs(pktm.getY() - (hp.getZoomPkte()[0]).getY());
+        double dzu = Math.abs((hp.getZoomPkte()[1]).getY() - pktm.getY());
         
         Point2D pkt1 = new Point2D.Double();
         Point2D pkt2 = new Point2D.Double();
-        if (rtg > 0) { // hinauszoomen          TODO
+        if (rtg > 0) { // hinauszoomen
         // Zoomfenster vergrössern: mit drei Klicks verdoppeln
-        pkt1.setLocation(pktm.getX() - Math.pow(2d, 1d/3d) * dx/2d, pktm.getY() - Math.pow(2d, 1d/3d) * dz/2d);
-        pkt2.setLocation(pktm.getX() + Math.pow(2d, 1d/3d) * dx/2d, pktm.getY() + Math.pow(2d, 1d/3d) * dz/2d);
+        pkt1.setLocation(pktm.getX() - Math.pow(2d, 1d/3d) * dxl, pktm.getY() - Math.pow(2d, 1d/3d) * dzo);
+        pkt2.setLocation(pktm.getX() + Math.pow(2d, 1d/3d) * dxr, pktm.getY() + Math.pow(2d, 1d/3d) * dzu);
         if (!pkt1.equals(pkt2)) hp.zoomxy(pkt1, pkt2);
         }
-        if (rtg < 0) { // hineinzoomen          TODO
+        if (rtg < 0) { // hineinzoomen
         // Zoomfenster verkleinern: mit drei Klicks halbieren
-        pkt1.setLocation(pktm.getX() - Math.pow(0.5, 1d/3d) * dx/2d, pktm.getY() - Math.pow(0.5, 1d/3d) * dz/2d);
-        pkt2.setLocation(pktm.getX() + Math.pow(0.5, 1d/3d) * dx/2d, pktm.getY() + Math.pow(0.5, 1d/3d) * dz/2d);
+        pkt1.setLocation(pktm.getX() - Math.pow(0.5, 1d/3d) * dxl, pktm.getY() - Math.pow(0.5, 1d/3d) * dzo);
+        pkt2.setLocation(pktm.getX() + Math.pow(0.5, 1d/3d) * dxr, pktm.getY() + Math.pow(0.5, 1d/3d) * dzu);
         if (!pkt1.equals(pkt2)) hp.zoomxy(pkt1, pkt2);
         }
     }
