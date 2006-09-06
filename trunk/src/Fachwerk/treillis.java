@@ -1848,15 +1848,15 @@ public class treillis extends clOberflaeche implements inKonstante {
         Point2D pkt1 = new Point2D.Double();
         Point2D pkt2 = new Point2D.Double();
         if (rtg > 0) { // hinauszoomen          TODO
-        // Zoomfenster vergrössern: mit vier Klicks verdoppeln
-        pkt1.setLocation(pktm.getX() - Math.pow(2d, 0.25)/2d*dx, pktm.getY() - Math.pow(2d, 0.25)/2d*dz);
-        pkt2.setLocation(pktm.getX() + Math.pow(2d, 0.25)/2d*dx, pktm.getY() + Math.pow(2d, 0.25)/2d*dz);
+        // Zoomfenster vergrössern: mit drei Klicks verdoppeln
+        pkt1.setLocation(pktm.getX() - Math.pow(2d, 1d/3d) * dx/2d, pktm.getY() - Math.pow(2d, 1d/3d) * dz/2d);
+        pkt2.setLocation(pktm.getX() + Math.pow(2d, 1d/3d) * dx/2d, pktm.getY() + Math.pow(2d, 1d/3d) * dz/2d);
         if (!pkt1.equals(pkt2)) hp.zoomxy(pkt1, pkt2);
         }
         if (rtg < 0) { // hineinzoomen          TODO
-        // Zoomfenster verkleinern: mit vier Klicks halbieren
-        pkt1.setLocation(pktm.getX() - Math.pow(0.5, 0.25)/2d*dx, pktm.getY() - Math.pow(0.5, 0.25)/2d*dz);
-        pkt2.setLocation(pktm.getX() + Math.pow(0.5, 0.25)/2d*dx, pktm.getY() + Math.pow(0.5, 0.25)/2d*dz);
+        // Zoomfenster verkleinern: mit drei Klicks halbieren
+        pkt1.setLocation(pktm.getX() - Math.pow(0.5, 1d/3d) * dx/2d, pktm.getY() - Math.pow(0.5, 1d/3d) * dz/2d);
+        pkt2.setLocation(pktm.getX() + Math.pow(0.5, 1d/3d) * dx/2d, pktm.getY() + Math.pow(0.5, 1d/3d) * dz/2d);
         if (!pkt1.equals(pkt2)) hp.zoomxy(pkt1, pkt2);
         }
     }
