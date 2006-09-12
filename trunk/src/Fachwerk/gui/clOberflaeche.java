@@ -41,7 +41,7 @@ import java.util.*;
  */
 public abstract class clOberflaeche extends javax.swing.JFrame {
     
-    protected Locale locale; // = Locale.getDefault();
+    protected Locale locale;
     protected ResourceBundle menuRB;
     
     /** Creates new form clOberfläche */
@@ -49,20 +49,6 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
     public clOberflaeche(String titel, Locale lc) {
         super(titel);
         locale = lc;
-        
-        /* Um ein anderes Aussehen zu verpassen
-        try { 
-            javax.swing.UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"); 
-            //javax.swing.UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel"); 
-            javax.swing.SwingUtilities.updateComponentTreeUI(this); 
-        } 
-        catch (Exception e) 
-        { 
-            System.err.println ("Konnte LAF nicht setzen: " + e); 
-        }
-        */
-        
-        
         initComponents();
         tastenbelegen();
         übersetzen(locale);
@@ -1240,7 +1226,6 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
     
     /** Exit the Application */
     private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm
-        //System.exit(0);
         befehlBeenden();       
     }//GEN-LAST:event_exitForm
     
