@@ -1033,7 +1033,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
         
         Point2D pkt1 = new Point2D.Double();
         Point2D pkt2 = new Point2D.Double();
-        // Zoomfenster verdoppeln
+        // Zoomfenster halbieren
         pkt1.setLocation(pktm.getX() - dx/4d, pktm.getY() - dz/4d);
         pkt2.setLocation(pktm.getX() + dx/4d, pktm.getY() + dz/4d);
         if (!pkt1.equals(pkt2)) hp.zoomxy(pkt1, pkt2);
@@ -1815,6 +1815,38 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
                 if (PAN) {
                     hp.zoomxy(pan.getOL(mzp(maus.getPoint())), pan.getUR(mzp(maus.getPoint())));
                 }
+        }
+    }
+    
+    protected void nachrichtMausRadGedreht(java.awt.event.MouseWheelEvent maus) {
+        if (hp == null) return;
+        if (hp.getKoord() == null) return;
+        if (!mausimPanel(maus)) return;
+        int rtg = maus.getWheelRotation();
+        if (rtg == 0) assert false;
+        
+        Point2D pktm = new Point2D.Double(); // Zoomzentrum (Punkt, der nicht verschoben wird.)
+        clKoord3D koord = hp.getKoord();
+        pktm = koord.m(mzp(maus.getPoint()));
+        
+        double dxl = Math.abs(pktm.getX() - (hp.getZoomPkte()[0]).getX());
+        double dxr = Math.abs((hp.getZoomPkte()[1]).getX() - pktm.getX());
+        double dzo = Math.abs(pktm.getY() - (hp.getZoomPkte()[0]).getY());
+        double dzu = Math.abs((hp.getZoomPkte()[1]).getY() - pktm.getY());
+        
+        Point2D pkt1 = new Point2D.Double();
+        Point2D pkt2 = new Point2D.Double();
+        if (rtg > 0) { // hinauszoomen
+            // Zoomfenster vergrössern: mit drei Klicks verdoppeln
+            pkt1.setLocation(pktm.getX() - Math.pow(2d, 1d/3d) * dxl, pktm.getY() - Math.pow(2d, 1d/3d) * dzo);
+            pkt2.setLocation(pktm.getX() + Math.pow(2d, 1d/3d) * dxr, pktm.getY() + Math.pow(2d, 1d/3d) * dzu);
+            if (!pkt1.equals(pkt2)) hp.zoomxy(pkt1, pkt2);
+        }
+        if (rtg < 0) { // hineinzoomen
+            // Zoomfenster verkleinern: mit drei Klicks halbieren
+            pkt1.setLocation(pktm.getX() - Math.pow(0.5, 1d/3d) * dxl, pktm.getY() - Math.pow(0.5, 1d/3d) * dzo);
+            pkt2.setLocation(pktm.getX() + Math.pow(0.5, 1d/3d) * dxr, pktm.getY() + Math.pow(0.5, 1d/3d) * dzu);
+            if (!pkt1.equals(pkt2)) hp.zoomxy(pkt1, pkt2);
         }
     }
     
