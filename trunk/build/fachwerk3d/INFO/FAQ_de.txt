@@ -58,10 +58,3 @@
 2.3	Druckdialog öffnet nicht (Linux, JRE 1.5)
 	Abhilfe: Neuste Java-JRE installieren.
 
-
-3. Status von Fachwerk3D (beta)
-------------------------
-Der Status von Fachwerk3D wird als *BETA" angegeben. Im Gegensatz dazu wird Fachwerk(2D) als *STABIL* bezeichnet.
-Der Grund liegt hauptsächlich darin, dass Fachwerk3D erst wenig getestet worden ist.
-Wenn ein Fachwerkmodell vollständig berechnet werden konnte (Meldung OK,KOMPLETT), kann davon ausgegangen werden,
-dass das Resultat stimmt.

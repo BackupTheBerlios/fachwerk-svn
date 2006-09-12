@@ -58,9 +58,3 @@
 2.3	Printing dialog does not open (Linux, JRE 1.5)
 	Do upgrade the Java JRE to the newest version.
 
-
-3. Development Status of Fachwerk3D (beta)
------------------------------------
-The development status of Fachwerk3D ist *BETA". In contrast, Fachwerk(2D) is *STABLE*.
-The reason is mainly, that Fachwerk3D has not been tested enough.
-If the entire model could be calculated (message OK, COMPLETE), one can admit that the result is correct.
