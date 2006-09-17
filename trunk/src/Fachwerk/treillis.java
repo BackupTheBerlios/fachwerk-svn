@@ -909,6 +909,7 @@ public class treillis extends clOberflaeche implements inKonstante {
     }
     
     protected void befehlSpeichern() {
+        String meldung = "";
         try {
             fc.resetChoosableFileFilters();
             fc.addChoosableFileFilter(new StdFileFilter("fwk", "Fachwerk Data"));
@@ -932,13 +933,13 @@ public class treillis extends clOberflaeche implements inKonstante {
             os.writeObject(Knotenliste);
             os.writeObject(Stabliste);
             os.close();
+            meldung = tr("infoGESPEICHERT_Fachwerkdatei") + " " + dateiname + " " + tr("infoGESPEICHERT_gespeichert");
         } catch (IOException e) {
             System.err.println(e.toString());
             feldStatuszeile.setText(e.toString());
+            meldung =  tr("errFehlerBeimSpeichern") + " " + e.getMessage();
         }
         this.setTitle(PROGNAME + " - " + dateiname);
-        //String meldung = "Fachwerk-Datei " + dateiname + " gespeichert.";
-        String meldung = tr("infoGESPEICHERT_Fachwerkdatei") + " " + dateiname + " " + tr("infoGESPEICHERT_gespeichert");
         System.out.println(meldung);
         selModus = NICHTSÄNDERN;
         feldStatuszeile.setText(meldung);
