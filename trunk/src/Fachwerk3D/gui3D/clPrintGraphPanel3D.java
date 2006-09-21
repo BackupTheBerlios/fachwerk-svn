@@ -61,7 +61,7 @@ public class clPrintGraphPanel3D extends clHauptPanel3D implements Printable {
     
     final double zoll = 0.0254; // [m]
     double dpi = 72d / printskal;
-    double einheit = 1d; // zB: cm --> 0.001 m
+    double einheit = 1d; // zB: cm --> 0.01 m
     boolean MASSSTABABGEFRAGT = false;
     double mst = 1; // wird überschrieben
     // Für Pfeillänge, etc (Masse in Pixel)

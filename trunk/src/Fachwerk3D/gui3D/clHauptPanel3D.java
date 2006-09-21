@@ -293,7 +293,7 @@ public class clHauptPanel3D extends javax.swing.JPanel implements inKonstante3D 
         for (int i = 1; i < Kn.length; i++) {
             pkt_m.setLocation(Kn[i].getX(), Kn[i].getY(), Kn[i].getZ());
             pkt_pix = koord.panel(pkt_m);
-            pkt_pix.setLocation(pkt_pix.getX() + schriftgrStd/2d, pkt_pix.getY() - schriftgrStd/2d);
+            pkt_pix.setLocation(pkt_pix.getX() + schriftgrStd/2d, pkt_pix.getY() - schriftgrStd/3d);
             g.drawString(""+i, (float) pkt_pix.getX(), (float) pkt_pix.getY());            
         }
     }
@@ -319,9 +319,8 @@ public class clHauptPanel3D extends javax.swing.JPanel implements inKonstante3D 
             else alphaRot = Math.atan(dy/dx);
             // Rotieren und schieben
             rotiert = AffineTransform.getRotateInstance(alphaRot, (float) pkt_pix.getX(),(float) pkt_pix.getY());
-            g.transform(rotiert);            
-            g.translate(0d, -schriftgrStd/3);
-            //pkt_pix.setLocation(pkt_pix.getX(),pkt_pix.getY() - schriftgrStd/2);
+            g.transform(rotiert);
+            g.translate(0d, -schriftgrStd/3d);
             g.drawString(""+i, (float) pkt_pix.getX(), (float) pkt_pix.getY());
             g.setTransform(aT); // Rotation und Verschiebung zurückstellen
         }
@@ -378,7 +377,7 @@ public class clHauptPanel3D extends javax.swing.JPanel implements inKonstante3D 
             else pkt_pix.setLocation(x + pfeilrtg.getX() / Lproj * rotpkt, z + pfeilrtg.getY() / Lproj * rotpkt);
             rotiert = AffineTransform.getRotateInstance(alphaRot, (float) pkt_pix.getX(),(float) pkt_pix.getY());
             g.transform(rotiert);
-            g.translate(-bzuh*schriftgr*beschriftung.length() / 2d, -schriftgrStd/4d);
+            g.translate(-bzuh*schriftgr*beschriftung.length() / 2d, -schriftgr/4d);
             g.drawString(beschriftung, (float) pkt_pix.getX(), (float) pkt_pix.getY());
             g.setTransform(aT); // Rotation und Verschiebung zurückstellen
         }
@@ -436,7 +435,7 @@ public class clHauptPanel3D extends javax.swing.JPanel implements inKonstante3D 
             else pkt_pix.setLocation(x + pfeilrtg.getX() / Aproj * rotpkt, z + pfeilrtg.getY() / Aproj * rotpkt);
             rotiert = AffineTransform.getRotateInstance(alphaRot, (float) pkt_pix.getX(),(float) pkt_pix.getY());
             g.transform(rotiert);
-            g.translate(-bzuh*schriftgr*beschriftung.length() / 2d, -schriftgrStd/3d);
+            g.translate(-bzuh*schriftgr*beschriftung.length() / 2d, -schriftgr/4d);
             g.drawString(beschriftung, (float) pkt_pix.getX(), (float) pkt_pix.getY());
             g.setTransform(aT); // Rotation und Verschiebung zurückstellen
         }
