@@ -11,7 +11,6 @@ import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.*;
-import java.math.*;
 import java.awt.print.*;
 
 
@@ -120,11 +119,10 @@ public class clPrintPanel extends clHauptPanel implements Printable {
         
         
         // -----------------
-        // 1. Teil: Resultat
+        // 1. Teil: Resultat und Stabnummern
         // -----------------
         zoomAll(false);
         antVertikal = antRes; antHorizontal = 1.0d;
-        //schriftgrStd = (int) ( (double)schriftgrStd / printskal * 0.7d);
         schriftgrStd = (int) (schriftgrRes / printskal);
         
         koord = new clKoord(ZoomPkt1, ZoomPkt2, this, maxPfeil);
@@ -133,12 +131,13 @@ public class clPrintPanel extends clHauptPanel implements Printable {
             darstellenFachwerk(true);
             darstellenLasten(false);
             darstellenAuflagerkräfte(false);
-            darstellenStabkräfte();
+//            darstellenStabkräfte();
+            darstellenStabNr();
             darstellenMechanismus();
         }
         
         // -------------------------
-        // 2. Teil: System graphisch
+        // 2. Teil: System graphisch (Knotennummern)
         // -------------------------
         g.translate(0d,  antRes * pf.getImageableHeight() / printskal);
         antVertikal = antSysgra; antHorizontal = antHorLinks;
@@ -146,12 +145,16 @@ public class clPrintPanel extends clHauptPanel implements Printable {
         zoomAll(false);
         koord = new clKoord(ZoomPkt1, ZoomPkt2, this, 2d*schriftgrStd); //maxPfeil);
         g.setPaint(Color.black);
+        maxPfeil = maxPfeil*antHorLinks;  // Pfeile verkleinern
+        spitzenlängeMax = spitzenlängeMax*antHorLinks; spitzenlängeMin = spitzenlängeMin*antHorLinks;
         if (Kn != null) {
             darstellenFachwerk(false);
             darstellenLasten(true);
             darstellenKnNr();
-            darstellenStabNr();
+//            darstellenStabNr();
         }
+        maxPfeil = maxPfeil/antHorLinks;  // Pfeillänge zurücksetzen
+        spitzenlängeMax = spitzenlängeMax/antHorLinks; spitzenlängeMin = spitzenlängeMin/antHorLinks;
         
         // --------------------------------------------------------------
         // 3. Teil: Text rechts von "System graphisch": Summen der Kräfte

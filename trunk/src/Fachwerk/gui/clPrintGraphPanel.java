@@ -45,15 +45,14 @@ import java.awt.print.*;
  * diesem Programm erhalten haben. Falls nicht, schreiben Sie an die
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA. 
  */
-public class clPrintGraphPanel extends clHauptPanel implements Printable {    
+public class clPrintGraphPanel extends clHauptPanel implements Printable {
     
     // Aufteilung des Blattes
     final double antGraph = 0.9; 
     
     final double printskal = 0.5;
     final int schriftgrText = 10;
-    final int schriftgrGraph = 7; //8;
-    //final int schriftgrSys = 6;
+    final int schriftgrGraph = 7;
     
     double antTxt = 1d - antGraph; 
     double antVertikal;
@@ -61,7 +60,7 @@ public class clPrintGraphPanel extends clHauptPanel implements Printable {
     
     final double zoll = 0.0254; // [m]
     double dpi = 72d / printskal;
-    double einheit = 1d; // zB: cm --> 0.001 m
+    double einheit = 1d; // zB: cm --> 0.01 m
     boolean MASSSTABABGEFRAGT = false;
     double mst = 1; // wird überschrieben
     // Für Pfeillänge, etc (Masse in Pixel)

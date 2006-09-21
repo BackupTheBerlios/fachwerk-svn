@@ -298,7 +298,7 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
         for (int i = 1; i < Kn.length; i++) {
             pkt_m.setLocation(Kn[i].getX(), Kn[i].getZ());
             pkt_pix = koord.panel(pkt_m);
-            pkt_pix.setLocation(pkt_pix.getX() + schriftgrStd/2d, pkt_pix.getY() - schriftgrStd/2d);
+            pkt_pix.setLocation(pkt_pix.getX() + schriftgrStd/2d, pkt_pix.getY() - schriftgrStd/3d);
             g.drawString(""+i, (float) pkt_pix.getX(), (float) pkt_pix.getY());            
         }
     }
@@ -325,8 +325,7 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
             // Rotieren und schieben
             rotiert = AffineTransform.getRotateInstance(alphaRot, (float) pkt_pix.getX(),(float) pkt_pix.getY());
             g.transform(rotiert);
-            g.translate(0d, -schriftgrStd/3);
-            //pkt_pix.setLocation(pkt_pix.getX(),pkt_pix.getY() - schriftgrStd/2);
+            g.translate(0d, -schriftgrStd/3d);
             g.drawString(""+i, (float) pkt_pix.getX(), (float) pkt_pix.getY());
             g.setTransform(aT); // Rotation und Verschiebung zurückstellen
         }
@@ -375,7 +374,7 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
             pkt_pix.setLocation(x + Kn[i].getLx() / L * rotpkt, z + Kn[i].getLz() / L * rotpkt);
             rotiert = AffineTransform.getRotateInstance(alphaRot, (float) pkt_pix.getX(),(float) pkt_pix.getY());
             g.transform(rotiert);
-            g.translate(-bzuh*schriftgr*beschriftung.length() / 2d, -schriftgrStd/4d);
+            g.translate(-bzuh*schriftgr*beschriftung.length() / 2d, -schriftgr/4d);
             g.drawString(beschriftung, (float) pkt_pix.getX(), (float) pkt_pix.getY());
             g.setTransform(aT); // Rotation und Verschiebung zurückstellen
         }
@@ -426,7 +425,7 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
             pkt_pix.setLocation(x + Kn[i].getRx() / A * rotpkt, z + Kn[i].getRz() / A * rotpkt);
             rotiert = AffineTransform.getRotateInstance(alphaRot, (float) pkt_pix.getX(),(float) pkt_pix.getY());
             g.transform(rotiert);
-            g.translate(-bzuh*schriftgr*beschriftung.length() / 2d, -schriftgrStd/4d);
+            g.translate(-bzuh*schriftgr*beschriftung.length() / 2d, -schriftgr/4d);
             g.drawString(beschriftung, (float) pkt_pix.getX(), (float) pkt_pix.getY());
             g.setTransform(aT); // Rotation und Verschiebung zurückstellen
         }
@@ -461,7 +460,7 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
             // Rotieren und schieben
             rotiert = AffineTransform.getRotateInstance(alphaRot, (float) pkt_pix.getX(),(float) pkt_pix.getY());
             g.transform(rotiert);
-            g.translate(0d, -schriftgr/3);
+            g.translate(0d, -schriftgr/3d);
             
             switch (St[i].stab.getStatus()) {
                 case UNBEST:
