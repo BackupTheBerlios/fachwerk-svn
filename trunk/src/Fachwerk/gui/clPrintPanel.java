@@ -215,7 +215,7 @@ public class clPrintPanel extends clHauptPanel implements Printable {
             switch (Kn[kn].getKnotenstatus()) {
                 case OFFEN:
                     if (Kn[kn].getLx() != 0 && Kn[kn].getLz() != 0) {
-                        sb.append(Fkt.fix(Kn[kn].getX(), 2) +" "+ Fkt.fix(Kn[kn].getZ(), 2));
+                        sb.append(Fkt.nf(Kn[kn].getX(), 2) +" "+ Fkt.nf(Kn[kn].getZ(), 2));
                     }
                     else {
                         sb.append(Fkt.nf(Kn[kn].getX(), 2, 2) +" ");
@@ -228,14 +228,14 @@ public class clPrintPanel extends clHauptPanel implements Printable {
                     sb.append(Fkt.nf(Kn[kn].getZ(), 2, 2) +" ");
                     break;
                 case WIDERSPRUCH:
-                    sb.append(Fkt.fix(Kn[kn].getX(), 2) +" "+ Fkt.fix(Kn[kn].getZ(), 2) +" "+tr("WIDERSPRUCH"));
+                    sb.append(Fkt.nf(Kn[kn].getX(), 2) +" "+ Fkt.nf(Kn[kn].getZ(), 2) +" "+tr("WIDERSPRUCH"));
                     break;
                 default:
-                    sb.append(Fkt.fix(Kn[kn].getX(), 2) +" "+ Fkt.fix(Kn[kn].getZ(), 2));
+                    sb.append(Fkt.nf(Kn[kn].getX(), 2) +" "+ Fkt.nf(Kn[kn].getZ(), 2));
                     sb.append(" Status "+Kn[kn].getKnotenstatus());
             }
-            if (Kn[kn].getLx() != 0) sb.append(" Lx= " + Fkt.fix(Kn[kn].getLx(),1) + "kN"); 
-            if (Kn[kn].getLz() != 0) sb.append(" Lz= " + Fkt.fix(Kn[kn].getLz(),1) + "kN");
+            if (Kn[kn].getLx() != 0) sb.append(" Lx= " + Fkt.nf(Kn[kn].getLx(),1) + "kN"); 
+            if (Kn[kn].getLz() != 0) sb.append(" Lz= " + Fkt.nf(Kn[kn].getLz(),1) + "kN");
             knotenspalte[zeile] = sb.toString();
             liste[zeile] = sb.length();
             zeile++;
@@ -252,10 +252,10 @@ public class clPrintPanel extends clHauptPanel implements Printable {
                     sb.append(Fkt.nf(kn, 2) +" " + tr("fest") + ": ");
                     switch (Kn[kn].getLagerstatus()) {
                         case BER:
-                            sb.append("Rx = " + Fkt.fix(Kn[kn].getRx(),1) + "kN Rz= " + Fkt.fix(Kn[kn].getRz(),1) +"kN");
+                            sb.append("Rx = " + Fkt.nf(Kn[kn].getRx(),1) + "kN Rz= " + Fkt.nf(Kn[kn].getRz(),1) +"kN");
                             break;
                         case GESETZT:
-                            sb.append("Rx = " + Fkt.fix(Kn[kn].getRx(),1) + "kN Rz= " + Fkt.fix(Kn[kn].getRz(),1)
+                            sb.append("Rx = " + Fkt.nf(Kn[kn].getRx(),1) + "kN Rz= " + Fkt.nf(Kn[kn].getRz(),1)
                             + "kN " + tr("GESETZT"));
                             break;
                         case UNBEST:
@@ -271,13 +271,13 @@ public class clPrintPanel extends clHauptPanel implements Printable {
                     break;
                 case VERSCHIEBLICH:
                     sb.append(Fkt.nf(kn, 2) + " " + tr("Gleitl"));
-                    sb.append("(" + '\u03B1' + "=" + Fkt.fix(Math.toDegrees(Kn[kn].getRalpha()),1)+"°) ");
+                    sb.append("(" + '\u03B1' + "=" + Fkt.nf(Math.toDegrees(Kn[kn].getRalpha()),1)+"°) ");
                     switch (Kn[kn].getLagerstatus()) {
                         case BER:
-                            sb.append("Rx= " + Fkt.fix(Kn[kn].getRx(),1) + "kN Rz= " + Fkt.fix(Kn[kn].getRz(),1) + "kN");
+                            sb.append("Rx= " + Fkt.nf(Kn[kn].getRx(),1) + "kN Rz= " + Fkt.nf(Kn[kn].getRz(),1) + "kN");
                             break;
                         case GESETZT:
-                            sb.append("Rx= " + Fkt.fix(Kn[kn].getRx(),1) + "kN Rz= " + Fkt.fix(Kn[kn].getRz(),1) + "kN "+tr("GESETZT"));
+                            sb.append("Rx= " + Fkt.nf(Kn[kn].getRx(),1) + "kN Rz= " + Fkt.nf(Kn[kn].getRz(),1) + "kN "+tr("GESETZT"));
                             break;
                         case UNBEST:
                             sb.append("R = ???, " + tr("UNBESTIMMT"));
@@ -376,20 +376,20 @@ public class clPrintPanel extends clHauptPanel implements Printable {
         }
         //Summe aller Lasten:
         sb.append(" Lx="); if(Fkt.fix(SummeLx,1) >= 0) sb.append(" ");
-        sb.append(Fkt.fix(SummeLx,1) + "kN  ");
+        sb.append(Fkt.nf(SummeLx,1) + "kN  ");
         sb.append("Lz=");  if(Fkt.fix(SummeLz,1) >= 0) sb.append(" ");
-        sb.append(Fkt.fix(SummeLz,1) + "kN  ");
+        sb.append(Fkt.nf(SummeLz,1) + "kN  ");
         sb.append("ML=");  if(Fkt.fix(SummeML,1) >= 0) sb.append(" ");
-        sb.append(Fkt.fix(SummeML,1) + "kNm"); 
+        sb.append(Fkt.nf(SummeML,1) + "kNm"); 
         summentxtLR[0] = sb.toString();
         sb = new StringBuffer();
         //Summe der berechneten Lagerkräfte:
         sb.append(" Ax="); if(Fkt.fix(SummeAx,1) >= 0) sb.append(" ");
-        sb.append(Fkt.fix(SummeAx,1) + "kN  ");
+        sb.append(Fkt.nf(SummeAx,1) + "kN  ");
         sb.append("Az=");  if(Fkt.fix(SummeAz,1) >= 0) sb.append(" "); 
-        sb.append(Fkt.fix(SummeAz,1) + "kN  ");
+        sb.append(Fkt.nf(SummeAz,1) + "kN  ");
         sb.append("MA=");  if(Fkt.fix(SummeMA,1) >= 0) sb.append(" ");
-        sb.append(Fkt.fix(SummeMA,1) + "kNm");
+        sb.append(Fkt.nf(SummeMA,1) + "kNm");
         summentxtLR[1] = sb.toString();
         return summentxtLR;
     }
