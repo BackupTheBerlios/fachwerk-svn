@@ -219,7 +219,7 @@ public class clPrintPanel3D extends clHauptPanel3D implements Printable {
                     sb.append(" " + tr("OFFEN"));
                     break;
                 case FERTIG:
-                    //sb.append(Fkt.fix(Kn[kn].getZ(), 2) +" ");// FERTIG");
+                    //sb.append(Fkt.nf(Kn[kn].getZ(), 2) +" ");// FERTIG");
                     break;
                 case WIDERSPRUCH:
                     sb.append(" "+tr("WIDERSPRUCH"));
