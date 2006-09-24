@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="Generator" content="Kate, the KDE Advanced Text Editor" />
+<title>Fachwerk3D - changelog</title>
+</head>
+<body><pre>
+<span style='color=#000000'>
+<P><A HREF="changelog.html">→ GERMAN</A></P>
+
+Fachwerk - Changelog
+--------------------
+
+version		date		changes
+
+0.21		24.09.06	New function
+				- Mouse wheel zooming
+
+				Details
+				- Labelling of the load and bearing force arrows
+				- Print System shows mechanism.
+				- Error message shown in status line if saving fails.
+
+0.20		28.07.06	New functions
+				- Kinematic method (mechanisms)
+				  Fachwerk3D additionally applies the kinematic method to the model.
+				  If the model is instable *and* does not respect equilibrium conditions, an according mechanism is drawn.
+				  This feature simplifies finding errors in statically indeterminate models.
+
+				Details
+				- enhanced solver
+				- number of statical indeterminancy shown on console output
+
+0.10		13.11.05	New functions
+                                - Pan
+                                  middle mouse button or Ctrl-key and left mouse button
+                                - Scaling of loads
+				- Help
+
+				Details
+				- Verbose console output
+				- Source code cleanup
+
+0.05		3.07.05		not published
+				- Split members
+
+0.04		20.04.05	New functions
+				- Status line for members
+				  In addition to the member force, its components are displayed.
+
+				Look
+				The default LookAndFeel is the one of Java 1.4, also for Java 1.5.
+				
+				Details
+				- File name in title of program window.
+				- Keybord quick access: save, print and reset of calculation.
+				- Member and Node property dialogs
+				  The most frequently used field has the focus after opening the dialogs.
+				  Escape key aborts the dialogs.
+				- Node property dialog
+				  Enter key puts the cursor in the next field resp. closes the dialog (=OK).
+				- Open file dialog
+				  The first time a background drawing is loaded, the dialog shows the directory of the .fwk model file. 
+				  Previously the users home directory was shown instead, when the program was started by clicking on a fwk file.
+
+0.03		5.12.04		Usage and Look
+				- The view and the zoom do not change when a new member is
+				  created or when the properties of a member are changed.
+				- A right click on a member or on a node opens its property
+				  dialog.
+				- The input data can be exported into a table that can be opened
+				  by any spreadsheet application. Useful for finding input errors.
+				- The LookAndFeel has been changed, due to the new standard look of
+				  Java 1.5. It was hard to see if a button was pressed.
+				  The previous look can be obtained using the option 
+				  "fachwerk3D --look Java".
+				  
+				Details
+				- Keybord quick access: F9 calculate, F11 select node, F12 select member.
+				- Bug fixed: A load was not shown in the status line if both the x- and
+				  z- components were equal zero.
+				- The function "create node (snap)" gets deactivated when clicking
+				  somewhere else than on a background point.
+				- Member property dialog: Enter has the same effect as a click on the
+				  "change"-button.
+
+0.02		26.10.04	Several features ported from Fachwerk0.10:
+				- Background drawings (3D): dxf, bgd, csv
+				- Creating nodes snapping to a background point
+				- transformations: scale or move the strut-and-tie model
+				- transformations: scale or move the background drawing
+				- Keybord quick access: F5 New node, F7 New Member, DEL, etc.
+				- Colt version 1.2.0 used (instead of 1.1.0).
+
+0.01		21.09.04	Initial publication of the program (GPL)
+
+0.01		15.08.04	First internal release of Fachwerk3D
+				- Based on Fachwerk 0.09 (with a small enhancement for ver. 0.10)
+
+</span></pre></body></html>
