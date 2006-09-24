@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head>
+	<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
+	<title></title>
+</head>
+<body dir="ltr" lang="en-GB">
+<h1>Background drawings</h1>
+<p>A strut-and-tie model is easier to understand
+if a drawing is shown in the background. But background drawings do
+have an additional function; they can simplify the input of the nodes
+of the model. When you create new nodes, you can snap to background
+points, end of lines, intersection of lines, etc.<br><br><br>
+</p>
+<h3>dxf (CAD – drawings)</h3>
+<p style="margin-bottom: 0cm;">For the creation of the
+drawing, a CAD-program is required.</p>
+<p style="margin-bottom: 0cm;">Lines (Line,
+Polyline, LwPolyline), points, circles and arcs will be drawn. Other
+entities, i.e. text, solids and so called inserts, will be ignored.
+Any format information, like line thickness or colour will be ignored
+as well. The original file will not be modified. <br><br>
+</p>
+<h3>bgd (Text file)</h3>
+<p>If you don't have a CAD-program, you can create the
+drawings in a simple text editor. Save it with the ending bgd.
+Example:</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">#
+Example for a drawing, created in a text editor</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;"><b>P</b>oints</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">0 6 &nbsp; &nbsp; //
+x- und z-coordinates of the point</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">4 2</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">4 6</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">9 2</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">13 0 2
+// Input in format x y z is allowed, Fachwerk just reads reads the x-
+und the z-values.</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">13 6</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;"><b>L</b>ine
+&nbsp; // This line joins two points</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">9 2</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">13 2</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;"><b>L</b>ine
+// If there are more than two points, the line goes through all of
+them, from the first to the last.</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">0, 6</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">4; 2</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">9,2</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;"><b>C</b>ircle</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">5 5 &nbsp; &nbsp; //
+center</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">2 &nbsp; &nbsp; &nbsp; &nbsp;//
+radius</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;"><b>A</b>rc</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">13 6 &nbsp; //
+center</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">2
+270 0 &nbsp; // radius, starting-, end-angle (anticlockwise)</p>
+<p style="margin-bottom: 0cm;">The numbers of one
+row may be separated by white spaces, tabulator or a comma. Comments
+start with // or # or rem. The sequence of the commands (Point, Line,
+...) does not matter: the file may start with lines, followed by
+points, then again a line ... Normally, only the leading letter of a
+command is required. Commands are not case-sensitive.<br><br>
+</p>
+<h3>csv (Spreadsheet)</h3>
+<p>In a spreadsheet application you can create a list of
+points and save it as a csv – file. Fachwerk can display these
+points in the background. This way, new nodes can be created fast,
+just snap to the points.</p>
+<p><br><br>
+</p>
+</body></html>
