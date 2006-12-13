@@ -7,13 +7,12 @@
 package Fachwerk.gui;
 
 import Fachwerk.statik.*;
-import java.math.*;
 import java.util.*;
 
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2005 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -61,11 +60,10 @@ public class clStabDialog extends javax.swing.JDialog implements inKonstante {
     String statusstr, nrstr, vonknstr, bisknstr, kraftstr, lstr;
     double kraft;
     int status;
-    //int vonkn, biskn;
     
     /** Creates new form clStabDialog */
     public clStabDialog(java.awt.Frame parent, int p_nr, clWissenderStab p_st, Locale lc) {
-        super(parent, "Stab - Eigenschaften", true);        
+        super(parent, "Stab - Eigenschaften", true);
         nr = p_nr;
         st = p_st;
         
@@ -97,11 +95,10 @@ public class clStabDialog extends javax.swing.JDialog implements inKonstante {
                 assert false;
                 break;
             default:
-                assert false;              
+                assert false;
         }
         
         // Stabkraft
-        //kraft = st.stab.getKraft();
         switch (status) {
             case GESETZT:
                 kraft = st.stab.getKraft();
@@ -112,7 +109,7 @@ public class clStabDialog extends javax.swing.JDialog implements inKonstante {
                 break;
             case BER:
                 kraft = st.stab.getKraft();
-                kraftstr = Double.toString(Fkt.fix(kraft, 1));
+                kraftstr = Fkt.nf(kraft, 1);
                 break;
             
             case NICHTSETZBAR:
@@ -121,14 +118,12 @@ public class clStabDialog extends javax.swing.JDialog implements inKonstante {
                 break;
             default:
                 kraftstr = "";
-                assert false;              
+                assert false;
         }
         
         // Anschlussknoten
         vonknstr = Integer.toString(st.von);
         bisknstr = Integer.toString(st.bis);
-        
-        
         
         
         initComponents();
@@ -357,7 +352,7 @@ public class clStabDialog extends javax.swing.JDialog implements inKonstante {
     }
     
     /**
-     * Liest neue Knotendaten ein. Liefert true, wenn erfolgreich
+     * Liest neue Stabdaten ein. Liefert true, wenn erfolgreich
      */
     public boolean einlesen() {
         if (ZURÜCKSETZEN) {
@@ -365,15 +360,15 @@ public class clStabDialog extends javax.swing.JDialog implements inKonstante {
             return true;
         }
         
-        else {       
+        else {
             try {
-                kraft = Fkt.holZahl(feldKraft.getText());                                       
+                kraft = Fkt.holZahl(feldKraft.getText());
             }
             catch (IllegalArgumentException e) {
                 System.out.println(e.toString());
-                return false;            
+                return false;
             }
-                    
+            
             switch (status) {
                 case UNBEST:
                 case GESETZT:
@@ -382,13 +377,13 @@ public class clStabDialog extends javax.swing.JDialog implements inKonstante {
                     
                 case BER:
                     System.out.println("es kann nichts geändert werden");
-                    break;            
+                    break;
                 case NICHTSETZBAR:
                     assert false;
                     break;
                 default:
-                    assert false;              
-            }                        
+                    assert false;
+            }
             return true;
         }
     }
@@ -402,13 +397,13 @@ public class clStabDialog extends javax.swing.JDialog implements inKonstante {
         this.setLocation(OL);
     }
     
-    private String tr(String key) {        
+    private String tr(String key) {
         String übersetzt;
         try {übersetzt = dialogRB.getString(key);}
         catch (MissingResourceException e) {
             System.err.println("Schluesselwort + " + key + " nicht gefunden fuer " + locale.toString() + " ; " + e.toString());
             return key;
-        }        
+        }
         return übersetzt;
     }
     

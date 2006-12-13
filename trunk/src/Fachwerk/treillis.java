@@ -1909,9 +1909,8 @@ public class treillis extends clOberflaeche implements inKonstante {
         return true;
     }
     
-    /** selektiert einen Knoten oder einen Stab in der Nähe des Mauspunktes (in Panelkoord),
-     *  in dieser Reihenfolge. Genauer gesagt liefert die Methode nur eine Selektion als
-     *  Rückgabewert, ohne sie selber vorzunehmen.
+    /** selektiert einen Knoten in der Nähe des Mauspunktes (in Panelkoord).
+     *  Genauer gesagt liefert die Methode nur eine Selektion als Rückgabewert, ohne sie selber vorzunehmen.
      */
     private int[] snapKnoten(clKoord koord, Point2D mauspkt) { // in Panelkoord
         int[] sel = new int[2];

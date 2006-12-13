@@ -7,13 +7,12 @@
 package Fachwerk.gui;
 
 import Fachwerk.statik.*;
-import java.math.*;
 import java.util.*;
 
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2005 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -65,7 +64,7 @@ public class clKnotenDialog extends javax.swing.JDialog implements inKonstante {
     
     /** Creates new form clKnotenDialog */
     public clKnotenDialog(java.awt.Frame parent, int p_nr, clKnoten p_kn, Locale lc) {
-        super(parent, "Knoten - Eigenschaften", true);        
+        super(parent, "Knoten - Eigenschaften", true);
         nr = p_nr;
         kn = p_kn;
         
@@ -112,7 +111,7 @@ public class clKnotenDialog extends javax.swing.JDialog implements inKonstante {
         alphastr = Double.toString(Math.toDegrees(kn.getRalpha()));
         
         
-        initComponents();        
+        initComponents();
         tastenbelegen();
         übersetzen();
         pack();
@@ -677,7 +676,7 @@ public class clKnotenDialog extends javax.swing.JDialog implements inKonstante {
             Lz = Fkt.holZahl(feldLz.getText());
             alpha = Math.toRadians(Fkt.holZahl(feldAlpha.getText()));
             
-            int anzmarkiert = 0;            
+            int anzmarkiert = 0;
             if (rbFIX.isSelected()) {
                 anzmarkiert++;
                 lagerbed = FIX;
@@ -690,11 +689,11 @@ public class clKnotenDialog extends javax.swing.JDialog implements inKonstante {
                 anzmarkiert++;
                 lagerbed = LOS;
             }
-            if (anzmarkiert != 1) throw new IllegalArgumentException("genau eine Lagerbedingung markieren!");                                  
+            if (anzmarkiert != 1) throw new IllegalArgumentException("genau eine Lagerbedingung markieren!");
         }
         catch (IllegalArgumentException e) {
             System.out.println(e.toString());
-            return false;            
+            return false;
         }
         
         kn.setNeueKoord(x, z);
@@ -711,7 +710,6 @@ public class clKnotenDialog extends javax.swing.JDialog implements inKonstante {
             default:
                 assert false;
         }
-                
         
         return true;
     }
@@ -725,13 +723,13 @@ public class clKnotenDialog extends javax.swing.JDialog implements inKonstante {
         this.setLocation(OL);
     }
     
-    private String tr(String key) {        
+    private String tr(String key) {
         String übersetzt;
         try {übersetzt = dialogRB.getString(key);}
         catch (MissingResourceException e) {
             System.err.println("Schluesselwort + " + key + " nicht gefunden fuer " + locale.toString() + " ; " + e.toString());
             return key;
-        }        
+        }
         return übersetzt;
     }
 

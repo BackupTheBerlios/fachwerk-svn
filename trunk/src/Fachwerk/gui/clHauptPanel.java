@@ -117,8 +117,8 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
     
     /** Creates new form clHauptPanel */
     public clHauptPanel(clKnoten[] p_Knotenarray, clWissenderStab[] p_Stabarray) {
-                
-        Kn = new clKnoten[p_Knotenarray.length];        
+        
+        Kn = new clKnoten[p_Knotenarray.length];
         St = new clWissenderStab[p_Stabarray.length];
         
         for (int i = 0; i < Kn.length; i++) {
@@ -126,9 +126,9 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
         }
         for (int i = 0; i < St.length; i++) {
             St[i] = p_Stabarray[i];
-        }                       
-                       
-        initComponents();        
+        }
+        
+        initComponents();
     }
     
     
@@ -168,7 +168,6 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
     // ------------------------------------------------------
     
     public void paint(Graphics g_1D) {
-        //if (aktualisierunggesperrt) return; // während dem Drucken
         g = (Graphics2D) g_1D;
         
         // Zeichenfläche weiss übermalen
@@ -192,10 +191,6 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
             if (MIT_Mechanismus) darstellenMechanismus();
             if (MIT_Hilfslinie || MIT_Hilfsrechteck) darstellenHilfslinien();
             darstellenHilfspunkt();
-        }
-        else {
-            //if (debug) System.out.println("hp.paint: Kn inexistent");
-            //if (debug) testZeigeKn();
         }
     }
     
