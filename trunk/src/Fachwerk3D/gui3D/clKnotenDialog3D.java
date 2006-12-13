@@ -8,13 +8,12 @@ package Fachwerk3D.gui3D;
 
 import Fachwerk3D.statik3D.*;
 import Fachwerk.statik.Fkt;
-import java.math.*;
 import java.util.*;
 
 /**
  * Fachwerk3D - treillis3D
  *
- * Copyright (c) 2003 - 2005 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -42,7 +41,7 @@ import java.util.*;
  * diesem Programm erhalten haben. Falls nicht, schreiben Sie an die
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA. 
  */
-public class clKnotenDialog3D extends javax.swing.JDialog implements inKonstante3D {  // TODO
+public class clKnotenDialog3D extends javax.swing.JDialog implements inKonstante3D {
     
     int nr;
     clKnoten3D kn;
@@ -61,13 +60,13 @@ public class clKnotenDialog3D extends javax.swing.JDialog implements inKonstante
     private final int VERSCHIEBLICH = 1;
     */
     String status, Axstr, Aystr, Azstr, xstr, ystr, zstr, Lxstr, Lystr, Lzstr, rtgxstr, rtgystr, rtgzstr, nrstr;
-    double Ax, Az, x, y, z, Lx, Ly, Lz;    
+    double Ax, Az, x, y, z, Lx, Ly, Lz;
     int lagerbed;
     double rtgx, rtgy, rtgz;
     
     /** Creates new form clKnotenDialog */
     public clKnotenDialog3D(java.awt.Frame parent, int p_nr, clKnoten3D p_kn, Locale lc) {
-        super(parent, "Knoten - Eigenschaften", true);        
+        super(parent, "Knoten - Eigenschaften", true);
         nr = p_nr;
         kn = p_kn;
         
@@ -95,25 +94,25 @@ public class clKnotenDialog3D extends javax.swing.JDialog implements inKonstante
                 status = tr("WIDERSPRUCH");
                 break;
             default:
-                assert false;              
+                assert false;
         }
         // Auflagerkräfte
         Axstr = Fkt.nf(kn.getRx(), 1);
         Aystr = Fkt.nf(kn.getRy(), 1);
         Azstr = Fkt.nf(kn.getRz(), 1);
         
-        // Koord        
-        xstr = Double.toString(kn.getX()); 
-        ystr = Double.toString(kn.getY()); 
+        // Koord
+        xstr = Double.toString(kn.getX());
+        ystr = Double.toString(kn.getY());
         zstr = Double.toString(kn.getZ());
         
-        // Lasten        
+        // Lasten
         Lxstr = Double.toString(kn.getLx());
         Lystr = Double.toString(kn.getLy());
         Lzstr = Double.toString(kn.getLz());
         
         // Lagerbed
-        lagerbed = kn.getLagerbed();        
+        lagerbed = kn.getLagerbed();
         rtgxstr = Double.toString(kn.getRrtg()[0]);
         rtgystr = Double.toString(kn.getRrtg()[1]);
         rtgzstr = Double.toString(kn.getRrtg()[2]);
@@ -133,7 +132,7 @@ public class clKnotenDialog3D extends javax.swing.JDialog implements inKonstante
             else feldLz.requestFocus();
         }
         else knopfNichtstun.requestFocus();
-        show();        
+        show();
     }
     
     /** This method is called from within the constructor to
@@ -889,7 +888,7 @@ public class clKnotenDialog3D extends javax.swing.JDialog implements inKonstante
             rtgy = Fkt.holZahl(feldRtgy.getText());
             rtgz = Fkt.holZahl(feldRtgz.getText());
             
-            int anzmarkiert = 0;            
+            int anzmarkiert = 0;
             if (rbFIX.isSelected()) {
                 anzmarkiert++;
                 lagerbed = FIX;
@@ -906,11 +905,11 @@ public class clKnotenDialog3D extends javax.swing.JDialog implements inKonstante
                 anzmarkiert++;
                 lagerbed = LOS;
             }
-            if (anzmarkiert != 1) throw new IllegalArgumentException("genau eine Lagerbedingung markieren!");                                  
+            if (anzmarkiert != 1) throw new IllegalArgumentException("genau eine Lagerbedingung markieren!");
         }
         catch (IllegalArgumentException e) {
             System.out.println(e.toString());
-            return false;            
+            return false;
         }
         
         kn.setNeueKoord(x, y, z);
@@ -928,7 +927,6 @@ public class clKnotenDialog3D extends javax.swing.JDialog implements inKonstante
             default:
                 assert false;
         }
-                
         
         return true;
     }
@@ -939,7 +937,7 @@ public class clKnotenDialog3D extends javax.swing.JDialog implements inKonstante
             rtgy = Fkt.holZahl(feldRtgy.getText());
             rtgz = Fkt.holZahl(feldRtgz.getText());
             
-            int anzmarkiert = 0;            
+            int anzmarkiert = 0;
             if (rbFIX.isSelected()) {
                 anzmarkiert++;
                 lagerbed = FIX;
@@ -956,25 +954,25 @@ public class clKnotenDialog3D extends javax.swing.JDialog implements inKonstante
                 anzmarkiert++;
                 lagerbed = LOS;
             }
-            if (anzmarkiert != 1) throw new IllegalArgumentException("genau eine Lagerbedingung markieren!");                                  
+            if (anzmarkiert != 1) throw new IllegalArgumentException("genau eine Lagerbedingung markieren!");
         }
         catch (IllegalArgumentException e) {
             System.out.println(e.toString());
-            return false;            
+            return false;
         }
         
         switch (lagerbed) {
             case LOS:                   // Lagerrichtung spielt keine Rolle
             case FIX:
-                break;              
+                break;
             case VERSCHIEBLICH:         // Kontrollieren, ob nicht 0,0,0 eingegeben
             case SCHINENLAGER:
                 if (rtgx*rtgx + rtgy*rtgy + rtgz*rtgz <= 0) return false;
-                break;            
+                break;
             default:
                 assert false;
-        }                        
-        return true;        
+        }
+        return true;
     }
     
     private void zentriere(java.awt.Frame hf) {
@@ -986,13 +984,13 @@ public class clKnotenDialog3D extends javax.swing.JDialog implements inKonstante
         this.setLocation(OL);
     }
     
-    private String tr(String key) {        
+    private String tr(String key) {
         String übersetzt;
         try {übersetzt = dialogRB.getString(key);}
         catch (MissingResourceException e) {
             System.err.println("Schluesselwort + " + key + " nicht gefunden fuer " + locale.toString() + " ; " + e.toString());
             return key;
-        }        
+        }
         return übersetzt;
     }
 

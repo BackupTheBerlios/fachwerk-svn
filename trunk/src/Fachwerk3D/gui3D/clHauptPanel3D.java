@@ -158,7 +158,6 @@ public class clHauptPanel3D extends javax.swing.JPanel implements inKonstante3D 
     // ------------------------------------------------------
     
     public void paint(Graphics g_1D) {
-        //if (aktualisierunggesperrt) return; // während dem Drucken
         g = (Graphics2D) g_1D;
         
         // Zeichenfläche weiss übermalen
