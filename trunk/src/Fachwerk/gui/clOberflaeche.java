@@ -11,7 +11,7 @@ import java.util.*;
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2005 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2007 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -1293,6 +1293,17 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         im.put(F7Stroke, F7Objekt);
         am.put(F7Objekt, F7Action);
                 
+        // F8 - Taste
+        javax.swing.KeyStroke F8Stroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, 0);
+        Object F8Objekt = new Object();
+        javax.swing.Action F8Action = new javax.swing.AbstractAction() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nachrichtTasteGedrückt(java.awt.event.KeyEvent.VK_F8);
+            }
+        };
+        im.put(F8Stroke, F8Objekt);
+        am.put(F8Objekt, F8Action);
+                
         // F9 - Taste
         javax.swing.KeyStroke F9Stroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0);
         itemBerechnen.setAccelerator(F9Stroke);   
@@ -1577,6 +1588,11 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
     protected boolean KnopfNeuerKnotenistgedrückt() {
         return knopfNeuerKn.isSelected();
     }
+    */
+    
+    protected boolean KnopfNeuerKnotenSnapistgedrückt() {
+        return knopfNeuerKnSnap.isSelected();
+    }
     
     protected boolean KnopfNeuerStabistgedrückt() {
         return knopfNeuerStab.isSelected();
@@ -1589,7 +1605,6 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
     protected boolean KnopfSchiebeKnistgedrückt(){
         return knopfSchiebeKn.isSelected();
     }
-    */
     
     protected void setKnopfStab(boolean gedrückt) {
         knopfStab.setSelected(gedrückt);
