@@ -16,10 +16,13 @@ public class clInfo extends javax.swing.JDialog {
     private String PROGNAME;
     private int HAUPTVER;
     private int UNTERVER;
+    private int JAHR;
     
-    private final String Copyright =
-    "Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.berlios.de>" + '\n' +
+    private final String Copyright1 =
+    "Copyright (c) 2003 - ";
+    private final String Copyright2 = " A.Vontobel <qwert2003@users.berlios.de>" + '\n' +
     "                                     <qwert2003@users.sourceforge.net>" + '\n' + '\n';
+    private String Copyright;
     
     private final String Lizenz_de =
     "Dieses einfache Fachwerkprogramm verwendet ausschliesslich die " +
@@ -31,7 +34,7 @@ public class clInfo extends javax.swing.JDialog {
     '\n' +
     "VORSICHT:" + '\n' +
     "---------" + '\n' +
-    "Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind " +
+    "Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind " +
     "SORGFÄLTIG auf ihre PLAUSIBILITÄT zu prüfen!" +'\n' +
     '\n' +'\n' +
     "HAFTUNGSAUSSCHLUSS:" +'\n' +
@@ -64,7 +67,7 @@ public class clInfo extends javax.swing.JDialog {
     '\n' +
     "CAUTION:" +'\n' +
     "--------" +'\n' +
-    "This program certainly contains some ERRORS. All results must be verified " +
+    "This program could contain ERRORS. All results must be verified " +
     "CAREFULLY in order to state that they are PLAUSIBLE!" + '\n' +
     '\n' + '\n' +
     "DISCLAIMER:" +'\n' +
@@ -91,12 +94,15 @@ public class clInfo extends javax.swing.JDialog {
     
     
     /** Creates new form clInfo */
-    public clInfo(java.awt.Frame parent, String prog, int hauptver, int unterver) {
+    public clInfo(java.awt.Frame parent, String prog, int hauptver, int unterver, int jahr) {
         super(parent, "Info", true);
         
         PROGNAME = prog;
         HAUPTVER = hauptver;
         UNTERVER = unterver;
+        JAHR = jahr;
+        
+        Copyright = Copyright1 + JAHR + Copyright2;
         
         text_de = "Fachwerk - rein statisches Fachwerkprogramm" + '\n' + "Version " + HAUPTVER + ".";
         if (UNTERVER < 10) text_de += "0";
