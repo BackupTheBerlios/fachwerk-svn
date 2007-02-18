@@ -65,6 +65,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     private static final String PROGNAME = "Fachwerk3D"; // in clOberflaeche nochmals hart kodiert (Titel)
     private static final int HAUPTVER = 0;
     private static final int UNTERVER = 22; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
+    private static final int JAHR = 2007;
     private final String FILEPROGNAME = "treillis3D";
     private final int FILEVER = 1;
     
@@ -163,7 +164,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
         if (UNTERVER < 10) titel += "0";
         titel += Integer.toString(UNTERVER);
         System.out.println(titel);
-        System.out.println("Copyright (C) 2003-2006 A. Vontobel");
+        System.out.println("Copyright (C) 2003-" + JAHR + " A. Vontobel");
         System.out.println("Fachwerk3D comes with ABSOLUTELY NO WARRANTY;");
         System.out.println("for details read the GNU General Public Licence (GPL) version 2.");
         System.out.println("All results must be verified CAREFULLY in order to state that they");
@@ -360,17 +361,6 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
             LayerAuflKraft(true);
             LayerLasten(true);
         }
-//        catch (ArithmeticException e) {// TODO entfernen, falls bewährt. Funktion in Fw3d0.11 nach clFachwerk3D verlegt.
-//            String meldung;
-//            if (e.getMessage() != null) meldung = e.getMessage();
-//            else meldung = e.toString();
-//            System.out.println(meldung);
-//            aktualisieren(true, true);
-//            // im Statusfeld WIDERSPRUCH anzeigen, in Statuszeile Fehlermeldung
-//            feldStatusFw.setText(tr("WIDERSPRUCH"));
-//            keinWIDERSPRUCH = false;
-//            feldStatuszeile.setText(meldung);
-//        }
         catch (Exception e) {
             System.out.println(e.toString());
             aktualisieren(true, true);
@@ -656,7 +646,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     }
     
     protected void befehlInfo() {
-        clInfo3D info = new clInfo3D(this, PROGNAME, HAUPTVER, UNTERVER);
+        clInfo3D info = new clInfo3D(this, PROGNAME, HAUPTVER, UNTERVER, JAHR);
     }
     
     protected void befehlLadeHintergrund() {
