@@ -12,7 +12,7 @@ import Fachwerk.gui.clStringDialog;
 /**
  * Fachwerk3D - treillis3D
  *
- * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2007 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -1639,6 +1639,11 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     protected boolean KnopfNeuerKnotenistgedrückt() {
         return knopfNeuerKn.isSelected();
     }
+    */
+    
+    protected boolean KnopfNeuerKnotenSnapistgedrückt() {
+        return knopfNeuerKnSnap.isSelected();
+    }
     
     protected boolean KnopfNeuerStabistgedrückt() {
         return knopfNeuerStab.isSelected();
@@ -1647,11 +1652,6 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     protected boolean KnopfZoomMausistgedrückt() {
         return knopfZoomMaus.isSelected();
     }
-    
-    protected boolean KnopfSchiebeKnistgedrückt(){
-        return knopfSchiebeKn.isSelected();
-    }
-    */
     
     protected void setKnopfStab(boolean gedrückt) {
         knopfStab.setSelected(gedrückt);

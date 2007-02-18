@@ -32,7 +32,7 @@ import java.awt.print.*;
 /**
  * Fachwerk3D - treillis3D
  *
- * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2007 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -64,7 +64,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     
     private static final String PROGNAME = "Fachwerk3D"; // in clOberflaeche nochmals hart kodiert (Titel)
     private static final int HAUPTVER = 0;
-    private static final int UNTERVER = 21; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
+    private static final int UNTERVER = 22; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
     private final String FILEPROGNAME = "treillis3D";
     private final int FILEVER = 1;
     
@@ -2125,6 +2125,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     
     /** Achtung: Nur Tasten, die in clOberflaeche registriert sind, gehen.*/
     protected void nachrichtTasteGedrückt(int taste) {
+        boolean jetztdrücken;
         switch (taste) {
             case KeyEvent.VK_ESCAPE:    // ESC gedrückt
                 mausAufgabe = NICHTS;
@@ -2148,8 +2149,9 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
                 break;
             */
             case KeyEvent.VK_F4:        // F4 gedrückt
-                setKnopfZoomMaus(true);
-                befehlZoomMaus(true);
+                jetztdrücken = !KnopfZoomMausistgedrückt();
+                setKnopfZoomMaus(jetztdrücken);
+                befehlZoomMaus(jetztdrücken);
                 break;
             /*
             case KeyEvent.VK_F5:        // F5 gedrückt
@@ -2157,12 +2159,14 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
                 break;
             */
             case KeyEvent.VK_F6:        // F6 gedrückt
-                setKnopfNeuerKnotenSnap(true);
-                befehlErstelleNeuenKnotenSnap(true);
+                jetztdrücken = !KnopfNeuerKnotenSnapistgedrückt();
+                setKnopfNeuerKnotenSnap(jetztdrücken);
+                befehlErstelleNeuenKnotenSnap(jetztdrücken);
                 break;
             case KeyEvent.VK_F7:        // F7 gedrückt
-                setKnopfNeuerStab(true);
-                befehlErstelleNeuenStabMaus(true);
+                jetztdrücken = !KnopfNeuerStabistgedrückt();
+                setKnopfNeuerStab(jetztdrücken);
+                befehlErstelleNeuenStabMaus(jetztdrücken);
                 break;
             /*
             case KeyEvent.VK_F9:       // F9 gedrückt
@@ -2170,12 +2174,14 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
                 break;
             */
             case KeyEvent.VK_F11:        // F11 gedrückt
-                setKnopfKnoten(true);
-                befehlGewähltIstKnoten(true);
+                jetztdrücken = !KnopfKnotenistgedrückt();
+                setKnopfKnoten(jetztdrücken);
+                befehlGewähltIstKnoten(jetztdrücken);
                 break;
             case KeyEvent.VK_F12:        // F12 gedrückt
-                setKnopfStab(true);
-                befehlGewähltIstStab(true);
+                jetztdrücken = !KnopfStabistgedrückt();
+                setKnopfStab(jetztdrücken);
+                befehlGewähltIstStab(jetztdrücken);
                 break;
             case KeyEvent.VK_MINUS:     // Minus gedrückt
             case KeyEvent.VK_SUBTRACT:
