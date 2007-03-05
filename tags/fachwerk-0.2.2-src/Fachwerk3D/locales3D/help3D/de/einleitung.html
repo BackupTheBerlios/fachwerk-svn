@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title></title>
+</head>
+<body dir="ltr" lang="de-CH">
+<h1>Einleitung</h1>
+<h4>Wozu dient das Programm?</h4>
+<p>«Fachwerk3D» ist die räumliche Version des Programmes «Fachwerk». Es
+soll Bauingenieuren im Betonbau die Anwendung von Spannungsfeldern und
+Fachwerkmodellen erleichtern.<br>
+Es ist ein einfaches
+Fachwerkprogramm, welches (im Unterschied zu den gängigen
+Programmen) einzig die Gleichgewichtsbedingungen anwendet.</p>
+<p>Bei statisch unbestimmten Systemen berechnet das Programm die
+durch das Gleichgewicht bestimmten Stäbe. Den vorerst
+unbestimmten Stäben können Stabkräfte zugewiesen
+werden. Werden mehr Stabkräfte zugewiesen als zur statischen
+Bestimmtheit erforderlich, meldet das Programm den Widerspruch
+(ausser das Gleichgewicht ist trotzdem genau eingehalten).</p>
+<h4><br>
+<br>
+</h4>
+<h4>Wozu eignet sich das Programm <i>nicht</i>?</h4>
+<ul>
+  <li>
+    <p>Für den <i>Stahlbau</i>.<br>
+Natürlich können die Stabkräfte idealer Fachwerke auch mit diesem
+Programm berechnet werden. Dazu gibt es jedoch geeignetere Programme.<br><br></p>
+  </li>
+  <li>
+    <p>Zur <i>Momentenbestimmung</i>.<br>
+Das Programm kennt nur Zug und Druck.<br><br></p>
+  </li>
+  <li>
+    <p>Für <i>Verformungsberechnungen</i>.<br>
+Das Programm verwendet ausschliesslich die Gleichgewichtsbedingungen.
+Es kennt keine Steifigkeiten.</p>
+  </li>
+</ul>
+<h4><br></h4>
+<h4>Weniger ist mehr</h4>
+<p>Lässt sich ein statisches Problem durch ein ebenes Modell lösen, ist
+dieses meist einer räumlichen Modellierung vorzuziehen.
+Dreidimensionale Fachwerkmodelle benötigen häufig viele Stäbe und
+werden daher schnell unübersichtlich. Ausserdem ist «Fachwerk» weiter
+entwickelt als sein räumliches Pendant «Fachwerk3D».</p>
+<p>In einigen Fällen ist ein räumliches Modell natürlich gerechtfertigt
+und der Einsatz von «Fachwerk3D» nützlich.</p>
+<p><br><br></p>
+<h4>Worin unterscheidet sich «Fachwerk» von anderen
+Stabstatikprogrammen?</h4>
+<p>Jedes Stabstatik-Programm kann ideale Fachwerke berechnen und
+somit einen Gleichgewichtszustand für das Fachwerkmodell finden.
+Ein Problem entsteht jedoch, wenn das Fachwerk statisch unbestimmt
+ist. Die linear-elastischen Programme berechnen alle Stäbe
+aufgrund der Steifigkeiten. Bei Fachwerkmodellen zur Berechnung von
+Betontragwerken haben Stabsteifigkeiten jedoch keine Bedeutung und
+sollen daher auch nicht verwendet werden. Stattdessen will man einem
+Stab z.B. die Fliesskraft einer Anzahl Armierungseisen vorgeben. Auf
+diese Aufgabe ist das vorliegende Programm «Fachwerk»
+ausgelegt.</p>
+<p>Da der <a href="algorithmus.html">Lösungsalgorithmus</a>
+nicht auf der sonst üblichen Invertierung der Steifigkeitsmatrix
+beruht, ist es mit «Fachwerk3D» möglich, innerlich
+oder äusserlich <i>instabile Systeme</i> zu berechnen. Bedingung
+ist natürlich, dass das Gleichgewicht nicht verletzt wird.
+Praktisch bedeutet dies, dass keine für das Gleichgewicht
+unnötige Lager oder Nullstäbe eingeführt werden
+müssen.</p>
+</body>
+</html>
