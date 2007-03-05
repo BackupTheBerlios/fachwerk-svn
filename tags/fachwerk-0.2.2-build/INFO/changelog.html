@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="Generator" content="Kate, the KDE Advanced Text Editor" />
+<title>Fachwerk - changelog</title>
+</head>
+<body><pre>
+<span style='color=#000000'>
+<P><A HREF="changelog_en.html">→ ENGLISH</A></P>
+
+Fachwerk - Changelog
+--------------------
+
+Version		Datum		Änderung
+
+0.22*		18.02.07	Details
+* kein Release erstellt		- Bedienbarkeit mit Funktionstasten erweitert
+
+0.21		24.09.06	Neue Funktion
+				- Zoomen mittels Mausrad
+
+				Details
+				- Beschriftung der Last- und Auflagerkraftpfeile
+				- Drucken System
+				  Zeigt allfälligen Mechanismus an.
+				  Beschriftung der Graphiken geändert.
+				- Fehlermeldung in Statuszeile wenn Speichern misslingt.
+
+0.20		26.07.06	Neue Funktionen
+				- Kinematische Methode (Mechanismen)
+				  Fachwerk berechnet das Modell zusätzlich nach der kinematischen Methode.
+				  Ist das Modell instabil *und* verletzt das Gleichgewicht, wird ein zugehöriger Mechanismus gezeichnet.
+				  Auch bei mehrfach statisch unbestimmten Modellen können so vereinfacht Gleichgewichtsverletzungen gefunden werden.
+
+				Details
+				- überarbeiteter (ergänzter) Gleichungslöser (Solver)
+				- Anzeige der statischen Unbestimmtheit auf Konsole
+
+0.13		13.11.05	Neue Funktionen
+				- Pan (Ansicht des Modells verschieben)
+				  mittlere Maustaste oder Ctrl und linke Maustaste
+				- Lasten skalieren
+
+				Details
+				- ausführliche Konsolausgabe
+				- Stab mit gesetzter Kraft trennen
+				  Einer der beiden neuen Stäbe übernimmt gesetzte Kraft.
+				- Zusatzfunktionen auch auf Französisch.
+				- Quellcode besser dokumentiert.
+
+0.12		27.03.05	Neue Funktionen
+				- Stab teilen
+				- Statuszeile für Stäbe
+				  Nebst der Stabkraft werden die horizontalen und vertikalen Komponenten angezeigt.
+				
+				Details
+				- Dateiname im Titel des Programmfensters
+				- Schnelltasten für Speichern, Drucken und Rechnung zurücksetzen.
+				- Stab- und Knotendialoge
+				  Beim Öffnen der Dialoge ist das am häufigsten verwendete Feld bereits aktiv.
+				  Escape-Taste bricht die Dialoge ab.
+				- Knotendialog
+				  Entertaste führt zum nächsten Feld resp. schliesst den Dialog ab.
+				- Datei-Öffnen-Dialog
+				  Beim erstmaligen Öffnen einer Hintergrundzeichnung wird das Verzeichnis der Fachwerkdatei gezeigt.
+				  Bisher wurde stattdessen das Benutzerverzeichnis gezeigt, wenn das Programm durch Anklicken der Modelldatei gestartet wurde.
+
+0.11		21.02.05	Bedienung und Aussehen
+				- Zoom bleibt erhalten, wenn neue Stäbe eingeführt werden, 
+				  oder Stabeigenschaften geändert werden.
+				- Ein Klick mit der rechten Maustaste über einem Stab oder Knoten
+				  öffnet den Eigenschaftsdialog.
+				- Das Aussehen (LookAndFeel) unter Java 1.5 ist jetzt gleich wie unter 
+				  Java 1.4. Somit ist gut erkennbar, ob ein Knopf gedrückt ist.
+				  Das Standardaussehen von Java 1.5 kann mit dem Aufruf 
+				  "fachwerk --look Ocean" vorgeschrieben werden.
+				- Ausgeschaltete oder gefrorene Layer aus dxf-Zeichnungen werden nicht mehr angezeigt.
+				  
+				Details
+				- Tastenkürzel F9, F11 und F12 für berechnen, Knoten selektieren,
+				  Stab selektieren.
+				- Die Funktion "Erstelle Knoten (Snap)" wird deaktiviert, wenn ins
+				  Leere geklickt wird.
+				- Stabdialog: Enter bewirkt Knopfdruck "ändern".
+
+0.10		30.09.04	Neue Funktionen
+				- Neuer Knoten, Snap
+				  Ein neuer Knoten kann erstellt werden, indem ein Punkt der Hintergrundzeichnung angewählt wird.
+				- Schiebe Knoten
+				  Fang- (Snap-)funktion für Punkte und Linien der Hintergrundzeichnung.
+				- Hintergrundzeichnung
+				  Nebst dem dxf-Format können nun auch Dateien im Format bgd und csv eingelesen werden. Das eigene Format bgd erlaubt, Hintergrundzeichnungen in einem Texteditor zu erstellen. Es wird somit kein CAD-Programm mehr benötigt, um Hintergrundzeichnungen nutzen zu können.
+				  
+				Benutzerfreundlichkeit
+				- Schnelltasten
+				  F5 für Neuer Knoten, F7 für Neuer Stab, DEL, etc.
+				- Schiebe Knoten
+				  In x- resp. z-Richtung schieben.
+				
+				Details
+				- Meldung: OK KOMPLETT
+				  In der Statuszeile und auf dem Systemausdruck wird vermerkt, wenn alle Stab- und Lagerkräfte bekannt sind.
+				- Colt version 1.2.0 statt 1.1.0.
+				  Die neue Version ist etwas kleiner.
+				- Ausgabe in der Konsole
+				  Der Umfang der Ausgabe ist reduziert, wenn kein Fehler entdeckt wird.
+
+0.09		22.06.04	Neue Funktionen
+				- Hintergrundzeichnung
+				  Zeichnungen im Format dxf können als Hintergrundzeichnung eingelesen werden.
+				  Der Hintergrund kann wie die anderen Layer ein- oder ausgeblendet und gedruckt
+				  werden.
+				  Eingelesen werden folgende dxf-Elemente: Line, Polyline, LWPolyline, 
+				  Circle, Arc, Point. Text u.a. wird nicht dargestellt. Die Zeichnung kann
+				  skaliert (verkleinert/vergrössert) und verschoben, nicht jedoch geändert werden.
+				- Zoom verkleinern
+				  Ein neuer Knopf erlaubt schnelles Herauszoomen.
+				- Koordinaten-Transformationen
+				  Das Fachwerkmodell kann skaliert und verschoben werden.
+				  
+				Benutzerfreundlichkeit
+				- Laden / Speichern
+				  Es werden standardmässig nur Dateien mit der Endung ".fwk" angezeigt.
+				- Neuer Stab / Neuer Knoten
+				  Das Programm merkt sich die Layerwahl vor dem Hinzufügen und stellt sie danach
+				  wieder her.
+				- Pfeillängen
+				  Neu ist für die Grösse der Pfeile die max. Kraft der eingeschalteten Layer
+				  massgebend. Dadurch werden die Lastvektoren besser sichtbar, wenn die Auflager-
+				  kräfte ausgeblendet werden.
+				  
+				Details
+				- Programmsymbol im Format "ico" für Windows hinzugefügt.
+				- Aussehen: Einige der Symbole auf den Knöpfen schärfer gezeichnet und die Schrift
+				  vergrössert.
+				- Englische und französische Übersetzungen: Abkürzung für Knoten zu "nd" geändert.
+				- Drucken: Pfeillängen etwas gekürzt (im Zusammenhang mit oben erwähnter Änderung).
+					
+				Quellcode
+				- Code in Unicode UTF8 umkodiert.
+				  (Fachwerk und tcldxf. Colt unverändert.)
+				- Sparsamerer Speicherverbrauch beim Darstellen von Linen. (Um grosse dxf-Dateien 
+				  auf älteren Computern darstellen zu können.)
+			 
+
+0.08		11.05.04	Neue Funktion
+				- Drucken Graphik
+				  Die auf dem Bildschirm sichtbare Graphik kann ausgedruckt werden. Das ausgewählte
+				  Zoomfenster sowie die aktivierten Layer werden dabei berücksichtigt. Der Massstab
+				  kann vorgegeben werden.
+				  
+				Details
+				- Drucken System
+				  Die Lastpfeile werden grösser gezeichnet. Die Knotenpunkte werden kleiner
+				  dargestellt, damit kurze Pfeile besser erkennbar sind.
+
+0.07		08.02.04	Neue Funktion
+				- Knotenposition suchen
+				  Ein Knoten wird entlang einer Geraden bewegt, bis ein bestimmter
+				  Stab eine vorgegebene Kraft erhält. Diese Funktion erleichtert die Modellierung
+				  von umgelenkten Druckstreben. Sie kann auch dazu dienen, Knoten so zu
+				  platzieren, dass "Nullstäbe" exakt die Kraft Null erhalten und somit aus
+				  dem Modell gelöscht werden können.
+				
+				Optionen beim Programmaufruf
+				- "fachwerk datei.fwk" öffnet direkt die entsprechende Datei.
+				  Dies erlaubt es z.B. im Konqueror (Linux/KDE) oder Explorer (Windows)
+				  alle *.fwk - Dateien mit dem Programm Fachwerk zu verknüpfen. Als
+				  Arbeitsverzeichnis muss das Programmverzeichnis angegeben werden.
+				- "fachwerk --help" zeigt die verfügbaren Optionen an.
+				- "fachwerk -l fr" startet das Programm auf Französisch. Analog "-l en", "-l de".
+				  (Die bisherige Option "fr", ohne "-l" oder "--language" funktioniert nicht mehr.)
+				
+				Einfache Installation / klare Lizenzbestimmungen
+				- Die verwendete Mathematikbibliothek "colt" ist nun bereits im zip-Archiv
+				  enthalten und muss nicht mehr separat heruntergeladen werden.
+				- Colt version 1.1.0 statt 1.0.3. Die neue Version ist etwas kleiner.
+				- Die neue colt-Version beinhaltet nur noch "freie" Lizenzen.
+				  (Ein durch Fachwerk nicht benutztes Paket erlaubte in der vorgängigen Version
+				  keine kommerzielle Nutzung. Nun ist die ganze Bibliothek frei nutzbar.)
+				  Deshalb wird die Bibliothek nun direkt mitgeliefert.
+				
+				Aussehen
+				- Klarere Symbole für die Knöpfe "Knoten selektieren" und "Stab selektieren".
+				- Stabkräfte und -nummern werden nun parallel zum Stab beschriftet.
+				- Gesetzte Stabkräfte mit fetter Schrift beschriftet. Somit sind sie auf
+				  Schwarz-weiss Ausdrucken besser zu erkennen.
+				
+				Details
+				- Kleiner Anzeigefehler behoben:
+				  In der Version 0.06 blieb beim Einfügen neuer Stäbe die Schnapp-Markierung
+				  bestehen, auch wenn sich der Mauszeiger wieder vom Knoten fortbewegt 
+				  hatte.
+				- Knotendialog (Lagerkräfte): Auflagerkraft auf eine Kommastelle gerundet.
+				  (Bisher fälschlicherweise auf ganze Zahl gerundet.)
+				- Knotendialog (Lagerbedingung): Wenn eine Verschieberichtung angegeben
+				  wird, wird der Knoten automatisch als verschieblich gelagert markiert.
+
+
+0.06		30.12.03	Sprachen
+				- Anpassung des Programmcodes zur Unterstützung von
+				  verschiedenen Sprachen (sog. Internationalisierung).
+				  Nicht ganz vollständig.
+				- Übersetzung auf französisch und englisch.
+				- teilweise Übersetzung der Hilfe auf englisch
+				Details
+				- Hilfesystem: Alternativ zur mittleren Maustaste führt auch ein
+				  Doppelklick rechts zurück zur Startseite.
+				- Knoten- und Stabdialoge: Werte werden markiert, wenn in ein
+				  Feld geklickt wird.
+				- Die Schlusskontrolle der Knotengleichgewichte erfolgt nun mit
+				  der Null-Toleranz 1.0E-10. Dies entspricht jener des GLS-
+				  Solvers. (Bisher galt der strengere Wert 1.0E-11 des Vorberechnungs-
+				  moduls.)
+				  
+0.05		29.11.03	Drucken
+				- Neu kann ein Ausdruck des Fachwerkmodells erzeugt werden.
+				  (Bisher konnte nur via Bildschirmkopie ausgedruckt werden.)
+				- Der Ausdruck enthält Informationen, welche die Modellierung
+				  dokumentieren: Koordinaten der Knoten, Stabkräfte, Berechnungsstatus,
+				  Lasten, Auflagerkräfte und allfällige Warnungen.
+				Hilfe
+				- Hilfesystem eingebaut
+				- deutschsprachige Hilfe
+				Details
+				- Kleiner Fehler im Vorberechnungsmodul behoben, welcher z.T. verhinderte,
+				  dass innerlich instabile (aber das Gleichgewicht einhaltende) Systeme
+				  mit dem Vorberechnungsmodul berechnet werden konnten.
+				  (Bisher musste man die Vorberechnung gegebenenfalls abschalten.)
+				- Vergrösserung der Null-Toleranz im GLS-Solver auf 1.0E-10 (bisher 1.0E-11)
+
+0.04		9.11.03		Details
+				- Es ist nicht mehr möglich einen neuen Stab einzufügen, wenn zwischen den
+				  entsprechenden Knoten bereits ein Stab existiert.
+				  (Führte bisher dazu, dass für die Berechnung nur der neuere Stab
+				  berücksichtigt wurde, in der graphischen Oberfläche jedoch zwei Stäbe
+				  dargestellt wurden.)
+				- Bei der Eingabe eines neuen Stabes über das Menü (nicht mit der Maus)
+				  bleibt der Dialog neu offen, wenn statt einer Knotennummer ein
+				  Buchstabe oder sonst ein formal nicht zulässiger Wert eingegeben wird.
+				  (Bisher schloss der Dialog ohne Folgen und ohne Meldung.)
+
+0.04devD	28.9.03		Erstmalige Veröffentlichung des Programms (GPL)
+				- die meisten geplanten Funktionen sind eingebaut.
+
+
+</span></pre></body></html>
