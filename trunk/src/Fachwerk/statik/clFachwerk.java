@@ -6,10 +6,12 @@
 
 package Fachwerk.statik;
 
+import cern.colt.Arrays;
+
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2007 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -84,6 +86,8 @@ public class clFachwerk implements inKonstante {
     private boolean WIDERSPRUCHaufgetreten = false;
     private int statischeUnbestimmtheit = Integer.MIN_VALUE; // zum Erkennen ob berechnet.
     private double[][] mechanismusRelKnVersch;
+    
+    private double[][] vollstLsg; // dient nur dazu, die vollständige analytische Lösung herauzugeben.
     
     private boolean verbose = false;
     private boolean debug = false;
@@ -248,10 +252,10 @@ public class clFachwerk implements inKonstante {
         if (resultatcheck()) { // falls keine Widerspruch entdeckt wird:
             OKkomplett = istvollständiggelöst(false); // false, da resultatcheck() soeben durchgeführt
         }
-        else verbose = true; // gibt mehr Infos aus, wenn resultatausgabe_direkt() aufgerufen wird.
+        else verbose = true; // gibt mehr Infos aus, wenn resultatausgabe_direkt() aufgerufen wird. // TODO ev.entfernen (wie in Fachwerk3D)
         
         if (optionMECHANISMUS && !OKkomplett) {
-            
+            boolean WIDaufgetretenStatBer = WIDERSPRUCHaufgetreten;
             try {
                 WIDERSPRUCHaufgetreten = rMechanismusVerletztGlgew();
             }
@@ -259,6 +263,16 @@ public class clFachwerk implements inKonstante {
                 // wenn WIDERSPRUCHaufgetreten (in vorheriger statischer Berechnung), 
                 // soll dies angezeigt werden (statt FEHLER), auch wenn die Mechanismusber fehlgeschlagen ist.
                 if (!WIDERSPRUCHaufgetreten) throw e;
+            }
+            if (!WIDERSPRUCHaufgetreten && WIDaufgetretenStatBer) { // in stat. Ber. zu Unrecht Widerspruch gemeldet (numerisches Problem). Mech.prüfung zuverlässig.
+                System.out.println("");
+                System.out.println("WARNUNG: die statische Berechnung hat nicht geklappt.");
+                System.out.println("Sie hat vermutlich nur aus NUMERISCHEN einen Widerspruch gemeldet.");
+                System.out.println("Kein Mechanismus gefunden (daher OK). Stat.Unbestimmtheit = " + statischeUnbestimmtheit);
+                if (statischeUnbestimmtheit != Double.MIN_VALUE && statischeUnbestimmtheit > 0) { // d.h. berechnet
+                    System.out.println("Massnahme: Stabkraft setzen (bevorzugt Nullstab).");
+                }
+                System.out.println("");
             }
         }
         
@@ -657,7 +671,7 @@ public class clFachwerk implements inKonstante {
                 if (Kn[kn].getLagerbed() != LOS) {
                     assert (Kn[kn].getLagerstatus() != GESETZT) : "Setzen von Lagerkraeften nicht implementiert. Lagerstatus " + Kn[kn].getLagerstatus();
                     anzOffeneGelagerteKn++;
-                    if (Kn[kn].getLagerbed() == VERSCHIEBLICH) {
+                    if (Kn[kn].getLagerbed() == VERSCHIEBLICH && Kn[kn].getLagerstatus() == UNBEST) { // TODO neu Bed. (0.23dev) UNBEST kontr.
                         anzOffeneVerschKn++;
                     }
                 }
@@ -833,7 +847,7 @@ public class clFachwerk implements inKonstante {
         
         // verschiebliche Lager
         for (int kn = 1; kn < Kn.length; kn++) {
-            if ((Kn[kn].getLagerstatus() == OFFEN) && (Kn[kn].getLagerbed() == VERSCHIEBLICH)) {
+            if ((Kn[kn].getLagerstatus() == UNBEST) && (Kn[kn].getLagerbed() == VERSCHIEBLICH)) {
                 double alpha = Kn[kn].getRalpha();
                 GLS[gl][ausKnoten[kn][0]] = Math.cos(alpha); // Rx
                 GLS[gl][ausKnoten[kn][1]] = Math.sin(alpha); // Rz
@@ -860,6 +874,26 @@ public class clFachwerk implements inKonstante {
         statischeUnbestimmtheit = solver.getAnzUnbestParam();
         double[][] xLsg = solver.solve();
         
+        
+        /* debug
+        if (verbose) {
+            boolean RUNDEN = true;
+            System.out.println("vollst.Loesung: (Unbestimmtheit " + statischeUnbestimmtheit + ")");
+            for (int i = 0; i < vollstLsg.length; i++) {
+                double[] d = vollstLsg[i];
+                if (RUNDEN) {
+                    System.out.print(Fkt.nf(d[0], 0) + "; ");
+                    for (int j = 1; j < d.length; j++) {
+                        System.out.print(Fkt.nf(d[j], 3) + "; ");
+                    }
+                    System.out.println("");
+                }
+                else System.out.println(cern.colt.Arrays.toString(d));
+            }
+            System.out.println("");
+        }
+        */
+
         assert (xLsg.length == anzUnbek) : "xLsg.length = " + xLsg.length + " ungleich anzUnbek " + anzUnbek;
         if (verbose) System.out.println("fertig.");
         
@@ -879,6 +913,10 @@ public class clFachwerk implements inKonstante {
                 Kn[knnr[i]].setLagerkraft(BER,xLsg[i][1],xLsg[i+1][1]);
             }
         }
+        
+        // für allfällige Weiterbearbeitung der analytischen Lösung
+        double[][] unbearbVollstLsg = solver.getCompleteSolution();
+        generiereAnalytLsg(unbearbVollstLsg, ausStab);
     }
     
     private void rKnotenstatusSetzen() {
@@ -1038,6 +1076,7 @@ public class clFachwerk implements inKonstante {
         return mech.verletztGleichgewicht();
     }
     
+    /** Schreibt die Resultate auf die Konsole. */
     public void resultatausgabe_direkt() {
         // Knotenstatus
         if (verbose) {
@@ -1172,4 +1211,34 @@ public class clFachwerk implements inKonstante {
         return mechanismusRelKnVersch;
     }
     
+    
+    // ------------ nur benötigt für elastische Lösung --------------- //
+    /** Bereitet die analytische vollständige Lösung für clElastisch auf.
+     Beinhaltet nur noch die Stäbe (keine Lagerkräfte), dafür alle (auch schon vorgängig bekannte). 
+     @param unbearbVollstLsg unbearb. vollst. Lösung
+     @param ausStab liefert den Index der Unbekannten (Stabkraft) aus der Stabnummer
+     */
+    private void generiereAnalytLsg(double[][] unbearbVollstLsg, int[] ausStab) {
+        if (unbearbVollstLsg.length == 0) return;
+                
+        vollstLsg = new double[anzSt][unbearbVollstLsg[0].length-1];
+        for (int st = 1; st < St.length; st++) {
+            if (ausStab[st] < 0) { // bereits vorgängig bekannt, d.h. nicht in unbearbVollstLsg enthalten
+                assert (St[st].getStatus() == BER || St[st].getStatus() == GESETZT): "[clFachwerk.generiereAnalytLsg] Programmfehler";
+                vollstLsg[st-1][0] = St[st].getKraft();
+            }
+            else { // vorgängig unbekannt, d.h. in unbearbVollstLsg enthalten
+                assert unbearbVollstLsg[ausStab[st]][0] == 1: "[clFachwerk.generiereAnalytLsg] Gleichungssystem scheint nicht fertig berechnet."; // berechnet.
+                for (int j = 1; j < unbearbVollstLsg[0].length; j++) {
+                    vollstLsg[st-1][j-1] = unbearbVollstLsg[ausStab[st]][j];
+                }
+            }
+        }
+    }
+    
+    /** Diese Methode liefert die vollständige analytische Lösung der Unbekannten.
+     Dies in Abhängigkeit von Parametern.*/
+    public double[][] getCompleteSolution() {
+        return vollstLsg;
+    }
 }

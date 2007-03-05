@@ -15,7 +15,7 @@ import cern.colt.matrix.linalg.*;
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2007 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -47,7 +47,6 @@ public final class GLSsolver {
     
     /* ZUTUN
      * - Beim Entdecken von Widersprüchen ursprüngliche Zeile und so betroffenen Knoten angeben
-     * - Umwandlung in nicht-statische Methode
      * - In Klasse Infos zum Berechnungsablauf speichern, insb. Fehler
      * - Methoden einbauen, welche Infos zu Fehlern und Widersprüchen und Warnungen liefern.
      */
@@ -211,7 +210,10 @@ public final class GLSsolver {
                 throw new ArithmeticException("Widerspruch im Gleichungssystem!");
             }
             z--;
-            assert z > 0 : "lauter Nullen im GLS";
+            if (z <= 0) {
+                System.out.println("lauter Nullen im GLS");
+                break;
+            }
         }
         
         // Verarbeiten der Gleichungen (von unten her)
@@ -283,10 +285,12 @@ public final class GLSsolver {
                     }
                 }
                 // Überprüfen, ob Gleichung widersprüchlich ist
-                if (alleParamNull) {
+                if (alleParamNull) { // TODO ev. nochmals prüfen ob alle 0 mit geringerer Toleranz (Problem fastNull*Param ≠ 0 könnte bedeuten dass Param = 0). Zumindestens wenn noch Parameter zu vergeben.
                     double obnull = Math.abs(kontrolle[0] - c.get(z,0));
                     if (obnull > TOL) {
+                        System.out.println("");
                         System.out.println("Widerspruch im Gleichungssystem! (Zeile "+z+") " + obnull +" ungleich 0"); // TODO: URSPRÜNGLICH ZEILE (piv) ANGEBEN!
+                        System.out.println("eventuell numerisches Problem");
                         throw new ArithmeticException("Widerspruch im Gleichungssystem!");
                     }
                     else continue; // nächste Gleichung

@@ -7,7 +7,7 @@
 package Fachwerk.statik;
 
 /** 
- * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.berlios.de>
+ * Copyright (c) 2003 - 2007 A.Vontobel <qwert2003@users.berlios.de>
  *                                      <qwert2003@users.sourceforge.net>
  * 
  * Dieses Programm ist freie Software. Sie können es unter den Bedingungen
@@ -193,4 +193,28 @@ public final class Fkt {
         }
         return ausg.toString();
     }
+    
+    /**
+   * Returns the sign of the argument as follows:
+   * - If a is greater than zero, the result is 1.0.
+   * - If a is less than zero, the result is -1.0.
+   * - If a is NaN, the result is NaN.
+   * - If a is positive or negative zero, the result is the
+   * same.
+   * (von GNU classpath übernommen).
+   * 
+   * @param a the numeric argument.
+   * @return the sign of the argument.
+   * @since 1.5.
+   */
+  public static double signum(double a)
+  {
+    if (Double.isNaN(a))
+      return Double.NaN;
+    if (a > 0)
+      return 1.0;
+    if (a < 0)
+      return -1.0;
+    return a;
+  }
 }
