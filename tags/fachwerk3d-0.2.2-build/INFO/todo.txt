@@ -1,0 +1,29 @@
+# encoding UTF-8
+
+
+Wunschliste
+-----------------------
+Es bestehen weder ein Zeitplan noch feste Absichten!
+
+- Bestehende 2D-AddIns auch für 3D zur Verfügung stellen: "Finde Ort"
+
+- Vervollständigung der Internationalisierung / Übersetzung
+
+- Neue Knoten importieren.
+
+- Markierung des Knotens, der beim Lösens des Gleichungssystems
+  einen Fehler auslöst.
+
+- Dateien aus Fachwerk(2D) importieren
+
+- Dublizieren von Knoten/Stäben
+
+
+
+to do
+-------------------
+There are neither fix intentions nor a timetable!
+
+- Completion of the internationalisation / translation.
+
+- see above (German)
