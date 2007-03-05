@@ -64,7 +64,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     
     private static final String PROGNAME = "Fachwerk3D"; // in clOberflaeche nochmals hart kodiert (Titel)
     private static final int HAUPTVER = 0;
-    private static final int UNTERVER = 22; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
+    private static final int UNTERVER = 23; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
     private static final int JAHR = 2007;
     private final String FILEPROGNAME = "treillis3D";
     private final int FILEVER = 1;
@@ -1096,6 +1096,124 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
        if (fo.getMeldung().equals("")) ;//nichts tun
        else feldStatuszeile.setText(fo.getMeldung());
        */
+    }
+    
+    protected void befehlAddinRateStabkräfte() {
+        double EAdruck_zu_EAzug = 10; // +- willkürlich, entspricht etwa ρ = 1.6 %
+        String meldungElastischGesetzt = "";
+        
+        zurücksetzen(false);
+        
+        // GUI Vorarbeiten
+        switch (mausAufgabe) {
+            case NEUERSTAB:
+                mausAufgabe = NICHTS;
+                setKnopfNeuerStab(false);
+                break;
+            case NEUERKNOTENSNAP:
+                mausAufgabe = NICHTS;
+                setKnopfNeuerKnotenSnap(false);
+                break;
+            case NEUERKNOTEN:
+                assert false;
+                mausAufgabe = NICHTS;
+                break;
+            case ZOOMxy: // lassen
+            default:
+        }        
+        
+        // BEGINN
+        keinFEHLER = true;
+        VOLLSTÄNDIGGELÖST_OK = false;
+        //Datenaufbereiten
+        clKnoten3D[] Knotenarray = new clKnoten3D[Knotenliste.size() + 1];
+        clStab[] Stabarray = new clStab[Stabliste.size() + 1];
+        int[][] Topologie = new int[Knotenarray.length][Knotenarray.length];
+        
+        int i = 1;
+        for (Iterator it = Knotenliste.iterator(); it.hasNext();) {
+            Knotenarray[i] = (clKnoten3D) it.next();
+            i++;
+        }
+        i = 1;
+        for (Iterator it = Stabliste.iterator(); it.hasNext();) {
+            clWissenderStab3D wst = (clWissenderStab3D) it.next();
+            Stabarray[i] = wst.stab;
+            Topologie[wst.von][wst.bis] = i;
+            i++;
+        }
+        
+        try {
+            clFachwerk3D fachwerk = new clFachwerk3D(Knotenarray, Stabarray, Topologie);
+            fachwerk.setVerbose(OptionVerbose);
+            keinWIDERSPRUCH = fachwerk.rechnen(OptionVorber,true,OptionMechanismus); // OptionGLS=true
+            if (OptionVerbose) fachwerk.resultatausgabe_direkt();
+            if (keinWIDERSPRUCH) {
+                VOLLSTÄNDIGGELÖST_OK = fachwerk.istvollständiggelöst(false); // false, das resutatcheck() soeben in .rechnen() durchgeführt
+                
+                if (VOLLSTÄNDIGGELÖST_OK) {
+                    System.out.println("completely solved, nothing to guess."); // TODO übersetzen
+                }
+                else {
+                    // Elastische Berechnung
+                    clElastisch3D elast = new clElastisch3D(Stabarray);
+                    elast.setL(Knotenarray, Topologie);
+                    elast.setCompleteSolution(fachwerk.getCompleteSolution());
+                    elast.rechnen(EAdruck_zu_EAzug);
+                    elast.resultatausgabe_direkt();
+                    double[] N = elast.getLsg();
+                    int[] zusetzendeSt = elast.getIndexMgdUmbek();
+                    System.out.println("");
+                    System.out.println("automatisch gesetzte Staebe (elastisch berechnet, EAc/EAt="+EAdruck_zu_EAzug+")");
+                    for (int s = 0; s < zusetzendeSt.length; s++) {
+                        System.out.println("Stab " + Fkt.nf(zusetzendeSt[s]+1,2) + ": N = " + Fkt.nf(N[zusetzendeSt[s]],1,4) + " kN");
+                    }
+                    
+                    // Setzten der quasi-elastisch berechneten Stabkräfte
+                    StringBuffer sb = new StringBuffer();
+                    sb.append("neu gesetzt: ");
+                    for (int s = 0; s < zusetzendeSt.length; s++) {
+                        int stabnr = zusetzendeSt[s]+1;
+                        assert Stabarray[stabnr].getStatus() == UNBEST: "Stab der gesetzt werden soll ist gar nicht unbestimmt!";
+                        Stabarray[stabnr].setKraft(GESETZT, N[zusetzendeSt[s]]);
+                        if (s > 0) sb.append(", ");
+                        sb.append(stabnr);
+                    }
+                    meldungElastischGesetzt = sb.toString();
+                }
+            }
+            
+            aktualisieren(true, true);
+            if (meldungElastischGesetzt.length() > 0) feldStatuszeile.setText(meldungElastischGesetzt);
+            if (!keinWIDERSPRUCH) LayerMechanismius(true, fachwerk.getMechanismus());
+            if (keinWIDERSPRUCH) LayerStKraft(true);
+            LayerAuflKraft(true);
+            LayerLasten(true);
+        }
+        catch (Exception e) {
+            System.out.println(e.toString());
+            aktualisieren(true, true);
+            // im Statusfeld FEHLER anzeigen, in Statuszeile Fehlermeldung
+            feldStatusFw.setText(tr("FEHLER"));
+            keinFEHLER = false;
+            if (e.getMessage() != null && e.getMessage().equals("Mechanismusberechnung fehlgeschlagen.")) { // TODO testen e.getMessage() != null
+                feldStatuszeile.setText(tr("errMechanismusberFehlgeschlagen"));
+            }
+            else feldStatuszeile.setText(e.toString());
+        }
+        
+        if (keinWIDERSPRUCH && keinFEHLER) {
+            if (VOLLSTÄNDIGGELÖST_OK) feldStatusFw.setText(tr("OK-COMPLETE"));
+            else feldStatusFw.setText(tr("OK"));
+            selModus = AUTOMATISCH; setKnopfStab(false); setKnopfKnoten(false);
+        }
+        else {
+            if (!keinWIDERSPRUCH) feldStatusFw.setText(tr("WIDERSPRUCH"));
+            if (!keinFEHLER) feldStatusFw.setText(tr("FEHLER"));
+            selModus = NICHTSÄNDERN;
+        }
+        Selektion[0] = DESELEKT;
+        setKnopfKnoten(false); setKnopfStab(false);
     }
     
     protected void befehlAddinKoordTransFWK() {

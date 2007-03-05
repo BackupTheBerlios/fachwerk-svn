@@ -150,6 +150,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
         itemExportInput = new javax.swing.JMenuItem();
         jSeparator7 = new javax.swing.JSeparator();
         itemFindeOrt = new javax.swing.JMenuItem();
+        itemRateElastisch = new javax.swing.JMenuItem();
         menuHilfe = new javax.swing.JMenu();
         itemHilfe = new javax.swing.JMenuItem();
         itemAbout = new javax.swing.JMenuItem();
@@ -932,6 +933,16 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
 
         menuAddins.add(itemFindeOrt);
 
+        itemRateElastisch.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, java.awt.event.InputEvent.ALT_MASK));
+        itemRateElastisch.setText("rate elastisch");
+        itemRateElastisch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemRateElastischActionPerformed(evt);
+            }
+        });
+
+        menuAddins.add(itemRateElastisch);
+
         jMenuBar1.add(menuAddins);
 
         menuHilfe.setText("Hilfe");
@@ -973,6 +984,10 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void itemRateElastischActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemRateElastischActionPerformed
+        befehlAddinRateStabkräfte();
+    }//GEN-LAST:event_itemRateElastischActionPerformed
 
     private void formMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_formMouseWheelMoved
         nachrichtMausRadGedreht(evt);
@@ -1602,6 +1617,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     protected abstract void befehlAddinExportInput();
     protected abstract void befehlAddinFindeort();
     protected abstract void befehlAddinSkaliereLasten();
+    protected abstract void befehlAddinRateStabkräfte();
     
     protected abstract void befehlBspdaten();
     protected abstract void befehlHilfe();
@@ -1784,6 +1800,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemNeuerStab;
     private javax.swing.JMenuItem itemNeuzeichnen;
     private javax.swing.JMenuItem itemPktselekt;
+    private javax.swing.JMenuItem itemRateElastisch;
     private javax.swing.JMenuItem itemSkaliereLasten;
     private javax.swing.JMenuItem itemSpeichern;
     private javax.swing.JCheckBoxMenuItem itemStabNrAnzeigen;

@@ -13,7 +13,7 @@ import Fachwerk.statik.GLSsolver;
 /**
  * Fachwerk3D - treillis3D
  *
- * Copyright (c) 2004 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2004 - 2007 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -89,6 +89,8 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
     private boolean WIDERSPRUCHaufgetreten = false;
     private int statischeUnbestimmtheit = Integer.MIN_VALUE; // zum Erkennen ob berechnet.
     private double[][] mechanismusRelKnVersch;
+    
+    private double[][] vollstLsg; // dient nur dazu, die vollständige analytische Lösung herauzugeben.
     
     private boolean verbose = false;
     private boolean debug = false;
@@ -295,10 +297,9 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
         if (resultatcheck()) { // falls keine Widerspruch entdeckt wird:
             OKkomplett = istvollständiggelöst(false); // false, da resultatcheck() soeben durchgeführt
         }
-//        else verbose = true; // gibt mehr Infos aus, wenn resultatausgabe_direkt() aufgerufen wird. // TODO entfernen falls bewährt.
         
         if (optionMECHANISMUS && !OKkomplett) {
-            
+            boolean WIDaufgetretenStatBer = WIDERSPRUCHaufgetreten;
             try {
                 WIDERSPRUCHaufgetreten = rMechanismusVerletztGlgew();
             }
@@ -306,6 +307,16 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
                 // wenn WIDERSPRUCHaufgetreten (in vorheriger statischer Berechnung), 
                 // soll dies angezeigt werden (statt FEHLER), auch wenn die Mechanismusber fehlgeschlagen ist.
                 if (!WIDERSPRUCHaufgetreten) throw e;
+            }
+            if (!WIDERSPRUCHaufgetreten && WIDaufgetretenStatBer) { // in stat. Ber. zu Unrecht Widerspruch gemeldet (numerisches Problem). Mech.prüfung zuverlässig.
+                System.out.println("");
+                System.out.println("WARNUNG: die statische Berechnung hat nicht geklappt.");
+                System.out.println("Sie hat vermutlich nur aus NUMERISCHEN einen Widerspruch gemeldet.");
+                System.out.println("Kein Mechanismus gefunden (daher OK). Stat.Unbestimmtheit = " + statischeUnbestimmtheit);
+                if (statischeUnbestimmtheit != Double.MIN_VALUE && statischeUnbestimmtheit > 0) { // d.h. berechnet
+                    System.out.println("Massnahme: Stabkraft setzen (bevorzugt Nullstab).");
+                }
+                System.out.println("");
             }
         }
         
@@ -439,10 +450,10 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
                 if (Kn[kn].getLagerbed() != LOS) {
                     assert (Kn[kn].getLagerstatus() != GESETZT) : "Setzen von Lagerkraeften nicht implementiert. Lagerstatus " + Kn[kn].getLagerstatus();
                     anzOffeneGelagerteKn++;
-                    if (Kn[kn].getLagerbed() == VERSCHIEBLICH) {
+                    if (Kn[kn].getLagerbed() == VERSCHIEBLICH && Kn[kn].getLagerstatus() == UNBEST) { // TODO neu Bed. (Fwk2D.0.23dev) UNBEST kontr.
                         anzOffeneVerschKn++;
                     }
-                    if (Kn[kn].getLagerbed() == SCHINENLAGER) {
+                    if (Kn[kn].getLagerbed() == SCHINENLAGER && Kn[kn].getLagerstatus() == UNBEST) { // TODO neu Bed. (Fwk2D.0.23dev) UNBEST kontr.
                         anzOffeneSchinenKn++;
                     }
                 }
@@ -655,7 +666,7 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
         
         // verschiebliche Lager
         for (int kn = 1; kn < Kn.length; kn++) {
-            if ((Kn[kn].getLagerstatus() == OFFEN) && (Kn[kn].getLagerbed() == VERSCHIEBLICH)) {
+            if ((Kn[kn].getLagerstatus() == UNBEST) && (Kn[kn].getLagerbed() == VERSCHIEBLICH)) {
                 double[] rtg = Kn[kn].getRrtg(); // Vektor der blockierten Richtung
                 
                 // Das Vektorprodukt der Auflagerkraft R und der blockierten Rtg n ist gleich Null
@@ -683,7 +694,7 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
         
         // Schinenlager
         for (int kn = 1; kn < Kn.length; kn++) {
-            if ((Kn[kn].getLagerstatus() == OFFEN) && (Kn[kn].getLagerbed() == SCHINENLAGER)) {
+            if ((Kn[kn].getLagerstatus() == UNBEST) && (Kn[kn].getLagerbed() == SCHINENLAGER)) {
                 double[] gleitrtg = Kn[kn].getRrtg(); // Vektor der Gleitrichtung
                 // Das Skalarprodukt der Auflagerkraft R und der Gleitrtg n ist gleich Null
                 // Rx * nx + Ry * ny + Rz * nz = 0
@@ -729,6 +740,10 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
                 Kn[knnr[i]].setLagerkraft(BER,xLsg[i][1],xLsg[i+1][1],xLsg[i+2][1]);
             }
         }
+        
+        // für allfällige Weiterbearbeitung der analytischen Lösung
+        double[][] unbearbVollstLsg = solver.getCompleteSolution();
+        generiereAnalytLsg(unbearbVollstLsg, ausStab);
     }
     
     private void rKnotenstatusSetzen() {
@@ -907,6 +922,7 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
         return mech.verletztGleichgewicht();
     }
     
+    /** Schreibt die Resultate auf die Konsole. */
     public void resultatausgabe_direkt() {
         // Knotenstatus
         if (verbose) {
@@ -1059,4 +1075,34 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
         return mechanismusRelKnVersch;
     }
     
+    
+    // ------------ nur benötigt für elastische Lösung --------------- //
+    /** Bereitet die analytische vollständige Lösung für clElastisch auf.
+     Beinhaltet nur noch die Stäbe (keine Lagerkräfte), dafür alle (auch schon vorgängig bekannte). 
+     @param unbearbVollstLsg unbearb. vollst. Lösung
+     @param ausStab liefert den Index der Unbekannten (Stabkraft) aus der Stabnummer
+     */
+    private void generiereAnalytLsg(double[][] unbearbVollstLsg, int[] ausStab) {
+        if (unbearbVollstLsg.length == 0) return;
+                
+        vollstLsg = new double[anzSt][unbearbVollstLsg[0].length-1];
+        for (int st = 1; st < St.length; st++) {
+            if (ausStab[st] < 0) { // bereits vorgängig bekannt, d.h. nicht in unbearbVollstLsg enthalten
+                assert (St[st].getStatus() == BER || St[st].getStatus() == GESETZT): "[clFachwerk3D.generiereAnalytLsg] Programmfehler";
+                vollstLsg[st-1][0] = St[st].getKraft();
+            }
+            else { // vorgängig unbekannt, d.h. in unbearbVollstLsg enthalten
+                assert unbearbVollstLsg[ausStab[st]][0] == 1: "[clFachwerk3D.generiereAnalytLsg] Gleichungssystem scheint nicht fertig berechnet."; // berechnet.
+                for (int j = 1; j < unbearbVollstLsg[0].length; j++) {
+                    vollstLsg[st-1][j-1] = unbearbVollstLsg[ausStab[st]][j];
+                }
+            }
+        }
+    }
+    
+    /** Diese Methode liefert die vollständige analytische Lösung der Unbekannten.
+     Dies in Abhängigkeit von Parametern.*/
+    public double[][] getCompleteSolution() {
+        return vollstLsg;
+    }
 }
