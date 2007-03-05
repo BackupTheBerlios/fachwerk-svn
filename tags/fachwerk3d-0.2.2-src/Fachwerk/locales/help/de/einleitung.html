@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head>
+	<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
+	<title></title></head>
+
+<body dir="ltr" lang="de-CH">
+<h1>Einleitung</h1>
+<h4>Wozu dient das Programm?</h4>
+<p>Das Programm «Fachwerk» soll Bauingenieuren im
+<i>Betonbau</i> die Anwendung von Spannungsfeldern und
+<i>Fachwerkmodellen</i> erleichtern. Es ist ein einfaches
+Fachwerkprogramm, welches (im Unterschied zu den gängigen
+Programmen) einzig die Gleichgewichtsbedingungen anwendet.</p>
+<p>Bei statisch unbestimmten Systemen berechnet das Programm die
+durch das Gleichgewicht bestimmten Stäbe. Den vorerst
+unbestimmten Stäben können Stabkräfte zugewiesen
+werden. Werden mehr Stabkräfte zugewiesen als zur statischen
+Bestimmtheit erforderlich, meldet das Programm den Widerspruch
+(ausser das Gleichgewicht ist trotzdem genau eingehalten).</p>
+<h4><br><br>
+</h4>
+<h4>Wozu eignet sich das Programm <i>nicht</i>?</h4>
+<ul>
+	<li><p>Für den <i>Stahlbau</i>.<br>Natürlich können
+	die Stabkräfte idealer Fachwerke auch mit diesem Programm
+	berechnet werden. Dazu gibt es jedoch geeignetere Programme.<br><br><br>
+	</p>
+	</li><li><p>Zur <i>Momentenbestimmung</i>.<br>Das Programm kennt nur Zug
+	und Druck.<br><br><br>
+	</p>
+	</li><li><p>Für <i>Verformungsberechnungen</i>.<br>Das Programm
+	verwendet ausschliesslich die Gleichgewichtsbedingungen. Es kennt
+	keine Steifigkeiten.<br><br><br>
+	</p>
+	</li><li><p>Für <i>räumliche</i> Fachwerkmodelle.<br>Ausser man
+	arbeitet mit ebenen Projektionen...<br>Es gibt eine räumliche
+	Version dieses Programmes: Fachwerk3D.</p>
+</li></ul>
+<h4><br><br>
+</h4>
+<h4>Hintergrund</h4>
+<p>Zur Bemessung und konstruktiven Ausbildung von Betontragwerken
+sind Spannungsfeld-Modelle geeignet. Diese auf der
+Plastizitätstheorie beruhende Methode ist klar und anschaulich.
+Auf einheitliche Art und Weise kann der Widerstand des Tragwerks
+untersucht werden. In vielen Fällen kann diese Methode «von
+Hand» ohne allzu grossen Aufwand angewendet werden. Manchmal
+jedoch wäre Unterstützung durch ein Computerprogramm
+nützlich, welches die Durchrechnung des Modells übernähme.
+Es bliebe mehr Zeit für die Entwicklung der Spannungsfelder und
+die konstruktive Ausbildung.</p>
+<p>Die Programmierung eines Programmes, welches allgemeine (ebene)
+Spannungsfelder berechnet, ist wohl kein Sonntagsspaziergang. Ein in
+vielen Fällen praktikables Vorgehen ist es, in ein ausgebildetes
+(und aufgezeichnetes) Spannungsfeld-Modell ein Fachwerkmodell zu
+legen. Die Stäbe des Fachwerks entsprechen den Resultierenden
+der Felder.</p>
+<p><br><br>
+</p>
+<h4>Worin unterscheidet sich «Fachwerk» von anderen
+Stabstatikprogrammen?</h4>
+<p>Jedes Stabstatik-Programm kann ideale Fachwerke berechnen und
+somit einen Gleichgewichtszustand für das Fachwerkmodell finden.
+Ein Problem entsteht jedoch, wenn das Fachwerk statisch unbestimmt
+ist. Die linear-elastischen Programme berechnen alle Stäbe
+aufgrund der Steifigkeiten. Bei Fachwerkmodellen zur Berechnung von
+Betontragwerken haben Stabsteifigkeiten jedoch keine Bedeutung und
+sollen daher auch nicht verwendet werden. Stattdessen will man einem
+Stab z.B. die Fliesskraft einer Anzahl Armierungseisen vorgeben. Auf
+diese Aufgabe ist das vorliegende Programm «Fachwerk»
+ausgelegt.</p>
+<p>Da der <a href="algorithmus.html">Lösungsalgorithmus</a>
+nicht auf der sonst üblichen Invertierung der Steifigkeitsmatrix
+beruht, ist es mit «Fachwerk» möglich, innerlich
+oder äusserlich <i>instabile Systeme</i> zu berechnen. Bedingung
+ist natürlich, dass das Gleichgewicht nicht verletzt wird.
+Praktisch bedeutet dies, dass keine für das Gleichgewicht
+unnötige Lager oder Nullstäbe eingeführt werden
+müssen.</p>
+</body></html>

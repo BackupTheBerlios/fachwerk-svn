@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head>
+	<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
+	<title></title>
+</head>
+
+<body dir="ltr" lang="en-GB">
+<h1>Introduction</h1>
+<h4>Purpose of the program</h4>
+<p>The program «Fachwerk3D» addresses to structural
+engineers who are involved with analysing and designing <i>reinforced
+concrete structures</i>. Is is the spatial version of the program «Fachwerk».
+It intends to simplify the application of
+discontinuous stress fields and strut-and-tie models.</p>
+<p>The program calculates strut-and-tie models. It only uses the
+equilibrium conditions. Thus, unlike common programs, it is not
+assuming elastic behaviour.</p>
+<p>If the system is statically indeterminate, the program calculates
+the forces of the members that are determinate anyway. You can assign
+forces to the remaining members. If you assign more forces to members
+than needed to accomplish a statically determinate system, the
+program will indicate that the system is inconsistent (except
+equilibrium is fulfilled anyway).</p>
+<h4><br><br>
+</h4>
+<h4>The program is <i>not </i>suitable...</h4>
+<ul>
+	<li><p>for <i>steel constructions</i>.<br>Of course the program can
+	calculate the axial forces of truss beams. However there are more
+	suited programs.<br><br>
+	</p>
+	</li><li><p>for calculations of <i>bending moments</i>.<br>The program
+	only knows compressive and tensile forces.<br><br>
+	</p>
+	</li><li><p>for calculations of <i>deformations</i>.<br>The program only
+	uses the equilibrium conditions. It doesn't know anything about
+	elasticity.
+	</p>
+</li></ul>
+<h4><br></h4>
+<h4>Less is more</h4>
+<p>If a statical problem may be solved using a plane model, it is usually better to do so rather than using a spatial model. Three-dimensional strut-and-tie models often need a large number of members and therefore get complex. It should also be considered that «Fachwerk» is more advanced than its spatial pendant «Fachwerk3D».</p>
+<p>Of course there are some cases that justify the application of spatial models and so «Fachwerk3D» may be usefull.</p>
+<p><br><br></p>
+<h4>Difference to other programs?</h4>
+<p>Every program for frame analysis can calculate trusses and
+therefore is able to find a possible solution that respects the
+equilibrium conditions. However, there is a problem if the system is
+statically indeterminate. The common linear-elastic programs
+calculate the forces according to the rigidity of the members. For
+the calculation of strut-and-tie models (for reinforced concrete
+structures) however, the rigidity of members has no meaning and
+therefore it should not be used. Instead, you may want to assign the
+yielding force of a number of reinforcement bars to a tie of the
+model. That is the function the present program «Fachwerk»
+is designed for.</p>
+<p>The <a href="algorithmus.html">algorithm</a> of the program is not
+based on the usual approach of inverting the stiffness matrix. For
+that reason, «Fachwerk3D» is able to calculate (internally
+or externally) <i>unstable systems</i>, assuming that the equilibrium
+conditions are not neglected. In practice that means that you don't
+have to introduce bearings or stabilizers that are not necessary for
+the equilibrium.</p>
+</body></html>
