@@ -16,7 +16,7 @@ import cern.colt.matrix.linalg.*;
  * Fachwerk - treillis
  *
  * Copyright (c) 2003 - 2007 A.Vontobel <qwert2003@users.sourceforge.net>
- *                                                                      <qwert2003@users.berlios.de>
+ *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
@@ -30,7 +30,7 @@ import cern.colt.matrix.linalg.*;
  *
  * -------------------------------------------------------------
  *
- * Deses Programm ist freie Software. Sie können es unter den Bedingungen
+ * Dieses Programm ist freie Software. Sie können es unter den Bedingungen
  * der GNU General Public License, Version 2, wie von der Free Software
  * Foundation herausgegeben, weitergeben und/oder modifizieren.
  *
@@ -262,18 +262,7 @@ public final class GLSsolver {
                         kontrolle[j] += R.viewRow(z).get(i) * x[i][j+1];
                     }
                 }
-//                double obnull = Math.abs(kontrolle[0] - c.get(z,0));
-//                if (obnull > TOL) {
-//                    System.out.println("Widerspruch im Gleichungssystem! (Zeile "+z+") " + obnull +" ungleich 0"); // URSPRÜNGLICH ZEILE (piv) ANGEBEN!
-//                    throw new ArithmeticException("Widerspruch im Gleichungssystem!");
-//                }
-//                for (int j = 1; j < kontrolle.length; j++) {
-//                    if (Math.abs(kontrolle[j]) > TOL) {
-//                        System.out.println("Widerspruch im Gleichungssystem! (Zeile "+z+") Parameter "+j+" ungleich 0: " + kontrolle[j]);
-//                                                
-//                        throw new ArithmeticException("Widerspruch im Gleichungssystem!");
-//                    }
-//                }
+                kontrolle[0] -= c.get(z,0);
                 
                 // TODO TESTEN!
                 boolean alleParamNull = true;
@@ -286,7 +275,7 @@ public final class GLSsolver {
                 }
                 // Überprüfen, ob Gleichung widersprüchlich ist
                 if (alleParamNull) { // TODO ev. nochmals prüfen ob alle 0 mit geringerer Toleranz (Problem fastNull*Param ≠ 0 könnte bedeuten dass Param = 0). Zumindestens wenn noch Parameter zu vergeben.
-                    double obnull = Math.abs(kontrolle[0] - c.get(z,0));
+                    double obnull = Math.abs(kontrolle[0]);
                     if (obnull > TOL) {
                         System.out.println("");
                         System.out.println("Widerspruch im Gleichungssystem! (Zeile "+z+") " + obnull +" ungleich 0"); // TODO: URSPRÜNGLICH ZEILE (piv) ANGEBEN!
@@ -321,7 +310,7 @@ public final class GLSsolver {
                     }
                     else x[xi][bekParam+1] = 0;
                 }
-                if (debug) System.err.println("VORSICHT, wenig GETESTETES Modul des Solvers im Einsatz."); // TODO Warnung entfernen
+                if (debug) System.err.println("VORSICHT, wenig GETESTETES Modul des Solvers im Einsatz."); // TODO Warnung entfernen, da vermutlich i.O.
                 gebrauchteUnbestParam --;
             }
             

@@ -33,7 +33,7 @@ import cern.colt.matrix.impl.*;
  *
  * -------------------------------------------------------------
  *
- * Deses Programm ist freie Software. Sie können es unter den Bedingungen
+ * Dieses Programm ist freie Software. Sie können es unter den Bedingungen
  * der GNU General Public License, Version 2, wie von der Free Software
  * Foundation herausgegeben, weitergeben und/oder modifizieren.
  *
@@ -163,7 +163,6 @@ public class clElastisch implements inKonstante {
             return;
         }
         
-        // TODO Schlaufe für Steifigkeitsverhältnis Druck zu Zug (bis kein Vorz.wechsel mehr)
         for (int param = 1; param <= statischeUnbestimmtheit; param++) {
             elastGLS[param - 1] = erstelleGleichung(param);
         }
@@ -246,7 +245,7 @@ public class clElastisch implements inKonstante {
     
     /** Erstellt eine kinematische Bedingung (elastisch) für den Parameter.
      Basiert auf der gleichen Idee wie Castigliano, ∂Ni/∂Param ist ein stat.zul.Belastungszustand.
-     0 =! u = ∑ (alle Stäbe i) Ni/EAi * ∂Ni/∂Param
+     0 =! u = ∑ (alle Stäbe i) Li * Ni/EAi * ∂Ni/∂Param
      @param par ParameterNr*/
     private double[] erstelleGleichung(int par) {
         double[] gl = new double[1+statischeUnbestimmtheit]; // Gleichung
