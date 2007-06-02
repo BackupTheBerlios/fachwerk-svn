@@ -147,7 +147,7 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         itemSkaliereLasten = new javax.swing.JMenuItem();
         jSeparator7 = new javax.swing.JSeparator();
         itemFindeOrt = new javax.swing.JMenuItem();
-        itemRateElastisch = new javax.swing.JMenuItem();
+        itemElastischerVorschlag = new javax.swing.JMenuItem();
         menuHilfe = new javax.swing.JMenu();
         itemHilfe = new javax.swing.JMenuItem();
         itemAbout = new javax.swing.JMenuItem();
@@ -887,15 +887,15 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
 
         menuAddins.add(itemFindeOrt);
 
-        itemRateElastisch.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, java.awt.event.InputEvent.ALT_MASK));
-        itemRateElastisch.setText("rate elastisch");
-        itemRateElastisch.addActionListener(new java.awt.event.ActionListener() {
+        itemElastischerVorschlag.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, java.awt.event.InputEvent.ALT_MASK));
+        itemElastischerVorschlag.setText("elastischer Vorschlag");
+        itemElastischerVorschlag.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemRateElastischActionPerformed(evt);
+                itemElastischerVorschlagActionPerformed(evt);
             }
         });
 
-        menuAddins.add(itemRateElastisch);
+        menuAddins.add(itemElastischerVorschlag);
 
         jMenuBar1.add(menuAddins);
 
@@ -939,9 +939,9 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void itemRateElastischActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemRateElastischActionPerformed
+    private void itemElastischerVorschlagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemElastischerVorschlagActionPerformed
         befehlAddinRateStabkräfte();
-    }//GEN-LAST:event_itemRateElastischActionPerformed
+    }//GEN-LAST:event_itemElastischerVorschlagActionPerformed
 
     private void formMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_formMouseWheelMoved
         nachrichtMausRadGedreht(evt);
@@ -1471,6 +1471,8 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         itemSkaliereLasten.setToolTipText(tr("ttipLastenSkalieren"));
         itemFindeOrt.setText(tr("itemFindeOrt"));
         itemFindeOrt.setToolTipText(tr("ttipFindeOrt"));
+        itemElastischerVorschlag.setText(tr("itemElastischerVorschlag"));
+        itemElastischerVorschlag.setToolTipText(tr("ttipElastischerVorschlag"));
         
         menuHilfe.setText(tr("menuHilfe"));
         itemHilfe.setText(tr("itemHilfe"));
@@ -1728,6 +1730,7 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemDrucken;
     private javax.swing.JMenuItem itemDruckenGraph;
     private javax.swing.JMenuItem itemEigenschaften;
+    private javax.swing.JMenuItem itemElastischerVorschlag;
     private javax.swing.JMenuItem itemEn;
     private javax.swing.JMenuItem itemFindeOrt;
     private javax.swing.JMenuItem itemFr;
@@ -1748,7 +1751,6 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemNeuerStab;
     private javax.swing.JMenuItem itemNeuzeichnen;
     private javax.swing.JMenuItem itemPktselekt;
-    private javax.swing.JMenuItem itemRateElastisch;
     private javax.swing.JMenuItem itemSkaliereLasten;
     private javax.swing.JMenuItem itemSpeichern;
     private javax.swing.JCheckBoxMenuItem itemStabNrAnzeigen;

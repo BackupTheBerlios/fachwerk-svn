@@ -742,18 +742,30 @@ public class treillis extends clOberflaeche implements inKonstante {
                 
             case KNOTEN:
                 int nr = Selektion[1];
-                // Knotennummern anzeigen, bisherigen Zustand merken
-                boolean layerKnNr_bisherigerZustd = LayerKnNr();
-                LayerKnNr(true);
-                // in Dialog  bestätigen
-                //meldung = "Der Knoten " + nr + " und alle anschl. Stäbe werden gelöscht.";
-                meldung = tr("okKNOTENLOESCHENwarnung_Knoten")+" " + nr + " "+tr("okKNOTENLOESCHENwarnung_wirdgeloescht");
-                bestätige = new clOK(this, tr("okKNOTENLOESCHEN"), meldung, locale);
-                LayerKnNr(layerKnNr_bisherigerZustd);
-                if (!bestätige.ok()) break;
+                clWissenderStab st; // Variable für Prüfung auf angeschlossene Stäbe.
+                
+                // Falls Stäbe an den Knoten angeschlossen sind, nachfragen vor dem Löschen des Knotens.
+                boolean knotenAngeschlossen = false;
+                for (int i = 0; i < Stabliste.size(); i++) {
+                    st = (clWissenderStab) Stabliste.get(i);
+                    if (st.von == nr || st.bis == nr) {
+                        knotenAngeschlossen = true;
+                        break; // For-Schlaufe
+                    }
+                }
+                if (knotenAngeschlossen) {
+                    // Knotennummern anzeigen, bisherigen Zustand merken
+                    boolean layerKnNr_bisherigerZustd = LayerKnNr();
+                    LayerKnNr(true);
+                    // in Dialog  bestätigen
+                    //meldung = "Der Knoten " + nr + " und alle anschl. Stäbe werden gelöscht.";
+                    meldung = tr("okKNOTENLOESCHENwarnung_Knoten")+" " + nr + " "+tr("okKNOTENLOESCHENwarnung_wirdgeloescht");
+                    bestätige = new clOK(this, tr("okKNOTENLOESCHEN"), meldung, locale);
+                    LayerKnNr(layerKnNr_bisherigerZustd);
+                    if (!bestätige.ok()) break;
+                }
                 
                 // anschliessende Stäbe löschen
-                clWissenderStab st;
                 for (int i = 0; i < Stabliste.size(); i++) {
                     st = (clWissenderStab) Stabliste.get(i);
                     if (st.von == nr || st.bis == nr) {
@@ -774,19 +786,30 @@ public class treillis extends clOberflaeche implements inKonstante {
                 zurücksetzen(false);
                 break;
             case STAB:
-                // Stabnummern anzeigen, damit sichtbar Stabkraft ausblenden
-                boolean layerStNr_bisherigerZustd = LayerStNr();
-                boolean layerStKraft_bisherigerZustd = LayerStKraft();
-                LayerStKraft(false);
-                LayerStNr(true);
-                // in Dialog bestätigen
-                //meldung = "Der Stab " + Selektion[1] + " wird gelöscht.";
-                meldung = tr("okSTABLOESCHENwarnung_Stab") + " " + Selektion[1] + " " + tr("okSTABLOESCHENwarnung_wirdgeloescht");
-                bestätige = new clOK(this, tr("okSTABLOESCHEN"), meldung, locale);                
-                LayerStNr(layerStNr_bisherigerZustd);
-                if (!bestätige.ok()) {
-                    LayerStKraft(layerStKraft_bisherigerZustd);
-                    break;
+                // Um Bestätigung für das Löschen nachfragen, wenn Stabkraft gesetzt oder berechnet.
+                boolean nachfragen;
+                switch (((clWissenderStab) Stabliste.get(Selektion[1]-1)).stab.getStatus()) {
+                    case UNBEST:
+                        nachfragen = false;
+                        break;
+                    default:
+                        nachfragen = true;
+                }
+                if (nachfragen) {
+                    // Stabnummern anzeigen, damit sichtbar Stabkraft ausblenden
+                    boolean layerStNr_bisherigerZustd = LayerStNr();
+                    boolean layerStKraft_bisherigerZustd = LayerStKraft();
+                    LayerStKraft(false);
+                    LayerStNr(true);
+                    // in Dialog bestätigen
+                    //meldung = "Der Stab " + Selektion[1] + " wird gelöscht.";
+                    meldung = tr("okSTABLOESCHENwarnung_Stab") + " " + Selektion[1] + " " + tr("okSTABLOESCHENwarnung_wirdgeloescht");
+                    bestätige = new clOK(this, tr("okSTABLOESCHEN"), meldung, locale);
+                    LayerStNr(layerStNr_bisherigerZustd);
+                    if (!bestätige.ok()) {
+                        LayerStKraft(layerStKraft_bisherigerZustd);
+                        break;
+                    }
                 }
                 
                 Stabliste.remove(Selektion[1]-1);

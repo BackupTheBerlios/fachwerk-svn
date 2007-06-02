@@ -101,6 +101,7 @@ public class clOK extends javax.swing.JDialog {
         //dispose();
     }//GEN-LAST:event_closeDialog
     
+    /** Gibt an, ob die OK bestätigt worden ist.*/
     public boolean ok() {
         return antwort;
     }
