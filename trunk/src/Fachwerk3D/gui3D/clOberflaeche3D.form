@@ -324,6 +324,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemAllesZur&#xfc;cksetzen">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Alt+BACK_SPACE"/>
+                </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Fachwerk/gui/icons/clear_left.png"/>
                 </Property>
@@ -459,15 +462,15 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemFindeOrtActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="itemRateElastisch">
+            <MenuItem class="javax.swing.JMenuItem" name="itemElastischerVorschlag">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Alt+F9"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="rate elastisch"/>
+                <Property name="text" type="java.lang.String" value="elastischer Vorschlag"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemRateElastischActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemElastischerVorschlagActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

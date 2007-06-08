@@ -6,9 +6,6 @@
 </head>
 <body dir="ltr" lang="de-CH">
 <h1>Algorithmus, Programmierung</h1>
-<h3><br>
-<br>
-</h3>
 <h2>Algorithmus</h2>
 <h4>Gleichungssystem lösen (Solver)</h4>
 <p>Für jeden noch nicht bestimmten
@@ -48,7 +45,8 @@ als vier Stellen vor dem Komma (≥
 die Berechnung mit einer Fehlermeldung abbricht.</p>
 <p>Für die L-U-Zerlegung wird die
 Mathematikbibliothek «colt» des CERN verwendet.</p>
-<h4><br></h4><h4>Mechanismus suchen (kinematische Methode)</h4>
+<h4></h4>
+<h4>Mechanismus suchen (kinematische Methode)</h4>
 <p>Das Programm sucht systematisch nach Mechanismen, die die Gleichgewichtsbedingungen verletzen.</p>
 <p>Konkret werden die kinematischen Beziehungen aufgestellt: 
 (nicht gesetze) Stäbe und Lagerbedingungen. Unbekannt sind die
@@ -63,7 +61,31 @@ System mehrere Freiheitsgrade (die zu einer Gleichgewichtsverletzung
 führen), &nbsp;wird für die graphische Darstellung mittels
 Zufallsgenerator ein Mechanismus kombiniert (keine physikalisches
 Kriterium).</p>
-<p><br></p>
+<h4></h4>
+<h4>Stabkräfte vorschlagen (elastische Berechnung)</h4>
+<p>Berechnet statisch unbestimmte Stabkräfte elastisch.</p>
+<p>Die Stabsteifigkeiten können nicht vorgegeben werden. Stattdessen wird 
+ein konstantes Verhältnis Druck- zu Zugstabsteifigkeit EA,c/EA,t = 10 angenommen.
+In einfachen Fällen kann diese fixe Annahme, die eine iterative Berechnung bedingt, 
+zu vernünftigen Resultaten führen. Dies muss jedoch von Fall zu Fall überprüft werden 
+und trifft insbesondere nicht zu, wenn Stäbe vorgespannt sind.</p>
+<p>Die elastische Berechnung verwendet einen statischen Ansatz. Im Gegensatz zur 
+Finite-Elemente-Methode können dadurch auch instabile (kinematische) Modelle 
+berechnet werden. Die vollständige (algebraische) Lösung des Gleichungssystems der Gleichgewichtsbedingungen 
+enthält für einige Stabkräfte Abhängigkeiten von unbestimmten Variablen. Die Anzahl dieser 
+Variablen entspricht der statischen Unbestimmtheit des Systems.<br>Für die elastische Berechnung 
+wird nun (pro statische Unbestimmtheit) eine kinematische Bedingung aufgestellt. Verwendet wird 
+die Arbeitsgleichung: als statisch zulässiger Belastungszustand wird jeweils 
+∂N<sub>i</sub>/∂Variable<sub>j</sub> (Stabkraft in Abhängigkeit aller Variablen 
+abgeleitet nach jeweils einer Variablen) gewählt. Die dazugehörige Verformung wird durch 
+Integration des stat. zul. Belastungszustandes mit dem effektiven Verformungszustand über alle Stäbe 
+berechnet und muss Null sein:<br>u = ∑ (alle Stäbe i) Li * Ni/EAi * ∂Ni/∂Variable  = 0<br>
+Die Berechnung sucht also die Lösung mit der minimalen komplementären Energie und 
+ist analog zur Methode von Castigliano.</p>
+<p>Wenn die elastische Lösung bekannt ist, wird pro statische Unbestimmtheit eine Stabkraft gesetzt. Welche der (durch das Gleichgewicht alleine) unbestimmten Stäbe gesetzt werden, ist einigermassen willkürlich. Die aufgrund der elastischen Berechnung
+gesetzten Stabkräfte werden vom Programm wie manuell gesetzte Stabkräfte behandelt.</p>
+<h4></h4>
+
 <h2>Datenstruktur</h2>
 <p>Die benutzte Datenstruktur macht Gebrauch von der
 Objekt-Orientierung der Programmiersprache Java. Die nachfolgende
