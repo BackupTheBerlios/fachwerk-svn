@@ -316,6 +316,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemAllesZur&#xfc;cksetzen">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Alt+BACK_SPACE"/>
+                </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Fachwerk/gui/icons/clear_left.png"/>
                 </Property>

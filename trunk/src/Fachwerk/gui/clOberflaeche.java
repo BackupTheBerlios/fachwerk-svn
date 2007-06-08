@@ -753,6 +753,7 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
 
         menuFachwerk.add(itemLöschen);
 
+        itemAllesZurücksetzen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_BACK_SPACE, java.awt.event.InputEvent.ALT_MASK));
         itemAllesZurücksetzen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Fachwerk/gui/icons/clear_left.png")));
         itemAllesZurücksetzen.setText("alles zur\u00fccksetzen");
         itemAllesZurücksetzen.setToolTipText("alle gesetzten Stabkr\u00e4fte l\u00f6schen");

@@ -4,8 +4,6 @@
 	<title></title></head>
 <body dir="ltr" lang="de-CH">
 <h1>Algorithmus, Programmierung</h1>
-<h3><br><br>
-</h3>
 <h2>Algorithmus</h2>
 <h4>Vorberechnung</h4>
 <p>Der Algorithmus sucht Knoten, an denen nur ein oder zwei
@@ -24,8 +22,7 @@ einzige Stabkraft bestimmen kann.</p>
 entdeckt, bricht der Berechnungsvorgang ab.</p>
 <p>In der Regel kann die
 Vorberechnungsmethode folgenlos ausgeschaltet werden.</p>
-<p><br><br>
-</p>
+<h4></h4>
 <h4>Gleichungssystem lösen (Solver)</h4>
 <p>Für jeden noch nicht durch die Vorberechnung bestimmten
 Knoten werden zwei Gleichgewichts-Gleichungen aufgestellt. Ein Knoten
@@ -62,7 +59,8 @@ als vier Stellen vor dem Komma (≥
 die Berechnung mit einer Fehlermeldung abbricht.</p>
 <p>Für die L-U-Zerlegung wird die
 Mathematikbibliothek «colt» des CERN verwendet.</p>
-<h4><br></h4><h4>Mechanismus suchen (kinematische Methode)</h4>
+<h4></h4>
+<h4>Mechanismus suchen (kinematische Methode)</h4>
 <p>Das Programm sucht systematisch nach Mechanismen, die die Gleichgewichtsbedingungen verletzen.</p>
 <p>Konkret werden die kinematischen Beziehungen aufgestellt: Einheitsrotationen
 der (nicht gesetzen) Stäbe und Lagerbedingungen. Unbekannt sind die
@@ -77,7 +75,8 @@ System mehrere Freiheitsgrade (die zu einer Gleichgewichtsverletzung
 führen), &nbsp;wird für die graphische Darstellung mittels
 Zufallsgenerator ein Mechanismus kombiniert (keine physikalisches
 Kriterium).</p>
-<h4><br></h4><h4>Stabkräfte vorschlagen (elastische Berechnung)</h4>
+<h4></h4>
+<h4>Stabkräfte vorschlagen (elastische Berechnung)</h4>
 <p>Berechnet statisch unbestimmte Stabkräfte elastisch.</p>
 <p>Die Stabsteifigkeiten können nicht vorgegeben werden. Stattdessen wird 
 ein konstantes Verhältnis Druck- zu Zugstabsteifigkeit EA,c/EA,t = 10 angenommen.
@@ -96,11 +95,11 @@ abgeleitet nach jeweils einer Variablen) gewählt. Die dazugehörige Verformung 
 Integration des stat. zul. Belastungszustandes mit dem effektiven Verformungszustand über alle Stäbe 
 berechnet und muss Null sein:<br>u = ∑ (alle Stäbe i) Li * Ni/EAi * ∂Ni/∂Variable  = 0<br>
 Die Berechnung sucht also die Lösung mit der minimalen komplementären Energie und 
-ist somit analog zur Methode von Castigliano.</p>
-<p>Wenn die elastische Lösung bekannt ist, wird pro statische Unbestimmtheit eine (durch das Gleichgewicht alleine unbestimmte) Stabkraft gesetzt. Welche Stäbe gesetzt werden, ist einigermassen willkürlich. Die aufgrund der elastischen Berechnung
+ist analog zur Methode von Castigliano.</p>
+<p>Wenn die elastische Lösung bekannt ist, wird pro statische Unbestimmtheit eine Stabkraft gesetzt. Welche der (durch das Gleichgewicht alleine) unbestimmten Stäbe gesetzt werden, ist einigermassen willkürlich. Die aufgrund der elastischen Berechnung
 gesetzten Stabkräfte werden vom Programm wie manuell gesetzte Stabkräfte behandelt.</p>
 
-<h4><br></h4>
+<h4></h4>
 <h2>Datenstruktur</h2>
 <p>Die benutzte Datenstruktur macht Gebrauch von der
 Objekt-Orientierung der Programmiersprache Java. Die nachfolgende
