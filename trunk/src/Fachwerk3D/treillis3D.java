@@ -16,7 +16,7 @@ import Fachwerk.gui.StdFileFilter;
 import Fachwerk.gui.clNeuerStabDialog;
 import Fachwerk.gui.clHelpBrowser;
 import Fachwerk.gui.clPan;
-//import Fachwerk3D.addins3D.findeOrt3D.*;  // TODO irgendwann
+import Fachwerk3D.addins3D.findeOrt3D.*;
 import Fachwerk3D.addins3D.coordTransformation3D.*;
 import Fachwerk3D.addins3D.skaliereLasten3D.*;
 import Fachwerk3D.addins3D.export.*;
@@ -1097,8 +1097,6 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     // ZUSÄTZE
     // -------
     protected void befehlAddinFindeort() {
-        System.err.println("nicht implementiert");
-        /* // TODO befehlAddinFindeort
        if (Selektion[0] != KNOTEN) {
            System.out.println(tr("errKeinKnotenSelektiert"));
            feldStatuszeile.setText(tr("errKeinKnotenSelektiert"));
@@ -1108,7 +1106,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
        LayerKnNr(false);
        LayerLasten(true);
        LayerStKraft(false);
-       clguiFindeOrt fo = new clguiFindeOrt(Selektion[1], Knotenliste, Stabliste, this, locale);
+       clguiFindeOrt3D fo = new clguiFindeOrt3D(Selektion[1], Knotenliste, Stabliste, this, locale);
        aktualisieren(true, true);
        LayerStNr(false);
        LayerStKraft(true);
@@ -1118,7 +1116,6 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
        
        if (fo.getMeldung().equals("")) ;//nichts tun
        else feldStatuszeile.setText(fo.getMeldung());
-       */
     }
     
     protected void befehlAddinRateStabkräfte() {

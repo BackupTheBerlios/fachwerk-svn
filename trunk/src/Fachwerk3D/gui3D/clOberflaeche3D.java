@@ -925,7 +925,6 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
         menuAddins.add(jSeparator7);
 
         itemFindeOrt.setText("finde Ort");
-        itemFindeOrt.setEnabled(false);
         itemFindeOrt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemFindeOrtActionPerformed(evt);
