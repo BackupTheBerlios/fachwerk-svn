@@ -11,8 +11,8 @@ import Fachwerk.statik.*;
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2004 -2005 A.Vontobel <qwert2003@users.sourceforge.net>
- *                                     <qwert2003@users.berlios.de>
+ * Copyright (c) 2004 - 2007 A.Vontobel <qwert2003@users.sourceforge.net>
+ *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
@@ -37,17 +37,17 @@ import Fachwerk.statik.*;
  *
  * Sie sollten eine Kopie der GNU General Public License zusammen  mit
  * diesem Programm erhalten haben. Falls nicht, schreiben Sie an die
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA. 
+ * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  * @author  A.Vontobel
  */
 public class clFindeOrt implements inKonstante {
     
-    boolean debug = true;
     boolean verbose = true;
     private final double TOL = TOL_finde;
+    private final double TOL_resultat = TOL_vorberechnung;
     int maxdurchläufe = 1000;
-        
+    
     // Eingabevariablen
     private clKnoten Knoten; // zu verschiebender Knoten
     private clStab Stab; // Stab mit gesuchter Kraft
@@ -58,8 +58,8 @@ public class clFindeOrt implements inKonstante {
     private clKnoten[] Kn; // Knotenarray
     private clStab[] St;   // Stabarray
     private int[][] Top;   // Topologie;
-                
-    // Zustandsinfos    
+    
+    // Zustandsinfos
     private boolean FEHLER = false;       // Fehler während der Berechnung
     private boolean WIDERSPRUCH = false;  // Widerspruch während der Berechnung
     private boolean UNBESTIMMT = false;   // Stab ist unbestimmt!
@@ -90,9 +90,9 @@ public class clFindeOrt implements inKonstante {
         
         // Ausgangskoordinaten merken
         ursprKoord[0] = Knoten.getX();
-        ursprKoord[1] = Knoten.getZ();        
+        ursprKoord[1] = Knoten.getZ();
     }
-        
+    
     
     /**
      * Startet die Iteration, d.h. sucht die gewünschte Knotenposition
@@ -102,7 +102,7 @@ public class clFindeOrt implements inKonstante {
         boolean berOK = true;
         boolean unverändert = false;
         
-        // Kontrollen        
+        // Kontrollen
         //berechnen
         berOK = berechnen();
         if (!berOK) return false;
@@ -142,10 +142,10 @@ public class clFindeOrt implements inKonstante {
             UNABHÄNGIG = true;
             return false;
         }
-                
+        
         // Iteration beginnen
         double s_neu;
-        int zähler = 1;        
+        int zähler = 1;
         
         while (zähler < maxdurchläufe && !unverändert && Math.abs(kn2[1] - Fziel) > TOL) {
             zähler ++;
@@ -156,7 +156,7 @@ public class clFindeOrt implements inKonstante {
                                 ursprKoord[1] + kn2[0] * vektor[1]);
             berOK = berechnen();
             if (!berOK) return false;
-            if (Stab.getStatus() == UNBEST) {              
+            if (Stab.getStatus() == UNBEST) {
                 System.out.println("Stab ploetzlich unbestimmt! --> Iteration abgebrochen");
                 return false;
             }
@@ -167,7 +167,7 @@ public class clFindeOrt implements inKonstante {
         System.out.println("Neue Position: " + Fkt.nf(Knoten.getX(), 12) + ", " + Fkt.nf(Knoten.getZ(), 12));
         System.out.println("Neue Kraft im Stab: " + Fkt.nf(Stab.getKraft(),3) + "kN (Ziel: " + Fkt.nf(Fziel,3) + "kN)");
         abweichung = Math.abs(kn2[1] - Fziel);
-        if (abweichung < TOL) {
+        if (abweichung < TOL_resultat) {
             OK = true;
             System.out.println("Genauigkeit erreicht!");
             return true;
@@ -179,8 +179,6 @@ public class clFindeOrt implements inKonstante {
         }
         
     }
-    
-    
     
     private double Newton(double s1, double F1, double s2, double F2, double F_Ziel) throws ArithmeticException {
         if (F1 == F2) throw new ArithmeticException();
@@ -196,19 +194,17 @@ public class clFindeOrt implements inKonstante {
         try {
             clFachwerk fachwerk = new clFachwerk(Kn, St, Top);
             keinWIDERSPRUCH = fachwerk.rechnen(OptionVorber,OptionGLS, false);
-            //if (debug) fachwerk.resultatausgabe_direkt();  // wirklich nur zum debuggen!
         }
         catch (Exception e) {
-            System.err.println(e.toString());             
+            System.err.println(e.toString());
             keinFEHLER = false;
         }
         
         if (keinWIDERSPRUCH && keinFEHLER) {
-            //System.out.println("OK");
             return true;
         }
         else {
-            if (!keinWIDERSPRUCH) System.out.println("WIDERSPRUCH!");            
+            if (!keinWIDERSPRUCH) System.out.println("WIDERSPRUCH!");
             if (!keinFEHLER) System.out.println("FEHLER!");
             return false;
         }
@@ -217,63 +213,58 @@ public class clFindeOrt implements inKonstante {
     
     /** Setzt die Berechnung zurück. Alle Stabkräfte sind danach unbestimmt, die Knoten offen.
      */
-    private void zurücksetzen() {         
+    private void zurücksetzen() {
         for (int i = 1; i < Kn.length; i++) {
-            Kn[i].zurücksetzen();    
+            Kn[i].zurücksetzen();
         }
         for (int i = 1; i < St.length; i++) {
             St[i].zurücksetzen(false);
-        }        
+        }
     }
-   
+    
     
     // lediglich zu Testzwecken:
     /** 
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //treillis testfw = new treillis(java.util.Locale.getDefault());
-        //testfw.Knotenliste.add(new clKnoten(0,0));
-        //testfw.pack(); testfw.show();      
-        
         clKnoten[] testKn;
         clStab[] testSt;
-        int [][] testTop;        
-       
-                testKn = new clKnoten[6];
-                testSt = new clStab[7];
-                testTop = new int[testKn.length][testKn.length];
-                
-                testKn[1] = new clKnoten(-5,0);
-                testKn[2] = new clKnoten(0,0);
-                testKn[3] = new clKnoten(3,0);
-                testKn[4] = new clKnoten(-1.3,2.3);
-                testKn[5] = new clKnoten(0,4);
-                
-                for (int i = 1 ; i < testSt.length; i++) {
-                    testSt[i] = new clStab();
-                }                
-                
-                // Topologie schreiben
-                testTop[1][2] = 1;
-                testTop[2][3] = 2;
-                testTop[1][4] = 3;
-                testTop[2][4] = 4;
-                testTop[4][5] = 5;
-                testTop[2][5] = 6;
-                
-                // Lasten und Auflagerkräfte zuordnen
-                testKn[3].setLager(FIX);
-                testKn[5].setLager(FIX);
-                testKn[1].setLast(0,100);
-                testKn[2].setLast(0,100);
-                
-                                
-                
+        int [][] testTop;
+        
+        testKn = new clKnoten[6];
+        testSt = new clStab[7];
+        testTop = new int[testKn.length][testKn.length];
+        
+        testKn[1] = new clKnoten(-5,0);
+        testKn[2] = new clKnoten(0,0);
+        testKn[3] = new clKnoten(3,0);
+        testKn[4] = new clKnoten(-1.3,2.3);
+        testKn[5] = new clKnoten(0,4);
+        
+        for (int i = 1 ; i < testSt.length; i++) {
+            testSt[i] = new clStab();
+        }
+        
+        // Topologie schreiben
+        testTop[1][2] = 1;
+        testTop[2][3] = 2;
+        testTop[1][4] = 3;
+        testTop[2][4] = 4;
+        testTop[4][5] = 5;
+        testTop[2][5] = 6;
+        
+        // Lasten und Auflagerkräfte zuordnen
+        testKn[3].setLager(FIX);
+        testKn[5].setLager(FIX);
+        testKn[1].setLast(0,100);
+        testKn[2].setLast(0,100);
+        
+        
         clKnoten zuversch = testKn[4];
         double[] vekt = {0.7816, -0.4904};
         clStab stab = testSt[6];
-        double wunschkr = 0;//-20;
+        double wunschkr = 0;
         
         System.out.println("");
         System.out.println("Test startet:");
@@ -283,6 +274,5 @@ public class clFindeOrt implements inKonstante {
         
         if (allesOK) System.out.println("ALLES OK");
         else System.out.println("ETWAS HAT NICHT GEKLAPPT");
-    
     }
 }
