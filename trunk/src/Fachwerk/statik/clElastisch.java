@@ -44,7 +44,7 @@ import cern.colt.matrix.impl.*;
  *
  * Sie sollten eine Kopie der GNU General Public License zusammen  mit
  * diesem Programm erhalten haben. Falls nicht, schreiben Sie an die
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110, USA.
  */
 public class clElastisch implements inKonstante {
     
@@ -82,7 +82,7 @@ public class clElastisch implements inKonstante {
     /** gelöste Beanspruchungen, bei Fachwerk Stabkräfte*/
     private double[] N;
     
-    boolean debug = true; // TODO
+    final boolean debug = false; // TODO
     
     /** Creates a new instance of clElastisch */
     public clElastisch(clStab[] Staebe) {
@@ -285,6 +285,7 @@ public class clElastisch implements inKonstante {
         }
         
         System.out.println("");
+        System.out.println("Elastische Loesung:");
         for (int i = 0; i < N.length; i++) {
             System.out.println("Stab " + Fkt.nf(i+1, 2) + ": N = " + Fkt.nf(N[i], 3, 4) + " kN");
         }
@@ -355,14 +356,17 @@ public class clElastisch implements inKonstante {
         }
         
         
-        // Kombinationen erstellen // sehr ineffizient!
+        // Kombinationen erstellen                                      // TODO sehr ineffizient!
         int[] zeiger = new int[statischeUnbestimmtheit];
         int durchgänge = 0;
         while (zeiger[0] < Abhängigkeitsliste[0].length) {
             // weitere Abbruchkriterien
             if (mgdchecksumme <= 2*statischeUnbestimmtheit) break; // Idealkombination gefunden.
-            if (durchgänge > 50 && mgdchecksumme <= 10*statischeUnbestimmtheit) break;
-            if (durchgänge > 200 && mgdchecksumme < Double.POSITIVE_INFINITY) break;
+            if (durchgänge > 200 && mgdchecksumme <= 10*statischeUnbestimmtheit) break;
+            if (durchgänge > 1000 && mgdchecksumme < Double.POSITIVE_INFINITY) break;
+            
+            // debug
+            if (debug && durchgänge % 10000 == 0) System.out.println("Durchgang " + durchgänge + " Checksumme: " + mgdchecksumme);
             
             aktSet = new HashSet();
             double checksumme = 0;
@@ -385,13 +389,16 @@ public class clElastisch implements inKonstante {
             int zeigerindex = statischeUnbestimmtheit-1;
             while (zeigerindex >=0) {
                 zeiger[zeigerindex] ++;
-                if (zeiger[zeigerindex] < Abhängigkeitsliste[zeigerindex].length) break; // innere while Schleufe
+                if (zeiger[zeigerindex] < Abhängigkeitsliste[zeigerindex].length) break; // innere while Schlaufe
                 // else
                 if (zeigerindex > 0) zeiger[zeigerindex] = 0; // sonst bricht die übergeordnete while Schlaufe nie ab.
                 zeigerindex--;
             }
             durchgänge++;
         }
+        
+        // TODO suchen mit Zufallsmethode, bis eine Kombination gefunden.
+        
         java.util.Arrays.sort(mgdUnbek);
         
         /*// debug
