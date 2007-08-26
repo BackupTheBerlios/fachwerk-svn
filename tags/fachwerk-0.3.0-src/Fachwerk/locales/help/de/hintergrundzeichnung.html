@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head>
+	<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
+	<title></title></head>
+
+<body dir="ltr" lang="de-CH">
+<h1>Hintergrundzeichnungen</h1>
+<p>Durch das Darstellen einer Zeichnung im Hintergrund wird ein
+Fachwerkmodell anschaulicher. Hintergrundzeichnungen haben jedoch
+noch eine weitere Funktion; sie können die Eingabe des Modells
+erleichtern. Zur Eingabe neuer Knoten können Punkte, Linienende,
+Schnittpunkte, etc des Hintergrunds gefangen (snap) werden.</p>
+<p><br><br>
+</p>
+<h3>dxf (CAD – Zeichnung)</h3>
+<p>Zur Erstellung der Zeichnung wird ein
+CAD-Programm benötigt.</p>
+<p>Es werden Linien (Line, Polyline, LwPolyline), Punkte, Kreise und
+Bögen dargestellt. Ausgelassen werden u.a. Text sowie so
+genannte Inserts und Solids. Formatierungen wie Strichdicken und
+-farben werden ignoriert. Die eingelesene Datei bleibt unverändert.</p>
+<h4><br><br>
+</h4>
+<h3>bgd (Textdatei)</h3>
+<p>Wer über kein CAD-Programm verfügt, kann die Zeichnungen
+auch mit einem einfachen Texteditor erstellen, und als Datei mit der
+Endung bgd abspeichern. Beispiel:</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;"># Beispiel für
+eine mit einem Texteditor erstellte Zeichnung</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;"><b>P</b>unkte</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">0 6 // x- und
+z-Koordinaten des Punktes</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">4 2</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">4 6</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">9 2</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">13 0 2 // Die Eingabe
+im Format x y z ist erlaubt, in Fachwerk werden nur der x- und der
+z-Wert eingelesen.</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">13 6</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;"><b>L</b>inie // Diese
+Linie verbindet zwei Punkte</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">9 2</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">13 2</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;"><b>L</b>inie //
+Werden mehr als zwei Punkte angegeben, führt die Linie durch
+alle Punkte, vom ersten bis zum letzten.</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">0, 6</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">4; 2</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">9,2</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;"><b>K</b>reis</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">5 5 // Mittelpunkt</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">2 // Radius</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;"><b>B</b>ogen</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">13 6 // Mittelpunkt</p>
+<p style="margin-left: 2cm; margin-bottom: 0cm;">2 270 0 // Radius,
+Start-, Endwinkel (im Gegen-Uhrzeigersinn)</p>
+<p>Die einzelnen Zahlen auf einer Zeile können durch
+Leerzeichen, Tabulator oder ein Komma getrennt sein. Kommentare
+beginnen mit // oder # oder dem Wort rem. Die Reihenfolge der Befehle
+(Punkt, Linie, ...) ist belanglos, die Datei darf z.B. mit Linien
+beginnen, anschliessend Punkte definieren und dann wieder eine
+Linie... Für die Befehle ist i.d.R. nur der erste Buchstabe
+massgebend, Gross- und Kleinschreibung wird nicht unterschieden.</p>
+<h4><br><br>
+</h4>
+<h3>csv (Tabellenkalkulation)</h3>
+<p>Eine Liste mit Punktkoordinaten kann in einem
+Tabellenkalkulationsprogramm erstellt werden und als csv – Datei
+abgespeichert werden. In Fachwerk lassen sich diese Punkte im
+Hintergrund einblenden und neue Knoten können durch Anwählen
+mit der Maus sehr schnell erstellt werden.</p>
+<p><br><br>
+</p>
+</body></html>
