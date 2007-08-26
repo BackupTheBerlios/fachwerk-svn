@@ -42,18 +42,7 @@
      "/usr/share/doc/packages/fachwerk/INFO/icon-fachwerk.png" - OK
    - Add:
      konsole -e fachwerk
-     
-       
 
-2. Printing Landscape/A3/etc. does not work
--------------------------------------------
 
-2.1	Landscape (Windows, JRE 1.4)
-	Do upgrade the Java JRE to the newest version. Java JRE 1.5 fixes the problem.
-	
-2.2	A3 (Windows, JRE 1.5)
-	On some (actual) versions of JRE 1.5 printing on A3 paper does not work.
-	Work around: Use older JRE version.
-	
-2.3	Printing dialog does not open (Linux, JRE 1.5)
-	Do upgrade the Java JRE to the newest version.
+
+
