@@ -58,13 +58,13 @@ import java.awt.print.*;
  *
  * Sie sollten eine Kopie der GNU General Public License zusammen  mit
  * diesem Programm erhalten haben. Falls nicht, schreiben Sie an die
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110, USA.
  */
 public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     
     private static final String PROGNAME = "Fachwerk3D"; // in clOberflaeche nochmals hart kodiert (Titel)
     private static final int HAUPTVER = 0;
-    private static final int UNTERVER = 23; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
+    private static final int UNTERVER = 30; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
     private static final int JAHR = 2007;
     private final String FILEPROGNAME = "treillis3D";
     private final int FILEVER = 1;
@@ -1180,7 +1180,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
                     elast.setL(Knotenarray, Topologie);
                     elast.setCompleteSolution(fachwerk.getCompleteSolution());
                     elast.rechnen(EAdruck_zu_EAzug);
-                    elast.resultatausgabe_direkt();
+                    if (OptionVerbose) elast.resultatausgabe_direkt();
                     double[] N = elast.getLsg();
                     int[] zusetzendeSt = elast.getIndexMgdUmbek();
                     System.out.println("");
