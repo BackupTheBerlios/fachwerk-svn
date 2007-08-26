@@ -15,6 +15,19 @@ Fachwerk - Changelog
 
 version		date		changes
 
+0.30		26.08.07	New functions
+				- Propose member forces
+				  Based on elastic calculation.
+				  Assumption: EA,c = 10 EA,t (iterative calculation)
+				- Find node position
+				  A node will be moved along a straight line, until a required member force
+				  is achieved.
+
+				Details
+				- Rare bug in the solver fixed.
+				  Caused message "Contradiction" even though model was ok (only when mechanism check switched off).
+				- Deletion of members and nodes without reconfirmation, if not set / connected to members.
+
 0.22*		18.02.07	Details
 * not released			- more functions accessible by function keys
 

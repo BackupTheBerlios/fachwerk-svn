@@ -45,16 +45,3 @@
      konsole -e fachwerk3d
 
 
-2. Druckprobleme (Querformat/A3/etc.)
-----------------
-
-2.1	Querformat (Windows, JRE 1.4)
-        Abhilfe: Neuste Java-JRE installieren. Java JRE 1.5 behebt das Problem.
-	
-2.2	A3 (Windows, JRE 1.5)
-        Bei einigen (zur Zeit aktuellen) Versionen von JRE 1.5 funktioniert der Ausdruck auf A3 nicht.
-	Abhilfe: Ältere JRE-Version verwenden.
-	
-2.3	Druckdialog öffnet nicht (Linux, JRE 1.5)
-	Abhilfe: Neuste Java-JRE installieren.
-
