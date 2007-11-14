@@ -313,7 +313,7 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
                 System.out.println("WARNUNG: die statische Berechnung hat nicht geklappt.");
                 System.out.println("Sie hat vermutlich nur aus NUMERISCHEN einen Widerspruch gemeldet.");
                 System.out.println("Kein Mechanismus gefunden (daher OK). Stat.Unbestimmtheit = " + statischeUnbestimmtheit);
-                if (statischeUnbestimmtheit != Double.MIN_VALUE && statischeUnbestimmtheit > 0) { // d.h. berechnet
+                if (statischeUnbestimmtheit != Integer.MIN_VALUE && statischeUnbestimmtheit > 0) { // d.h. berechnet
                     System.out.println("Massnahme: Stabkraft setzen (bevorzugt Nullstab).");
                 }
                 System.out.println("");
@@ -840,8 +840,8 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
         if (GlgewKontrolle) {
             if (resultatcheck() == false) {
                 System.out.println("!!! ACHTUNG: Das System ist WIDERSPUECHLICH !!!!");
-                System.out.println("es kann sich um einen Eingabefehler, ein numerisches Problem");
-                System.out.println("oder allenfalls um einen Programmfehler handeln.");
+                System.out.println("    Moegliche Ursachen: Mechanismus, Eingabefehler");
+                System.out.println("    oder allenfalls ein numerisches Problem.");
                 throw new Exception("WIDERSPRUCH - INCONSISTENT- CONTRADICTOIRE");
             }
         }
@@ -1062,8 +1062,8 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
         
         if (WIDERSPRUCHaufgetreten) {
             System.out.println("!!! ACHTUNG: Das System ist WIDERSPUECHLICH !!!!");
-            System.out.println("es kann sich um einen Eingabefehler, ein numerisches Problem");
-            System.out.println("oder allenfalls um einen Programmfehler handeln.");
+            System.out.println("    Moegliche Ursachen: Mechanismus, Eingabefehler");
+            System.out.println("    oder allenfalls ein numerisches Problem.");
         }
         System.out.println("");
     }
@@ -1074,6 +1074,13 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
     public double[][] getMechanismus() {
         return mechanismusRelKnVersch;
     }
+    
+    /** Gibt die statische Unbestimmtheit des Fachwerkmodells an.
+     * Integer.MIN_VALUE bedeutet, dass die Unbestimmtheit unbekannt ist, z.B. da noch nicht berechnet.
+     * Auf das Resultat ist nur Verlass, wenn der Fachwerkstatus OK ist,
+     * d.h. weder Fehler noch Widerspruch aufgetreten ist.
+     * @return statischeUnbestimmtheit */
+    public int getStatischeUnbestimmtheit() {return statischeUnbestimmtheit;}
     
     
     // ------------ nur benötigt für elastische Lösung --------------- //

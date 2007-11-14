@@ -64,7 +64,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     
     private static final String PROGNAME = "Fachwerk3D"; // in clOberflaeche nochmals hart kodiert (Titel)
     private static final int HAUPTVER = 0;
-    private static final int UNTERVER = 30; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
+    private static final int UNTERVER = 31; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
     private static final int JAHR = 2007;
     private final String FILEPROGNAME = "treillis3D";
     private final int FILEVER = 1;
@@ -349,10 +349,12 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
             i++;
         }
         
+        int statUnbesth = Integer.MIN_VALUE; // Integer.MIN_VALUE bedeutet unbekannt/noch_nicht_berechnet.
         try {
             clFachwerk3D fachwerk = new clFachwerk3D(Knotenarray, Stabarray, Topologie);
             fachwerk.setVerbose(OptionVerbose);
             keinWIDERSPRUCH = fachwerk.rechnen(OptionVorber,OptionGLS,OptionMechanismus);
+            statUnbesth = fachwerk.getStatischeUnbestimmtheit();
             fachwerk.resultatausgabe_direkt();
             if (keinWIDERSPRUCH) VOLLSTÄNDIGGELÖST_OK = fachwerk.istvollständiggelöst(false); // false, das resutatcheck() soeben in .rechnen() durchgeführt
             aktualisieren(true, true);
@@ -376,7 +378,11 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
         
         if (keinWIDERSPRUCH && keinFEHLER) {
             if (VOLLSTÄNDIGGELÖST_OK) feldStatusFw.setText(tr("OK-COMPLETE"));
-            else feldStatusFw.setText(tr("OK"));
+            else if (statUnbesth == Integer.MIN_VALUE) feldStatusFw.setText(tr("OK"));
+            else {
+                feldStatusFw.setText(tr("OK") + " ("+statUnbesth+")");
+                assert statUnbesth >= 0;
+            }
             selModus = AUTOMATISCH; setKnopfStab(false); setKnopfKnoten(false);
         }
         else {
