@@ -15,8 +15,13 @@ Fachwerk - Changelog
 
 version		date		changes
 
-0.31		30.11.07	New function
+0.31		1.12.07		New function
 				- Status field shows the statical indeterminacy.
+
+				Details
+				- Bug with sliding bearings fixed.
+				  Caused fachwerk3d not to solve models, when the blocked direction of a 
+				  sliding bearing was not parallel to a coordinate axis.
 
 0.30		26.08.07	New functions
 				- Propose member forces
@@ -28,7 +33,8 @@ version		date		changes
 
 				Details
 				- Rare bug in the solver fixed.
-				  Caused message "Contradiction" even though model was ok (only when mechanism check switched off).
+				  Caused message "Contradiction" even though model was ok (only when mechanism check
+				  switched off).
 				- Deletion of members and nodes without reconfirmation, if not set / connected to members.
 
 0.22*		18.02.07	Details
@@ -45,7 +51,8 @@ version		date		changes
 0.20		28.07.06	New functions
 				- Kinematic method (mechanisms)
 				  Fachwerk3D additionally applies the kinematic method to the model.
-				  If the model is instable *and* does not respect equilibrium conditions, an according mechanism is drawn.
+				  If the model is instable *and* does not respect equilibrium conditions, an
+				  according mechanism is drawn.
 				  This feature simplifies finding errors in statically indeterminate models.
 
 				Details
@@ -81,8 +88,10 @@ version		date		changes
 				- Node property dialog
 				  Enter key puts the cursor in the next field resp. closes the dialog (=OK).
 				- Open file dialog
-				  The first time a background drawing is loaded, the dialog shows the directory of the .fwk model file. 
-				  Previously the users home directory was shown instead, when the program was started by clicking on a fwk file.
+				  The first time a background drawing is loaded, the dialog shows the directory of
+				  the .fwk model file. 
+				  Previously the users home directory was shown instead, when the program was started
+				  by clicking on a fwk file.
 
 0.03		5.12.04		Usage and Look
 				- The view and the zoom do not change when a new member is

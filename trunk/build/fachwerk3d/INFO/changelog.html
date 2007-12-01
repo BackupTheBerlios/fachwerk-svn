@@ -11,12 +11,17 @@
 <P><A HREF="changelog_en.html">→ ENGLISH</A></P>
 
 Fachwerk3D - Changelog
---------------------
+----------------------
 
 Version		Datum		Änderung
 
-0.31		30.11.07	Neue Funktionen
+0.31		1.12.07		Neue Funktion
 				- Statusfeld zeigt statische Unbestimmtheit an.
+
+				Details
+				- Fehler bei verschieblichen Lagern behoben
+				  Führte dazu, dass Modelle nicht berechnet werden konnten, wenn die
+				  blockierte Richtung nicht parallel zu einer Koordinatenachse war.
 
 0.30		26.08.07	Neue Funktionen
 				- Zusatz: Unbestimmte Stabkräfte vorschlagen
@@ -45,8 +50,10 @@ Version		Datum		Änderung
 0.20		28.07.06	Neue Funktionen
 				- Kinematische Methode (Mechanismen)
 				  Fachwerk3D berechnet das Modell zusätzlich nach der kinematischen Methode.
-				  Ist das Modell instabil *und* verletzt das Gleichgewicht, wird ein zugehöriger Mechanismus gezeichnet.
-				  Auch bei mehrfach statisch unbestimmten Modellen können so vereinfacht Gleichgewichtsverletzungen gefunden werden.
+				  Ist das Modell instabil *und* verletzt das Gleichgewicht, wird ein
+				  zugehöriger Mechanismus gezeichnet.
+				  Auch bei mehrfach statisch unbestimmten Modellen können so vereinfacht
+				  Gleichgewichtsverletzungen gefunden werden.
 
 				Details
 				- überarbeiteter (ergänzter) Gleichungslöser (Solver).
@@ -82,9 +89,9 @@ Version		Datum		Änderung
                                 - Knotendialog
                                   Entertaste führt zum nächsten Feld resp. schliesst den Dialog ab.
                                 - Datei-Öffnen-Dialog
-                                  Beim erstmaligen Öffnen einer Hintergrundzeichnung wird das Verzeichnis der Fachwerkdatei gezeigt.
-                                  Bisher wurde stattdessen das Benutzerverzeichnis gezeigt, wenn das Programm durch Anklicken der Modelldatei gestartet wurde.
-				
+                                  Beim erstmaligen Öffnen einer Hintergrundzeichnung wird das Verzeichnis
+				  der Fachwerkdatei gezeigt. Bisher wurde stattdessen das Benutzerverzeichnis
+				  gezeigt, wenn das Programm durch Anklicken der Modelldatei gestartet wurde.
 
 0.03		5.12.04		Bedienung und Aussehen
 				- Blickwinkel und Zoom bleiben erhalten, wenn neue Stäbe
