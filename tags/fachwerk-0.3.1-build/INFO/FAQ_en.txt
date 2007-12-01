@@ -1,0 +1,48 @@
+1. How to link files ".fwk" to Fachwerk:
+   -------------------------------------
+   
+   Windows (>= 2000)
+   -----------------
+   
+   - Somewhere in Explorer you can set file types 
+   - New:  fwk
+   - Name: fachwerk
+   
+   - Process "Open"
+   - Application
+     Windows2000:
+     C:\WINNT\system32\CMD.EXE /c start /d C:\programs\fachwerk C:\programs\fachwerk\fachwerk.bat "%1"
+     
+     WindowsXP:
+     C:\Windows\system32\CMD.EXE /c start /d C:\programs\fachwerk C:\programs\fachwerk\fachwerk.bat "%1"
+     
+   - Other symbol - find - fachwerk/INFO/icon-fachwerk.ico
+     
+   
+     
+   KDE (Linux)
+   -----------
+   
+   a) Zip file fachwerk*.zip extracted to /home/USER/programs
+      
+   - Right click on a fwk-file, Properties
+   - Click on small icon that shows a tool.
+   - Description: "fachwerk"
+   - Click on icon - Other symbols
+     "PATHtoFachwerk/fachwerk/INFO/icon-fachwerk.png" - OK
+   - Add: (using the path to the location where you have installed fachwerk)
+     konsole --workdir '/home/USER/programs/fachwerk/' -e '/home/USER/programs/fachwerk/fachwerk'
+     
+   b) rpm used for installation
+   
+   - Right click on a fwk-file, Properties
+   - Click on small icon that shows a tool.
+   - Description: "fachwerk"
+   - Click on icon - Other symbols
+     "/usr/share/doc/packages/fachwerk/INFO/icon-fachwerk.png" - OK
+   - Add:
+     konsole -e fachwerk
+
+
+
+
