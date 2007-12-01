@@ -673,21 +673,21 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
                 // Eine Gleichung ist jeweils abhängig von den anderen --> nur 2 unabh. Gl.
                 
                 // 1. Gleichung
-                // Rx * ny - Ry * nx = 0
-                GLS[gl][ausKnoten[kn][0]] = rtg[1]; // Rx
-                GLS[gl][ausKnoten[kn][1]] = rtg[0]; // Ry
+                // Ry * nz - Rz * ny = 0
+                GLS[gl][ausKnoten[kn][1]] = rtg[2];  // Ry
+                GLS[gl][ausKnoten[kn][2]] = -rtg[1]; // Rz
                 gl++;
                 
                 // 2. Gleichung
-                // Rx * nz - Rz * nx = 0
-                GLS[gl][ausKnoten[kn][0]] = rtg[2]; // Rx
-                GLS[gl][ausKnoten[kn][2]] = rtg[0]; // Rz
+                // Rz * nx - Rx * nz = 0
+                GLS[gl][ausKnoten[kn][2]] = rtg[0];  // Rz
+                GLS[gl][ausKnoten[kn][0]] = -rtg[2]; // Rx
                 gl++;
                 
                 // 3. Gleichung
-                // Ry * nz - Rz * ny = 0
-                GLS[gl][ausKnoten[kn][1]] = rtg[2]; // Ry
-                GLS[gl][ausKnoten[kn][2]] = rtg[1]; // Rz
+                // Rx * ny - Ry * nx = 0
+                GLS[gl][ausKnoten[kn][0]] = rtg[1];  // Rx
+                GLS[gl][ausKnoten[kn][1]] = -rtg[0]; // Ry
                 gl++;
             }
         }
