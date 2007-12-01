@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="Generator" content="Kate, the KDE Advanced Text Editor" />
+<title>Fachwerk3D - changelog</title>
+</head>
+<body><pre>
+<span style='color=#000000'>
+<P><A HREF="changelog_en.html">→ ENGLISH</A></P>
+
+Fachwerk3D - Changelog
+----------------------
+
+Version		Datum		Änderung
+
+0.31		1.12.07		Neue Funktion
+				- Statusfeld zeigt statische Unbestimmtheit an.
+
+				Details
+				- Fehler bei verschieblichen Lagern behoben
+				  Führte dazu, dass Modelle nicht berechnet werden konnten, wenn die
+				  blockierte Richtung nicht parallel zu einer Koordinatenachse war.
+
+0.30		26.08.07	Neue Funktionen
+				- Zusatz: Unbestimmte Stabkräfte vorschlagen
+				  Basierend auf elastischer Berechnung.
+				  Annahme: EA,c = 10 EA,t (iterative Berechnung)
+				- Knotenposition suchen
+				  Ein Knoten wird entlang einer Geraden bewegt, bis ein bestimmter
+				  Stab eine vorgegebene Kraft erhält.
+
+				Details
+				- seltener Fehler im Gleichungslöser behoben
+				  Führte zu "Widerspruch" obwohl Modell ok (nur wenn Mechanismusprüfung abgeschaltet).
+				- Löschen von Stäben und Knoten ohne Nachfrage, wenn keine anderen Eingaben betroffen.
+
+0.22*		18.02.07	Details
+* kein Release erstellt		- Bedienbarkeit mit Funktionstasten erweitert
+
+0.21		24.09.06	Neue Funktion
+				- Zoomen mittels Mausrad
+
+				Details
+				- Beschriftung der Last- und Auflagerkraftpfeile
+				- Drucken System zeigt allfälligen Mechanismus an.
+				- Fehlermeldung in Statuszeile wenn Speichern misslingt.
+
+0.20		28.07.06	Neue Funktionen
+				- Kinematische Methode (Mechanismen)
+				  Fachwerk3D berechnet das Modell zusätzlich nach der kinematischen Methode.
+				  Ist das Modell instabil *und* verletzt das Gleichgewicht, wird ein
+				  zugehöriger Mechanismus gezeichnet.
+				  Auch bei mehrfach statisch unbestimmten Modellen können so vereinfacht
+				  Gleichgewichtsverletzungen gefunden werden.
+
+				Details
+				- überarbeiteter (ergänzter) Gleichungslöser (Solver).
+				- Anzeige der statischen Unbestimmtheit auf Konsole
+
+0.10		13.11.05	Neue Funktionen
+				- Pan (Ansicht des Modells verschieben)
+				  mittlere Maustaste oder Ctrl und linke Maustaste
+				- Lasten skalieren
+				- Hilfe
+
+				Details
+				- Ausführliche Konsolausgabe
+				- Quellcode besser dokumentiert.
+
+0.05		3.07.05		nicht veröffentlicht
+				- Stab teilen
+
+0.04		20.06.05	Neue Funktion
+				- Statuszeile für Stäbe
+                                  Nebst der Stabkraft werden die Komponenten angezeigt.
+
+				Aussehen
+				- Das standardmässige Aussehen (LookAndFeel) ist dasjenige von
+				  Java 1.4, auch unter 1.5.
+
+				Details
+                                - Dateiname im Titel des Programmfensters
+                                - Schnelltasten für Speichern, Drucken und Rechnung zurücksetzen.
+                                - Stab- und Knotendialoge
+                                  Beim Öffnen der Dialoge ist das am häufigsten verwendete Feld bereits aktiv.
+                                  Escape-Taste bricht die Dialoge ab.
+                                - Knotendialog
+                                  Entertaste führt zum nächsten Feld resp. schliesst den Dialog ab.
+                                - Datei-Öffnen-Dialog
+                                  Beim erstmaligen Öffnen einer Hintergrundzeichnung wird das Verzeichnis
+				  der Fachwerkdatei gezeigt. Bisher wurde stattdessen das Benutzerverzeichnis
+				  gezeigt, wenn das Programm durch Anklicken der Modelldatei gestartet wurde.
+
+0.03		5.12.04		Bedienung und Aussehen
+				- Blickwinkel und Zoom bleiben erhalten, wenn neue Stäbe
+				  eingeführt werden, oder Stabeigenschaften geändert werden.
+				- Ein Klick mit der rechten Maustaste über einem Stab oder Knoten
+				  öffnet den Eigenschaftsdialog.
+				- Die Eingabedaten können in eine Tabelle exportiert werden.
+				  Diese kann mit einem beliebigen Tabellenkalkulationsprogramm
+				  geöffnet werden. Hilfreich bei der Eingabefehlersuche.
+				- Das Aussehen (LookAndFeel) wurde geändert, da unter Java 1.5
+				  kaum mehr zu erkennen ist, ob ein Knopf gedrückt ist.
+				  Das bisherige Aussehen kann mit dem Aufruf 
+				  "fachwerk3D --look Java" beibehalten werden.
+				  
+				Details
+				- Tastenkürzen F9, F11 und F12 für berechnen, Knoten selektieren,
+				  Stab selektieren.
+				- Fehler behoben: Eine Knotenlast wurde in der Statusleiste nicht
+				  angezeigt, wenn die x- und z-Komponenten Null waren.
+				- Die Funktion "Erstelle Knoten (Snap)" wird deaktiviert, wenn ins
+				  Leere geklickt wird.
+				- Stabdialog: Enter bewirkt Knopfdruck "ändern".
+
+0.02		26.10.04	Mehrere Erweiterungen um Richtung Fachwerk0.10 aufzuschliessen:
+				- Hintergrundbilder (3D): dxf, bgd, csv
+				- Erstellen von Knoten durch Anwählen eines Hintergrundpunktes
+				- Verschieben und Skalieren des Fachwerkmodells
+				- Verschieben und Skalieren des Hintergrundbildes
+				- Schnelltasten: F5 für Neuer Knoten, F7 für Neuer Stab, DEL, etc.
+				- Colt version 1.2.0 statt 1.1.0.
+
+0.01		21.09.04	Erste Veröffentlichung, unter der GPL-Lizenz.
+
+0.01		15.08.04	Erste interne Version von Fachwerk3D
+				- basierend auf Fachwerk0.09 (mit kleiner Ergänzung 0.10)
+
+
+</span></pre></body></html>
