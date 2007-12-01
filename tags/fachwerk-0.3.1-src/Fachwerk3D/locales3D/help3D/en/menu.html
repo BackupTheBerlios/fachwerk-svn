@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title></title>
+</head>
+
+<body dir="ltr" lang="en-GB">
+<h1>Menu</h1>
+<p>Most of the menu items are self-explanatory.</p>
+<p><br><br>
+</p>
+<h3>Main</h3>
+<h4><img src="../../../../Fachwerk/gui/icons/fileprint.png" align="bottom" border="0" height="16" width="16">
+print system</h4>
+<p>The printout contains much information and therefore it is well
+suited for the documentation of the modelling.<br>The upper third of
+the sheet is used for the graphical representation of the truss
+(«zoom all»). The layers 'member forces', 'loads' and
+'bearing forces' are being printed. Below all the nodes and members
+are listed, showing their coordinates, loads and member forces.</p>
+<h4><img src="../../../../Fachwerk/gui/icons/fileprint.png" align="bottom" border="0" height="16" width="16">
+print graphic</h4>
+<p>The graphical representation of the model will be printed. The
+zoom and layer settings will be respected. You can specifiy the
+scale.</p>
+<h4><img src="../../../../Fachwerk/gui/icons/fileopen.png" align="bottom" border="0" height="18" width="18">
+load</h4>
+<p>You can find examples in the directory «fachwerk/bsp».</p>
+<h4><img src="../../../../Fachwerk/gui/icons/dxf.png" align="bottom" border="0" height="16" width="16">
+load background</h4>
+<p>A background drawing in the format <a href="backgrounddrawing.html">dxf</a>,
+<a href="backgrounddrawing.html">bgd</a> or <a href="backgrounddrawing.html">csv</a>
+can be read in. When you save your strut-and-tie model, the
+background drawing will NOT be saved.</p>
+<h4><img src="../../../../Fachwerk/gui/icons/locale.png" align="bottom" border="0" height="16" width="16">
+language</h4>
+<p>Choose the application language. The item «system»
+stands for the default value of your computer. That is actually the
+preset value when the program starts. The item «...»
+allows to choose the language by typing its abbreviation: «de»
+for German, «en» for English or «fr» for
+French. If other translations are available (i.e. Russian), you can
+choose it («ru») this way.<br>If you want to start the
+program directly in English (but your system's default is not
+English), call the program the following way: «fachwerk
+--language en».</p>
+<p><br><br>
+</p>
+<h3>View</h3>
+<h4><img src="../../../../Fachwerk/gui/icons/zoom.png" align="bottom" border="0" height="16" width="16">
+zoom xy</h4>
+<p>Enter the limiting x- and z-coordinates to set the zooming window.</p>
+<p><br><br>
+</p>
+<h3>Truss</h3>
+<h4><img src="../../../../Fachwerk/gui/icons/knotenselektieren.png" align="bottom" border="0" height="21" width="21">
+select node nr ..</h4>
+<p>If there are several nodes at the same position, it can be useful
+to select a node by its number.</p>
+<h4><img src="../../../../Fachwerk/gui/icons/eraser.png" align="bottom" border="0" height="21" width="21">
+remove</h4>
+<p>The node or the member to be removed must be selected previously,
+otherwise nothing happens. If you remove a node, all the members
+connected to it will be removed too.</p>
+<h4><img src="../../../../Fachwerk/gui/icons/clear_left.png" align="bottom" border="0" height="21" width="21">
+reset all</h4>
+<p>Resets the calculation and resets all the assigned member forces
+to indeterminate.</p>
+<h4><img src="../../../../Fachwerk/gui/icons/designer.png" align="bottom" border="0" height="21" width="21">
+properties</h4>
+<p>Opens the properties window of the previously selected member or
+node.</p>
+<table border="1" cellpadding="4" cellspacing="3" width="100%">
+	<col width="128*">
+	<col width="128*">
+	<thead>
+		<tr valign="top">
+			<th width="50%">
+				<p>node</p>
+			</th>
+			<th width="50%">
+				<p>member</p>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr valign="top">
+			<td width="50%">
+				<p>coordinates</p>
+			</td>
+			<td width="50%">
+				<p>assign the member force</p>
+			</td>
+		</tr>
+		<tr valign="top">
+			<td width="50%">
+				<p>bearing condition</p>
+			</td>
+			<td rowspan="2" width="50%">
+				<p>reset to indeterminate</p>
+			</td>
+		</tr>
+		<tr>
+			<td valign="top" width="50%">
+				<p>load</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p><br><br>
+</p>
+<h3>Calculation</h3>
+<p>Each of the following calculation methods can be activated or
+deactivated. Normally both methods are activated.</p>
+<h4>preceding calculation</h4>
+<p>Often the <i>number of unknown member forces</i> can be <i>reduced</i>
+by this method.<br>Additionally the algorithm serves to <i>localize
+inconsistencies</i> in the nodes equilibrium.<br>The 'preceding
+calculation' can be turned off safely.</p>
+<h4>solver</h4>
+<p>The system of equations contains two equilibrium conditions for
+each (open) node. The global equilibrium contributes three
+equations.<br>This solver has a special quality: it finds determinate
+member and bearing forces, even if the system as a hole is statically
+indeterminate.<br>Usually the 'solver' <i>must </i>be turned <i>on</i>.</p>
+<h4>mechanisms (kinematic method)</h4><p>The program looks for
+mechanisms proving that equilibrium is not satisfied. A mechanism is
+shown graphically. Mechanisms due to instabilities that do not
+contradict equilibrium are disregarded.<br></p>
+<p><br></p>
+<h3>Additions</h3>
+<p>This item contains features that extend the basic functions of the
+program.</p>
+<h4>transformation of coordinates</h4>
+<p>Scale or move the coordinates of the nodes. The scaling operation
+is applied first.</p>
+<h4>transformation of background</h4>
+<p>Scales or moves the background drawing. The original dxf-file
+remains unchanged. Preferably this transformation is done in the
+program that is used to create the drawing, because any
+transformation done within Fachwerk will not be saved.</p>
+<h4>scaling of loads</h4>
+<p>Scales all the loads with a factor. Member forces that have been set can be scaled too.</p>
+<h4>find node position</h4>
+<p>The selected node will be moved along a straight line, until a
+required member force is achieved.<br>Example: Find the exact node
+position in order that the member force in a «stabilizer»
+really is zero. Afterwards you can remove that member.<br>First
+select the node you want to move. You will be asked for a vector. The
+straight line is actually defined by the initial node position and
+this vector. If the node contains a load, the vector of the force
+will be proposed. The vector is also used to define the second
+starting point of the iteration.<br>If no node position is found,
+that leads to the required member force, the initial situation will
+be restored. (I.e. because the member force is independent of the
+node position, or because the iteration using the given starting
+points doesn't converge.)</p>
+<h4>propose member forces</h4>
+<p>Proposes member forces if the system is statically indeterminate. 
+The calculation is linear-elastic and assumes a ratio compression to 
+tension stiffness  EA,c/EA,t = 10<br> One has to judge if the proposed 
+member forces are reasonable for the given case.</p>
+<p><br><br>
+</p>
+<h3>Help</h3>
+<h4><img src="../../../../Fachwerk/gui/icons/help.png" align="bottom" border="0" height="24" width="21">
+contents</h4>
+<ul>
+	<li><p>right mouse button: shows the
+	previous page</p>
+	</li><li><p>middle button or double click on
+	the right button: back to the starting page</p>
+</li></ul>
+<h4><img src="../../../../Fachwerk/gui/icons/Bsp.png" align="bottom" border="0" height="24" width="24">
+example</h4>
+<p>Loads an example. Useful to test the program at the beginning.
+This example can't be overwritten or removed accidentally, because it
+is hard coded.</p>
+</body></html>
