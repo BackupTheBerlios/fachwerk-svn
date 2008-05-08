@@ -11,19 +11,19 @@ import Fachwerk.statik.*;
 import Fachwerk.addins.findeOrt.*;
 import Fachwerk.addins.coordTransformation.*;
 import Fachwerk.addins.skaliereLasten.*;
+import java.awt.event.MouseEvent;
 import java.util.*;
 import javax.swing.*;
 import java.awt.geom.*;
 import java.awt.event.KeyEvent;
 import java.io.*;
-import javax.swing.filechooser.*;
 import java.awt.print.*;
 
 
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2007 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2008 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -55,8 +55,8 @@ public class treillis extends clOberflaeche implements inKonstante {
     
     private static final String PROGNAME = "Fachwerk"; // in clOberflaeche nochmals hart kodiert (Titel)
     private static final int HAUPTVER = 0;
-    private static final int UNTERVER = 31; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
-    private static final int JAHR = 2007;
+    private static final int UNTERVER = 32; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
+    private static final int JAHR = 2008;
     private final String FILEPROGNAME = "treillis";
     private final int FILEVER = 1;
     
@@ -1570,13 +1570,13 @@ public class treillis extends clOberflaeche implements inKonstante {
     private clPan pan; // für PAN, Behälter für die nötigen Variablen.
     
     
-    protected void nachrichtMausGeklickt(java.awt.event.MouseEvent maus) {   // NOCH UNVOLLSTÄNDIG
+    protected void nachrichtMausGeklickt(java.awt.event.MouseEvent maus) {
         if (hp == null) return;
         if (hp.getKoord() == null) return;
         switch (selModus) {
             case KNOTEN:
                 if (Selektion[0] == KNOTEN) {
-                    if (maus.getButton() == maus.BUTTON1) {
+                    if (maus.getButton() == MouseEvent.BUTTON1) {
                         selModus = NICHTSÄNDERN;
                         setKnopfKnoten(false);
                     }
@@ -1584,7 +1584,7 @@ public class treillis extends clOberflaeche implements inKonstante {
                 break;
             case STAB:
                 if (Selektion[0] == STAB) {
-                    if (maus.getButton() == maus.BUTTON1) {
+                    if (maus.getButton() == MouseEvent.BUTTON1) {
                         selModus = NICHTSÄNDERN;
                         setKnopfStab(false);
                     }
@@ -1634,17 +1634,17 @@ public class treillis extends clOberflaeche implements inKonstante {
                 hp.deselektHintergrund();
                 break;
             case NICHTSÄNDERN:
-                if (maus.getButton() == maus.BUTTON1) {
+                if (maus.getButton() == MouseEvent.BUTTON1) {
                     Selektion[0] = DESELEKT;
                     selModus = AUTOMATISCH; setKnopfStab(false); setKnopfKnoten(false);
                     selektionAnpassen();
                 }
-                if (maus.getButton() == maus.BUTTON3) befehlEigenschaften();
+                if (maus.getButton() == MouseEvent.BUTTON3) befehlEigenschaften();
                 break;
             case DESELEKT: // noch nicht gebraucht
                 break;
             case AUTOMATISCH:
-                if (maus.getButton() == maus.BUTTON3) { // rechte Maustaste
+                if (maus.getButton() == MouseEvent.BUTTON3) { // rechte Maustaste
                     if (Selektion[0] == STAB || Selektion[0] == KNOTEN) befehlEigenschaften();
                 }
                 break;
@@ -1762,7 +1762,7 @@ public class treillis extends clOberflaeche implements inKonstante {
                 // für Zoom-Pan
                 if (PAN) PAN = false; // um zu verhindern, dass PAN aktiv bleibt, wenn der Mauszeiger aus dem Panel hinausgezogen wird.
                 // PAN: mittlere Maustaste oder Ctrl-linke Maustaste
-                if (maus.getButton()==maus.BUTTON2 || (maus.getModifiersEx()==(maus.CTRL_DOWN_MASK | maus.BUTTON1_DOWN_MASK))) {
+                if (maus.getButton()==MouseEvent.BUTTON2 || (maus.getModifiersEx()==(MouseEvent.CTRL_DOWN_MASK | MouseEvent.BUTTON1_DOWN_MASK))) {
                     PAN = true;
                     pan = new clPan(mzp(maus.getPoint()), koord.m(1d), hp.getZoomPkte());
                 }
