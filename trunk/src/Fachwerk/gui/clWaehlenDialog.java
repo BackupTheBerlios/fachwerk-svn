@@ -12,8 +12,8 @@ import java.util.*;
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 A.Vontobel <qwert2003@users.sourceforge.net>
- *                                     <qwert2003@users.berlios.de>
+ * Copyright (c) 2003 - 2008 A.Vontobel <qwert2003@users.sourceforge.net>
+ *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
@@ -80,6 +80,7 @@ public class clWaehlenDialog extends javax.swing.JDialog {
         }
         initComponents();
         übersetzen();
+        tastenbelegen();
         pack();
         zentriere(parent);
         show();        
@@ -180,6 +181,23 @@ public class clWaehlenDialog extends javax.swing.JDialog {
             return nr;
         }
         else return -1;
+    }
+    
+    private void tastenbelegen() {
+        javax.swing.ActionMap am = getRootPane().getActionMap();
+        javax.swing.InputMap im = getRootPane().getInputMap(javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        
+        // ESC - Taste
+        Object EscapeObjekt = new Object();
+        javax.swing.KeyStroke EscapeStroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0);
+        javax.swing.Action EscapeAction = new javax.swing.AbstractAction() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                OK = false;
+                setVisible(false);
+            }
+        };
+        im.put(EscapeStroke, EscapeObjekt);
+        am.put(EscapeObjekt, EscapeAction);
     }
     
     private void zentriere(java.awt.Frame hf) {

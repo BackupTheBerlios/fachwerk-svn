@@ -525,11 +525,19 @@ public class treillis extends clOberflaeche implements inKonstante {
     }
     
     protected void befehlErstelleNeuenStab() {
+        boolean bisher_layerKnNr = LayerKnNr();
+        boolean bisher_layerStNr = LayerStNr();
+        LayerKnNr(true);
+        LayerStNr(false);
+        LayerStKraft(false);
         setKnopfKnoten(false);
         setKnopfStab(false);
-        LayerKnNr(true);
         clNeuerStabDialog dialog = new clNeuerStabDialog(this, locale);
-        if (!dialog.getOK()) return;
+        if (!dialog.getOK()) {
+            LayerKnNr(bisher_layerKnNr);
+            LayerStNr(bisher_layerStNr);
+            return;
+        }
         int[] vonbis = dialog.einlesen();
         // Kontrolle, ob Knoten existieren und ob sie nicht gleich sind.
         if (vonbis[0] < 1 || vonbis[1] < 1) return;
@@ -538,6 +546,8 @@ public class treillis extends clOberflaeche implements inKonstante {
             String meldung = tr("errBeideKnotenMuessenExistieren");
             System.out.println(meldung);
             feldStatuszeile.setText(meldung);
+            LayerKnNr(bisher_layerKnNr);
+            LayerStNr(bisher_layerStNr);
             return;
         }
         if (vonbis[0] == vonbis[1]) {
@@ -545,6 +555,8 @@ public class treillis extends clOberflaeche implements inKonstante {
             String meldung = tr("errKnotenMitSichSelbstVerbunden");
             System.out.println(meldung);
             feldStatuszeile.setText(meldung);
+            LayerKnNr(bisher_layerKnNr);
+            LayerStNr(bisher_layerStNr);
             return;
         }
         // Kontrolle, ob nicht schon ein Stab zwischen diesen Knoten existiert
@@ -561,6 +573,8 @@ public class treillis extends clOberflaeche implements inKonstante {
             String meldung = tr("errStabSchonVorhanden");
             System.out.println(meldung);
             feldStatuszeile.setText(meldung);
+            LayerKnNr(bisher_layerKnNr);
+            LayerStNr(bisher_layerStNr);
             return;
         }
         
@@ -570,6 +584,8 @@ public class treillis extends clOberflaeche implements inKonstante {
         selModus = NICHTSÄNDERN;
         Selektion[0] = STAB;
         Selektion[1] = Stabliste.size();
+        LayerKnNr(bisher_layerKnNr);
+        LayerStNr(bisher_layerStNr);
         selektionAnpassen();
     }
     
@@ -880,6 +896,7 @@ public class treillis extends clOberflaeche implements inKonstante {
     }
     
     protected void befehlSelektiereKnotenNr() {
+        boolean bisher_layerKnNr = LayerKnNr();
         LayerKnNr(true);
         clWaehlenDialog welchen = new clWaehlenDialog(this, KNOTEN, locale);
         int nr = welchen.getNr();
@@ -896,10 +913,13 @@ public class treillis extends clOberflaeche implements inKonstante {
             setKnopfKnoten(false);
             selModus = AUTOMATISCH;
         }
+        LayerKnNr(bisher_layerKnNr);
         selektionAnpassen();
     }
     
     protected void befehlSelektiereStabNr() {
+        boolean bisher_layerStKraft = LayerStKraft();
+        boolean bisher_layerStNr = LayerStNr();
         LayerStKraft(false);
         LayerStNr(true);
         clWaehlenDialog welchen = new clWaehlenDialog(this, STAB, locale);
@@ -907,7 +927,7 @@ public class treillis extends clOberflaeche implements inKonstante {
         if (nr > 0 && nr <= Stabliste.size()) {
             Selektion[0] = STAB;
             Selektion[1] = nr;
-            setKnopfStab(false); //true);
+            setKnopfStab(false);
             setKnopfKnoten(false);
             selModus = NICHTSÄNDERN;
         }
@@ -917,6 +937,8 @@ public class treillis extends clOberflaeche implements inKonstante {
             setKnopfKnoten(false);
             selModus = AUTOMATISCH;
         }
+        LayerStKraft(bisher_layerStKraft);
+        LayerStNr(bisher_layerStNr);
         selektionAnpassen();
     }
     
@@ -2345,7 +2367,9 @@ public class treillis extends clOberflaeche implements inKonstante {
                 setKnopfZoomMaus(false);
                 setKnopfSchiebeKn(false);
                 setKnopfNeuerKnotenSnap(false); hp.deselektHintergrund();
+                Selektion[0] = DESELEKT;
                 selModus = AUTOMATISCH; setKnopfStab(false); setKnopfKnoten(false);
+                selektionAnpassen();
                 break;
             /* BEREITS IN clOberflaeche definiert
             case KeyEvent.VK_F1:        // F1 gedrückt

@@ -11,7 +11,7 @@ import java.util.*;
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2007 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2008 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -1201,7 +1201,10 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         Object EscapeObjekt = new Object();
         javax.swing.Action EscapeAction = new javax.swing.AbstractAction() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nachrichtTasteGedrückt(java.awt.event.KeyEvent.VK_ESCAPE);
+                if (jMenuBar1.isSelected()) { // TODO: Mit ESC Menü schliessen.
+                    jMenuBar1.transferFocusUpCycle(); // Workaround: Es muss zweimal ESC gedrückt werden.
+                }
+                else nachrichtTasteGedrückt(java.awt.event.KeyEvent.VK_ESCAPE);
             }
         };
         im.put(EscapeStroke, EscapeObjekt);

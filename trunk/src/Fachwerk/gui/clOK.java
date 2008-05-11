@@ -6,9 +6,37 @@
 
 package Fachwerk.gui;
 import java.util.*;
+
 /**
- * GPL
- * @author  av  <qwert2003@users.berlios.de>
+ * Fachwerk - treillis
+ *
+ * Copyright (c) 2003 - 2008 A.Vontobel <qwert2003@users.sourceforge.net>
+ *                                      <qwert2003@users.berlios.de>
+ *
+ * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
+ *
+ * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
+ * Gleichgewichtsbedingungen zur Bestimmung der Stabkräfte.
+ * Bei statisch unbestimmten Systemen können die überzähligen Stabkräfte
+ * zugewiesen werden.
+ * Das Programm bezweckt, die Anwendung des unteren (statischen)
+ * Grenzwertsatzes der Plastizitätstheorie zu erleichtern.
+ *
+ * -------------------------------------------------------------
+ *
+ * Dieses Programm ist freie Software. Sie können es unter den Bedingungen
+ * der GNU General Public License, Version 2, wie von der Free Software
+ * Foundation herausgegeben, weitergeben und/oder modifizieren.
+ *
+ * Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, dass es
+ * Ihnen von Nutzen sein wird, aber OHNE JEDE GEWÄHRLEISTUNG - sogar ohne
+ * die implizite Gewährleistung der MARKTREIFE oder der EIGNUNG FüR EINEN
+ * BESTIMMTEN ZWECK.  Details finden Sie in der GNU General Public License.
+ *
+ * Sie sollten eine Kopie der GNU General Public License zusammen  mit
+ * diesem Programm erhalten haben. Falls nicht, schreiben Sie an die
+ * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA. 
  */
 public class clOK extends javax.swing.JDialog {
     
@@ -18,7 +46,7 @@ public class clOK extends javax.swing.JDialog {
     Locale locale;
     
     /** Creates new form testDialog */
-    public clOK(java.awt.Frame parent, String titel, String fragetext, Locale lc) {        
+    public clOK(java.awt.Frame parent, String titel, String fragetext, Locale lc) {
         super(parent, titel, true); // Dialog immer modal
         text = fragetext;
         initComponents();
@@ -28,7 +56,7 @@ public class clOK extends javax.swing.JDialog {
         if (dialogRB == null) {
             System.err.println("FEHLER: gui-dialoge für " + locale.toString());
         }
-        knopfOK.setText(tr("OK"));        
+        knopfOK.setText(tr("OK"));
         knopfAbbrechen.setText(tr("zurueck"));
         infoFeld.setColumns((int)(fragetext.length()/1.45));
         tastenbelegen();
@@ -98,7 +126,6 @@ public class clOK extends javax.swing.JDialog {
     /** Closes the dialog */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         setVisible(false);
-        //dispose();
     }//GEN-LAST:event_closeDialog
     
     /** Gibt an, ob die OK bestätigt worden ist.*/
@@ -106,7 +133,7 @@ public class clOK extends javax.swing.JDialog {
         return antwort;
     }
     
-    private void tastenbelegen() {                
+    private void tastenbelegen() {
         javax.swing.ActionMap am = getRootPane().getActionMap();
         javax.swing.InputMap im = getRootPane().getInputMap(javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         
