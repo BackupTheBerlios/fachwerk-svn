@@ -16,6 +16,7 @@ import java.util.*;
 import javax.swing.*;
 import java.awt.geom.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.InputEvent;
 import java.io.*;
 import java.awt.print.*;
 
@@ -2437,6 +2438,41 @@ public class treillis extends clOberflaeche implements inKonstante {
             */
             default:
                 //System.out.println("taste " + taste);
+        }
+    }
+    /** Pfeiltasten*/
+    protected void nachrichtPfeilTasteGedrückt(int taste, int maske) {
+        switch (maske) {
+            // Shift - Pfeiltaste bewegt den Betrachter
+            case InputEvent.SHIFT_DOWN_MASK:
+                double faktorX = 0;
+                double faktorZ = 0;
+                switch (taste) {
+                    case KeyEvent.VK_LEFT:      // Shift-Pfeil links
+                        faktorX = -0.10;
+                        break;
+                    case KeyEvent.VK_RIGHT:     // Shift-Pfeil rechts
+                        faktorX = 0.10;
+                        break;
+                    case KeyEvent.VK_DOWN:      // Shift-Pfeil unten
+                        faktorZ = 0.10;
+                        break;
+                    case KeyEvent.VK_UP:        // Shift-Pfeil oben
+                        faktorZ = -0.10;
+                        break;
+                    default:
+                }
+                Point2D OL = hp.getZoomPkte()[0];
+                Point2D UR = hp.getZoomPkte()[1];
+                double dx = UR.getX() - OL.getX();
+                double dz = UR.getY() - OL.getY();
+                OL.setLocation(OL.getX() + faktorX * dx, OL.getY() + faktorZ * dz);
+                UR.setLocation(UR.getX() + faktorX * dx, UR.getY() + faktorZ * dz);
+                hp.zoomxy(OL, UR);
+                break;
+            case InputEvent.CTRL_DOWN_MASK:
+            case 0:
+            default:
         }
     }
 

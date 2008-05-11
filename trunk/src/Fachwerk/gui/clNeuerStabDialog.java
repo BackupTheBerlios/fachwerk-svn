@@ -160,15 +160,12 @@ public class clNeuerStabDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_btAbbruchActionPerformed
 
     private void btOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOKActionPerformed
-        //OK = true;
-        //setVisible(false);
         okdurchEnteroderKnopf();
     }//GEN-LAST:event_btOKActionPerformed
     
     /** Closes the dialog */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         setVisible(false);
-        //dispose();
     }//GEN-LAST:event_closeDialog
     
     private void übersetzen() {
