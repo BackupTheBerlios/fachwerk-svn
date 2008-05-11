@@ -20,19 +20,19 @@ import Fachwerk3D.addins3D.findeOrt3D.*;
 import Fachwerk3D.addins3D.coordTransformation3D.*;
 import Fachwerk3D.addins3D.skaliereLasten3D.*;
 import Fachwerk3D.addins3D.export.*;
+import java.awt.event.MouseEvent;
 import java.util.*;
 import javax.swing.*;
 import java.awt.geom.*;
 import java.awt.event.KeyEvent;
 import java.io.*;
-import javax.swing.filechooser.*;
 import java.awt.print.*;
 
 
 /**
  * Fachwerk3D - treillis3D
  *
- * Copyright (c) 2003 - 2007 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2008 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -64,8 +64,8 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     
     private static final String PROGNAME = "Fachwerk3D"; // in clOberflaeche nochmals hart kodiert (Titel)
     private static final int HAUPTVER = 0;
-    private static final int UNTERVER = 31; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
-    private static final int JAHR = 2007;
+    private static final int UNTERVER = 32; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
+    private static final int JAHR = 2008;
     private final String FILEPROGNAME = "treillis3D";
     private final int FILEVER = 1;
     
@@ -552,11 +552,19 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     }
     
     protected void befehlErstelleNeuenStab() {
+        boolean bisher_layerKnNr = LayerKnNr();
+        boolean bisher_layerStNr = LayerStNr();
+        LayerKnNr(true);
+        LayerStNr(false);
+        LayerStKraft(false);
         setKnopfKnoten(false);
         setKnopfStab(false);
-        LayerKnNr(true);
         clNeuerStabDialog dialog = new clNeuerStabDialog(this, locale);
-        if (!dialog.getOK()) return;
+        if (!dialog.getOK()) {
+            LayerKnNr(bisher_layerKnNr);
+            LayerStNr(bisher_layerStNr);
+            return;
+        }
         int[] vonbis = dialog.einlesen();
         // Kontrolle, ob Knoten existieren und ob sie nicht gleich sind.
         if (vonbis[0] < 1 || vonbis[1] < 1) return;
@@ -565,6 +573,8 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
             String meldung = tr("errBeideKnotenMuessenExistieren");
             System.out.println(meldung);
             feldStatuszeile.setText(meldung);
+            LayerKnNr(bisher_layerKnNr);
+            LayerStNr(bisher_layerStNr);
             return;
         }
         if (vonbis[0] == vonbis[1]) {
@@ -572,6 +582,8 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
             String meldung = tr("errKnotenMitSichSelbstVerbunden");
             System.out.println(meldung);
             feldStatuszeile.setText(meldung);
+            LayerKnNr(bisher_layerKnNr);
+            LayerStNr(bisher_layerStNr);
             return;
         }
         // Kontrolle, ob nicht schon ein Stab zwischen diesen Knoten existiert
@@ -588,6 +600,8 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
             String meldung = tr("errStabSchonVorhanden");
             System.out.println(meldung);
             feldStatuszeile.setText(meldung);
+            LayerKnNr(bisher_layerKnNr);
+            LayerStNr(bisher_layerStNr);
             return;
         }
         
@@ -597,6 +611,8 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
         selModus = NICHTSÄNDERN;
         Selektion[0] = STAB;
         Selektion[1] = Stabliste.size();
+        LayerKnNr(bisher_layerKnNr);
+        LayerStNr(bisher_layerStNr);
         selektionAnpassen();
     }
     
@@ -890,6 +906,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     
     
     protected void befehlSelektiereKnotenNr() {
+        boolean bisher_layerKnNr = LayerKnNr();
         LayerKnNr(true);
         clWaehlenDialog welchen = new clWaehlenDialog(this, KNOTEN, locale);
         int nr = welchen.getNr();
@@ -906,10 +923,13 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
             setKnopfKnoten(false);
             selModus = AUTOMATISCH;
         }
+        LayerKnNr(bisher_layerKnNr);
         selektionAnpassen();
     }
     
     protected void befehlSelektiereStabNr() {
+        boolean bisher_layerStKraft = LayerStKraft();
+        boolean bisher_layerStNr = LayerStNr();
         LayerStKraft(false);
         LayerStNr(true);
         clWaehlenDialog welchen = new clWaehlenDialog(this, STAB, locale);
@@ -917,7 +937,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
         if (nr > 0 && nr <= Stabliste.size()) {
             Selektion[0] = STAB;
             Selektion[1] = nr;
-            setKnopfStab(false); //true);
+            setKnopfStab(false);
             setKnopfKnoten(false);
             selModus = NICHTSÄNDERN;
         }
@@ -927,6 +947,8 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
             setKnopfKnoten(false);
             selModus = AUTOMATISCH;
         }
+        LayerStKraft(bisher_layerStKraft);
+        LayerStNr(bisher_layerStNr);
         selektionAnpassen();
     }
     
@@ -1629,13 +1651,13 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     private clPan pan; // für PAN, Behälter für die nötigen Variablen.
     
     
-    protected void nachrichtMausGeklickt(java.awt.event.MouseEvent maus) {   // NOCH UNVOLLSTÄNDIG
+    protected void nachrichtMausGeklickt(java.awt.event.MouseEvent maus) {
         if (hp == null) return;
         if (hp.getKoord() == null) return;
         switch (selModus) {
             case KNOTEN:
                 if (Selektion[0] == KNOTEN) {
-                    if (maus.getButton() == maus.BUTTON1) {
+                    if (maus.getButton() == MouseEvent.BUTTON1) {
                         selModus = NICHTSÄNDERN;
                         setKnopfKnoten(false);
                     }
@@ -1643,7 +1665,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
                 break;
             case STAB:
                 if (Selektion[0] == STAB) {
-                    if (maus.getButton() == maus.BUTTON1) {
+                    if (maus.getButton() == MouseEvent.BUTTON1) {
                         selModus = NICHTSÄNDERN;
                         setKnopfStab(false);
                     }
@@ -1693,17 +1715,17 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
                 hp.deselektHintergrund();
                 break;
             case NICHTSÄNDERN:
-                if (maus.getButton() == maus.BUTTON1) {
+                if (maus.getButton() == MouseEvent.BUTTON1) {
                     Selektion[0] = DESELEKT;
                     selModus = AUTOMATISCH; setKnopfStab(false); setKnopfKnoten(false);
                     selektionAnpassen();
                 }
-                if (maus.getButton() == maus.BUTTON3) befehlEigenschaften();
+                if (maus.getButton() == MouseEvent.BUTTON3) befehlEigenschaften();
                 break;
             case DESELEKT: // noch nicht gebraucht
                 break;
             case AUTOMATISCH:
-                if (maus.getButton() == maus.BUTTON3) { // rechte Maustaste
+                if (maus.getButton() == MouseEvent.BUTTON3) { // rechte Maustaste
                     if (Selektion[0] == STAB || Selektion[0] == KNOTEN) befehlEigenschaften();
                 }
                 break;
@@ -1807,7 +1829,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
                 // für Zoom-Pan
                 if (PAN) PAN = false; // um zu verhindern, dass PAN aktiv bleibt, wenn der Mauszeiger aus dem Panel hinausgezogen wird.
                 // PAN: mittlere Maustaste oder Ctrl-linke Maustaste
-                if (maus.getButton()==maus.BUTTON2 || (maus.getModifiersEx()==(maus.CTRL_DOWN_MASK | maus.BUTTON1_DOWN_MASK))) {
+                if (maus.getButton()==MouseEvent.BUTTON2 || (maus.getModifiersEx()==(MouseEvent.CTRL_DOWN_MASK | MouseEvent.BUTTON1_DOWN_MASK))) {
                     PAN = true;
                     pan = new clPan(mzp(maus.getPoint()), koord.m(1d), hp.getZoomPkte());
                 }
@@ -2269,7 +2291,9 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
                 setKnopfNeuerStab(false);
                 setKnopfZoomMaus(false);
                 setKnopfNeuerKnotenSnap(false); hp.deselektHintergrund();
+                Selektion[0] = DESELEKT;
                 selModus = AUTOMATISCH; setKnopfStab(false); setKnopfKnoten(false);
+                selektionAnpassen();
                 break;
             /* BEREITS IN clOberflaeche definiert
             case KeyEvent.VK_F1:        // F1 gedrückt

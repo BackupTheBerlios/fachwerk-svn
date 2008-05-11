@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.0" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.2" maxVersion="1.2" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="menuProg">
           <Properties>
+            <Property name="mnemonic" type="int" value="80"/>
             <Property name="text" type="java.lang.String" value="Programm"/>
           </Properties>
           <SubComponents>
@@ -129,6 +130,9 @@
             </Menu>
             <MenuItem class="javax.swing.JMenuItem" name="itemBeenden">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+Q"/>
+                </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Fachwerk/gui/icons/exit.png"/>
                 </Property>
@@ -142,6 +146,7 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="menuAnsicht">
           <Properties>
+            <Property name="mnemonic" type="int" value="65"/>
             <Property name="text" type="java.lang.String" value="Ansicht"/>
           </Properties>
           <SubComponents>
@@ -263,6 +268,7 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="menuFachwerk">
           <Properties>
+            <Property name="mnemonic" type="int" value="70"/>
             <Property name="text" type="java.lang.String" value="Fachwerk"/>
           </Properties>
           <SubComponents>
@@ -341,6 +347,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemEigenschaften">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Alt+ENTER"/>
+                </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Fachwerk/gui/icons/eigenschaften.png"/>
                 </Property>
@@ -355,6 +364,7 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="menuRechnen">
           <Properties>
+            <Property name="mnemonic" type="int" value="82"/>
             <Property name="text" type="java.lang.String" value="Rechnen"/>
           </Properties>
           <SubComponents>
@@ -416,6 +426,7 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="menuAddins">
           <Properties>
+            <Property name="mnemonic" type="int" value="90"/>
             <Property name="text" type="java.lang.String" value="Zus&#xe4;tze"/>
           </Properties>
           <SubComponents>
@@ -476,6 +487,7 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="menuHilfe">
           <Properties>
+            <Property name="mnemonic" type="int" value="72"/>
             <Property name="text" type="java.lang.String" value="Hilfe"/>
           </Properties>
           <SubComponents>
@@ -537,7 +549,10 @@
     <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="exitForm"/>
   </Events>
   <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
