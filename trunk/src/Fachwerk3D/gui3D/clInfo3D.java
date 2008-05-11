@@ -5,7 +5,6 @@
  */
 
 package Fachwerk3D.gui3D;
-import java.awt.*;
 
 /**
  *
@@ -117,6 +116,7 @@ public class clInfo3D extends javax.swing.JDialog {
         text_en += Lizenz_en;
         
         initComponents();
+        tastenbelegen();
         pack();
         zentriere(parent);
         show();
@@ -221,6 +221,35 @@ public class clInfo3D extends javax.swing.JDialog {
         setVisible(false);
         dispose();
     }//GEN-LAST:event_closeDialog
+    
+    private void tastenbelegen() {
+        javax.swing.ActionMap am = getRootPane().getActionMap();
+        javax.swing.InputMap im = getRootPane().getInputMap(javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        
+        // ESC - Taste
+        Object EscapeObjekt = new Object();
+        javax.swing.KeyStroke EscapeStroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0);
+        javax.swing.Action EscapeAction = new javax.swing.AbstractAction() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setVisible(false);
+                dispose();
+            }
+        };
+        im.put(EscapeStroke, EscapeObjekt);
+        am.put(EscapeObjekt, EscapeAction);
+        
+        // ENTER - Taste
+        Object EnterObjekt = new Object();
+        javax.swing.KeyStroke EnterStroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0);
+        javax.swing.Action EnterAction = new javax.swing.AbstractAction() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setVisible(false);
+                dispose();
+            }
+        };
+        im.put(EnterStroke, EnterObjekt);
+        am.put(EnterObjekt, EnterAction);
+    }
     
     private void zentriere(java.awt.Frame hf) {
         java.awt.Point OL = hf.getLocationOnScreen();

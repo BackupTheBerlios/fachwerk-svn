@@ -583,7 +583,7 @@
             <Property name="paintLabels" type="boolean" value="true"/>
             <Property name="paintTicks" type="boolean" value="true"/>
             <Property name="snapToTicks" type="boolean" value="true"/>
-            <Property name="toolTipText" type="java.lang.String" value="vertical"/>
+            <Property name="toolTipText" type="java.lang.String" value="vertical &lt;Ctrl &#x2191;/&#x2193;&gt;"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[16, 32767]"/>
             </Property>
@@ -872,7 +872,7 @@
             <Property name="paintLabels" type="boolean" value="true"/>
             <Property name="paintTicks" type="boolean" value="true"/>
             <Property name="snapToTicks" type="boolean" value="true"/>
-            <Property name="toolTipText" type="java.lang.String" value="horizontal"/>
+            <Property name="toolTipText" type="java.lang.String" value="horizontal &lt;Ctrl &#x2190;/&#x2192;&gt;"/>
           </Properties>
           <Events>
             <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="sliderHorizontalMouseReleased"/>

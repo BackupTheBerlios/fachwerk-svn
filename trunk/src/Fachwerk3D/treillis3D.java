@@ -25,6 +25,7 @@ import java.util.*;
 import javax.swing.*;
 import java.awt.geom.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.InputEvent;
 import java.io.*;
 import java.awt.print.*;
 
@@ -2356,6 +2357,78 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
             */
             default:
                 //System.out.println("taste " + taste);
+        }
+    }
+    /** Pfeiltasten*/
+    protected void nachrichtPfeilTasteGedrückt(int taste, int maske) {
+        switch (maske) {
+            // Ctrl - Pfeiltaste dreht den Betrachter um das Modell
+            case InputEvent.CTRL_DOWN_MASK:
+                switch (taste) {
+                    case KeyEvent.VK_LEFT:      // Ctrl-Pfeil links
+                        int wertL = sliderHorizontal.getValue() - sliderHorizontal.getMinorTickSpacing();
+                        if (wertL < sliderHorizontal.getMinimum()) {
+                            wertL = sliderHorizontal.getMinimum();
+                        }
+                        sliderHorizontal.setValue(wertL);
+                        befehlBlickrtgMaus(sliderHorizontal.getValue(), sliderVertical.getValue());
+                        break;
+                    case KeyEvent.VK_RIGHT:     // Ctrl-Pfeil rechts
+                        int wertR = sliderHorizontal.getValue() + sliderHorizontal.getMinorTickSpacing();
+                        if (wertR > sliderHorizontal.getMaximum()) {
+                            wertR = sliderHorizontal.getMaximum();
+                        }
+                        sliderHorizontal.setValue(wertR);
+                        befehlBlickrtgMaus(sliderHorizontal.getValue(), sliderVertical.getValue());
+                        break;
+                    case KeyEvent.VK_DOWN:      // Ctrl-Pfeil unten
+                        int wertU = sliderVertical.getValue() - sliderVertical.getMinorTickSpacing();
+                        if (wertU < sliderVertical.getMinimum()) {
+                            wertU = sliderVertical.getMinimum();
+                        }
+                        sliderVertical.setValue(wertU);
+                        befehlBlickrtgMaus(sliderHorizontal.getValue(), sliderVertical.getValue());
+                        break;
+                    case KeyEvent.VK_UP:        // Ctrl-Pfeil oben
+                        int wertO = sliderVertical.getValue() + sliderVertical.getMinorTickSpacing();
+                        if (wertO > sliderVertical.getMaximum()) {
+                            wertO = sliderVertical.getMaximum();
+                        }
+                        sliderVertical.setValue(wertO);
+                        befehlBlickrtgMaus(sliderHorizontal.getValue(), sliderVertical.getValue());
+                        break;
+                    default:
+                }
+                break;
+            // Shift - Pfeiltaste bewegt den Betrachter
+            case InputEvent.SHIFT_DOWN_MASK:
+                double faktorX = 0;
+                double faktorZ = 0;
+                switch (taste) {
+                    case KeyEvent.VK_LEFT:      // Shift-Pfeil links
+                        faktorX = -0.10;
+                        break;
+                    case KeyEvent.VK_RIGHT:     // Shift-Pfeil rechts
+                        faktorX = 0.10;
+                        break;
+                    case KeyEvent.VK_DOWN:      // Shift-Pfeil unten
+                        faktorZ = 0.10;
+                        break;
+                    case KeyEvent.VK_UP:        // Shift-Pfeil oben
+                        faktorZ = -0.10;
+                        break;
+                    default:
+                }
+                Point2D OL = hp.getZoomPkte()[0];
+                Point2D UR = hp.getZoomPkte()[1];
+                double dx = UR.getX() - OL.getX();
+                double dz = UR.getY() - OL.getY();
+                OL.setLocation(OL.getX() + faktorX * dx, OL.getY() + faktorZ * dz);
+                UR.setLocation(UR.getX() + faktorX * dx, UR.getY() + faktorZ * dz);
+                hp.zoomxy(OL, UR);
+                break;
+            case 0:
+            default:
         }
     }
 

@@ -7,8 +7,6 @@ package Fachwerk3D.addins3D.export;
 
 import Fachwerk3D.statik3D.*;
 import Fachwerk3D.gui3D.clWissenderStab3D;
-import Fachwerk.statik.clStab;
-//import Fachwerk.statik.Fkt;
 import java.util.*;
 import java.io.*;
 
@@ -62,7 +60,6 @@ public class clExportInput3D implements inKonstante3D {
     
     Locale locale = Locale.getDefault();
     ResourceBundle dialogRB = ResourceBundle.getBundle("Fachwerk3D/locales3D/gui3D-addins", locale);
-       
     
     
     public clExportInput3D(LinkedList Knotenliste, LinkedList Stabliste, String outfile, Locale lc) {
@@ -95,7 +92,7 @@ public class clExportInput3D implements inKonstante3D {
             else outfile = infile + ".out.csv";
         }
         else {
-            System.out.println("Gebrauch: java export3d fachwerkdatei.fwk3d [Ausgabedatei.csv]");
+            System.out.println("Gebrauch: java clExportInput3D fachwerkdatei.fwk3d [Ausgabedatei.csv]");
             System.exit(1);
         }
         
@@ -107,7 +104,6 @@ public class clExportInput3D implements inKonstante3D {
         int hauptversionsNrProg, fileversion, unterversionsNrProg;
         
         try {
-            
             FileInputStream fs = new FileInputStream(dateiname);
             ObjectInputStream is = new ObjectInputStream(fs);
             
@@ -153,7 +149,6 @@ public class clExportInput3D implements inKonstante3D {
         System.out.println(meldung);
         return true;
     }
-    
     
     
     private boolean zusammenstellen() {
@@ -227,7 +222,6 @@ public class clExportInput3D implements inKonstante3D {
             i++;
         }
         
-        
         ausgabetext = o.toString();
         return true;
     }
@@ -254,13 +248,13 @@ public class clExportInput3D implements inKonstante3D {
         return true;
     }
     
-    private String tr(String key) {        
+    private String tr(String key) {
         String übersetzt;
         try {übersetzt = dialogRB.getString(key);}
         catch (MissingResourceException e) {
             System.err.println("Schluesselwort + " + key + " nicht gefunden fuer " + locale.toString() + " ; " + e.toString());
             return key;
-        }        
+        }
         return übersetzt;
     }
 }

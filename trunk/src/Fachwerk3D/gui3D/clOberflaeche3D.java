@@ -7,6 +7,7 @@
 package Fachwerk3D.gui3D;
 
 import java.util.*;
+import java.awt.event.*;
 import Fachwerk.gui.clStringDialog;
 
 /**
@@ -203,7 +204,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
         sliderVertical.setPaintLabels(true);
         sliderVertical.setPaintTicks(true);
         sliderVertical.setSnapToTicks(true);
-        sliderVertical.setToolTipText("vertical");
+        sliderVertical.setToolTipText("vertical <Ctrl ↑/↓>");
         sliderVertical.setMaximumSize(new java.awt.Dimension(16, 32767));
         sliderVertical.setPreferredSize(new java.awt.Dimension(16, 100));
         sliderVertical.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -389,7 +390,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
         sliderHorizontal.setPaintLabels(true);
         sliderHorizontal.setPaintTicks(true);
         sliderHorizontal.setSnapToTicks(true);
-        sliderHorizontal.setToolTipText("horizontal");
+        sliderHorizontal.setToolTipText("horizontal <Ctrl ←/→>");
         sliderHorizontal.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 sliderHorizontalMouseReleased(evt);
@@ -1256,168 +1257,256 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
         javax.swing.InputMap im = getRootPane().getInputMap(javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         
         // ESC - Taste
-        javax.swing.KeyStroke EscapeStroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0);
+        javax.swing.KeyStroke EscapeStroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
         Object EscapeObjekt = new Object();
         javax.swing.Action EscapeAction = new javax.swing.AbstractAction() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 if (jMenuBar1.isSelected()) { // TODO: Mit ESC Menü schliessen.
                     jMenuBar1.transferFocusUpCycle(); // Workaround: Es muss zweimal ESC gedrückt werden.
                 }
-                else nachrichtTasteGedrückt(java.awt.event.KeyEvent.VK_ESCAPE);
+                else nachrichtTasteGedrückt(KeyEvent.VK_ESCAPE);
             }
         };
         im.put(EscapeStroke, EscapeObjekt);
         am.put(EscapeObjekt, EscapeAction);
         
         // F1 - Taste
-        javax.swing.KeyStroke F1Stroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0);
+        javax.swing.KeyStroke F1Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0);
         itemHilfe.setAccelerator(F1Stroke);
                 
         // F2 - Taste        
-        javax.swing.KeyStroke F2Stroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0);
+        javax.swing.KeyStroke F2Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
         itemNeuzeichnen.setAccelerator(F2Stroke);
                 
         // F3 - Taste
-        javax.swing.KeyStroke F3Stroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0);
+        javax.swing.KeyStroke F3Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
         itemZoomAll.setAccelerator(F3Stroke);
                 
         // F4 - Taste
-        javax.swing.KeyStroke F4Stroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0);
+        javax.swing.KeyStroke F4Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0);
         Object F4Objekt = new Object();
         javax.swing.Action F4Action = new javax.swing.AbstractAction() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nachrichtTasteGedrückt(java.awt.event.KeyEvent.VK_F4);
+            public void actionPerformed(ActionEvent evt) {
+                nachrichtTasteGedrückt(KeyEvent.VK_F4);
             }
         };
         im.put(F4Stroke, F4Objekt);
         am.put(F4Objekt, F4Action);
         
         // Ctrl-F4 - Tastenkombination
-        javax.swing.KeyStroke CtrlF4Stroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.CTRL_DOWN_MASK);
+        javax.swing.KeyStroke CtrlF4Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.CTRL_DOWN_MASK);
         itemZoomxy.setAccelerator(CtrlF4Stroke);
                 
         // F5 - Taste
-        javax.swing.KeyStroke F5Stroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0);
+        javax.swing.KeyStroke F5Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0);
         itemNeuerPkt.setAccelerator(F5Stroke);
                 
         // F6 - Taste
-        javax.swing.KeyStroke F6Stroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0);
+        javax.swing.KeyStroke F6Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0);
         Object F6Objekt = new Object();
         javax.swing.Action F6Action = new javax.swing.AbstractAction() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nachrichtTasteGedrückt(java.awt.event.KeyEvent.VK_F6);
+            public void actionPerformed(ActionEvent evt) {
+                nachrichtTasteGedrückt(KeyEvent.VK_F6);
             }
         };
         im.put(F6Stroke, F6Objekt);
         am.put(F6Objekt, F6Action);        
         
         // F7 - Taste
-        javax.swing.KeyStroke F7Stroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0);
+        javax.swing.KeyStroke F7Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0);
         Object F7Objekt = new Object();
         javax.swing.Action F7Action = new javax.swing.AbstractAction() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nachrichtTasteGedrückt(java.awt.event.KeyEvent.VK_F7);
+            public void actionPerformed(ActionEvent evt) {
+                nachrichtTasteGedrückt(KeyEvent.VK_F7);
             }
         };
         im.put(F7Stroke, F7Objekt);
         am.put(F7Objekt, F7Action); 
         
         // Ctrl-F7 - Tastenkombination
-        javax.swing.KeyStroke CtrlF7Stroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, java.awt.event.InputEvent.CTRL_DOWN_MASK);
+        javax.swing.KeyStroke CtrlF7Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F7, InputEvent.CTRL_DOWN_MASK);
         itemNeuerStab.setAccelerator(CtrlF7Stroke); 
                 
         // F9 - Taste
-        javax.swing.KeyStroke F9Stroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0);
+        javax.swing.KeyStroke F9Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0);
         itemBerechnen.setAccelerator(F9Stroke);   
         
         // F11 - Taste
-        javax.swing.KeyStroke F11Stroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F11, 0);
+        javax.swing.KeyStroke F11Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0);
         Object F11Objekt = new Object();
         javax.swing.Action F11Action = new javax.swing.AbstractAction() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nachrichtTasteGedrückt(java.awt.event.KeyEvent.VK_F11);
+            public void actionPerformed(ActionEvent evt) {
+                nachrichtTasteGedrückt(KeyEvent.VK_F11);
             }
         };
         im.put(F11Stroke, F11Objekt);
         am.put(F11Objekt, F11Action);   
         
         // Ctrl-F11 - Tastenkombination
-        javax.swing.KeyStroke CtrlF11Stroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F11, java.awt.event.InputEvent.CTRL_DOWN_MASK);
+        javax.swing.KeyStroke CtrlF11Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F11, InputEvent.CTRL_DOWN_MASK);
         itemPktselekt.setAccelerator(CtrlF11Stroke);  
         
         // F12 - Taste
-        javax.swing.KeyStroke F12Stroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, 0);
+        javax.swing.KeyStroke F12Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0);
         Object F12Objekt = new Object();
         javax.swing.Action F12Action = new javax.swing.AbstractAction() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nachrichtTasteGedrückt(java.awt.event.KeyEvent.VK_F12);
+            public void actionPerformed(ActionEvent evt) {
+                nachrichtTasteGedrückt(KeyEvent.VK_F12);
             }
         };
         im.put(F12Stroke, F12Objekt);
         am.put(F12Objekt, F12Action);
         
         // Ctrl-F12 - Tastenkombination
-        javax.swing.KeyStroke CtrlF12Stroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.CTRL_DOWN_MASK);
+        javax.swing.KeyStroke CtrlF12Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F12, InputEvent.CTRL_DOWN_MASK);
         itemStabselekt.setAccelerator(CtrlF12Stroke);
                 
         // Minus - Tasten
-        javax.swing.KeyStroke MinusStroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_MINUS, 0);
+        javax.swing.KeyStroke MinusStroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, 0);
         Object MinusObjekt = new Object();
         javax.swing.Action MinusAction = new javax.swing.AbstractAction() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nachrichtTasteGedrückt(java.awt.event.KeyEvent.VK_MINUS);
+            public void actionPerformed(ActionEvent evt) {
+                nachrichtTasteGedrückt(KeyEvent.VK_MINUS);
             }
         };
         im.put(MinusStroke, MinusObjekt);
         am.put(MinusObjekt, MinusAction);
         
-        javax.swing.KeyStroke MinusNumStroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SUBTRACT, 0);
+        javax.swing.KeyStroke MinusNumStroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, 0);
         Object MinusNumObjekt = new Object();
         javax.swing.Action MinusNumAction = new javax.swing.AbstractAction() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nachrichtTasteGedrückt(java.awt.event.KeyEvent.VK_SUBTRACT);
+            public void actionPerformed(ActionEvent evt) {
+                nachrichtTasteGedrückt(KeyEvent.VK_SUBTRACT);
             }
         };
         im.put(MinusNumStroke, MinusNumObjekt);
         am.put(MinusNumObjekt, MinusNumAction);
         
         // Plus - Tasten
-        javax.swing.KeyStroke PlusStroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PLUS, 0);
+        javax.swing.KeyStroke PlusStroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, 0);
         Object PlusObjekt = new Object();
         javax.swing.Action PlusAction = new javax.swing.AbstractAction() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nachrichtTasteGedrückt(java.awt.event.KeyEvent.VK_PLUS);
+            public void actionPerformed(ActionEvent evt) {
+                nachrichtTasteGedrückt(KeyEvent.VK_PLUS);
             }
         };
         im.put(PlusStroke, PlusObjekt);
         am.put(PlusObjekt, PlusAction);
         
-        javax.swing.KeyStroke PlusNumStroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ADD, 0);
+        javax.swing.KeyStroke PlusNumStroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_ADD, 0);
         Object PlusNumObjekt = new Object();
         javax.swing.Action PlusNumAction = new javax.swing.AbstractAction() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nachrichtTasteGedrückt(java.awt.event.KeyEvent.VK_ADD);
+            public void actionPerformed(ActionEvent evt) {
+                nachrichtTasteGedrückt(KeyEvent.VK_ADD);
             }
         };
         im.put(PlusNumStroke, PlusNumObjekt);
         am.put(PlusNumObjekt, PlusNumAction);
                 
         // DEL - Taste
-        javax.swing.KeyStroke DELStroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, 0);        
+        javax.swing.KeyStroke DELStroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);        
         itemLöschen.setAccelerator(DELStroke);
         
         // BACKSPACE - Taste
-        javax.swing.KeyStroke BackStroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_BACK_SPACE, 0);
+        javax.swing.KeyStroke BackStroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0);
         itemZurücksetzen.setAccelerator(BackStroke);
         
         // Ctrl-S - Tastenkombination
-        javax.swing.KeyStroke CtrlSStroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK);
+        javax.swing.KeyStroke CtrlSStroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK);
         itemSpeichern.setAccelerator(CtrlSStroke);
         
         // Ctrl-P - Tastenkombination
-        javax.swing.KeyStroke CtrlPStroke = javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK);
+        javax.swing.KeyStroke CtrlPStroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_DOWN_MASK);
         itemDruckenGraph.setAccelerator(CtrlPStroke);
-                
+        
+        
+        // Ctrl-PFEIL LINKS
+        javax.swing.KeyStroke CtrlPfeilLinksStroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.CTRL_DOWN_MASK);
+        Object CtrlPfeilLinksObjekt = new Object();
+        javax.swing.Action CtrlPfeilLinksAction = new javax.swing.AbstractAction() {
+            public void actionPerformed(ActionEvent evt) {
+                nachrichtPfeilTasteGedrückt(KeyEvent.VK_LEFT, InputEvent.CTRL_DOWN_MASK);
+            }
+        };
+        im.put(CtrlPfeilLinksStroke, CtrlPfeilLinksObjekt);
+        am.put(CtrlPfeilLinksObjekt, CtrlPfeilLinksAction);
+        
+        // Ctrl-PFEIL RECHTS
+        javax.swing.KeyStroke CtrlPfeilRechtsStroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.CTRL_DOWN_MASK);
+        Object CtrlPfeilRechtsObjekt = new Object();
+        javax.swing.Action CtrlPfeilRechtsAction = new javax.swing.AbstractAction() {
+            public void actionPerformed(ActionEvent evt) {
+                nachrichtPfeilTasteGedrückt(KeyEvent.VK_RIGHT, InputEvent.CTRL_DOWN_MASK);
+            }
+        };
+        im.put(CtrlPfeilRechtsStroke, CtrlPfeilRechtsObjekt);
+        am.put(CtrlPfeilRechtsObjekt, CtrlPfeilRechtsAction);
+        
+        // Ctrl-PFEIL OBEN
+        javax.swing.KeyStroke CtrlPfeilObenStroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_UP, InputEvent.CTRL_DOWN_MASK);
+        Object CtrlPfeilObenObjekt = new Object();
+        javax.swing.Action CtrlPfeilObenAction = new javax.swing.AbstractAction() {
+            public void actionPerformed(ActionEvent evt) {
+                nachrichtPfeilTasteGedrückt(KeyEvent.VK_UP, InputEvent.CTRL_DOWN_MASK);
+            }
+        };
+        im.put(CtrlPfeilObenStroke, CtrlPfeilObenObjekt);
+        am.put(CtrlPfeilObenObjekt, CtrlPfeilObenAction);
+        
+        // Ctrl-PFEIL UNTEN
+        javax.swing.KeyStroke CtrlPfeilUntenStroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, InputEvent.CTRL_DOWN_MASK);
+        Object CtrlPfeilUntenObjekt = new Object();
+        javax.swing.Action CtrlPfeilUntenAction = new javax.swing.AbstractAction() {
+            public void actionPerformed(ActionEvent evt) {
+                nachrichtPfeilTasteGedrückt(KeyEvent.VK_DOWN, InputEvent.CTRL_DOWN_MASK);
+            }
+        };
+        im.put(CtrlPfeilUntenStroke, CtrlPfeilUntenObjekt);
+        am.put(CtrlPfeilUntenObjekt, CtrlPfeilUntenAction);
+        
+        // Shift-Pfeil LINKS
+        javax.swing.KeyStroke ShiftPfeilLinksStroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.SHIFT_DOWN_MASK);
+        Object ShiftPfeilLinksObjekt = new Object();
+        javax.swing.Action ShiftPfeilLinksAction = new javax.swing.AbstractAction() {
+            public void actionPerformed(ActionEvent evt) {
+                nachrichtPfeilTasteGedrückt(KeyEvent.VK_LEFT, InputEvent.SHIFT_DOWN_MASK);
+            }
+        };
+        im.put(ShiftPfeilLinksStroke, ShiftPfeilLinksObjekt);
+        am.put(ShiftPfeilLinksObjekt, ShiftPfeilLinksAction);
+        
+        // Shift-Pfeil RECHTS
+        javax.swing.KeyStroke ShiftPfeilRechtsStroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.SHIFT_DOWN_MASK);
+        Object ShiftPfeilRechtsObjekt = new Object();
+        javax.swing.Action ShiftPfeilRechtsAction = new javax.swing.AbstractAction() {
+            public void actionPerformed(ActionEvent evt) {
+                nachrichtPfeilTasteGedrückt(KeyEvent.VK_RIGHT, InputEvent.SHIFT_DOWN_MASK);
+            }
+        };
+        im.put(ShiftPfeilRechtsStroke, ShiftPfeilRechtsObjekt);
+        am.put(ShiftPfeilRechtsObjekt, ShiftPfeilRechtsAction);
+        
+        // Shift-Pfeil OBEN
+        javax.swing.KeyStroke ShiftPfeilObenStroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_UP, InputEvent.SHIFT_DOWN_MASK);
+        Object ShiftPfeilObenObjekt = new Object();
+        javax.swing.Action ShiftPfeilObenAction = new javax.swing.AbstractAction() {
+            public void actionPerformed(ActionEvent evt) {
+                nachrichtPfeilTasteGedrückt(KeyEvent.VK_UP, InputEvent.SHIFT_DOWN_MASK);
+            }
+        };
+        im.put(ShiftPfeilObenStroke, ShiftPfeilObenObjekt);
+        am.put(ShiftPfeilObenObjekt, ShiftPfeilObenAction);
+        
+        // Shift-Pfeil UNTEN
+        javax.swing.KeyStroke ShiftPfeilUntenStroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, InputEvent.SHIFT_DOWN_MASK);
+        Object ShiftPfeilUntenObjekt = new Object();
+        javax.swing.Action ShiftPfeilUntenAction = new javax.swing.AbstractAction() {
+            public void actionPerformed(ActionEvent evt) {
+                nachrichtPfeilTasteGedrückt(KeyEvent.VK_DOWN, InputEvent.SHIFT_DOWN_MASK);
+            }
+        };
+        im.put(ShiftPfeilUntenStroke, ShiftPfeilUntenObjekt);
+        am.put(ShiftPfeilUntenObjekt, ShiftPfeilUntenAction);
     }
     
     private void übersetzen(Locale p_locale) {
@@ -1613,6 +1702,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     protected abstract void nachrichtMausRadGedreht(java.awt.event.MouseWheelEvent evt);
     
     protected abstract void nachrichtTasteGedrückt(int taste);
+    protected abstract void nachrichtPfeilTasteGedrückt(int taste, int maske);
     
     
     protected boolean KnopfStabistgedrückt() {
