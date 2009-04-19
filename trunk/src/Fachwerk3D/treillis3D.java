@@ -33,7 +33,7 @@ import java.awt.print.*;
 /**
  * Fachwerk3D - treillis3D
  *
- * Copyright (c) 2003 - 2008 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -66,7 +66,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     private static final String PROGNAME = "Fachwerk3D"; // in clOberflaeche nochmals hart kodiert (Titel)
     private static final int HAUPTVER = 0;
     private static final int UNTERVER = 32; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
-    private static final int JAHR = 2008;
+    private static final int JAHR = 2009;
     private final String FILEPROGNAME = "treillis3D";
     private final int FILEVER = 1;
     
@@ -210,7 +210,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
             }
         }
         
-       
+        
         
         if (help) {
             System.out.println("");
@@ -236,13 +236,13 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
             return; //System.exit(0); // BEENDET DAS PROGRAMM
         }
         
-        // LookAndFeel setzen.        
+        // LookAndFeel setzen.
         boolean laf_gesetzt = false;
         try {
             if (!laf_gesetzt && lookAndFeel.equalsIgnoreCase("Java")) {
                 UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
                 laf_gesetzt = true;
-            } 
+            }
             if (!laf_gesetzt && lookAndFeel.equalsIgnoreCase("System")) {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 laf_gesetzt = true;
@@ -269,12 +269,12 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
                 // nicht setzten, damit von Befehlszeile aus festlegbar
                 // z.B. java -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel ...
                 laf_gesetzt = true;
-            } 
-                        
+            }
+            
             if (!laf_gesetzt) {
                 UIManager.setLookAndFeel(lookAndFeel);
-            }                       
-        } 
+            }
+        }
         catch (Exception e) { // macht nichts
             System.err.println("LookAndFeel " + lookAndFeel +" could not be set. Standard LookAndFeel used instead.");
         }
@@ -327,7 +327,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
                 break;
             case ZOOMxy: // lassen
             default:
-        }        
+        }
         
         // BEGINN
         keinFEHLER = true;
@@ -1169,7 +1169,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
                 break;
             case ZOOMxy: // lassen
             default:
-        }        
+        }
         
         // BEGINN
         keinFEHLER = true;
@@ -1732,7 +1732,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
                 break;
             default:
         }
-        
+    
     }
     
     protected void nachrichtMausBewegt(java.awt.event.MouseEvent maus) {
@@ -2244,7 +2244,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
         clWissenderStab3D aktWSt = (clWissenderStab3D) Stabliste.get(sel[1]-1);
         clKnoten3D aktKn = (clKnoten3D) Knotenliste.get(aktWSt.von-1);
         Point3D stabanfang = new Point3D(aktKn.getX(), aktKn.getY(), aktKn.getZ());
-        aktKn = (clKnoten3D) Knotenliste.get(aktWSt.bis-1);        
+        aktKn = (clKnoten3D) Knotenliste.get(aktWSt.bis-1);
         double dx = aktKn.getX() - stabanfang.getX();
         double dy = aktKn.getY() - stabanfang.getY();
         double dz = aktKn.getZ() - stabanfang.getZ();
@@ -2329,7 +2329,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
                 break;
             /*
             case KeyEvent.VK_F9:       // F9 gedrückt
-                befehlBerechne(); 
+                befehlBerechne();
                 break;
             */
             case KeyEvent.VK_F11:        // F11 gedrückt

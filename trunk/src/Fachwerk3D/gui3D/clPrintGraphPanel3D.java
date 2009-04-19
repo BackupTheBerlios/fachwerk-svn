@@ -9,7 +9,6 @@ package Fachwerk3D.gui3D;
 import Fachwerk.statik.Fkt;
 import Fachwerk.gui.clPrintGraphDialog;
 import java.util.*;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.print.*;
@@ -18,7 +17,7 @@ import java.awt.print.*;
 /**
  * Fachwerk3D - treillis3D
  *
- * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -60,12 +59,12 @@ public class clPrintGraphPanel3D extends clHauptPanel3D implements Printable {
     double antHorizontal;
     
     final double zoll = 0.0254; // [m]
-    double dpi = 72d / printskal;
+    final double dpi = 72d / printskal;
     double einheit = 1d; // zB: cm --> 0.01 m
     boolean MASSSTABABGEFRAGT = false;
     double mst = 1; // wird überschrieben
     // Für Pfeillänge, etc (Masse in Pixel)
-    double druckvergr = 300d/dpi * (20.8-2*2.5)/(33.5-5.); // Druckaufl/Bildschirmaufl * BreiteA4/BreiteBildschirm
+    double druckvergr = 300d/dpi * (20.8-2.*2.5)/(33.5-5.); // Druckaufl/Bildschirmaufl * BreiteA4/BreiteBildschirm
     
     Frame parent;
     PageFormat pf;

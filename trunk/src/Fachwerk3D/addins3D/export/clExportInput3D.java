@@ -41,7 +41,7 @@ import java.io.*;
  *
  * Sie sollten eine Kopie der GNU General Public License zusammen  mit
  * diesem Programm erhalten haben. Falls nicht, schreiben Sie an die
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA. 
+ * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  * @author  A.Vontobel
  */

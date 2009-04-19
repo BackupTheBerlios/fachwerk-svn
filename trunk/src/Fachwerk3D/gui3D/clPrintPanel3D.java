@@ -9,9 +9,7 @@ package Fachwerk3D.gui3D;
 import Fachwerk3D.statik3D.*;
 import Fachwerk.statik.Fkt;
 import java.util.*;
-import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.*;
 import java.awt.print.*;
 
 
@@ -60,8 +58,8 @@ public class clPrintPanel3D extends clHauptPanel3D implements Printable {
     final int schriftgrText = 10;
     final int schriftgrSys = 6;
     
-    double dpi = 72d / printskal;
-    double druckvergr = 300d/dpi * (20.8-2*2.5)/(33.5-5.); // Druckaufl/Bildschirmaufl * BreiteA4/BreiteBildschirm
+    final double dpi = 72d / printskal;
+    double druckvergr = 300d/dpi * (20.8-2.*2.5)/(33.5-5.); // Druckaufl/Bildschirmaufl * BreiteA4/BreiteBildschirm
     
     
     private boolean FEHLERmelden;

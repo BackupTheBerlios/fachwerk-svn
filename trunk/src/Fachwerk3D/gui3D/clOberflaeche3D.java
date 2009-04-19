@@ -39,7 +39,7 @@ import Fachwerk.gui.clStringDialog;
  *
  * Sie sollten eine Kopie der GNU General Public License zusammen  mit
  * diesem Programm erhalten haben. Falls nicht, schreiben Sie an die
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA. 
+ * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 public abstract class clOberflaeche3D extends javax.swing.JFrame {
     
@@ -50,7 +50,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     
     public clOberflaeche3D(String titel, Locale lc) {
         super(titel);
-        locale = lc;        
+        locale = lc;
         initComponents();
         tastenbelegen();
         übersetzen(locale);
@@ -1249,10 +1249,10 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     
     /** Exit the Application */
     private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm
-        befehlBeenden();       
+        befehlBeenden();
     }//GEN-LAST:event_exitForm
     
-    private void tastenbelegen() {                
+    private void tastenbelegen() {
         javax.swing.ActionMap am = getRootPane().getActionMap();
         javax.swing.InputMap im = getRootPane().getInputMap(javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         
@@ -1273,15 +1273,15 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
         // F1 - Taste
         javax.swing.KeyStroke F1Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0);
         itemHilfe.setAccelerator(F1Stroke);
-                
-        // F2 - Taste        
+        
+        // F2 - Taste
         javax.swing.KeyStroke F2Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
         itemNeuzeichnen.setAccelerator(F2Stroke);
-                
+        
         // F3 - Taste
         javax.swing.KeyStroke F3Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
         itemZoomAll.setAccelerator(F3Stroke);
-                
+        
         // F4 - Taste
         javax.swing.KeyStroke F4Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0);
         Object F4Objekt = new Object();
@@ -1296,11 +1296,11 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
         // Ctrl-F4 - Tastenkombination
         javax.swing.KeyStroke CtrlF4Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.CTRL_DOWN_MASK);
         itemZoomxy.setAccelerator(CtrlF4Stroke);
-                
+        
         // F5 - Taste
         javax.swing.KeyStroke F5Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0);
         itemNeuerPkt.setAccelerator(F5Stroke);
-                
+        
         // F6 - Taste
         javax.swing.KeyStroke F6Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0);
         Object F6Objekt = new Object();
@@ -1310,7 +1310,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
             }
         };
         im.put(F6Stroke, F6Objekt);
-        am.put(F6Objekt, F6Action);        
+        am.put(F6Objekt, F6Action);
         
         // F7 - Taste
         javax.swing.KeyStroke F7Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0);
@@ -1321,15 +1321,15 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
             }
         };
         im.put(F7Stroke, F7Objekt);
-        am.put(F7Objekt, F7Action); 
+        am.put(F7Objekt, F7Action);
         
         // Ctrl-F7 - Tastenkombination
         javax.swing.KeyStroke CtrlF7Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F7, InputEvent.CTRL_DOWN_MASK);
-        itemNeuerStab.setAccelerator(CtrlF7Stroke); 
-                
+        itemNeuerStab.setAccelerator(CtrlF7Stroke);
+        
         // F9 - Taste
         javax.swing.KeyStroke F9Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0);
-        itemBerechnen.setAccelerator(F9Stroke);   
+        itemBerechnen.setAccelerator(F9Stroke);
         
         // F11 - Taste
         javax.swing.KeyStroke F11Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0);
@@ -1340,11 +1340,11 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
             }
         };
         im.put(F11Stroke, F11Objekt);
-        am.put(F11Objekt, F11Action);   
+        am.put(F11Objekt, F11Action);
         
         // Ctrl-F11 - Tastenkombination
         javax.swing.KeyStroke CtrlF11Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F11, InputEvent.CTRL_DOWN_MASK);
-        itemPktselekt.setAccelerator(CtrlF11Stroke);  
+        itemPktselekt.setAccelerator(CtrlF11Stroke);
         
         // F12 - Taste
         javax.swing.KeyStroke F12Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0);
@@ -1360,7 +1360,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
         // Ctrl-F12 - Tastenkombination
         javax.swing.KeyStroke CtrlF12Stroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F12, InputEvent.CTRL_DOWN_MASK);
         itemStabselekt.setAccelerator(CtrlF12Stroke);
-                
+        
         // Minus - Tasten
         javax.swing.KeyStroke MinusStroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, 0);
         Object MinusObjekt = new Object();
@@ -1402,9 +1402,9 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
         };
         im.put(PlusNumStroke, PlusNumObjekt);
         am.put(PlusNumObjekt, PlusNumAction);
-                
+        
         // DEL - Taste
-        javax.swing.KeyStroke DELStroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);        
+        javax.swing.KeyStroke DELStroke = javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);
         itemLöschen.setAccelerator(DELStroke);
         
         // BACKSPACE - Taste
@@ -1515,7 +1515,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
             System.err.println("gui-menu für " + locale.toString());
             return;
         }
-                
+        
         menuProg.setText(tr("menuProgramm"));
         menuProg.setMnemonic((tr("mnProgramm")).charAt(0));
         itemSpeichern.setText(tr("itemSpeichern"));
@@ -1613,19 +1613,19 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
         knopfLöschen.setToolTipText(tr("knttipLoeschen"));
         knopfAllesZurücksetzen.setToolTipText(tr("knttipAllesZurueck"));
         knopfEigenschaften.setToolTipText(tr("knttipEigenschaft"));
-            
+        
         this.setTitle("Fachwerk3D - " +tr("programmtitel"));
         befehlSpracheGewechselt();
         pack();
     }
     
-    private String tr(String key) {        
+    private String tr(String key) {
         String übersetzt;
         try {übersetzt = menuRB.getString(key);}
         catch (MissingResourceException e) {
             System.err.println("Schluesselwort + " + key + " nicht gefunden fuer " + locale.toString() + " ; " + e.toString());
             return key;
-        }        
+        }
         return übersetzt;
     }
     
@@ -1637,7 +1637,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
         locale = lc;
         übersetzen(locale);
     }
-        
+    
     protected abstract void befehlSpeichern();
     protected abstract void befehlDrucken();
     protected abstract void befehlDruckenGraph();
@@ -1656,10 +1656,10 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     protected abstract void befehlZeigeStabNr(boolean status);
     protected abstract void befehlZeigeStabkräfte(boolean status);
     protected abstract void befehlZeigeLasten(boolean status);
-    protected abstract void befehlZeigeAuflagerkräfte(boolean status);   
+    protected abstract void befehlZeigeAuflagerkräfte(boolean status);
     
     protected abstract void befehlSelektiereKnotenNr();
-    protected abstract void befehlSelektiereStabNr();    
+    protected abstract void befehlSelektiereStabNr();
     protected abstract void befehlErstelleNeuenKnoten();
     protected abstract void befehlErstelleNeuenStab();
     protected abstract void befehlLöschen();
@@ -1685,10 +1685,10 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     protected abstract void befehlInfo();
     
     protected abstract void befehlGewähltIstStab(boolean status);
-    protected abstract void befehlGewähltIstKnoten(boolean status); 
-        
+    protected abstract void befehlGewähltIstKnoten(boolean status);
+    
     protected abstract void befehlErstelleNeuenKnotenMaus(boolean status);
-    protected abstract void befehlErstelleNeuenStabMaus(boolean status);    
+    protected abstract void befehlErstelleNeuenStabMaus(boolean status);
     protected abstract void befehlErstelleNeuenKnotenSnap(boolean status);
     protected abstract void befehlZoomMaus(boolean status);
     protected abstract void befehlZoomOut();
@@ -1707,7 +1707,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     
     protected boolean KnopfStabistgedrückt() {
         return knopfStab.isSelected();
-    }  
+    }
     
     protected boolean KnopfKnotenistgedrückt() {
         return knopfKnoten.isSelected();
@@ -1733,7 +1733,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     
     protected void setKnopfStab(boolean gedrückt) {
         knopfStab.setSelected(gedrückt);
-    }    
+    }
     
     protected void setKnopfKnoten(boolean gedrückt) {
         knopfKnoten.setSelected(gedrückt);
@@ -1800,15 +1800,15 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     }
     protected boolean LayerKnNr() {
         return knopfKnNr.isSelected();
-    }    
+    }
     protected boolean LayerStNr() {
         return knopfStNr.isSelected();
     }
-        
+    
     protected boolean LayerStKraft() {
         return knopfKraft.isSelected();
     }
-        
+    
     protected boolean LayerLasten() {
         return knopfLast.isSelected();
     }
