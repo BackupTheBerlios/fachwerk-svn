@@ -8,16 +8,14 @@ package Fachwerk.gui;
 
 import Fachwerk.statik.*;
 import java.util.*;
-import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.*;
 import java.awt.print.*;
 
 
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -56,8 +54,8 @@ public class clPrintPanel extends clHauptPanel implements Printable {
     final int schriftgrRes = 7;
     final int schriftgrSys = 6;
     
-    double dpi = 72d / printskal;
-    double druckvergr = 300d/dpi * (20.8-2*2.5)/(33.5-5.); // Druckaufl/Bildschirmaufl * BreiteA4/BreiteBildschirm
+    final double dpi = 72d / printskal;
+    double druckvergr = 300d/dpi * (20.8-2.*2.5)/(33.5-5.); // Druckaufl/Bildschirmaufl * BreiteA4/BreiteBildschirm
     
     double antSys = 1d - antRes;
     double antSysgra = antHorLinks * antRes;

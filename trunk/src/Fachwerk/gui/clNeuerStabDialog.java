@@ -38,7 +38,7 @@ import java.util.*;
  *
  * Sie sollten eine Kopie der GNU General Public License zusammen  mit
  * diesem Programm erhalten haben. Falls nicht, schreiben Sie an die
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA. 
+ * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 public class clNeuerStabDialog extends javax.swing.JDialog {
     
@@ -61,7 +61,7 @@ public class clNeuerStabDialog extends javax.swing.JDialog {
         }
         übersetzen();
         tastenbelegen();
-        pack(); 
+        pack();
         zentriere(parent);
         show();
     }
@@ -146,7 +146,7 @@ public class clNeuerStabDialog extends javax.swing.JDialog {
     }//GEN-END:initComponents
 
     private void feldBisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_feldBisActionPerformed
-        okdurchEnteroderKnopf();        
+        okdurchEnteroderKnopf();
     }//GEN-LAST:event_feldBisActionPerformed
 
     private void feldVonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_feldVonActionPerformed
@@ -171,22 +171,22 @@ public class clNeuerStabDialog extends javax.swing.JDialog {
     private void übersetzen() {
         this.setTitle(tr("titel-NeuerStDialog"));
         
-        btOK.setText(tr("OK"));        
+        btOK.setText(tr("OK"));
         btAbbruch.setText(tr("Abbruch"));
         jLabel1.setText(tr("neuenStabeinf"));
         jLabel2.setText(tr("von"));
-        jLabel3.setText(tr("bis"));              
+        jLabel3.setText(tr("bis"));
     }
     
-    private void okdurchEnteroderKnopf() {        
+    private void okdurchEnteroderKnopf() {
         try {
             vonkn = Fkt.holInt(feldVon.getText());
             biskn = Fkt.holInt(feldBis.getText());
         }
-        catch (IllegalArgumentException e) {            
+        catch (IllegalArgumentException e) {
             return;
         }
-           
+        
         if (vonkn > 0 && biskn > 0) {
             OK = true;
             setVisible(false);
@@ -200,7 +200,7 @@ public class clNeuerStabDialog extends javax.swing.JDialog {
         if (OK) {
             try {
                 vonkn = Fkt.holInt(feldVon.getText());
-                biskn = Fkt.holInt(feldBis.getText()); 
+                biskn = Fkt.holInt(feldBis.getText());
                 
                 if (vonkn < 1 || biskn < 1) {
                     String meldung = "von: " + feldVon.getText() + "   bis " + feldBis.getText();
@@ -209,17 +209,17 @@ public class clNeuerStabDialog extends javax.swing.JDialog {
             }
             catch (IllegalArgumentException e) {
                 System.out.println(e.toString());
-                return false;            
+                return false;
             }
             return true;
         }
-        else return false;        
+        else return false;
     }
     
     /**
      * Liest neue Knotendaten ein. Liefert true, wenn erfolgreich
      */
-    public int[] einlesen() {             
+    public int[] einlesen() {
         int[] vonbis = new int[2];
         vonbis[0] = vonkn;
         vonbis[1] = biskn;
@@ -252,13 +252,13 @@ public class clNeuerStabDialog extends javax.swing.JDialog {
         this.setLocation(OL);
     }
     
-    private String tr(String key) {        
+    private String tr(String key) {
         String übersetzt;
         try {übersetzt = dialogRB.getString(key);}
         catch (MissingResourceException e) {
             System.err.println("Schluesselwort + " + key + " nicht gefunden fuer " + locale.toString() + " ; " + e.toString());
             return key;
-        }        
+        }
         return übersetzt;
     }
     

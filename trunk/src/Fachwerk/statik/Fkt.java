@@ -7,7 +7,7 @@
 package Fachwerk.statik;
 
 /** 
- * Copyright (c) 2003 - 2007 A.Vontobel <qwert2003@users.berlios.de>
+ * Copyright (c) 2003 - 2008 A.Vontobel <qwert2003@users.berlios.de>
  *                                      <qwert2003@users.sourceforge.net>
  * 
  * Dieses Programm ist freie Software. Sie können es unter den Bedingungen
@@ -29,6 +29,7 @@ public final class Fkt {
     public Fkt() {
     }
     
+    /** @deprecated  */
     public static double holZahl(java.lang.String str) {
         Double a;
         
@@ -42,6 +43,7 @@ public final class Fkt {
         }
     }
     
+    /** @deprecated  */
     public static int holInt(java.lang.String str) {
         int a;
         
@@ -55,6 +57,7 @@ public final class Fkt {
         }
     }
     
+    /** @deprecated  */
     public static double fix(double zahl, int anzStellen) {
         double erweitern = Math.pow(10d, anzStellen);
         return Math.round(erweitern * zahl) / erweitern;
@@ -117,7 +120,7 @@ public final class Fkt {
     }
     
     /** Normiert einen Vektor, der ursprüngliche Vektor bleibt unverändert
-     @returns normierter Vektor */
+     @return normierter Vektor */
     public static double[] normiere(double[] vektor) {
         assert vektor.length > 0;
         double nenner = 0;

@@ -24,7 +24,7 @@ import java.awt.print.*;
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2008 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -57,7 +57,7 @@ public class treillis extends clOberflaeche implements inKonstante {
     private static final String PROGNAME = "Fachwerk"; // in clOberflaeche nochmals hart kodiert (Titel)
     private static final int HAUPTVER = 0;
     private static final int UNTERVER = 32; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
-    private static final int JAHR = 2008;
+    private static final int JAHR = 2009;
     private final String FILEPROGNAME = "treillis";
     private final int FILEVER = 1;
     
@@ -201,7 +201,7 @@ public class treillis extends clOberflaeche implements inKonstante {
             }
         }
         
-       
+        
         
         if (help) {
             System.out.println("");
@@ -227,13 +227,13 @@ public class treillis extends clOberflaeche implements inKonstante {
             return; //System.exit(0); // BEENDET DAS PROGRAMM
         }
         
-        // LookAndFeel setzen.        
+        // LookAndFeel setzen.
         boolean laf_gesetzt = false;
         try {
             if (!laf_gesetzt && lookAndFeel.equalsIgnoreCase("Java")) {
                 UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
                 laf_gesetzt = true;
-            } 
+            }
             if (!laf_gesetzt && lookAndFeel.equalsIgnoreCase("System")) {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 laf_gesetzt = true;
@@ -260,12 +260,12 @@ public class treillis extends clOberflaeche implements inKonstante {
                 // nicht setzten, damit von Befehlszeile aus festlegbar
                 // z.B. java -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel ...
                 laf_gesetzt = true;
-            } 
-                        
+            }
+            
             if (!laf_gesetzt) {
                 UIManager.setLookAndFeel(lookAndFeel);
-            }                       
-        } 
+            }
+        }
         catch (Exception e) { // macht nichts
             System.err.println("LookAndFeel " + lookAndFeel +" could not be set. Standard LookAndFeel used instead.");
         }
@@ -319,7 +319,7 @@ public class treillis extends clOberflaeche implements inKonstante {
             case SCHIEBEKNOTEN: // lassen
             case ZOOMxy: // lassen
             default:
-        }        
+        }
         
         // BEGINN
         keinFEHLER = true;
@@ -879,7 +879,7 @@ public class treillis extends clOberflaeche implements inKonstante {
         OptionVorber = status;
     }
     
-    protected void befehlSchiebeKnMaus(boolean status) { 
+    protected void befehlSchiebeKnMaus(boolean status) {
         setKnopfKnoten(false);
         setKnopfStab(false);
         setKnopfNeuerStab(false);
@@ -887,7 +887,7 @@ public class treillis extends clOberflaeche implements inKonstante {
         setKnopfNeuerKnoten(false);
         setKnopfNeuerKnotenSnap(false);
         if (status) {
-            mausAufgabe = SCHIEBEKNOTEN; 
+            mausAufgabe = SCHIEBEKNOTEN;
             selModus = KNOTEN;
         }
         else {
@@ -1161,7 +1161,7 @@ public class treillis extends clOberflaeche implements inKonstante {
             case SCHIEBEKNOTEN: // lassen
             case ZOOMxy: // lassen
             default:
-        }        
+        }
         
         // BEGINN
         keinFEHLER = true;
@@ -1266,7 +1266,7 @@ public class treillis extends clOberflaeche implements inKonstante {
     
     protected void befehlAddinKoordTransDXF() {
         if (dxf != null) {
-            clKoordTransDXF ctdxf = new clKoordTransDXF(dxf, this, locale);        
+            clKoordTransDXF ctdxf = new clKoordTransDXF(dxf, this, locale);
             hp.neuzeichnen();
         }
     }
@@ -1318,7 +1318,7 @@ public class treillis extends clOberflaeche implements inKonstante {
         aktuellKn = (clKnoten) Knotenliste.get(2-1); aktuellKn.setLast(50,20);
         
         // eine Stabkraft zuweisen
-        aktuellSt = (clWissenderStab) Stabliste.get(5-1); 
+        aktuellSt = (clWissenderStab) Stabliste.get(5-1);
         aktuellSt.stab.setKraft(GESETZT, -32.01562119);
     }
     
@@ -2321,7 +2321,7 @@ public class treillis extends clOberflaeche implements inKonstante {
         clKnoten aktKn = (clKnoten) Knotenliste.get(aktWSt.von-1);
         Point2D stabanfang = new Point2D.Double();
         stabanfang.setLocation(aktKn.getX(), aktKn.getZ());
-        aktKn = (clKnoten) Knotenliste.get(aktWSt.bis-1);        
+        aktKn = (clKnoten) Knotenliste.get(aktWSt.bis-1);
         double dx = aktKn.getX() - stabanfang.getX();
         double dz = aktKn.getZ() - stabanfang.getY(); // ist z-Koordinate !
         
@@ -2410,7 +2410,7 @@ public class treillis extends clOberflaeche implements inKonstante {
                 break;
             /*
             case KeyEvent.VK_F9:       // F9 gedrückt
-                befehlBerechne(); 
+                befehlBerechne();
                 break;
             */
             case KeyEvent.VK_F11:        // F11 gedrückt
