@@ -24,7 +24,7 @@ public class clInfo extends javax.swing.JDialog {
     private String Copyright;
     
     private final String Lizenz_de =
-    "Dieses einfache Fachwerkprogramm verwendet ausschliesslich die " +
+    "Dieses einfach zu bedienende Fachwerkprogramm verwendet ausschliesslich die " +
     "Gleichgewichtsbedingungen zur Bestimmung der Stabkräfte." + '\n' +
     "Bei statisch unbestimmten Systemen können die überzähligen Stabkräfte " +
     "zugewiesen werden." + '\n' +
@@ -58,15 +58,15 @@ public class clInfo extends javax.swing.JDialog {
     private final String Lizenz_en =
     
     "Fachwerk calculates strut-and-tie models used by structural engineers for analysing " +
-    "and designing reinforced concrete structures. The program only uses the equilibrium " +
-    "conditions, thus it is not assuming elastic behaviour. If the system is statically " +
+    "and designing reinforced concrete structures. The program only uses equilibrium " +
+    "conditions, thus it does not assume elastic material behaviour. If the system is statically " +
     "indeterminate, the redundant forces can be set." + '\n' +
     "This program aims to simplify the application of the theory of plasticity's " +
     "lower bound (static) theorem." + '\n' + '\n' +
     '\n' +
     "CAUTION:" +'\n' +
     "--------" +'\n' +
-    "This program could contain ERRORS. All results must be verified " +
+    "This program may contain ERRORS. All results must be verified " +
     "CAREFULLY in order to state that they are PLAUSIBLE!" + '\n' +
     '\n' + '\n' +
     "DISCLAIMER:" +'\n' +

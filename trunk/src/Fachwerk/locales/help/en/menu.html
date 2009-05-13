@@ -19,7 +19,7 @@ are listed, showing their coordinates, loads and member forces.</p>
 <h4><img src="../../../gui/icons/fileprint.png" align="bottom" border="0" height="16" width="16">
 print graphic</h4>
 <p>The graphical representation of the model will be printed. The
-zoom and layer settings will be respected. You can specifiy the
+zoom and layer settings will be respected. You can specify the
 scale.</p>
 <h4><img src="../../../gui/icons/fileopen.png" align="bottom" border="0" height="18" width="18">
 load</h4>
@@ -112,18 +112,18 @@ node.</p>
 deactivated. Normally both static methods are activated.</p>
 <h4>preconditioning</h4>
 <p>Often the <i>number of unknown member forces</i> can be <i>reduced</i>
-by this method.<br>Additionally the algorithm serves to <i>localize
+by this method.<br>Additionally the algorithm serves to <i>localise
 inconsistencies</i> in the nodes equilibrium.<br>The 'preconditioning' can be turned off safely.</p>
 <h4>solver</h4>
 <p>The system of equations contains two equilibrium conditions for
 each (open) node. The global equilibrium contributes three
 equations.<br>This solver has a special quality: it finds determinate
 member and bearing forces, even if the system as a hole is statically
-indeterminate.<br>Usually the 'solver' <i>must </i>be turned <i>on</i>.</p>
-<h4>mechnisms (kinematic method)</h4><p>The program looks for
+indeterminate.<br>The 'solver' <i>must </i>be turned <i>on</i>, unless one is only interested in mechanism check.</p>
+<h4>mechanisms (kinematic method)</h4><p>The program looks for
 mechanisms proving that equilibrium is not satisfied. A mechanism is
 shown graphically. Mechanisms due to instabilities that do not
-contradict equilibrium are disregarded.<br></p><p><br>
+contradict equilibrium are disregarded.<br>Usually the mechanism check <i>must </i>be turned <i>on</i>.</p><p><br>
 </p>
 <h3>Additions</h3>
 <p>This item contains features that extend the basic functions of the
@@ -141,7 +141,7 @@ transformation done within Fachwerk will not be saved.</p>
 <h4>find node position</h4>
 <p>The selected node will be moved along a straight line, until a
 required member force is achieved.<br>Example: Find the exact node
-position in order that the member force in a «stabilizer»
+position in order that the member force in a «stabiliser»
 really is zero. Afterwards you can remove that member.<br>First
 select the node you want to move. You will be asked for a vector. The
 straight line is actually defined by the initial node position and
@@ -151,11 +151,11 @@ starting point of the iteration.<br>If no node position is found,
 that leads to the required member force, the initial situation will
 be restored. (I.e. because the member force is independent of the
 node position, or because the iteration using the given starting
-points doesn't converge.)</p>
+points does not converge.)</p>
 <h4>propose member forces</h4>
 <p>Proposes member forces if the system is statically indeterminate. 
-The calculation is linear-elastic and assumes a ratio compression to 
-tension stiffness  EA,c/EA,t = 10<br> One has to judge if the proposed 
+The calculation is linear-elastic and assumes a compression to 
+tension stiffness ratio  EA,c/EA,t = 10<br> One has to judge if the proposed 
 member forces are reasonable for the given case.</p>
 <p><br><br>
 </p>
