@@ -36,10 +36,10 @@ import java.awt.print.*;
  * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
- * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
+ * Dieses einfach zu bedienende Fachwerkprogramm verwendet ausschliesslich die
  * Gleichgewichtsbedingungen zur Bestimmung der Stabkräfte.
  * Bei statisch unbestimmten Systemen können die überzähligen Stabkräfte
  * zugewiesen werden.
