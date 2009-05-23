@@ -1,0 +1,38 @@
+// Ein Beispiel, das verschiedene Eingabemöglichkeiten zeigt.
+// This example what kind of input structure the parser does accept.
+// See the programs help for a well structured input file.
+
+# Koordinatenpunkte zu Beginn der Datei werden als Punkte gedeutet.
+0,  6
+4  2
+P
+4  6
+9  2
+# Kommentar
+13 0 2
+13  6
+Line
+0, 6
+4; 2
+9,2
+
+Linie
+9 2
+13	2
+Point
+9  6
+
+
+Kreis	# You could write "Circle" as well
+5 5	
+2	# Radius
+
+Bogen
+13 6
+2 270 0
+Bogen
+9 6
+2 0 -90 # Radius Start- Endwinkel
+
+// P.S. Kommentare hinter einer Koordinatenangabe sind nicht erlaubt.
+// P.S. Do not put comments behind coordinates.
