@@ -68,7 +68,7 @@ public final class GLSsolver {
     
     private int anzUnbestParam; // Anzahl unbestimmter Parameter (d.h. Anz. fehlende unabh. Gl.)
     
-    private final double TOL = inKonstante.TOL_gls; // double TOL = 1E-10;
+    private double TOL = inKonstante.TOL_gls; // double TOL = 1E-10;
     // womöglich wird der Toleranzcheck mittels der in colt eigebauten Toleranz über cardinality
     // durchgeführt. Ist vorteilhaft, da der Rang des GLS mit dieser internen Toleranz bestimmt wird.
     // dieser Wert muss grösser (ev. >=) sein als in clFachwerk zB +E-11
@@ -158,7 +158,14 @@ public final class GLSsolver {
         if (debug) System.out.println("Anz unbest Parameter: " + anzUnbestParam);
     }
     
-    
+
+    /* Überschreibt die standardmässig gesetzte Null-Toleranz inKonstante.TOL_gls.
+     * @param toleranz Werte kleiner als toleranz werden bei Kontrollen als Null angesehen*/
+    public void setTol(double toleranz) {
+        assert toleranz > 0;
+        assert toleranz < 1E-5;
+        TOL = toleranz;
+    }
     
     /**
      * @param args the command line arguments

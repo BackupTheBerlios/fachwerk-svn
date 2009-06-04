@@ -56,7 +56,7 @@ public class treillis extends clOberflaeche implements inKonstante {
     
     private static final String PROGNAME = "Fachwerk"; // in clOberflaeche nochmals hart kodiert (Titel)
     private static final int HAUPTVER = 0;
-    private static final int UNTERVER = 32; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
+    private static final int UNTERVER = 33; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
     private static final int JAHR = 2009;
     private final String FILEPROGNAME = "treillis";
     private final int FILEVER = 1;
