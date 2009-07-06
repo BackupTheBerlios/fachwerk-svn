@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
@@ -670,11 +670,11 @@ public class clKnotenDialog extends javax.swing.JDialog implements inKonstante {
      */
     public boolean einlesen() {
         try {
-            x = Fkt.holZahl(feldX.getText());
-            z = Fkt.holZahl(feldZ.getText());
-            Lx = Fkt.holZahl(feldLx.getText());
-            Lz = Fkt.holZahl(feldLz.getText());
-            alpha = Math.toRadians(Fkt.holZahl(feldAlpha.getText()));
+            x = Double.parseDouble(feldX.getText());
+            z = Double.parseDouble(feldZ.getText());
+            Lx = Double.parseDouble(feldLx.getText());
+            Lz = Double.parseDouble(feldLz.getText());
+            alpha = Math.toRadians(Double.parseDouble(feldAlpha.getText()));
             
             int anzmarkiert = 0;
             if (rbFIX.isSelected()) {
@@ -691,7 +691,7 @@ public class clKnotenDialog extends javax.swing.JDialog implements inKonstante {
             }
             if (anzmarkiert != 1) throw new IllegalArgumentException("genau eine Lagerbedingung markieren!");
         }
-        catch (IllegalArgumentException e) {
+        catch (NumberFormatException e) {
             System.out.println(e.toString());
             return false;
         }

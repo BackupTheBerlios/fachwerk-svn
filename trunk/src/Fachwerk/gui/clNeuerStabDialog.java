@@ -6,7 +6,6 @@
 
 package Fachwerk.gui;
 
-import Fachwerk.statik.*;
 import java.util.*;
 
 /**
@@ -180,10 +179,10 @@ public class clNeuerStabDialog extends javax.swing.JDialog {
     
     private void okdurchEnteroderKnopf() {
         try {
-            vonkn = Fkt.holInt(feldVon.getText());
-            biskn = Fkt.holInt(feldBis.getText());
+            vonkn = Integer.parseInt(feldVon.getText());
+            biskn = Integer.parseInt(feldBis.getText());
         }
-        catch (IllegalArgumentException e) {
+        catch (NumberFormatException e) {
             return;
         }
         
@@ -199,15 +198,15 @@ public class clNeuerStabDialog extends javax.swing.JDialog {
         // testet nur, ob die Eingabe formal korrekt ist. Der eigentliche Test erfolgt in treillis.befehlErstelleNeuenStab
         if (OK) {
             try {
-                vonkn = Fkt.holInt(feldVon.getText());
-                biskn = Fkt.holInt(feldBis.getText());
+                vonkn = Integer.parseInt(feldVon.getText());
+                biskn = Integer.parseInt(feldBis.getText());
                 
                 if (vonkn < 1 || biskn < 1) {
                     String meldung = "von: " + feldVon.getText() + "   bis " + feldBis.getText();
-                    throw new IllegalArgumentException(meldung);
+                    throw new NumberFormatException(meldung);
                 }
             }
-            catch (IllegalArgumentException e) {
+            catch (NumberFormatException e) {
                 System.out.println(e.toString());
                 return false;
             }
@@ -217,7 +216,7 @@ public class clNeuerStabDialog extends javax.swing.JDialog {
     }
     
     /**
-     * Liest neue Knotendaten ein. Liefert true, wenn erfolgreich
+     * Liest neue Knotendaten ein.
      */
     public int[] einlesen() {
         int[] vonbis = new int[2];

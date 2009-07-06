@@ -29,7 +29,7 @@ public final class Fkt {
     public Fkt() {
     }
     
-    /** @deprecated  */
+    /** @deprecated stattdessen Double.parseDouble() verwenden. Vorsicht unterschiedliches Fehlerverhalten. */
     public static double holZahl(java.lang.String str) {
         Double a;
         
@@ -43,7 +43,7 @@ public final class Fkt {
         }
     }
     
-    /** @deprecated  */
+    /** @deprecated stattdessen Integer.parseInt() verwenden. Vorsicht unterschiedliches Fehlerverhalten. */
     public static int holInt(java.lang.String str) {
         int a;
         
@@ -57,7 +57,8 @@ public final class Fkt {
         }
     }
     
-    /** @deprecated  */
+    /** Rundet die Zahl auf die gewünschte Anzahl Stellen.
+     * Für formatierten Text stattdessen Fkt.nf() verwenden. */
     public static double fix(double zahl, int anzStellen) {
         double erweitern = Math.pow(10d, anzStellen);
         return Math.round(erweitern * zahl) / erweitern;

@@ -362,9 +362,9 @@ public class clStabDialog extends javax.swing.JDialog implements inKonstante {
         
         else {
             try {
-                kraft = Fkt.holZahl(feldKraft.getText());
+                kraft = Double.parseDouble(feldKraft.getText());
             }
-            catch (IllegalArgumentException e) {
+            catch (NumberFormatException e) {
                 System.out.println(e.toString());
                 return false;
             }

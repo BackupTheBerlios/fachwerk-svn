@@ -6,7 +6,6 @@
 
 package Fachwerk.gui;
 
-import Fachwerk.statik.*;
 import java.util.*;
 
 /**
@@ -177,10 +176,16 @@ public class clWaehlenDialog extends javax.swing.JDialog {
     
     public int getNr() {
         if (OK) {
-            int nr = Fkt.holInt(feldEingabe.getText());
+            int nr;
+            try {
+                nr = Integer.parseInt(feldEingabe.getText());
+            } catch (NumberFormatException e) {
+                System.out.println(e.toString());
+                nr = -1;
+            }
             return nr;
-        }
-        else return -1;
+        } else
+            return -1;
     }
     
     private void tastenbelegen() {

@@ -495,12 +495,12 @@ public class clguiFindeOrt extends javax.swing.JDialog implements inKonstante {
      */
     public boolean einlesen() {
         try {
-            dx = Fkt.holZahl(felddx.getText());
-            dz = Fkt.holZahl(felddz.getText());
+            dx = Double.parseDouble(felddx.getText());
+            dz = Double.parseDouble(felddz.getText());
             stabnr = Integer.parseInt(feldStabnr.getText());
-            F = Fkt.holZahl(feldN.getText());
+            F = Double.parseDouble(feldN.getText());
         }
-        catch (IllegalArgumentException e) {
+        catch (NumberFormatException e) {
             System.out.println(e.toString());
             return false;
         }

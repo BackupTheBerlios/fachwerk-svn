@@ -5,8 +5,8 @@
  *
  * Fachwerk - treillis
  *
- * Copyright (c) 2003, 2004 A.Vontobel <qwert2003@users.sourceforge.net>
- *                                     <qwert2003@users.berlios.de>
+ * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
+ *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
@@ -31,7 +31,7 @@
  *
  * Sie sollten eine Kopie der GNU General Public License zusammen  mit
  * diesem Programm erhalten haben. Falls nicht, schreiben Sie an die
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.  
+ * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
  
 
@@ -52,7 +52,7 @@ public class clKoord implements Cloneable {
     
     boolean debug = false;
     
-    private double x0, z0, lx, lz;    
+    private double x0, z0, lx, lz;
     private double x0_pix, z0_pix, lx_pix, lz_pix;
     
     //private Point2D transformierterPkt;  // nur "Arbeitspunkt", um Speicher nicht jedesmal neu anzufordern.
@@ -60,8 +60,8 @@ public class clKoord implements Cloneable {
     /** Creates a new instance of clKoord 
      *  Eingabe in Metern, d.h. Fachwerkkoordinaten.
      */
-    public clKoord(Point2D Pkt1_in_m, Point2D Pkt2_in_m, JPanel zeichenfläche) {   
-                
+    public clKoord(Point2D Pkt1_in_m, Point2D Pkt2_in_m, JPanel zeichenfläche) {
+
         // metrische Werte, d.h. Fachwerkkoordinaten
         double[] xwerte = {Pkt1_in_m.getX(), Pkt2_in_m.getX()};
         double[] zwerte = {Pkt1_in_m.getY(), Pkt2_in_m.getY()};
@@ -72,14 +72,14 @@ public class clKoord implements Cloneable {
         
         if (debug) System.out.println("Pkt1: "+Pkt1_in_m.toString());
         if (debug) System.out.println("Pkt2: "+Pkt2_in_m.toString());
-        //if (debug) System.out.println("x0 =" + Fkt.fix(x0,1) + "    lx =  " + Fkt.fix(lx,1));
-        //if (debug) System.out.println("z0 =" + Fkt.fix(z0,1) + "    lz =  " + Fkt.fix(lz,1));
+        //if (debug) System.out.println("x0 =" + Fkt.nf(x0,1) + "    lx =  " + Fkt.nf(lx,1));
+        //if (debug) System.out.println("z0 =" + Fkt.nf(z0,1) + "    lz =  " + Fkt.nf(lz,1));
         
         // Pixelwerte, d.h. Koordinatensystem des Panels
         x0_pix = 0;
         z0_pix = 0;
         //x0_pix = zeichenfläche.getLocation().getX();
-        //z0_pix = zeichenfläche.getLocation().getY();        
+        //z0_pix = zeichenfläche.getLocation().getY();
         lx_pix = (double) zeichenfläche.getWidth();
         lz_pix = (double) zeichenfläche.getHeight();
         //if (debug) System.out.println("lx_pix: " + lx_pix + "   lz_pix: " + lz_pix);
@@ -107,18 +107,18 @@ public class clKoord implements Cloneable {
             x0 -= (lx - lxalt) / 2d; // zentrieren in x-Rtg
         }
         
-        if (debug) System.out.println("in Meter: x0=" + Fkt.fix(x0,1) + " lx="+Fkt.fix(lx,1)
-         + " z0="+Fkt.fix(z0,1) + " lz="+Fkt.fix(lz,1));
-        if (debug) System.out.println("in Pixel: x0=" + Fkt.fix(x0_pix,1) + " lx="+Fkt.fix(lx_pix,1)
-         + " z0="+Fkt.fix(z0_pix,1) + " lz="+Fkt.fix(lz_pix,1));
+        if (debug) System.out.println("in Meter: x0=" + Fkt.nf(x0,1) + " lx="+Fkt.nf(lx,1)
+         + " z0="+Fkt.nf(z0,1) + " lz="+Fkt.nf(lz,1));
+        if (debug) System.out.println("in Pixel: x0=" + Fkt.nf(x0_pix,1) + " lx="+Fkt.nf(lx_pix,1)
+         + " z0="+Fkt.nf(z0_pix,1) + " lz="+Fkt.nf(lz_pix,1));
         if (debug) System.out.println("x-Rtg ist massgebend: " + Xmgd);
     }
     
     /** Creates a new instance of clKoord 
      *  Eingabe in Metern, d.h. Fachwerkkoordinaten.
-     */    
-    public clKoord(Point2D Pkt1_in_m, Point2D Pkt2_in_m, JPanel zeichenfläche, double rand) {   
-                
+     */
+    public clKoord(Point2D Pkt1_in_m, Point2D Pkt2_in_m, JPanel zeichenfläche, double rand) {
+
         // metrische Werte, d.h. Fachwerkkoordinaten
         double[] xwerte = {Pkt1_in_m.getX(), Pkt2_in_m.getX()};
         double[] zwerte = {Pkt1_in_m.getY(), Pkt2_in_m.getY()};
@@ -126,10 +126,10 @@ public class clKoord implements Cloneable {
         z0 = Fkt.min(zwerte);
         lx = Fkt.max(xwerte) - x0;
         lz = Fkt.max(zwerte) - z0;
-                
+
         // Pixelwerte, d.h. Koordinatensystem des Panels
         x0_pix = rand;
-        z0_pix = rand;             
+        z0_pix = rand;
         lx_pix = (double) zeichenfläche.getWidth()  - x0_pix - rand;
         lz_pix = (double) zeichenfläche.getHeight() - z0_pix - rand;        
         
@@ -161,7 +161,7 @@ public class clKoord implements Cloneable {
      *  Eingabe in Metern, d.h. Fachwerkkoordinaten.
      *  massstabsetzen = true, prixprom: Pixel pro Meter
      */
-    public clKoord(Point2D Pkt1_in_m, Point2D Pkt2_in_m, JPanel zeichenfläche, boolean massstabsetzen, double pixprom) { 
+    public clKoord(Point2D Pkt1_in_m, Point2D Pkt2_in_m, JPanel zeichenfläche, boolean massstabsetzen, double pixprom) {
         assert massstabsetzen; // nur hier, um anderen Konstruktor zu haben als jener mit Rand
         // metrische Werte, d.h. Fachwerkkoordinaten
         double[] xwerte = {Pkt1_in_m.getX(), Pkt2_in_m.getX()};
@@ -170,10 +170,10 @@ public class clKoord implements Cloneable {
         z0 = Fkt.min(zwerte);
         lx = Fkt.max(xwerte) - x0;
         lz = Fkt.max(zwerte) - z0;
-                
+
         // Pixelwerte, d.h. Koordinatensystem des Panels
         lx_pix = lx * pixprom;
-        lz_pix = lz * pixprom;        
+        lz_pix = lz * pixprom;
         x0_pix = (double) (zeichenfläche.getWidth()  - lx_pix) / 2d;
         z0_pix = (double) (zeichenfläche.getHeight() - lz_pix) / 2d;
         if (x0_pix < 0 || z0_pix < 0) System.out.println("Zeichnung groesser als der Papierbereich!");
@@ -184,7 +184,7 @@ public class clKoord implements Cloneable {
     /** Gibt den Punkt in Fachwerkkoordinaten [m] zurück.
      *  Eingabe in Panelkoordinaten [pixel].
      */
-    public Point2D m(Point2D Pkt_in_panel) {        
+    public Point2D m(Point2D Pkt_in_panel) {
         double x_in_m = x0;
         double z_in_m = z0;
         x_in_m += lx * (Pkt_in_panel.getX() - x0_pix) / lx_pix;
@@ -212,11 +212,11 @@ public class clKoord implements Cloneable {
         double z_pix = z0_pix;
         x_pix += lx_pix * (Pkt_in_m.getX() - x0) / lx;
         z_pix += lz_pix * (Pkt_in_m.getY() - z0) / lz;
-                
+
         //transformierterPkt = new Point2D.Double();
         //transformierterPkt.setLocation(x_pix, z_pix);
         //return transformierterPkt;
-        return new Point2D.Double(x_pix, z_pix);        
+        return new Point2D.Double(x_pix, z_pix);
     }
     
     /** Eingabe: Meter
@@ -233,6 +233,6 @@ public class clKoord implements Cloneable {
         }
         catch (CloneNotSupportedException e) {
             throw new InternalError();
-        } 
+        }
     }
 }
