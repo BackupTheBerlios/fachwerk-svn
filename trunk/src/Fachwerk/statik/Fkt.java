@@ -7,7 +7,7 @@
 package Fachwerk.statik;
 
 /** 
- * Copyright (c) 2003 - 2008 A.Vontobel <qwert2003@users.berlios.de>
+ * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.berlios.de>
  *                                      <qwert2003@users.sourceforge.net>
  * 
  * Dieses Programm ist freie Software. Sie können es unter den Bedingungen

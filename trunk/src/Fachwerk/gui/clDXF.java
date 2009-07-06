@@ -5,10 +5,10 @@
 
  * Fachwerk - treillis
  *
- * Copyright (c) 2004, 2005 A.Vontobel <qwert2003@users.sourceforge.net>
- *                                     <qwert2003@users.berlios.de>
+ * Copyright (c) 2004 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
+ *                                      <qwert2003@users.berlios.de>
  *
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
  * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
@@ -46,17 +46,17 @@ public class clDXF {
     ArrayList hgPunkte = new ArrayList();
     ArrayList hgKreise = new ArrayList();
     ArrayList hgBogen  = new ArrayList();
-    private final int LINE = 1;
-    private final int POLYLINE = 2;
-    private final int LWPOLYLINE = 3;
-    private final int CIRCLE = 4;
-    private final int POINT = 5;
-    private final int TEXT = 6;
-    private final int ARC = 7;
-    private final int INSERT = 8;
-    private final int SOLID = 9;
-    private final int DIMENSION = 10;
-    private final int FEHLER = -1;
+    private static final int LINE = 1;
+    private static final int POLYLINE = 2;
+    private static final int LWPOLYLINE = 3;
+    private static final int CIRCLE = 4;
+    private static final int POINT = 5;
+    private static final int TEXT = 6;
+    private static final int ARC = 7;
+    private static final int INSERT = 8;
+    private static final int SOLID = 9;
+    private static final int DIMENSION = 10;
+    private static final int FEHLER = -1;
     
     public clDXF(String datei) {
         if (datei.endsWith("dxf")) {

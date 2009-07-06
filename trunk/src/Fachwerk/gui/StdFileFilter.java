@@ -42,7 +42,6 @@ package Fachwerk.gui;
 import java.io.File;
 import java.util.Hashtable;
 import java.util.Enumeration;
-import javax.swing.*;
 import javax.swing.filechooser.*;
 
 /**
@@ -156,7 +155,7 @@ public class StdFileFilter extends javax.swing.filechooser.FileFilter {
 	    String extension = getExtension(f);
 	    if(extension != null && filters.get(getExtension(f)) != null) {
 		return true;
-	    };
+	    }
 	}
 	return false;
     }
@@ -173,7 +172,7 @@ public class StdFileFilter extends javax.swing.filechooser.FileFilter {
 	    int i = filename.lastIndexOf('.');
 	    if(i>0 && i<filename.length()-1) {
 		return filename.substring(i+1).toLowerCase();
-	    };
+	    }
 	}
 	return null;
     }

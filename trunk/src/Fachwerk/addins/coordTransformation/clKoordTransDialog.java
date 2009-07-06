@@ -11,10 +11,10 @@ import java.util.*;
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2004 A.Vontobel <qwert2003@users.sourceforge.net>
- *                                     <qwert2003@users.berlios.de>
+ * Copyright (c) 2004 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
+ *                                      <qwert2003@users.berlios.de>
  *
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
  * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
@@ -68,7 +68,7 @@ public class clKoordTransDialog extends javax.swing.JDialog {
         }
         pack();
         zentriere(parent);
-        show();        
+        setVisible(true);
     }
     
     /** This method is called from within the constructor to

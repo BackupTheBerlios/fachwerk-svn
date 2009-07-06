@@ -12,10 +12,10 @@ import java.util.*;
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
  * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
@@ -38,7 +38,7 @@ import java.util.*;
  *
  * Sie sollten eine Kopie der GNU General Public License zusammen  mit
  * diesem Programm erhalten haben. Falls nicht, schreiben Sie an die
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.  
+ * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 public class clStabDialog extends javax.swing.JDialog implements inKonstante {
     
@@ -51,11 +51,11 @@ public class clStabDialog extends javax.swing.JDialog implements inKonstante {
     boolean ZURÜCKSETZEN = false;
     /*
     // Stabattribute
-    private final int UNBEST = 0;
-    private final int BER = 1;
-    private final int GESETZT = 2;
+    private static final int UNBEST = 0;
+    private static final int BER = 1;
+    private static final int GESETZT = 2;
     //private static final int WIDERSPR = 3;
-    private final int NICHTSETZBAR = 4;
+    private static final int NICHTSETZBAR = 4;
     */
     String statusstr, nrstr, vonknstr, bisknstr, kraftstr, lstr;
     double kraft;
@@ -134,7 +134,7 @@ public class clStabDialog extends javax.swing.JDialog implements inKonstante {
         // Cursor setzen
         if (status==UNBEST || status==GESETZT) feldKraft.requestFocus();
         else btNichtstun.requestFocus();
-        show();
+        setVisible(true);
     }
     
     /** This method is called from within the constructor to

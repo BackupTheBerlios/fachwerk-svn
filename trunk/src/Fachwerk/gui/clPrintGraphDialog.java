@@ -7,7 +7,6 @@
 package Fachwerk.gui;
 
 import Fachwerk.statik.Fkt;
-import java.math.*;
 import java.util.*;
 
 /**
@@ -16,7 +15,7 @@ import java.util.*;
  * Copyright (c) 2004 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                     <qwert2003@users.berlios.de>
  *
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
  * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
@@ -50,11 +49,11 @@ public class clPrintGraphDialog extends javax.swing.JDialog {
     double einheit = 1; // zB: cm --> 0.01 m
     boolean ABGEBROCHEN = false;
     
-    final int MST_MAX = 0;
-    final int MST_INDIVIDUELL = 1;
-    final int MST_VORSCHLAG = 2;
+    static final int MST_MAX = 0;
+    static final int MST_INDIVIDUELL = 1;
+    static final int MST_VORSCHLAG = 2;
     
-    final double mstliste[] = {1, 2, 5}; // vorzuschlagende Massstäbe: 1:10, 1: 20, 1: 50, 1: 100, etc
+    static final double mstliste[] = {1, 2, 5}; // vorzuschlagende Massstäbe: 1:10, 1: 20, 1: 50, 1: 100, etc
     
         
     /** Dialog zur Abfrage über den Massstab, mit welchem die Graphik gedruckt werden soll. */
@@ -72,11 +71,12 @@ public class clPrintGraphDialog extends javax.swing.JDialog {
         
         
         initComponents();
-        rbMst_max.setText("1:" + Fkt.nf(maxmst, 1));        
+        rbMst_max.setText("1:" + Fkt.nf(maxmst, 1));
         übersetzen();
-        pack(); 
+        pack();
         zentriere(parent);
-        show();        
+        setVisible(true);
+
     }
     
     /** This method is called from within the constructor to

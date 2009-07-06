@@ -8,16 +8,15 @@ package Fachwerk.addins.findeOrt;
 
 import Fachwerk.statik.*;
 import Fachwerk.gui.clWissenderStab;
-import Fachwerk.addins.findeOrt.clFindeOrt;
 import java.util.*;
 
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2007 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
  * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
@@ -109,7 +108,7 @@ public class clguiFindeOrt extends javax.swing.JDialog implements inKonstante {
         übersetzen();
         pack();
         zentriere(parent);
-        show();
+        setVisible(true);
     }
     
     /** This method is called from within the constructor to

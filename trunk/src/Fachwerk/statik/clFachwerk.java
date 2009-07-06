@@ -6,12 +6,10 @@
 
 package Fachwerk.statik;
 
-import cern.colt.Arrays;
-
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2007 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -78,9 +76,9 @@ public class clFachwerk implements inKonstante {
     //private int anzFG; // verbleibende Freiheitsgrade (unbestimmte Stabkräfte)
     
     
-    private final double TOL = TOL_vorberechnung;
+    private final static double TOL = TOL_vorberechnung;
     //private final double TOL = 1E-11; // um Gleichheit von Stabkräften zu erkennen (in rVorberechnung)
-    private final double TOLresultatcheck = TOL_resultatcheck;
+    private final static double TOLresultatcheck = TOL_resultatcheck;
     //private final double TOLresultatcheck = 1E-10; // dito, jedoch lascherer Wert, zB. TOL des GLS-Solvers
     
     private boolean WIDERSPRUCHaufgetreten = false;

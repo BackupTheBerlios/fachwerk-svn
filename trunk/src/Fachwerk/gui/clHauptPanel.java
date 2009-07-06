@@ -15,10 +15,10 @@ import java.awt.geom.*;
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
- *                                                                      <qwert2003@users.berlios.de>
+ * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
+ *                                      <qwert2003@users.berlios.de>
  *
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
  * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
@@ -63,9 +63,9 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
     private boolean MIT_Hilfslinie = false;
     private boolean MIT_Hilfsrechteck = false;
     
-    private final int DESELEKT = 0;
-    private final int KNOTEN = 1;
-    private final int STAB = 2;
+    private static final int DESELEKT = 0;
+    private static final int KNOTEN = 1;
+    private static final int STAB = 2;
     private int[] Selektion = new int[2]; // index 0: STAB,KNOTEN,DESELEKT; index 1: Nr mit 1 beginnend
     protected boolean ZOOMALL = true;
     private boolean HINTERGRUNDSELEKTIERT = false;
@@ -99,19 +99,19 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
     
     /*
      // Lagerattribute
-    protected final int LOS = 0;
-    protected final int FIX = 2;
-    protected final int VERSCHIEBLICH = 1;
+    protected static final int LOS = 0;
+    protected static final int FIX = 2;
+    protected static final int VERSCHIEBLICH = 1;
     // Stabattribute
-    protected final int UNBEST = 0;
-    protected final int BER = 1;
-    protected final int GESETZT = 2;
+    protected static final int UNBEST = 0;
+    protected static final int BER = 1;
+    protected static final int GESETZT = 2;
     //private static final int WIDERSPR = 3;
-    protected final int NICHTSETZBAR = 4;
+    protected static final int NICHTSETZBAR = 4;
     // Knotenattribute
-    protected final int OFFEN = 0;
-    protected final int FERTIG = 1;
-    protected final int WIDERSPRUCH = 3;
+    protected static final int OFFEN = 0;
+    protected static final int FERTIG = 1;
+    protected static final int WIDERSPRUCH = 3;
     */
     
     /** Creates new form clHauptPanel */
@@ -132,7 +132,7 @@ public class clHauptPanel extends javax.swing.JPanel implements inKonstante {
     
     
     public clHauptPanel(clKnoten[] p_Knotenarray, clWissenderStab[] p_Stabarray, boolean drucken) {
-        assert drucken = true;
+        assert drucken == true;
         
         Kn = new clKnoten[p_Knotenarray.length];
         St = new clWissenderStab[p_Stabarray.length];

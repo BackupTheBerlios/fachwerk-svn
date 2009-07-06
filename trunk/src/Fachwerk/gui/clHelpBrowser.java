@@ -6,13 +6,11 @@
 
 package Fachwerk.gui;
 
+import java.awt.event.MouseEvent;
 import javax.swing.*;
-import javax.swing.text.*;
-import javax.swing.text.html.*;
 import javax.swing.event.*;
 
 import java.awt.*;              //for layout managers and more
-import java.awt.event.*;        //for action events
 
 import java.net.URL;
 import java.io.IOException;
@@ -21,10 +19,10 @@ import java.util.*;
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2005 A.Vontobel <qwert2003@users.sourceforge.net>
- *                                     <qwert2003@users.berlios.de>
+ * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
+ *                                      <qwert2003@users.berlios.de>
  *
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
  * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
@@ -77,7 +75,7 @@ public class clHelpBrowser extends javax.swing.JFrame {
         this.spracheinstellungsdatei = spracheinstellungsdatei;
                 
         //Create an editor pane.
-        JEditorPane editorPane = createEditorPane();
+        editorPane = createEditorPane();
         JScrollPane editorScrollPane = new JScrollPane(editorPane);
         editorScrollPane.setVerticalScrollBarPolicy(
                         JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -87,7 +85,7 @@ public class clHelpBrowser extends javax.swing.JFrame {
         getContentPane().add(editorScrollPane, java.awt.BorderLayout.CENTER);
         tastenbelegen();
         pack();
-        show();
+        setVisible(true);
     }    
     
     private JEditorPane createEditorPane() {
@@ -137,7 +135,7 @@ public class clHelpBrowser extends javax.swing.JFrame {
         Locale loc;
         if (args.length == 0) loc = Locale.getDefault();
         else loc = new Locale(args[0]);        
-        new clHelpBrowser(loc, "Fachwerk/locales/LangSetting").show();
+        new clHelpBrowser(loc, "Fachwerk/locales/LangSetting").setVisible(true);
     }
     
     public void editorpaneHyperlinkUpdate(HyperlinkEvent e) {
@@ -160,8 +158,8 @@ public class clHelpBrowser extends javax.swing.JFrame {
      }
      
      private void editorPaneMouseClicked(java.awt.event.MouseEvent evt) {        
-         if (evt.getButton() == evt.BUTTON2 || // mittlere Maustaste gedrückt oder
-             (evt.getButton() == evt.BUTTON3 && evt.getClickCount() > 1)) { // Doppelklick rechte Maustaste             
+         if (evt.getButton() == MouseEvent.BUTTON2 || // mittlere Maustaste gedrückt oder
+             (evt.getButton() == MouseEvent.BUTTON3 && evt.getClickCount() > 1)) { // Doppelklick rechte Maustaste
              URL nochaktuelleSeite = editorPane.getPage();
              try {                 
                  editorPane.setPage(helpURL);                
@@ -172,7 +170,7 @@ public class clHelpBrowser extends javax.swing.JFrame {
              vorherigeSeite = nochaktuelleSeite;
          }
          
-         if (evt.getButton() == evt.BUTTON3 && evt.getClickCount() == 1) { // rechte Maustaste gedrückt             
+         if (evt.getButton() == MouseEvent.BUTTON3 && evt.getClickCount() == 1) { // rechte Maustaste gedrückt
              URL nochaktuelleSeite = editorPane.getPage();
              try {                 
                  editorPane.setPage(vorherigeSeite);                

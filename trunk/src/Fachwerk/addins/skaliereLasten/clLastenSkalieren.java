@@ -8,16 +8,17 @@ package Fachwerk.addins.skaliereLasten;
 
 import Fachwerk.statik.clKnoten;
 import Fachwerk.gui.clWissenderStab;
+import Fachwerk.statik.clStab;
 import java.util.*;
 
 
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2004 - 2005 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2004 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  * 
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
  * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
@@ -95,9 +96,9 @@ public class clLastenSkalieren {
         if (INKLSTABKRÄFTE) {
             for (Iterator it = Stabliste.iterator(); it.hasNext();) {
                 aktWSt = (clWissenderStab) it.next();
-                if (aktWSt.stab.getStatus() == aktWSt.stab.GESETZT) {
+                if (aktWSt.stab.getStatus() == clStab.GESETZT) {
                     N = faktor * aktWSt.stab.getKraft();
-                    aktWSt.stab.setKraft(aktWSt.stab.GESETZT, N);
+                    aktWSt.stab.setKraft(clStab.GESETZT, N);
                 }
             }
         }

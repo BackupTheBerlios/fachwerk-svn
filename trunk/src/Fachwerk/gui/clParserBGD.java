@@ -10,7 +10,7 @@
  * Copyright (c) 2004 A.Vontobel <qwert2003@users.sourceforge.net>
  *                               <qwert2003@users.berlios.de>
  *
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
  * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
@@ -33,7 +33,7 @@
  *
  * Sie sollten eine Kopie der GNU General Public License zusammen  mit
  * diesem Programm erhalten haben. Falls nicht, schreiben Sie an die
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA. 
+ * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
 package Fachwerk.gui;
@@ -49,14 +49,14 @@ public class clParserBGD {
     
     private final boolean debug = false;//true;
     
-    private final int OFFEN = -1;
-    private final int OTHER = 0;
-    private final int LINE = 1;
-    private final int POLYLINE = 2;
-    private final int CIRCLE = 4;
-    private final int POINT = 5;
-    private final int ARC = 7;
-    private final int SPHERE = 11;
+    private static final int OFFEN = -1;
+    private static final int OTHER = 0;
+    private static final int LINE = 1;
+    private static final int POLYLINE = 2;
+    private static final int CIRCLE = 4;
+    private static final int POINT = 5;
+    private static final int ARC = 7;
+    private static final int SPHERE = 11;
     
     boolean FEHLER;
     private int zeilennr = 0;
@@ -71,7 +71,7 @@ public class clParserBGD {
     /** Creates a new instance of clParserBGD */
     public clParserBGD(String datei) {
         this.datei = datei;
-        try {                  
+        try {
             File datei_STATIKin = new File(datei);
             FileReader eingabestrom = new FileReader(datei_STATIKin);
             eingabe = new BufferedReader(eingabestrom);
@@ -91,15 +91,15 @@ public class clParserBGD {
         if (wort == null) return false; // Dateiende
         
         // debug
-        if (debug) {            
+        if (debug) {
             for (int i = 0; i < wort.length; i++) System.out.print(wort[i] + " ");
             System.out.println("");
         }
         
         boolean ZEILEVORRÜCKEN = true; // wird benötigt, wenn Element Punkt nicht durch P gekennzeichnet ist.
-        boolean STEUERZEICHEN = false;;
+        boolean STEUERZEICHEN = false;
         double[] neuerpkt;
-                  
+
         
         if (wort[0].startsWith("P") || wort[0].startsWith("p")) {
             entityname = POINT;
@@ -120,7 +120,6 @@ public class clParserBGD {
             STEUERZEICHEN = true;
         }
         if (wort[0].startsWith("A") || wort[0].startsWith("a") || wort[0].startsWith("B") || wort[0].startsWith("b")) {
-            
             entityname = ARC;
             STEUERZEICHEN = true;
         }
@@ -148,26 +147,26 @@ public class clParserBGD {
                 entityname = OTHER;
             }
         }
-                        
-        if (debug) System.out.println("entitname = " + entityname);        
+
+        if (debug) System.out.println("entitname = " + entityname);
         double[] werte;
         
         switch (entityname) {
             case POINT:
                 if (ZEILEVORRÜCKEN) {
                     wort = zeileEinlesen(); if (wort == null) return false; // Dateiende
-                }    
+                }
                 entity = pktParsen(wort);
                 if (entity == null) FEHLER = true;
                 break;
-            case LINE:                
+            case LINE:
                 if (ZEILEVORRÜCKEN) { // bedeutet auch, dass es die erste Linie einer allfälligen Polylinie ist.
                     wort = zeileEinlesen(); if (wort == null) return false; // Dateiende
-                    letzterpkt = pktParsen(wort);               
+                    letzterpkt = pktParsen(wort);
                     if (letzterpkt == null) {FEHLER = true; break;}
                     wort = zeileEinlesen(); if (wort == null) return false; // Dateiende
-                } 
-                neuerpkt = pktParsen(wort);                
+                }
+                neuerpkt = pktParsen(wort);
                 if (neuerpkt == null) {FEHLER = true; break;}
                 entity = new double[6];
                 for (int i = 0; i < 3; i++) entity[i] = letzterpkt[i];
@@ -175,25 +174,25 @@ public class clParserBGD {
                 letzterpkt = neuerpkt;
                 break;
             case SPHERE:
-            case CIRCLE:               
+            case CIRCLE:
                 if (ZEILEVORRÜCKEN) {
-                    wort = zeileEinlesen(); if (wort == null) return false; // Dateiende                    
+                    wort = zeileEinlesen(); if (wort == null) return false; // Dateiende
                 }
                 
-                neuerpkt = pktParsen(wort);                
+                neuerpkt = pktParsen(wort);
                 if (neuerpkt == null) {FEHLER = true; break;}
                 entity = new double[4];
                 for (int i = 0; i < 3; i++) entity[i] = neuerpkt[i];
-                wort = zeileEinlesen(); if (wort == null) return false; // Dateiende  
-                werte = werteParsen(wort, 1);                
+                wort = zeileEinlesen(); if (wort == null) return false; // Dateiende
+                werte = werteParsen(wort, 1);
                 if (werte == null) {FEHLER = true; break;}
                 entity[3] = werte[0]; // Radius
                 break;
-            case ARC:               
+            case ARC:
                 if (ZEILEVORRÜCKEN) {
                     wort = zeileEinlesen(); if (wort == null) return false; // Dateiende
-                } 
-                neuerpkt = pktParsen(wort);                 
+                }
+                neuerpkt = pktParsen(wort);
                 if (neuerpkt == null) {FEHLER = true; break;}
                 entity = new double[6];
                 for (int i = 0; i < 3; i++) entity[i] = neuerpkt[i];
@@ -208,17 +207,17 @@ public class clParserBGD {
                         if (werte == null) {FEHLER = true; break;}
                         for (int i = 0; i < 3; i++) entity[i+3] = werte[i]; // Radius, Startwinkel, Endwinkel
                         break;
-                    case 1: 
-                        werte = werteParsen(wort, 1);                        
-                        if (werte == null) {FEHLER = true; break;}                      
+                    case 1:
+                        werte = werteParsen(wort, 1);
+                        if (werte == null) {FEHLER = true; break;}
                         entity[3] = werte[0]; // Radius
                         wort = zeileEinlesen(); if (wort == null) return false; // Dateiende
-                        werte = werteParsen(wort, 2);                       
+                        werte = werteParsen(wort, 2);
                         if (werte == null) {FEHLER = true; break;}
                         for (int i = 0; i < 2; i++) entity[i+4] = werte[i]; // Startwinkel, Endwinkel
                         System.out.println("Zeile "+zeilennr+": This data format for ARC might not be supported in future.");
                         break;
-                    default:                        
+                    default:
                         if (wort.length > 3) System.out.println("Warnung: zu viele Parameter in Zeile " + zeilennr);
                         if (wort.length < 1) System.out.println("Warnung: zu wenige Parameter in Zeile " + zeilennr);
                         if (wort.length == 2) System.out.println("Warnung: falsche Anzahl Parameter in Zeile " + zeilennr);
@@ -248,7 +247,7 @@ public class clParserBGD {
             case ARC:
                 name = "Arc";
                 break;
-            case SPHERE:                    
+            case SPHERE:
                 name = "Sphere";
                 break;
             case OTHER:
@@ -303,7 +302,7 @@ public class clParserBGD {
             tokens = new StringTokenizer(zeile, " ,;\t");
             wort = new String[tokens.countTokens()];
             for (int i = 0; tokens.hasMoreTokens(); i++) {
-                wort[i] = tokens.nextToken();                    
+                wort[i] = tokens.nextToken();
             }
             if (wort.length == 0) {
                 LEEREZEILE = true;
@@ -314,7 +313,7 @@ public class clParserBGD {
                 continue;
             }
         }
-        while (LEEREZEILE == true);        
+        while (LEEREZEILE == true);
         return wort;
     }
     
@@ -330,7 +329,7 @@ public class clParserBGD {
                 catch (NumberFormatException e) {
                     System.out.println("Nicht 3 Zahlen in Zeile " + zeilennr + "\n Fehlermeldung: " + e.getMessage());
                     return null;
-                }                
+                }
                 break;
             case 2:
                 try {
@@ -341,7 +340,7 @@ public class clParserBGD {
                 catch (NumberFormatException e) {
                     System.out.println("Nicht 3 Zahlen in Zeile " + zeilennr + "\n Fehlermeldung: " + e.getMessage());
                     return null;
-                }         
+                }
                 break;
             default:
                 if (wort.length > 3) System.out.println("Warnung: zu viele Parameter in Zeile " + zeilennr);
@@ -349,7 +348,7 @@ public class clParserBGD {
                 return null;
         }
         return pkt;
-    }   
+    }
     
     private double[] werteParsen(String[] wort, int anzahl) {
         assert anzahl > 0;
@@ -361,7 +360,7 @@ public class clParserBGD {
             catch (NumberFormatException e) {
                 System.out.println("Nicht " +anzahl+ " Zahlen in Zeile " + zeilennr + "\n Fehlermeldung: " + e.getMessage());
                 return null;
-            }       
+            }
         }
         else {
             if (wort.length > anzahl) {
@@ -372,7 +371,7 @@ public class clParserBGD {
                     catch (NumberFormatException e) {
                         System.out.println("Nicht " +anzahl+ " Zahlen in Zeile " + zeilennr + "\n Fehlermeldung: " + e.getMessage());
                         return null;
-                    }   
+                    }
                 }
                 else {
                     System.out.println("Warnung: zu viele Parameter in Zeile " + zeilennr);

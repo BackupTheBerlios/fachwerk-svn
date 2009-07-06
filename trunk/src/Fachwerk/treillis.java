@@ -51,6 +51,8 @@ import java.awt.print.*;
  * Sie sollten eine Kopie der GNU General Public License zusammen  mit
  * diesem Programm erhalten haben. Falls nicht, schreiben Sie an die
  * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110, USA.
+ *
+ * @author  av  <qwert2003@users.berlios.de>
  */
 public class treillis extends clOberflaeche implements inKonstante {
     
@@ -58,8 +60,8 @@ public class treillis extends clOberflaeche implements inKonstante {
     private static final int HAUPTVER = 0;
     private static final int UNTERVER = 33; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
     private static final int JAHR = 2009;
-    private final String FILEPROGNAME = "treillis";
-    private final int FILEVER = 1;
+    private static final String FILEPROGNAME = "treillis";
+    private static final int FILEVER = 1;
     
     public boolean OptionVorber = true;
     public boolean OptionGLS = true;
@@ -84,36 +86,36 @@ public class treillis extends clOberflaeche implements inKonstante {
     private final double SNAPORTHO = 4;
     /*
     // Lagerattribute
-    private final int LOS = 0;
-    private final int FIX = 2;
-    private final int VERSCHIEBLICH = 1;
+    private static final int LOS = 0;
+    private static final int FIX = 2;
+    private static final int VERSCHIEBLICH = 1;
     // Stabattribute
-    private final int UNBEST = 0;
-    private final int BER = 1;
-    private final int GESETZT = 2;
+    private static final int UNBEST = 0;
+    private static final int BER = 1;
+    private static final int GESETZT = 2;
     //private static final int WIDERSPR = 3;
-    private final int NICHTSETZBAR = 4;
+    private static final int NICHTSETZBAR = 4;
     // Knotenattribute
-    private final int OFFEN = 0;
-    private final int FERTIG = 1;
-    private final int WIDERSPRUCH = 3;
+    private static final int OFFEN = 0;
+    private static final int FERTIG = 1;
+    private static final int WIDERSPRUCH = 3;
     */
-    private final int DESELEKT = 0;
-    private final int KNOTEN = 1;
-    private final int STAB = 2;
-    private final int HINTERGRUND = 3;
-    private final int PKTAUFSTAB = 4;
+    private static final int DESELEKT = 0;
+    private static final int KNOTEN = 1;
+    private static final int STAB = 2;
+    private static final int HINTERGRUND = 3;
+    private static final int PKTAUFSTAB = 4;
     private int[] Selektion = new int[2]; // index 0: STAB,KNOTEN,DESELEKT; index 1: Nr mit 1 beginnend
-    private final int NICHTSÄNDERN = -1;
-    private final int AUTOMATISCH = -2;
+    private static final int NICHTSÄNDERN = -1;
+    private static final int AUTOMATISCH = -2;
     private int selModus = AUTOMATISCH;
     
-    private final int NICHTS = 0;
-    private final int ZOOMxy = 1;
-    private final int SCHIEBEKNOTEN = 2;
-    private final int NEUERKNOTEN = 3;
-    private final int NEUERSTAB = 4;
-    private final int NEUERKNOTENSNAP = 5;
+    private static final int NICHTS = 0;
+    private static final int ZOOMxy = 1;
+    private static final int SCHIEBEKNOTEN = 2;
+    private static final int NEUERKNOTEN = 3;
+    private static final int NEUERSTAB = 4;
+    private static final int NEUERKNOTENSNAP = 5;
     private int mausAufgabe = NICHTS;
     
     
@@ -278,7 +280,8 @@ public class treillis extends clOberflaeche implements inKonstante {
             fw = new treillis(lc, dateiname);
         }
         
-        fw.pack(); fw.show();
+        fw.pack();
+        fw.setVisible(true);
     }
     
     

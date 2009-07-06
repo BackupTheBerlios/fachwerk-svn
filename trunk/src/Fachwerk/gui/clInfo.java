@@ -6,7 +6,37 @@
 
 package Fachwerk.gui;
 
+
 /**
+ * Fachwerk - treillis
+ *
+ * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
+ *                                      <qwert2003@users.berlios.de>
+ *
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
+ * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
+ *
+ * Dieses einfach zu bedienende Fachwerkprogramm verwendet ausschliesslich die
+ * Gleichgewichtsbedingungen zur Bestimmung der Stabkräfte.
+ * Bei statisch unbestimmten Systemen können die überzähligen Stabkräfte
+ * zugewiesen werden.
+ * Das Programm bezweckt, die Anwendung des unteren (statischen)
+ * Grenzwertsatzes der Plastizitätstheorie zu erleichtern.
+ *
+ * -------------------------------------------------------------
+ *
+ * Dieses Programm ist freie Software. Sie können es unter den Bedingungen
+ * der GNU General Public License, Version 2, wie von der Free Software
+ * Foundation herausgegeben, weitergeben und/oder modifizieren.
+ *
+ * Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, dass es
+ * Ihnen von Nutzen sein wird, aber OHNE JEDE GEWÄHRLEISTUNG - sogar ohne
+ * die implizite Gewährleistung der MARKTREIFE oder der EIGNUNG FüR EINEN
+ * BESTIMMTEN ZWECK.  Details finden Sie in der GNU General Public License.
+ *
+ * Sie sollten eine Kopie der GNU General Public License zusammen  mit
+ * diesem Programm erhalten haben. Falls nicht, schreiben Sie an die
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110, USA.
  *
  * @author  av  <qwert2003@users.berlios.de>
  */
@@ -17,13 +47,13 @@ public class clInfo extends javax.swing.JDialog {
     private int UNTERVER;
     private int JAHR;
     
-    private final String Copyright1 =
+    private static final String Copyright1 =
     "Copyright (c) 2003 - ";
     private final String Copyright2 = " A.Vontobel <qwert2003@users.berlios.de>" + '\n' +
     "                                     <qwert2003@users.sourceforge.net>" + '\n' + '\n';
     private String Copyright;
     
-    private final String Lizenz_de =
+    private static final String Lizenz_de =
     "Dieses einfach zu bedienende Fachwerkprogramm verwendet ausschliesslich die " +
     "Gleichgewichtsbedingungen zur Bestimmung der Stabkräfte." + '\n' +
     "Bei statisch unbestimmten Systemen können die überzähligen Stabkräfte " +
@@ -55,7 +85,7 @@ public class clInfo extends javax.swing.JDialog {
     "Das Programm verwendet eine externe Mathematikbibliothek namens colt.jar. " +
     "Bitte deren (freie) Lizenz beachten.";
     
-    private final String Lizenz_en =
+    private static final String Lizenz_en =
     
     "Fachwerk calculates strut-and-tie models used by structural engineers for analysing " +
     "and designing reinforced concrete structures. The program only uses equilibrium " +
@@ -119,7 +149,7 @@ public class clInfo extends javax.swing.JDialog {
         tastenbelegen();
         pack();
         zentriere(parent);
-        show();
+        setVisible(true);
     }
     
     /** This method is called from within the constructor to

@@ -18,7 +18,7 @@ import java.awt.print.*;
  * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
  * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
@@ -49,12 +49,12 @@ public class clPrintPanel extends clHauptPanel implements Printable {
     final double antRes = 0.33;
     final double antHorLinks = 0.5;
     
-    final double printskal = 0.5;
+    static final double printskal = 0.5;
     final int schriftgrText = 10;
     final int schriftgrRes = 7;
     final int schriftgrSys = 6;
     
-    final double dpi = 72d / printskal;
+    static final double dpi = 72d / printskal;
     double druckvergr = 300d/dpi * (20.8-2.*2.5)/(33.5-5.); // Druckaufl/Bildschirmaufl * BreiteA4/BreiteBildschirm
     
     double antSys = 1d - antRes;

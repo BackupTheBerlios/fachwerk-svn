@@ -9,10 +9,10 @@ package Fachwerk.statik;
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
  * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
@@ -69,8 +69,8 @@ public class clMechanismus implements inKonstante {
                          // (Speicherverschleiss, dafür Fehler vermeidend)
                          // Index 0 gibt es nicht, da kein Knoten 0 existiert!
     
-    private final double TOL = TOL_vorberechnung;
-    private final double TOLresultatcheck = TOL_resultatcheck;
+    private static final double TOL = TOL_vorberechnung;
+    private static final double TOLresultatcheck = TOL_resultatcheck;
     
     
     // berechnete Datensätze

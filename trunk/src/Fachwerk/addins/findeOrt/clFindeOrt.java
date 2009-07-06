@@ -14,7 +14,7 @@ import Fachwerk.statik.*;
  * Copyright (c) 2004 - 2007 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
  * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
@@ -44,8 +44,8 @@ import Fachwerk.statik.*;
 public class clFindeOrt implements inKonstante {
     
     boolean verbose = true;
-    private final double TOL = TOL_finde;
-    private final double TOL_resultat = TOL_vorberechnung;
+    private static final double TOL = TOL_finde;
+    private static final double TOL_resultat = TOL_vorberechnung;
     int maxdurchläufe = 1000;
     
     // Eingabevariablen
@@ -61,7 +61,7 @@ public class clFindeOrt implements inKonstante {
     
     // Zustandsinfos
     private boolean FEHLER = false;       // Fehler während der Berechnung
-    private boolean WIDERSPRUCH = false;  // Widerspruch während der Berechnung
+    private boolean WIDERSPRUECHLICH = false;  // Widerspruch während der Berechnung
     private boolean UNBESTIMMT = false;   // Stab ist unbestimmt!
     private boolean UNABHÄNGIG = false;   // Stab ist unabhängig! d.h. Kraft ändert sich durch Schieben des Knotens nicht.
     private boolean OK = false; // gewünschte Genauigkeit der Stabkraft erreicht

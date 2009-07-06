@@ -15,7 +15,7 @@ import java.util.*;
  * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
  * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
@@ -125,7 +125,7 @@ public class clKnotenDialog extends javax.swing.JDialog implements inKonstante {
             else feldLz.requestFocus();
         }
         else knopfNichtstun.requestFocus();
-        show();
+        setVisible(true);
     }
     
     /** This method is called from within the constructor to

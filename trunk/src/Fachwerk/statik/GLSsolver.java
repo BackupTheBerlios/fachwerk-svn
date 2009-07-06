@@ -15,10 +15,10 @@ import cern.colt.matrix.linalg.*;
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2007 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
  * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
@@ -49,6 +49,7 @@ public final class GLSsolver {
      * - Beim Entdecken von Widersprüchen ursprüngliche Zeile und so betroffenen Knoten angeben
      * - In Klasse Infos zum Berechnungsablauf speichern, insb. Fehler
      * - Methoden einbauen, welche Infos zu Fehlern und Widersprüchen und Warnungen liefern.
+     * - Colt Methoden in separatem Thread laufen lassen
      */
     
     // --------------------------------------
@@ -122,7 +123,10 @@ public final class GLSsolver {
             System.out.println(" b = " + b.toString());
             System.out.println("");
         }
-        
+
+        // TODO separater Thread, damit Berechnung abbrechbar
+
+
         // --------------
         // LR - Zerlegung
         // --------------

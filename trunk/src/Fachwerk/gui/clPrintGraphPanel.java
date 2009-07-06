@@ -19,7 +19,7 @@ import java.awt.print.*;
  * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
  * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
@@ -49,7 +49,7 @@ public class clPrintGraphPanel extends clHauptPanel implements Printable {
     // Aufteilung des Blattes
     final double antGraph = 0.9; 
     
-    final double printskal = 0.5;
+    static final double printskal = 0.5;
     final int schriftgrText = 10;
     final int schriftgrGraph = 7;
     
@@ -57,8 +57,8 @@ public class clPrintGraphPanel extends clHauptPanel implements Printable {
     double antVertikal;
     double antHorizontal;
     
-    final double zoll = 0.0254; // [m]
-    final double dpi = 72d / printskal;
+    static final double zoll = 0.0254; // [m]
+    static final double dpi = 72d / printskal;
     double einheit = 1d; // zB: cm --> 0.01 m
     boolean MASSSTABABGEFRAGT = false;
     double mst = 1; // wird überschrieben
