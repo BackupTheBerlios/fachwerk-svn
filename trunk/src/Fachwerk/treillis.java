@@ -696,6 +696,7 @@ public class treillis extends clOberflaeche implements inKonstante {
         
         try {
             if (dateiname != null) fc.setSelectedFile(new File(dateiname));
+            else fc.setSelectedFile(new File(""));
             if (!progstart) {
                 fc.resetChoosableFileFilters();
                 fc.addChoosableFileFilter(new StdFileFilter("fwk", "Fachwerk Data"));
@@ -959,6 +960,7 @@ public class treillis extends clOberflaeche implements inKonstante {
             fc.resetChoosableFileFilters();
             fc.addChoosableFileFilter(new StdFileFilter("fwk", "Fachwerk Data"));
             if (dateiname != null) fc.setSelectedFile(new File(dateiname));
+            else fc.setSelectedFile(new File(""));
             int returnVal = fc.showSaveDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File datei = fc.getSelectedFile();
