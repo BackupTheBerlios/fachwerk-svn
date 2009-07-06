@@ -13,8 +13,8 @@ import Fachwerk.statik.Fkt;
 /**
  * Fachwerk3D - treillis3D
  *
- * Copyright (c) 2003, 2004 A.Vontobel <qwert2003@users.sourceforge.net>
- *                                     <qwert2003@users.berlios.de>
+ * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
+ *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
@@ -39,7 +39,7 @@ import Fachwerk.statik.Fkt;
  *
  * Sie sollten eine Kopie der GNU General Public License zusammen  mit
  * diesem Programm erhalten haben. Falls nicht, schreiben Sie an die
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA. 
+ * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 public class clZoomDialog3D extends javax.swing.JDialog { // TODO x und z durch xsi und zeta ersetzen
     
@@ -57,7 +57,7 @@ public class clZoomDialog3D extends javax.swing.JDialog { // TODO x und z durch 
         übersetzen();
         pack();
         zentriere(parent);
-        show();
+        setVisible(true);
     }
     
     /** This method is called from within the constructor to

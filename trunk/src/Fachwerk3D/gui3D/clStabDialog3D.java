@@ -8,16 +8,15 @@ package Fachwerk3D.gui3D;
 
 import Fachwerk.statik.Fkt;
 import Fachwerk3D.statik3D.*;
-import java.math.*;
 import java.util.*;
 
 /**
  * Fachwerk3D - treillis3D
  *
- * Copyright (c) 2003 - 2005 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
  * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
@@ -113,7 +112,7 @@ public class clStabDialog3D extends javax.swing.JDialog implements inKonstante3D
                 break;
             case BER:
                 kraft = st.stab.getKraft();
-                kraftstr = Double.toString(Fkt.fix(kraft, 1));
+                kraftstr = Fkt.nf(kraft, 1);
                 break;
             
             case NICHTSETZBAR:
@@ -140,7 +139,7 @@ public class clStabDialog3D extends javax.swing.JDialog implements inKonstante3D
         // Cursor setzen
         if (status==UNBEST || status==GESETZT) feldKraft.requestFocus();
         else btNichtstun.requestFocus();
-        show();
+        setVisible(true);
     }
     
     /** This method is called from within the constructor to

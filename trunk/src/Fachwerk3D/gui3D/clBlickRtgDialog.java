@@ -8,10 +8,10 @@ import Fachwerk.statik.Fkt;
 /**
  * Fachwerk3D - treillis3D
  *
- * Copyright (c) 2004 A.Vontobel <qwert2003@users.sourceforge.net>
- *                                     <qwert2003@users.berlios.de>
+ * Copyright (c) 2004 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
+ *                                      <qwert2003@users.berlios.de>
  *
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
  * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
@@ -34,11 +34,11 @@ import Fachwerk.statik.Fkt;
  *
  * Sie sollten eine Kopie der GNU General Public License zusammen  mit
  * diesem Programm erhalten haben. Falls nicht, schreiben Sie an die
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA. 
+ * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 public class clBlickRtgDialog extends javax.swing.JDialog {
     
-    private double[] n; //  = new double[3];
+    private double[] n;
     boolean OK = false;
     ResourceBundle dialogRB;
     Locale locale;
@@ -58,7 +58,7 @@ public class clBlickRtgDialog extends javax.swing.JDialog {
         tastenbelegen();
         pack();
         zentriere(parent);
-        show();
+        setVisible(true);
     }
     
     /** This method is called from within the constructor to
@@ -241,9 +241,8 @@ private void übersetzen() {
             System.err.println("FEHLER: gui-dialoge für " + locale.toString());
         }
         this.setTitle(tr("titel-Blickrtg"));
-        knopfOK.setText(tr("OK"));        
+        knopfOK.setText(tr("OK"));
         knopfAbbrechen.setText(tr("Abbruch"));
-        //feldx0.setToolTipText(tr("ttipx0"));
     }
     
     public boolean isOK() {
@@ -280,13 +279,13 @@ private void übersetzen() {
         this.setLocation(OL);
     }
     
-    private String tr(String key) {        
+    private String tr(String key) {
         String übersetzt;
         try {übersetzt = dialogRB.getString(key);}
         catch (MissingResourceException e) {
             System.err.println("Schluesselwort " + key + " nicht gefunden fuer " + locale.toString() + " ; " + e.toString());
             return key;
-        }        
+        }
         return übersetzt;
     }
     

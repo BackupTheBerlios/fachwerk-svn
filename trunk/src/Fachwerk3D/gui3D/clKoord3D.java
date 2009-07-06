@@ -5,10 +5,10 @@
  *
  * Fachwerk3D - treillis3D
  *
- * Copyright (c) 2003, 2004 A.Vontobel <qwert2003@users.sourceforge.net>
- *                                     <qwert2003@users.berlios.de>
+ * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
+ *                                      <qwert2003@users.berlios.de>
  *
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
  * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
@@ -31,7 +31,7 @@
  *
  * Sie sollten eine Kopie der GNU General Public License zusammen  mit
  * diesem Programm erhalten haben. Falls nicht, schreiben Sie an die
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.  
+ * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
  
 
@@ -81,7 +81,7 @@ public class clKoord3D implements Cloneable {
         // Pkt_projiziert = (0,0,0) + xsi*u + zeta*w 
         u = new double[3];
         w = new double[3];
-       
+
         
         if (n[0] == 0 && n[1] == 0) {  // n parallel zur z-Rtg
             // u parallel zur x-Rtg (per Definition)
@@ -122,8 +122,6 @@ public class clKoord3D implements Cloneable {
      *  Sowohl die Eingabe wie die Ausgabe hat die Einheit Meter [m]
      */
     public Point2D projiziere(Point3D Pkt) { //, double[] n) {
-        
-        
         // Projektion:
         // P + a.n = 0 + xsi.u + zeta.w
         // resp. einfacher. xsi = p . u (Skalarprodukt), zeta = p . w (Skalarprodukt)
@@ -137,8 +135,8 @@ public class clKoord3D implements Cloneable {
     /** 
      *  Eingabe in Metern, d.h. auf der Projektionsfläche.
      */
-    public void zoome(Point2D Pkt1_in_m, Point2D Pkt2_in_m, JPanel zeichenfläche) {   
-                
+    public void zoome(Point2D Pkt1_in_m, Point2D Pkt2_in_m, JPanel zeichenfläche) {
+
         // metrische Werte, d.h. Fachwerkkoordinaten
         double[] xwerte = {Pkt1_in_m.getX(), Pkt2_in_m.getX()};
         double[] zwerte = {Pkt1_in_m.getY(), Pkt2_in_m.getY()};
@@ -149,14 +147,14 @@ public class clKoord3D implements Cloneable {
         
         if (debug) System.out.println("Pkt1: "+Pkt1_in_m.toString());
         if (debug) System.out.println("Pkt2: "+Pkt2_in_m.toString());
-        //if (debug) System.out.println("x0 =" + Fkt.fix(x0,1) + "    lx =  " + Fkt.fix(lx,1));
-        //if (debug) System.out.println("z0 =" + Fkt.fix(z0,1) + "    lz =  " + Fkt.fix(lz,1));
+        //if (debug) System.out.println("x0 =" + Fkt.nf(x0,1) + "    lx =  " + Fkt.nf(lx,1));
+        //if (debug) System.out.println("z0 =" + Fkt.nf(z0,1) + "    lz =  " + Fkt.nf(lz,1));
         
         // Pixelwerte, d.h. Koordinatensystem des Panels
         x0_pix = 0;
         z0_pix = 0;
         //x0_pix = zeichenfläche.getLocation().getX();
-        //z0_pix = zeichenfläche.getLocation().getY();        
+        //z0_pix = zeichenfläche.getLocation().getY();
         lx_pix = (double) zeichenfläche.getWidth();
         lz_pix = (double) zeichenfläche.getHeight();
         //if (debug) System.out.println("lx_pix: " + lx_pix + "   lz_pix: " + lz_pix);
@@ -184,20 +182,18 @@ public class clKoord3D implements Cloneable {
             x0 -= (lx - lxalt) / 2d; // zentrieren in x-Rtg
         }
         
-        if (debug) System.out.println("in Meter: x0=" + Fkt.fix(x0,1) + " lx="+Fkt.fix(lx,1)
-         + " z0="+Fkt.fix(z0,1) + " lz="+Fkt.fix(lz,1));
-        if (debug) System.out.println("in Pixel: x0=" + Fkt.fix(x0_pix,1) + " lx="+Fkt.fix(lx_pix,1)
-         + " z0="+Fkt.fix(z0_pix,1) + " lz="+Fkt.fix(lz_pix,1));
+        if (debug) System.out.println("in Meter: x0=" + Fkt.nf(x0,1) + " lx="+Fkt.nf(lx,1)
+         + " z0="+Fkt.nf(z0,1) + " lz="+Fkt.nf(lz,1));
+        if (debug) System.out.println("in Pixel: x0=" + Fkt.nf(x0_pix,1) + " lx="+Fkt.nf(lx_pix,1)
+         + " z0="+Fkt.nf(z0_pix,1) + " lz="+Fkt.nf(lz_pix,1));
         if (debug) System.out.println("x-Rtg ist massgebend: " + Xmgd);
-        
-        //ZOOMGESETZT = true;
     }
     
-    /**  
+    /** 
      *  Eingabe in Metern, d.h. auf der Projektionsfläche.
-     */    
-    public void zoome(Point2D Pkt1_in_m, Point2D Pkt2_in_m, JPanel zeichenfläche, double rand) {   
-                
+     */
+    public void zoome(Point2D Pkt1_in_m, Point2D Pkt2_in_m, JPanel zeichenfläche, double rand) {
+
         // metrische Werte, d.h. Fachwerkkoordinaten
         double[] xwerte = {Pkt1_in_m.getX(), Pkt2_in_m.getX()};
         double[] zwerte = {Pkt1_in_m.getY(), Pkt2_in_m.getY()};
@@ -205,12 +201,12 @@ public class clKoord3D implements Cloneable {
         z0 = Fkt.min(zwerte);
         lx = Fkt.max(xwerte) - x0;
         lz = Fkt.max(zwerte) - z0;
-                
+
         // Pixelwerte, d.h. Koordinatensystem des Panels
         x0_pix = rand;
-        z0_pix = rand;             
+        z0_pix = rand;
         lx_pix = (double) zeichenfläche.getWidth()  - x0_pix - rand;
-        lz_pix = (double) zeichenfläche.getHeight() - z0_pix - rand;        
+        lz_pix = (double) zeichenfläche.getHeight() - z0_pix - rand;
         
         // lx oder lz an die Form der Zeichenfläche anpassen, damit das Bild nicht verzogen wird
         boolean Xmgd; // X-Rtg massgebend, sonst Z-Rtg
@@ -234,15 +230,13 @@ public class clKoord3D implements Cloneable {
             assert lx > lxalt;
             x0 -= (lx - lxalt) / 2d; // zentrieren in x-Rtg
         }
-        
-        //ZOOMGESETZT = true;
     }
     
     /** 
      *  Eingabe in Metern, d.h. auf der Projektionsfläche.
      *  massstabsetzen = true, prixprom: Pixel pro Meter
      */
-    public void zoome(Point2D Pkt1_in_m, Point2D Pkt2_in_m, JPanel zeichenfläche, boolean massstabsetzen, double pixprom) { 
+    public void zoome(Point2D Pkt1_in_m, Point2D Pkt2_in_m, JPanel zeichenfläche, boolean massstabsetzen, double pixprom) {
         assert massstabsetzen; // nur hier, um anderen Konstruktor zu haben als jener mit Rand
         // metrische Werte, d.h. Fachwerkkoordinaten
         double[] xwerte = {Pkt1_in_m.getX(), Pkt2_in_m.getX()};
@@ -251,15 +245,13 @@ public class clKoord3D implements Cloneable {
         z0 = Fkt.min(zwerte);
         lx = Fkt.max(xwerte) - x0;
         lz = Fkt.max(zwerte) - z0;
-                
+
         // Pixelwerte, d.h. Koordinatensystem des Panels
         lx_pix = lx * pixprom;
-        lz_pix = lz * pixprom;        
+        lz_pix = lz * pixprom;
         x0_pix = (double) (zeichenfläche.getWidth()  - lx_pix) / 2d;
         z0_pix = (double) (zeichenfläche.getHeight() - lz_pix) / 2d;
         if (x0_pix < 0 || z0_pix < 0) System.out.println("Zeichnung groesser als der Papierbereich!");
-        
-        //ZOOMGESETZT = true;
     }
     
     
@@ -267,8 +259,7 @@ public class clKoord3D implements Cloneable {
     /** Gibt den Punkt in Meter [m] auf der Projektionsfläche zurück.
      *  Eingabe in Panelkoordinaten [pixel].
      */
-    public Point2D m(Point2D Pkt_in_panel) {        
-        //assert ZOOMGESETZT;
+    public Point2D m(Point2D Pkt_in_panel) {
         double x_in_m = x0;
         double z_in_m = z0;
         x_in_m += lx * (Pkt_in_panel.getX() - x0_pix) / lx_pix;
@@ -279,13 +270,12 @@ public class clKoord3D implements Cloneable {
         //return transformierterPkt;
         return new Point2D.Double(x_in_m, z_in_m);
     }
-   
+
     
     /** Eingabe: Pixel
      *  Ausgabe: Meter
      */
     public double m(double l_pix) {
-        //assert ZOOMGESETZT;
         double lm = lx * l_pix / lx_pix;
         return lm;
     }
@@ -294,22 +284,16 @@ public class clKoord3D implements Cloneable {
      *  Eingabe in auf die Ebene projizierte Fachwerkkoordinaten [m].
      */
     public Point2D panel(Point2D projPkt_in_m) {
-        //assert ZOOMGESETZT;
         double x_pix = x0_pix;
         double z_pix = z0_pix;
         x_pix += lx_pix * (projPkt_in_m.getX() - x0) / lx;
         z_pix += lz_pix * (projPkt_in_m.getY() - z0) / lz;
-                
-        //transformierterPkt = new Point2D.Double();
-        //transformierterPkt.setLocation(x_pix, z_pix);
-        //return transformierterPkt;
-        return new Point2D.Double(x_pix, z_pix);        
+
+        return new Point2D.Double(x_pix, z_pix);
     }
     
     
     public Point2D panel(Point3D FwkPkt_in_m) {
-        //assert ZOOMGESETZT;
-        
         return panel(projiziere(FwkPkt_in_m));
     }
     
@@ -318,28 +302,9 @@ public class clKoord3D implements Cloneable {
      *  Ausgabe: MPixel
      */
     public double panel(double l_m) {
-        //assert ZOOMGESETZT;
         double lpix = l_m * lx_pix / lx;
         return lpix;
     }
-    
-    
-    /* nach Fachwerk.statik.Fkt verlegt
-    private double[] normiere(double[] vektor) {
-        assert vektor.length > 0;
-        double nenner = 0;
-        for (int i = 0; i < vektor.length; i++) {
-            nenner += vektor[i]*vektor[i];
-        }
-        nenner = Math.sqrt(nenner);
-        
-        double[] normiert = new double[vektor.length];
-        for (int i = 0; i < vektor.length; i++) {
-            normiert[i] = vektor[i] / nenner;
-        }
-        return normiert;
-    }
-    */
     
     public Object clone() {
         try {
@@ -347,12 +312,12 @@ public class clKoord3D implements Cloneable {
         }
         catch (CloneNotSupportedException e) {
             throw new InternalError();
-        } 
+        }
     }
     
     public double[] getProjKoordSys() {
         double[] ret = new double[6];
-        ret[0] = u[0]; ret[1] = u[1]; ret[2] = u[2]; 
+        ret[0] = u[0]; ret[1] = u[1]; ret[2] = u[2];
         ret[3] = w[0]; ret[4] = w[1]; ret[5] = w[2];
         return ret;
     }
@@ -364,7 +329,7 @@ public class clKoord3D implements Cloneable {
         double P[] = new double[3];
         
         java.io.BufferedReader eingabe = new java.io.BufferedReader(new java.io.InputStreamReader(System.in));
-        String eingabeZeile;        
+        String eingabeZeile;
         try {
             // n einlesen
             System.out.println("Sichtrichtung n angeben");
@@ -397,11 +362,9 @@ public class clKoord3D implements Cloneable {
                 Point2D proj = koord.projiziere(Pkt);
                 System.out.println("projiziert: xsi = " + Fkt.nf(proj.getX(),2) + " zeta = " + Fkt.nf(proj.getY(),2));
             }
-            
         }
         catch(java.io.IOException e) {
             System.err.println("Fehler bei der Eingabe.");
         }
-        
     }
 }

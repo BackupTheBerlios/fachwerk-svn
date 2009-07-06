@@ -17,7 +17,7 @@ import java.util.*;
 /**
  * Fachwerk - treillis
  *
- * Copyright (c) 2003 - 2007 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
@@ -116,7 +116,7 @@ public class clguiFindeOrt3D extends javax.swing.JDialog implements inKonstante3
         übersetzen();
         pack(); 
         zentriere(parent);
-        show();
+        setVisible(true);
     }
     
     /** This method is called from within the constructor to
