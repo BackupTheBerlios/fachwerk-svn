@@ -29,27 +29,27 @@ public final class Fkt {
     public Fkt() {
     }
     
-    /** @deprecated stattdessen Double.parseDouble() verwenden. Vorsicht unterschiedliches Fehlerverhalten. */
+    /** Liest eine Zahl aus einem Text heraus. Bei Fehlern: 0.
+      * @return double Zahl, falls möglich.
+      * @return 0, falls ein Fehler auftritt.
+      * @see Double.parseDouble() */
     public static double holZahl(java.lang.String str) {
-        Double a;
-        
         try {
-            a = Double.valueOf  ( str );
-            return  a.doubleValue ();
+            return Double.parseDouble(str);
         }
         catch (NumberFormatException e)
         {
-            return 0.0; // ev besser: return Double.NaN;
+            return 0.0;
         }
     }
     
-    /** @deprecated stattdessen Integer.parseInt() verwenden. Vorsicht unterschiedliches Fehlerverhalten. */
+   /** Liest eine Ganzzahl aus einem Text heraus. Bei Fehlern: -1
+      * @return int Ganzzahl, falls möglich.
+      * @return -1, falls ein Fehler auftritt.
+      * @see Integer.parseInt() */
     public static int holInt(java.lang.String str) {
-        int a;
-        
         try {
-            a = Integer.parseInt( str );
-            return  a;
+            return Integer.parseInt( str );
         }
         catch (NumberFormatException e)
         {
@@ -58,7 +58,8 @@ public final class Fkt {
     }
     
     /** Rundet die Zahl auf die gewünschte Anzahl Stellen.
-     * Für formatierten Text stattdessen Fkt.nf() verwenden. */
+     * Für formatierten Text stattdessen Fkt.nf() verwenden.
+     * @see Fkt.nf() */
     public static double fix(double zahl, int anzStellen) {
         double erweitern = Math.pow(10d, anzStellen);
         return Math.round(erweitern * zahl) / erweitern;

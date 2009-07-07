@@ -49,7 +49,7 @@ public class clInfo extends javax.swing.JDialog {
     
     private static final String Copyright1 =
     "Copyright (c) 2003 - ";
-    private final String Copyright2 = " A.Vontobel <qwert2003@users.berlios.de>" + '\n' +
+    private static final String Copyright2 = " A.Vontobel <qwert2003@users.berlios.de>" + '\n' +
     "                                     <qwert2003@users.sourceforge.net>" + '\n' + '\n';
     private String Copyright;
     

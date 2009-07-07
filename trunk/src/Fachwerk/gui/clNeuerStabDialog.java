@@ -6,6 +6,7 @@
 
 package Fachwerk.gui;
 
+import Fachwerk.statik.Fkt;
 import java.util.*;
 
 /**
@@ -179,10 +180,10 @@ public class clNeuerStabDialog extends javax.swing.JDialog {
     
     private void okdurchEnteroderKnopf() {
         try {
-            vonkn = Integer.parseInt(feldVon.getText());
-            biskn = Integer.parseInt(feldBis.getText());
+            vonkn = Fkt.holInt(feldVon.getText());
+            biskn = Fkt.holInt(feldBis.getText());
         }
-        catch (NumberFormatException e) {
+        catch (IllegalArgumentException e) {
             return;
         }
         
@@ -198,15 +199,15 @@ public class clNeuerStabDialog extends javax.swing.JDialog {
         // testet nur, ob die Eingabe formal korrekt ist. Der eigentliche Test erfolgt in treillis.befehlErstelleNeuenStab
         if (OK) {
             try {
-                vonkn = Integer.parseInt(feldVon.getText());
-                biskn = Integer.parseInt(feldBis.getText());
+                vonkn = Fkt.holInt(feldVon.getText());
+                biskn = Fkt.holInt(feldBis.getText());
                 
                 if (vonkn < 1 || biskn < 1) {
                     String meldung = "von: " + feldVon.getText() + "   bis " + feldBis.getText();
-                    throw new NumberFormatException(meldung);
+                    throw new IllegalArgumentException(meldung);
                 }
             }
-            catch (NumberFormatException e) {
+            catch (IllegalArgumentException e) {
                 System.out.println(e.toString());
                 return false;
             }

@@ -6,6 +6,7 @@
 
 package Fachwerk.gui;
 
+import Fachwerk.statik.Fkt;
 import java.awt.geom.*;
 import java.util.*;
 
@@ -97,7 +98,6 @@ public class clZoomDialog extends javax.swing.JDialog {
         jPanel4.setBackground(new java.awt.Color(0, 0, 0));
 
         feldz0.setColumns(6);
-        feldz0.setText("0");
         feldz0.setToolTipText("kleinster z-Wert");
         feldz0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,7 +112,6 @@ public class clZoomDialog extends javax.swing.JDialog {
         jPanel5.setLayout(new java.awt.GridBagLayout());
 
         feldx0.setColumns(6);
-        feldx0.setText("0");
         feldx0.setToolTipText("kleinster x-Wert");
         feldx0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -207,10 +206,10 @@ private void feldz1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     
 private void okdurchEnteroderKnopf() {
     try {
-        double x0 = Double.parseDouble(feldx0.getText());
-        double z0 = Double.parseDouble(feldz0.getText());
-        double x1 = Double.parseDouble(feldx1.getText());
-        double z1 = Double.parseDouble(feldz1.getText());
+        double x0 = Fkt.holZahl(feldx0.getText());
+        double x1 = Fkt.holZahl(feldx1.getText());
+        double z0 = Fkt.holZahl(feldz0.getText());
+        double z1 = Fkt.holZahl(feldz1.getText());
 
         pkt1.setLocation(x0, z0);
         pkt2.setLocation(x1, z1);
@@ -219,7 +218,7 @@ private void okdurchEnteroderKnopf() {
 
         setVisible(false);
     }
-    catch (NumberFormatException e) {
+    catch (IllegalArgumentException e) {
         System.out.println(e.toString());
     }
 }   

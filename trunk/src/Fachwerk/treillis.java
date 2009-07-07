@@ -1516,7 +1516,11 @@ public class treillis extends clOberflaeche implements inKonstante {
                         text += "  Nx=" + Fkt.nf(ax*N,1) + "kN Nz=" + Fkt.nf(az*N,1) + "kN";
                         break;
                     case UNBEST:
+                        dx = ((clKnoten) Knotenliste.get(aktWSt.bis-1)).getX() - ((clKnoten) Knotenliste.get(aktWSt.von-1)).getX();
+                        dz = ((clKnoten) Knotenliste.get(aktWSt.bis-1)).getZ() - ((clKnoten) Knotenliste.get(aktWSt.von-1)).getZ();
+                        double L = Math.abs(Math.sqrt(Math.pow(dx,2d) + Math.pow(dz,2d)));
                         text = tr("StabNr") + " " + Selektion[1] + ": " + tr("unbestimmt");
+                        text += "  L=" + Fkt.nf(L,2);
                         break;
                     default:
                         text = tr("StabNr") + " " + Selektion[1] + ": " + tr("Status") + " " + aktWSt.stab.getStatus();

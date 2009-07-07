@@ -64,7 +64,6 @@
             <Component class="javax.swing.JTextField" name="feldz0">
               <Properties>
                 <Property name="columns" type="int" value="6"/>
-                <Property name="text" type="java.lang.String" value="0"/>
                 <Property name="toolTipText" type="java.lang.String" value="kleinster z-Wert"/>
               </Properties>
               <Events>
@@ -90,7 +89,6 @@
             <Component class="javax.swing.JTextField" name="feldx0">
               <Properties>
                 <Property name="columns" type="int" value="6"/>
-                <Property name="text" type="java.lang.String" value="0"/>
                 <Property name="toolTipText" type="java.lang.String" value="kleinster x-Wert"/>
               </Properties>
               <Events>
