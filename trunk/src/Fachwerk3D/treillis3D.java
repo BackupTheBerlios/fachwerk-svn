@@ -67,8 +67,8 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     private static final int HAUPTVER = 0;
     private static final int UNTERVER = 33; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
     private static final int JAHR = 2009;
-    private final String FILEPROGNAME = "treillis3D";
-    private final int FILEVER = 1;
+    private static final String FILEPROGNAME = "treillis3D";
+    private static final int FILEVER = 1;
     
     public boolean OptionVorber = false;
     public boolean OptionGLS = true;
@@ -93,36 +93,36 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     //    private final double SNAPORTHO = 4;
     /*
     // Lagerattribute
-    private final int LOS = 0;
-    private final int FIX = 2;
-    private final int VERSCHIEBLICH = 1;
+    private static final int LOS = 0;
+    private static final int FIX = 2;
+    private static final int VERSCHIEBLICH = 1;
     // Stabattribute
-    private final int UNBEST = 0;
-    private final int BER = 1;
-    private final int GESETZT = 2;
+    private static final int UNBEST = 0;
+    private static final int BER = 1;
+    private static final int GESETZT = 2;
     //private static final int WIDERSPR = 3;
-    private final int NICHTSETZBAR = 4;
+    private static final int NICHTSETZBAR = 4;
     // Knotenattribute
-    private final int OFFEN = 0;
-    private final int FERTIG = 1;
-    private final int WIDERSPRUCH = 3;
+    private static final int OFFEN = 0;
+    private static final int FERTIG = 1;
+    private static final int WIDERSPRUCH = 3;
     */
-    private final int DESELEKT = 0;
-    private final int KNOTEN = 1;
-    private final int STAB = 2;
-    private final int HINTERGRUND = 3;
-    private final int PKTAUFSTAB = 4;
+    private static final int DESELEKT = 0;
+    private static final int KNOTEN = 1;
+    private static final int STAB = 2;
+    private static final int HINTERGRUND = 3;
+    private static final int PKTAUFSTAB = 4;
     private int[] Selektion = new int[2]; // index 0: STAB,KNOTEN,DESELEKT; index 1: Nr mit 1 beginnend
-    private final int NICHTSÄNDERN = -1;
-    private final int AUTOMATISCH = -2;
+    private static final int NICHTSÄNDERN = -1;
+    private static final int AUTOMATISCH = -2;
     private int selModus = AUTOMATISCH;
     
-    private final int NICHTS = 0;
-    private final int ZOOMxy = 1;
-    //private final int SCHIEBEKNOTEN = 2; nur für 2D sinnvoll.
-    private final int NEUERKNOTEN = 3;
-    private final int NEUERSTAB = 4;
-    private final int NEUERKNOTENSNAP = 5;
+    private static final int NICHTS = 0;
+    private static final int ZOOMxy = 1;
+    //private static final int SCHIEBEKNOTEN = 2; nur für 2D sinnvoll.
+    private static final int NEUERKNOTEN = 3;
+    private static final int NEUERSTAB = 4;
+    private static final int NEUERKNOTENSNAP = 5;
     private int mausAufgabe = NICHTS;
     
     
@@ -1532,7 +1532,12 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
                         text += "  Nx=" + Fkt.nf(ax*N,1) + "kN Ny=" + Fkt.nf(ay*N,1) + "kN Nz=" + Fkt.nf(az*N,1) + "kN";
                         break;
                     case UNBEST:
+                        dx = ((clKnoten3D) Knotenliste.get(aktWSt.bis-1)).getX() - ((clKnoten3D) Knotenliste.get(aktWSt.von-1)).getX();
+                        dy = ((clKnoten3D) Knotenliste.get(aktWSt.bis-1)).getY() - ((clKnoten3D) Knotenliste.get(aktWSt.von-1)).getY();
+                        dz = ((clKnoten3D) Knotenliste.get(aktWSt.bis-1)).getZ() - ((clKnoten3D) Knotenliste.get(aktWSt.von-1)).getZ();
+                        double L = Math.abs(Math.sqrt(Math.pow(dx,2d) + Math.pow(dy,2d) + Math.pow(dz,2d)));
                         text = tr("StabNr") + " " + Selektion[1] + ": " + tr("unbestimmt");
+                        text += "  L=" + Fkt.nf(L,2);
                         break;
                     default:
                         text = tr("StabNr") + " " + Selektion[1] + ": " + tr("Status") + " " + aktWSt.stab.getStatus();

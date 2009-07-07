@@ -11,7 +11,7 @@ package Fachwerk3D.statik3D;
  *
  * Copyright (c) 2004 A.Vontobel <qwert2003@users.sourceforge.net>
  *
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
  * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
@@ -34,7 +34,7 @@ package Fachwerk3D.statik3D;
  *
  * Sie sollten eine Kopie der GNU General Public License zusammen  mit
  * diesem Programm erhalten haben. Falls nicht, schreiben Sie an die
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.  
+ * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  
  *
  * @author  A.Vontobel

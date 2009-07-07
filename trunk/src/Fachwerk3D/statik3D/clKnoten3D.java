@@ -10,10 +10,10 @@ import java.io.*;
 /**
  * Fachwerk3D - treillis3D
  *
- * Copyright (c) 2003 - 2006 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
  * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
@@ -73,7 +73,7 @@ public class clKnoten3D implements Serializable, inKonstante3D {
     private int Lagerstatus = GESETZT; // da LOS, TODO unklar, stiftet Verwirrung
     private int Knotenstatus = OFFEN;
     
-    private final double TOL = TOL_resultatcheck;
+    private static final double TOL = TOL_resultatcheck;
     
     /** Creates a new instance of clKnoten3D */
     public clKnoten3D(double p_x, double p_y, double p_z) {

@@ -13,7 +13,7 @@ package Fachwerk3D.gui3D;
  * Copyright (c) 2004 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                     <qwert2003@users.berlios.de>
  *
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
  * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die

@@ -13,10 +13,10 @@ import Fachwerk.statik.GLSsolver;
 /**
  * Fachwerk3D - treillis3D
  *
- * Copyright (c) 2004 - 2007 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2004 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
- * Das Programm enthält bestimmt noch FEHLER. Sämtliche Resultate sind
+ * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
  *
  * Dieses einfache Fachwerkprogramm verwendet ausschliesslich die
@@ -81,10 +81,10 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
     //private int anzFG; // verbleibende Freiheitsgrade (unbestimmte Stabkräfte)
     
     
-    private final double TOL = TOL_vorberechnung;
-    //private final double TOL = 1E-11; // um Gleichheit von Stabkräften zu erkennen (in rVorberechnung)
-    private final double TOLresultatcheck = TOL_resultatcheck;
-    //private final double TOLresultatcheck = 1E-10; // dito, jedoch lascherer Wert, zB. TOL des GLS-Solvers
+    private static final double TOL = TOL_vorberechnung;
+    //private static final double TOL = 1E-11; // um Gleichheit von Stabkräften zu erkennen (in rVorberechnung)
+    private static final double TOLresultatcheck = TOL_resultatcheck;
+    //private static final double TOLresultatcheck = 1E-10; // dito, jedoch lascherer Wert, zB. TOL des GLS-Solvers
     
     private boolean WIDERSPRUCHaufgetreten = false;
     private int statischeUnbestimmtheit = Integer.MIN_VALUE; // zum Erkennen ob berechnet.
