@@ -78,7 +78,7 @@ public class treillis extends clOberflaeche implements inKonstante {
     
     private clHauptPanel hp; // = new clHauptPanel(null,null); // Knotenliste, Stabliste);
     ResourceBundle meldungenRB;
-    private JFileChooser fc = new JFileChooser(); //Create a file chooser
+    private JFileChooser fc = new JFileChooser(System.getProperty("user.dir")); //Create a file chooser
     private String dateiname = "new.fwk";
     private String dxfdateiname;
     
@@ -961,6 +961,8 @@ public class treillis extends clOberflaeche implements inKonstante {
             fc.addChoosableFileFilter(new StdFileFilter("fwk", "Fachwerk Data"));
             if (dateiname != null) fc.setSelectedFile(new File(dateiname));
             else fc.setSelectedFile(new File(""));
+            // TODO verhindern, dass Windows hängt, wenn der Dialog aus unbekannten
+            // Gründen (ev. falsche Dateirechte) nicht angezeigt werden kann.
             int returnVal = fc.showSaveDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File datei = fc.getSelectedFile();
