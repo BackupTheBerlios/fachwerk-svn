@@ -78,8 +78,8 @@ public class treillis extends clOberflaeche implements inKonstante {
     
     private clHauptPanel hp; // = new clHauptPanel(null,null); // Knotenliste, Stabliste);
     ResourceBundle meldungenRB;
-    private JFileChooser fc = new JFileChooser(System.getProperty("user.dir")); //Create a file chooser
-    private String dateiname = "new.fwk";
+    private JFileChooser fc = new JFileChooser(System.getProperty("user.home")); //Create a file chooser
+    private String dateiname = System.getProperty("user.home") + System.getProperty("file.separator") + "new.fwk";
     private String dxfdateiname;
     
     private final double SNAPRADIUS = 6;
@@ -129,6 +129,7 @@ public class treillis extends clOberflaeche implements inKonstante {
         if (meldungenRB == null) {
             System.err.println("FEHLER: gui-meldungen für " + locale.toString());
         }
+        workarounds_for_Windows();
         neu();
     }
     public treillis(Locale lc, String dateiname) {
@@ -138,9 +139,26 @@ public class treillis extends clOberflaeche implements inKonstante {
             System.err.println("FEHLER: gui-meldungen für " + locale.toString());
         }
         this.dateiname = dateiname;
+        workarounds_for_Windows();
         befehlLaden(true);
     }
     
+    /** Workaround for Windows only!
+     * FileChooser hangs if there is any broken link on desktop.
+     * (java version "1.6.0_14", Microsoft Windows XP [Version 5.1.2600])*/
+    private void workarounds_for_Windows() {
+        String osName = System.getProperty ("os.name");
+        if (osName.startsWith("Windows")) {
+            // don't use shell folder, it's terribly slow due to JDK bug
+            // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6317789
+            // Nachteil: Ordnerauswahl umständlich
+            final String USE_SHELL_FOLDER = "FileChooser.useShellFolder";
+            if (!Boolean.TRUE.equals(fc.getClientProperty(USE_SHELL_FOLDER))) {
+                fc.putClientProperty(USE_SHELL_FOLDER, Boolean.FALSE);
+            }
+        }
+        else return; // no workaround needed on other operating systems
+    }
     
     /**
      * @param args the command line arguments
@@ -962,7 +980,8 @@ public class treillis extends clOberflaeche implements inKonstante {
             if (dateiname != null) fc.setSelectedFile(new File(dateiname));
             else fc.setSelectedFile(new File(""));
             // TODO verhindern, dass Windows hängt, wenn der Dialog aus unbekannten
-            // Gründen (ev. falsche Dateirechte) nicht angezeigt werden kann.
+            // Gründen (z.B. falsche Verknüpfungen auf Desktop) nicht angezeigt werden kann.
+            // Workaround in Methode workarounds_for_Windows() eingebaut.
             int returnVal = fc.showSaveDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File datei = fc.getSelectedFile();
