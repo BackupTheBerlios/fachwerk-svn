@@ -44,5 +44,18 @@
      konsole -e fachwerk
 
 
+2. File dialogue "Save" oder "Load" hangs. (Windows only):
+-------------------------------------------------------------
+
+   Happens in certain circumstances when a fachwerk file is loaded using the command line.
+
+   Alternatives
+   1) Solve problem
+     Possible cause: Links on the desktop pointing to non existing files.
+   2) Work around
+     First "load background". Afterwards "save" works.
+   3) Work around (2)
+     Start fachwerk with option --safe_mode.
+
 
 

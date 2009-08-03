@@ -44,4 +44,18 @@
      konsole -e fachwerk
 
 
+2. Dateidialog "Speichern" oder "Laden" hängt. (nur Windows):
+-------------------------------------------------------------
+
+   Tritt unter bestimmten Umständen auf, wenn eine Fachwerkdatei per Kommandozeile geladen worden ist.
+
+   Varianten
+   1) Problembehebung
+     Mögliche Ursache: Auf dem Desktop sind Links auf nicht mehr existierende Dateien vorhanden.
+   2) Umgehung
+     Zuerst "Hintergrund laden" wählen. Danach funktioniert "Speichern".
+   3) Umgehung (2)
+     fachwerk mit der Option --safe_mode starten.
+
+
 
