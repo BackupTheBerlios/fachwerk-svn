@@ -130,24 +130,28 @@ public class treillis extends clOberflaeche implements inKonstante {
         if (meldungenRB == null) {
             System.err.println("FEHLER: gui-meldungen für " + locale.toString());
         }
-        workarounds_for_Windows();
         neu();
     }
-    public treillis(Locale lc, String dateiname) {
+    public treillis(Locale lc, String dateiname, String dxfdateiname) {
         super("Fachwerk - rein statisches Fachwerkprogramm", lc);   // Titel wird in clOberflaeche überschrieben
         meldungenRB = ResourceBundle.getBundle("Fachwerk/locales/gui-meldungen", locale);
         if (meldungenRB == null) {
             System.err.println("FEHLER: gui-meldungen für " + locale.toString());
         }
-        this.dateiname = dateiname;
-        workarounds_for_Windows();
-        befehlLaden(true);
+        if (dateiname != null && !dateiname.equals("")) {
+            this.dateiname = dateiname;
+            befehlLaden(true);
+        }
+        if (dxfdateiname != null && !dxfdateiname.equals("")) {
+            this.dxfdateiname = dxfdateiname;
+            befehlLadeHintergrund(true);
+        }
     }
     
     /** Workaround for Windows only!
      * FileChooser hangs if there is any broken link on desktop.
      * (java version "1.6.0_14", Microsoft Windows XP [Version 5.1.2600])*/
-    private void workarounds_for_Windows() {
+    void useWorkarounds_for_Windows() {
         String osName = System.getProperty ("os.name");
         if (osName.startsWith("Windows")) {
             // don't use shell folder, it's terribly slow due to JDK bug
@@ -168,10 +172,12 @@ public class treillis extends clOberflaeche implements inKonstante {
         String sprache;
         String land;
         String dateiname = "";
+        String dxfdateiname = "";
         String lookAndFeel = "Steel";
         Locale lc = Locale.getDefault();
         treillis fw;
         boolean help = false;
+        boolean useworkarounds = false;
         
         String titel = "" + PROGNAME + " version " + HAUPTVER + ".";
         if (UNTERVER < 10) titel += "0";
@@ -214,11 +220,16 @@ public class treillis extends clOberflaeche implements inKonstante {
                 lookAndFeel = args[i];
                 continue;
             }
+            if (args[i].equals("--safe_mode")) {
+                useworkarounds = true;
+                break;
+            }
             
             // wenn keine bekannte Option erkannt wurde:
             if (args[i].startsWith("-")) {help = true; break;}
             else {
-                dateiname = args[i];
+                if (args[i].endsWith(".dxf") || args[i].endsWith(".bgd") || args[i].endsWith(".csv")) dxfdateiname = args[i];
+                else dateiname = args[i];
             }
         }
         
@@ -240,6 +251,7 @@ public class treillis extends clOberflaeche implements inKonstante {
             System.out.println("    --language_country       Language and country i.e. 'de CH', 'en GB'");
             System.out.println("    --look                   LookAndFeel: Java|System|Steel|Ocean|undef");
             System.out.println("                             or i.e. com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+            System.out.println("    --safe_mode              workaround for ev. FileChooser problems on Windows");
             System.out.println('\n');
             System.out.println("Example 1: fachwerk file.fwk");
             System.out.println("Example 2: fachwerk -l en");
@@ -296,7 +308,14 @@ public class treillis extends clOberflaeche implements inKonstante {
             fw = new treillis(lc);
         }
         else {
-            fw = new treillis(lc, dateiname);
+            fw = new treillis(lc, dateiname, dxfdateiname);
+        }
+
+        if (useworkarounds) {
+            String osName = System.getProperty ("os.name");
+            if (osName.startsWith("Windows")) {
+                fw.useWorkarounds_for_Windows();
+            }
         }
         
         fw.pack();
@@ -668,27 +687,29 @@ public class treillis extends clOberflaeche implements inKonstante {
         clInfo info = new clInfo(this, PROGNAME, HAUPTVER, UNTERVER, JAHR);
     }
     
-    protected void befehlLadeHintergrund() {
-        String prog, meldung;
+    protected void befehlLadeHintergrund(boolean progstart) {
+        String meldung;
         try {
-            fc.resetChoosableFileFilters();
-            fc.addChoosableFileFilter(new StdFileFilter("dxf", "Drawing Exchange File"));
-            fc.addChoosableFileFilter(new StdFileFilter("bgd", "Background Data File"));
-            fc.addChoosableFileFilter(new StdFileFilter("csv", "Background Points"));
-            String[] filter = {"dxf","bgd","csv"};
-            fc.addChoosableFileFilter(new StdFileFilter(filter, "Drawings and Points"));
-            if (dxfdateiname != null) fc.setSelectedFile(new File(dxfdateiname));
-            else fc.setSelectedFile(new File(""));
-            int returnVal = fc.showOpenDialog(this);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File datei = fc.getSelectedFile();
-                dxfdateiname = datei.getPath();
-                dxf = new clDXF(dxfdateiname);
+            if (!progstart && dxfdateiname!=null && !dxfdateiname.equals("")) {
+                fc.resetChoosableFileFilters();
+                fc.addChoosableFileFilter(new StdFileFilter("dxf", "Drawing Exchange File"));
+                fc.addChoosableFileFilter(new StdFileFilter("bgd", "Background Data File"));
+                fc.addChoosableFileFilter(new StdFileFilter("csv", "Background Points"));
+                String[] filter = {"dxf", "bgd", "csv"};
+                fc.addChoosableFileFilter(new StdFileFilter(filter, "Drawings and Points"));
+                if (dxfdateiname != null) fc.setSelectedFile(new File(dxfdateiname));
+                else fc.setSelectedFile(new File(""));
+                int returnVal = fc.showOpenDialog(this);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File datei = fc.getSelectedFile();
+                    dxfdateiname = datei.getPath();
+                }
+                else {
+                    LayerHintergrund(false);
+                    return;
+                }
             }
-            else {
-                LayerHintergrund(false);
-                return;
-            }
+            dxf = new clDXF(dxfdateiname);
         }
         catch (Exception e) {
             System.err.println(e.toString());
@@ -982,7 +1003,7 @@ public class treillis extends clOberflaeche implements inKonstante {
             else fc.setSelectedFile(new File(""));
             // TODO verhindern, dass Windows hängt, wenn der Dialog aus unbekannten
             // Gründen (z.B. falsche Verknüpfungen auf Desktop) nicht angezeigt werden kann.
-            // Workaround in Methode workarounds_for_Windows() eingebaut.
+            // Workaround in Methode useWorkarounds_for_Windows() eingebaut.
             int returnVal = fc.showSaveDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File datei = fc.getSelectedFile();
@@ -1053,7 +1074,7 @@ public class treillis extends clOberflaeche implements inKonstante {
     
     protected void befehlZeigeHintergrund(boolean status) {
         if (status == true && dxf == null) { // noch kein dxf geladen.
-            befehlLadeHintergrund();
+            befehlLadeHintergrund(false);
             return;
         }
         

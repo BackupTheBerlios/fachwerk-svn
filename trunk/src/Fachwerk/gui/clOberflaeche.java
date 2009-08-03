@@ -934,7 +934,7 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_itemKoordTransFWKActionPerformed
 
     private void itemLadenHintergrundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemLadenHintergrundActionPerformed
-        befehlLadeHintergrund();
+        befehlLadeHintergrund(false);
     }//GEN-LAST:event_itemLadenHintergrundActionPerformed
 
     private void knopfHintergrundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_knopfHintergrundActionPerformed
@@ -1567,7 +1567,7 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
     protected abstract void befehlDrucken();
     protected abstract void befehlDruckenGraph();
     protected abstract void befehlLaden(boolean progstart);
-    protected abstract void befehlLadeHintergrund();
+    protected abstract void befehlLadeHintergrund(boolean progstart);
     protected abstract void befehlNeu();
     protected abstract void befehlSpracheGewechselt();
     protected abstract void befehlBeenden();
