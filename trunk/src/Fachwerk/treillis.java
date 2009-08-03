@@ -11,6 +11,7 @@ import Fachwerk.statik.*;
 import Fachwerk.addins.findeOrt.*;
 import Fachwerk.addins.coordTransformation.*;
 import Fachwerk.addins.skaliereLasten.*;
+import Fachwerk.addins.automModellsuche.*;
 import java.awt.event.MouseEvent;
 import java.util.*;
 import javax.swing.*;
@@ -370,7 +371,7 @@ public class treillis extends clOberflaeche implements inKonstante {
             keinWIDERSPRUCH = fachwerk.rechnen(OptionVorber,OptionGLS,OptionMechanismus);
             statUnbesth = fachwerk.getStatischeUnbestimmtheit();
             fachwerk.resultatausgabe_direkt();
-            if (keinWIDERSPRUCH) VOLLSTÄNDIGGELÖST_OK = fachwerk.istvollständiggelöst(false); // false, das resutatcheck() soeben in .rechnen() durchgeführt
+            if (keinWIDERSPRUCH) VOLLSTÄNDIGGELÖST_OK = fachwerk.istvollständiggelöst(false); // false, da resutatcheck() soeben in .rechnen() durchgeführt
             aktualisieren(true, true);
             if (!keinWIDERSPRUCH) LayerMechanismius(true, fachwerk.getMechanismus());
             if (keinWIDERSPRUCH) LayerStKraft(true);
@@ -1216,7 +1217,7 @@ public class treillis extends clOberflaeche implements inKonstante {
             keinWIDERSPRUCH = fachwerk.rechnen(OptionVorber,true,OptionMechanismus); // OptionGLS=true
             if (OptionVerbose) fachwerk.resultatausgabe_direkt();
             if (keinWIDERSPRUCH) {
-                VOLLSTÄNDIGGELÖST_OK = fachwerk.istvollständiggelöst(false); // false, das resutatcheck() soeben in .rechnen() durchgeführt
+                VOLLSTÄNDIGGELÖST_OK = fachwerk.istvollständiggelöst(false); // false, da resutatcheck() soeben in .rechnen() durchgeführt
                 
                 if (VOLLSTÄNDIGGELÖST_OK) {
                     System.out.println("completely solved, nothing to guess."); // TODO übersetzen
@@ -1306,6 +1307,131 @@ public class treillis extends clOberflaeche implements inKonstante {
             LayerStKraft(true);
             selektionAnpassen();
         }
+    }
+
+    /** Reduziert die statische Unbestimmtheit des Systems in einem Optimierungsvorgang.*/
+    protected void befehlAddinAutomModellsuche() {
+        int gewünschteMaxStatUnbestimmtheit = 0;
+        boolean optimierungerfolgreichbeendet;
+        String meldung = "";
+
+        clguiAutomModellsuche dialog = new clguiAutomModellsuche(this, locale);
+        gewünschteMaxStatUnbestimmtheit = dialog.getAntwort_Faktor();
+        boolean LÖSCHENULLSTÄBE = dialog.getAntwort_löscheNullstäbe();
+
+        // Testen, ob der Dialog abgebrochen worden ist.
+        if (gewünschteMaxStatUnbestimmtheit < 0) return;
+
+        zurücksetzen(false);
+
+        // GUI Vorarbeiten
+        switch (mausAufgabe) {
+            case NEUERSTAB:
+                mausAufgabe = NICHTS;
+                setKnopfNeuerStab(false);
+                break;
+            case NEUERKNOTENSNAP:
+                mausAufgabe = NICHTS;
+                setKnopfNeuerKnotenSnap(false);
+                break;
+            case NEUERKNOTEN:
+                assert false;
+                mausAufgabe = NICHTS;
+                break;
+            case SCHIEBEKNOTEN: // lassen
+            case ZOOMxy: // lassen
+            default:
+        }
+
+        // BEGINN
+        keinFEHLER = true;
+        VOLLSTÄNDIGGELÖST_OK = false;
+        //Datenaufbereiten
+        clKnoten[] Knotenarray = new clKnoten[Knotenliste.size() + 1];
+        clStab[] Stabarray = new clStab[Stabliste.size() + 1];
+        int[][] Topologie = new int[Knotenarray.length][Knotenarray.length];
+
+        int i = 1;
+        for (Iterator it = Knotenliste.iterator(); it.hasNext();) {
+            Knotenarray[i] = (clKnoten) it.next();
+            i++;
+        }
+        i = 1;
+        for (Iterator it = Stabliste.iterator(); it.hasNext();) {
+            clWissenderStab wst = (clWissenderStab) it.next();
+            Stabarray[i] = wst.stab;
+            Topologie[wst.von][wst.bis] = i;
+            i++;
+        }
+
+        try {
+            clFachwerk fachwerk = new clFachwerk(Knotenarray, Stabarray, Topologie);
+            fachwerk.setVerbose(OptionVerbose);
+            keinWIDERSPRUCH = fachwerk.rechnen(OptionVorber,true,true); // OptionGLS=true, OptionMechanismus=true
+            if (OptionVerbose) fachwerk.resultatausgabe_direkt();
+            if (keinWIDERSPRUCH) {
+                VOLLSTÄNDIGGELÖST_OK = fachwerk.istvollständiggelöst(false); // false, da resutatcheck() soeben in .rechnen() durchgeführt
+
+                if (VOLLSTÄNDIGGELÖST_OK) {
+                    System.out.println("completely solved, nothing to guess."); // TODO übersetzen
+                }
+                else {
+                    System.out.println();
+                    System.out.println("-------------------------------------------");
+                    System.out.println();
+
+                    clAutomModellsuche autom = new clAutomModellsuche(Stabarray, Knotenarray, Topologie);
+                    optimierungerfolgreichbeendet = autom.optimiere(gewünschteMaxStatUnbestimmtheit);
+                    if (OptionVerbose) autom.resultatausgabe_direkt();
+
+                    // Text
+                    if (optimierungerfolgreichbeendet) {
+                        meldung = "Optimierung abgeschlossen";
+                    }
+                    else meldung = "Optimierung vorzeitig abgebrochen";
+                }
+            }
+
+            // Nullstäbe löschen
+            if (LÖSCHENULLSTÄBE) { // TODO
+                System.out.println("Nullstäbe löschen noch nicht eingebaut.");
+            }
+
+            aktualisieren(true, true);
+            if (meldung.length() > 0) feldStatuszeile.setText(meldung);
+            if (!keinWIDERSPRUCH) LayerMechanismius(true, fachwerk.getMechanismus());
+            if (keinWIDERSPRUCH) LayerStKraft(true);
+            LayerAuflKraft(true);
+            LayerLasten(true);
+        }
+        catch (Exception e) {
+            System.out.println(e.toString());
+            aktualisieren(true, true);
+            // im Statusfeld FEHLER anzeigen, in Statuszeile Fehlermeldung
+            feldStatusFw.setText(tr("FEHLER"));
+            keinFEHLER = false;
+            if (e.getMessage().equals("Mechanismusberechnung fehlgeschlagen.")) {
+                feldStatuszeile.setText(tr("errMechanismusberFehlgeschlagen"));
+            }
+            else feldStatuszeile.setText(e.toString());
+        }
+
+        System.out.println();
+        System.out.println("-------------------------------------------");
+        System.out.println();
+
+        if (keinWIDERSPRUCH && keinFEHLER) {
+            if (VOLLSTÄNDIGGELÖST_OK) feldStatusFw.setText(tr("OK-COMPLETE"));
+            else feldStatusFw.setText(tr("OK"));
+            selModus = AUTOMATISCH; setKnopfStab(false); setKnopfKnoten(false);
+        }
+        else {
+            if (!keinWIDERSPRUCH) feldStatusFw.setText(tr("WIDERSPRUCH"));
+            if (!keinFEHLER) feldStatusFw.setText(tr("FEHLER"));
+            selModus = NICHTSÄNDERN;
+        }
+        Selektion[0] = DESELEKT;
+        setKnopfKnoten(false); setKnopfStab(false);
     }
     
     

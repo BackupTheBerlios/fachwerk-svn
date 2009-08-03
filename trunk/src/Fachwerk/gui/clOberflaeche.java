@@ -148,6 +148,7 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         itemSkaliereLasten = new javax.swing.JMenuItem();
         jSeparator7 = new javax.swing.JSeparator();
         itemFindeOrt = new javax.swing.JMenuItem();
+        itemAutomModellsuche = new javax.swing.JMenuItem();
         itemElastischerVorschlag = new javax.swing.JMenuItem();
         menuHilfe = new javax.swing.JMenu();
         itemHilfe = new javax.swing.JMenuItem();
@@ -839,6 +840,14 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         });
         menuAddins.add(itemFindeOrt);
 
+        itemAutomModellsuche.setText("automatische Modellreduktion");
+        itemAutomModellsuche.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemAutomModellsucheActionPerformed(evt);
+            }
+        });
+        menuAddins.add(itemAutomModellsuche);
+
         itemElastischerVorschlag.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, java.awt.event.InputEvent.ALT_MASK));
         itemElastischerVorschlag.setText("elastischer Vorschlag");
         itemElastischerVorschlag.addActionListener(new java.awt.event.ActionListener() {
@@ -1192,6 +1201,10 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
     private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm
         befehlBeenden();
     }//GEN-LAST:event_exitForm
+
+    private void itemAutomModellsucheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAutomModellsucheActionPerformed
+        befehlAddinAutomModellsuche();
+}//GEN-LAST:event_itemAutomModellsucheActionPerformed
     
     private void tastenbelegen() {
         javax.swing.ActionMap am = getRootPane().getActionMap();
@@ -1488,6 +1501,8 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         itemSkaliereLasten.setToolTipText(tr("ttipLastenSkalieren"));
         itemFindeOrt.setText(tr("itemFindeOrt"));
         itemFindeOrt.setToolTipText(tr("ttipFindeOrt"));
+        itemElastischerVorschlag.setText(tr("itemAutomModellsuche"));
+        itemElastischerVorschlag.setToolTipText(tr("ttipAutomModellsuche"));
         itemElastischerVorschlag.setText(tr("itemElastischerVorschlag"));
         itemElastischerVorschlag.setToolTipText(tr("ttipElastischerVorschlag"));
         
@@ -1587,6 +1602,7 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
     protected abstract void befehlAddinFindeort();
     protected abstract void befehlAddinSkaliereLasten();
     protected abstract void befehlAddinRateStabkräfte();
+    protected abstract void befehlAddinAutomModellsuche();
     
     protected abstract void befehlBspdaten();
     protected abstract void befehlHilfe();
@@ -1742,6 +1758,7 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
     protected javax.swing.JTextField feldZ;
     private javax.swing.JMenuItem itemAbout;
     private javax.swing.JMenuItem itemAllesZurücksetzen;
+    private javax.swing.JMenuItem itemAutomModellsuche;
     private javax.swing.JMenuItem itemBeenden;
     private javax.swing.JMenuItem itemBerechnen;
     private javax.swing.JMenuItem itemBsp;

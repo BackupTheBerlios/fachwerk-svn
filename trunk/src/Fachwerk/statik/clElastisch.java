@@ -56,17 +56,17 @@ public class clElastisch implements inKonstante {
      Spaltenindex 0: Einheit 1
      Spaltenindex i, i > 0: Parameter i (soviel mal Parameter=Unbekannte i)*/
     private double[][] vollstLsg;
-    private clStab[] St;
-    private int anzSt;
-    private int statischeUnbestimmtheit;
+    protected clStab[] St;
+    protected int anzSt;
+    protected int statischeUnbestimmtheit;
     
     /** Stabsteifigkeiten (relativ).
      Stab mit Index 0 gibt es nicht.*/
-    private double[] EA;
+    protected double[] EA;
     /** Stabsteifigkeiten unter Zug.
      * EAzug wird nicht verändert in clElastisch
      Stab mit Index 0 gibt es nicht.*/
-    private double[] EAzug;
+    protected double[] EAzug;
     
     /** Stablängen
      Stab mit Index 0 gibt es nicht.*/
@@ -80,9 +80,9 @@ public class clElastisch implements inKonstante {
     private double[] X;
     
     /** gelöste Beanspruchungen, bei Fachwerk Stabkräfte*/
-    private double[] N;
+    protected double[] N;
     
-    final boolean debug = false; // TODO
+    static final boolean debug = false; // TODO
     
     /** Creates a new instance of clElastisch */
     public clElastisch(clStab[] Staebe) {
@@ -172,7 +172,7 @@ public class clElastisch implements inKonstante {
     }
     
     /* startet gewichtete elastische Berechnung, wobei EA(Druckstäbe) > EA(Zugstäbe) */
-    public void rechnen(double EAdruck_zu_EAzug) {
+    public void rechnen(double EAdruck_zu_EAzug) { // TODO Reduktionsfaktor für schiefe Zugstäbe
         rechnen();
         
         double[] Nalt = new double[N.length];
@@ -226,21 +226,46 @@ public class clElastisch implements inKonstante {
             System.out.println(" b = " + b.toString());
             System.out.println("");
         } */
-        
-        DoubleMatrix2D x = cern.colt.matrix.linalg.Algebra.DEFAULT.solve(A, b);
-        
+
+        // prüfen, ob Matrix singulär
+        double det = cern.colt.matrix.linalg.Algebra.DEFAULT.det(A);
+        double[] X1 = new double[GLS[0].length];
+        if (det != 0) {
+            DoubleMatrix2D x = cern.colt.matrix.linalg.Algebra.DEFAULT.solve(A, b);
+            X1[0] = 1;
+            for (int i = 0; i < x.rows(); i++) {
+                X1[i + 1] = x.get(i, 0);
+            }
+        } else { //singuläre Matrix A
+            System.err.println("[clElastisch.löseGLS] Problem: Matrix singulär: ");
+            System.err.println(A.toString());
+
+            //x = cern.colt.matrix.linalg.Algebra.DEFAULT.solve(A, b); // TODO bestimmte Grössen berechnen
+
+
+            GLSsolver solver = new GLSsolver(GLS);
+            statischeUnbestimmtheit = solver.getAnzUnbestParam();
+            double[][] xLsg = solver.solve();
+
+            X1[0] = 1;
+            for (int i = 0; i < xLsg.length; i++) {
+                if (xLsg[i][0] == 1) {
+                    X1[i + 1] = xLsg[i][1];
+                } else { // TODO
+                    System.err.println("[clElastisch.löseGLS] Vorsicht: unbestimmte Variablen gesetzt mit Parametern 0 gesetzt! (TODO)");
+                    X1[i + 1] = xLsg[i][1]; //TODO, nur Workaround (ev. riskant): setzt unbest. Var. zu Fixanteil + 0*Anteil_von_Unbek
+                    assert false: "[clElastisch.löseGLS] Verhalten muss untersucht werden. Behandlung? (TODO)";
+                }
+            }
+        }
+
         /*
         if (debug) System.out.println("");
         if (debug) System.out.println(x.toString());
         if (debug) System.out.println("");
          **/
-        
-        double[] X = new double[GLS[0].length];
-        X[0] = 1;
-        for (int i = 0; i < x.rows(); i++) {
-            X[i+1] = x.get(i,0);
-        }
-        return X;
+
+        return X1;
     }
     
     /** Erstellt eine kinematische Bedingung (elastisch) für den Parameter.
