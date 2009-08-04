@@ -54,9 +54,9 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
     double TOLgeom = 0.001;
 
     /** Bricht den Optimierungsvorgang ab.*/
-    int maxIterationen = 400;
+    int maxIterationen = 19999;
 
-    static final boolean debug = true; // TODO
+    static final boolean debug = false;
 
 
     // Vorgabewerte Referenzwerte
@@ -124,7 +124,10 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
         // Steifigkeit setzen
         for (int st = 1; st < EA.length; st++) {
             double Nst = N[st - 1];
-            //if (debug) System.out.println("Nst = " + Nst);
+            
+            if (debug && Double.isNaN(Nst)) { // debug
+                System.out.println ("debugMsg: [clAutomModellsuche.optimiereSchritt] Stab " + st + " ist null.");
+            }
 
             if (Math.abs(Nst) < TOL || Double.isNaN(Nst)) { // Nullstab
                 if (debug) if (Double.isNaN(Nst)) System.out.println("N[Stab " +st + "] = NaN");
@@ -202,20 +205,25 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
 
             if (!modellunverändert) { // wenn zwischenzeitlich Stäbe gesetzt wurden, neu berechnen!
                 try {
+                    // Knotenstatus aller Stäbe zurücksetzen (Knoten 0 gibt es nicht)
+                    for (int k = 1; k < Kn.length; k++) Kn[k].zurücksetzen();
+                    VOLLSTÄNDIGGELÖST_OK = false;
+                    keinWIDERSPRUCH = true;
                     fw = new clFachwerk(Kn, St, Top);
                     fw.setVerbose(false);
                     keinWIDERSPRUCH = fw.rechnen(OptionVorber, OptionGLS, OptionMechanismus);
-                    //int statUnbesth = fw.getStatischeUnbestimmtheit();
-                    fw.resultatausgabe_direkt();
+                    if (debug) fw.resultatausgabe_direkt();
                     if (keinWIDERSPRUCH) {
-                        VOLLSTÄNDIGGELÖST_OK = fw.istvollständiggelöst(false); // false, da resutatcheck() soeben in .rechnen() durchgeführt
+                        VOLLSTÄNDIGGELÖST_OK = fw.istvollständiggelöst(false); // false, da resultatcheck() soeben in .rechnen() durchgeführt
+                        statischeUnbestimmtheit = fw.getStatischeUnbestimmtheit();
                     }
-                    if (VOLLSTÄNDIGGELÖST_OK) {
-                        statischeUnbestimmtheit = 0;
+                    if (VOLLSTÄNDIGGELÖST_OK && keinWIDERSPRUCH) {
+                        assert statischeUnbestimmtheit == 0: "stat. Unbestimmtheit ungleich 0: " + statischeUnbestimmtheit;
+                        //statischeUnbestimmtheit = 0;
                     }
                     else {
                         double [][] vollstLsg = fw.getCompleteSolution();
-                        assert vollstLsg != null: "[clAutomModellsuche.optimiere] vollstLst == null";
+                        assert vollstLsg != null: "[clAutomModellsuche.optimiere] vollstLst == null (stat.Unbesth. " + statischeUnbestimmtheit + ")";
                         setCompleteSolution(vollstLsg); // setzt auch super.statischeUnbestimmtheit
                     }
                 } catch (Exception e) {
@@ -238,9 +246,7 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
         
         System.out.println();
         System.out.println("Anzahl Iterationen: " + iteration);
-        if (debug) {
-            if (maxIterationenErreicht) System.out.println("Abbruch durch Erreichen der maximalen Anzahl Iterationen.");
-        }
+        if (maxIterationenErreicht) System.out.println("Abbruch durch Erreichen der maximalen Anzahl Iterationen.");
 
         return !maxIterationenErreicht;
     }

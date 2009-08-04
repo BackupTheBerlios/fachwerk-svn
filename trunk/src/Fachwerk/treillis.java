@@ -253,7 +253,9 @@ public class treillis extends clOberflaeche implements inKonstante {
             System.out.println("    --language_country       Language and country i.e. 'de CH', 'en GB'");
             System.out.println("    --look                   LookAndFeel: Java|System|Steel|Ocean|undef");
             System.out.println("                             or i.e. com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-            System.out.println("    --safe_mode              workaround for ev. FileChooser problems on Windows");
+            if (System.getProperty ("os.name").startsWith("Windows")) {  // Für andere Betriebssysteme keine Workarounds.
+                System.out.println("    --safe_mode              workaround for ev. FileChooser problems on Windows");
+            }
             System.out.println('\n');
             System.out.println("Example 1: fachwerk file.fwk");
             System.out.println("Example 2: fachwerk -l en");
@@ -1344,12 +1346,11 @@ public class treillis extends clOberflaeche implements inKonstante {
     /** Reduziert die statische Unbestimmtheit des Systems in einem Optimierungsvorgang.*/
     protected void befehlAddinAutomModellsuche() {
         int gewünschteMaxStatUnbestimmtheit = 0;
-        boolean optimierungerfolgreichbeendet;
+        boolean optimierungerfolgreichbeendet = false;
         String meldung = "";
 
         clguiAutomModellsuche dialog = new clguiAutomModellsuche(this, locale);
         gewünschteMaxStatUnbestimmtheit = dialog.getAntwort_Faktor();
-        boolean LÖSCHENULLSTÄBE = dialog.getAntwort_löscheNullstäbe();
 
         // Testen, ob der Dialog abgebrochen worden ist.
         if (gewünschteMaxStatUnbestimmtheit < 0) return;
@@ -1423,47 +1424,28 @@ public class treillis extends clOberflaeche implements inKonstante {
                     else meldung = "Optimierung vorzeitig abgebrochen";
                 }
             }
-
-            // Nullstäbe löschen
-            if (LÖSCHENULLSTÄBE) { // TODO
-                System.out.println("Nullstäbe löschen noch nicht eingebaut.");
-            }
-
-            aktualisieren(true, true);
-            if (meldung.length() > 0) feldStatuszeile.setText(meldung);
-            if (!keinWIDERSPRUCH) LayerMechanismius(true, fachwerk.getMechanismus());
-            if (keinWIDERSPRUCH) LayerStKraft(true);
-            LayerAuflKraft(true);
-            LayerLasten(true);
         }
         catch (Exception e) {
             System.out.println(e.toString());
+            zurücksetzen(false);
             aktualisieren(true, true);
             // im Statusfeld FEHLER anzeigen, in Statuszeile Fehlermeldung
-            feldStatusFw.setText(tr("FEHLER"));
             keinFEHLER = false;
-            if (e.getMessage().equals("Mechanismusberechnung fehlgeschlagen.")) {
-                feldStatuszeile.setText(tr("errMechanismusberFehlgeschlagen"));
-            }
-            else feldStatuszeile.setText(e.toString());
+            selModus = NICHTSÄNDERN; // verhindert, dass der Text in der Statuszeile gleich verschwindet
+            feldStatusFw.setText(tr("FEHLER"));
+            feldStatuszeile.setText(e.toString());
+            System.out.println();
+            System.out.println("-------------------------------------------");
+            System.out.println();
+            return;
         }
 
         System.out.println();
         System.out.println("-------------------------------------------");
         System.out.println();
 
-        if (keinWIDERSPRUCH && keinFEHLER) {
-            if (VOLLSTÄNDIGGELÖST_OK) feldStatusFw.setText(tr("OK-COMPLETE"));
-            else feldStatusFw.setText(tr("OK"));
-            selModus = AUTOMATISCH; setKnopfStab(false); setKnopfKnoten(false);
-        }
-        else {
-            if (!keinWIDERSPRUCH) feldStatusFw.setText(tr("WIDERSPRUCH"));
-            if (!keinFEHLER) feldStatusFw.setText(tr("FEHLER"));
-            selModus = NICHTSÄNDERN;
-        }
-        Selektion[0] = DESELEKT;
-        setKnopfKnoten(false); setKnopfStab(false);
+        befehlBerechne();
+        if (meldung.length() > 0) feldStatuszeile.setText(meldung);
     }
     
     

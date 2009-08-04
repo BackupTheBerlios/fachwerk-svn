@@ -241,8 +241,9 @@ public class clElastisch implements inKonstante {
             System.err.println(A.toString());
 
             //x = cern.colt.matrix.linalg.Algebra.DEFAULT.solve(A, b); // TODO bestimmte Grössen berechnen
+            throw new IllegalArgumentException("[clElastisch] Matrix singular");
 
-
+            /*
             GLSsolver solver = new GLSsolver(GLS);
             statischeUnbestimmtheit = solver.getAnzUnbestParam();
             double[][] xLsg = solver.solve();
@@ -252,11 +253,13 @@ public class clElastisch implements inKonstante {
                 if (xLsg[i][0] == 1) {
                     X1[i + 1] = xLsg[i][1];
                 } else { // TODO
-                    System.err.println("[clElastisch.löseGLS] Vorsicht: unbestimmte Variablen gesetzt mit Parametern 0 gesetzt! (TODO)");
-                    X1[i + 1] = xLsg[i][1]; //TODO, nur Workaround (ev. riskant): setzt unbest. Var. zu Fixanteil + 0*Anteil_von_Unbek
-                    assert false: "[clElastisch.löseGLS] Verhalten muss untersucht werden. Behandlung? (TODO)";
+                    throw new IllegalArgumentException("[clElastisch] Matrix singular");
+                    //System.err.println("[clElastisch.löseGLS] Vorsicht: unbestimmte Variablen gesetzt mit Parametern 0 gesetzt! (TODO)");
+                    //X1[i + 1] = xLsg[i][1]; //TODO, nur Workaround (ev. riskant): setzt unbest. Var. zu Fixanteil + 0*Anteil_von_Unbek
+                    //assert false: "[clElastisch.löseGLS] Verhalten muss untersucht werden. Behandlung? (TODO)";
                 }
             }
+             */
         }
 
         /*

@@ -687,6 +687,7 @@ public class clFachwerk implements inKonstante {
         
         if (anzUnbek == 0) {
             System.out.println("Nichts zu lösen, alles bekannt");
+            statischeUnbestimmtheit = 0;
             return; // nichts zu lösen, wenn alles bekannt.
         }
         
