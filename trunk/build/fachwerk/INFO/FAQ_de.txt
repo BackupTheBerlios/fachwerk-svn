@@ -15,7 +15,7 @@
      C:\WINNT\system32\CMD.EXE /c start /d C:\Programme\fachwerk C:\Programme\fachwerk\fachwerk.bat "%1"
      
      WindowsXP:     
-     C:\Windows\system32\CMD.EXE /c start /d C:\Programme\fachwerk C:\Programme\fachwerk\fachwerk.bat "%1"
+     C:\Windows\system32\CMD.EXE /c start /d C:\Programme\fachwerk C:\Programme\fachwerk\fachwerk.bat --safe_mode "%1"
      
    - Anderes Symbol - Durchsuchen - fachwerk/INFO/icon-fachwerk.ico
      
