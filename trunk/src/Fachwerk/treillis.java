@@ -160,6 +160,8 @@ public class treillis extends clOberflaeche implements inKonstante {
             final String USE_SHELL_FOLDER = "FileChooser.useShellFolder";
             if (!Boolean.TRUE.equals(fc.getClientProperty(USE_SHELL_FOLDER))) {
                 fc.putClientProperty(USE_SHELL_FOLDER, Boolean.FALSE);
+                if (dateiname != null) fc.setSelectedFile(new File(dateiname));
+                else fc.setSelectedFile(new File(""));
             }
         }
         else return; // no workaround needed on other operating systems
@@ -222,7 +224,7 @@ public class treillis extends clOberflaeche implements inKonstante {
             }
             if (args[i].equals("--safe_mode")) {
                 useworkarounds = true;
-                break;
+                continue;
             }
             
             // wenn keine bekannte Option erkannt wurde:
@@ -304,7 +306,7 @@ public class treillis extends clOberflaeche implements inKonstante {
         }
         
         
-        if (dateiname.equals("")) {
+        if (dateiname.equals("") && dxfdateiname.equals("")) {
             fw = new treillis(lc);
         }
         else {
@@ -689,8 +691,12 @@ public class treillis extends clOberflaeche implements inKonstante {
     
     protected void befehlLadeHintergrund(boolean progstart) {
         String meldung;
+        boolean dateidialogAnzeigen = true;
+        if (progstart && dxfdateiname!=null) {
+            if (!dxfdateiname.equals("")) dateidialogAnzeigen = false;
+        }
         try {
-            if (!progstart && dxfdateiname!=null && !dxfdateiname.equals("")) {
+            if (dateidialogAnzeigen) {
                 fc.resetChoosableFileFilters();
                 fc.addChoosableFileFilter(new StdFileFilter("dxf", "Drawing Exchange File"));
                 fc.addChoosableFileFilter(new StdFileFilter("bgd", "Background Data File"));
@@ -733,11 +739,16 @@ public class treillis extends clOberflaeche implements inKonstante {
         neu();
         String prog, meldung;
         int hauptversionsNrProg, fileversion, unterversionsNrProg;
-        
+
+        boolean dateidialogAnzeigen = true;
+        if (progstart && dateiname!=null) {
+            if (!dateiname.equals("")) dateidialogAnzeigen = false;
+        }
+
         try {
             if (dateiname != null) fc.setSelectedFile(new File(dateiname));
             else fc.setSelectedFile(new File(""));
-            if (!progstart) {
+            if (dateidialogAnzeigen) {
                 fc.resetChoosableFileFilters();
                 fc.addChoosableFileFilter(new StdFileFilter("fwk", "Fachwerk Data"));
                 
