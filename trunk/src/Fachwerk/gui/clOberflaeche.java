@@ -1501,8 +1501,8 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         itemSkaliereLasten.setToolTipText(tr("ttipLastenSkalieren"));
         itemFindeOrt.setText(tr("itemFindeOrt"));
         itemFindeOrt.setToolTipText(tr("ttipFindeOrt"));
-        itemElastischerVorschlag.setText(tr("itemAutomModellsuche"));
-        itemElastischerVorschlag.setToolTipText(tr("ttipAutomModellsuche"));
+        itemAutomModellsuche.setText(tr("itemAutomModellsuche"));
+        itemAutomModellsuche.setToolTipText(tr("ttipAutomModellsuche"));
         itemElastischerVorschlag.setText(tr("itemElastischerVorschlag"));
         itemElastischerVorschlag.setToolTipText(tr("ttipElastischerVorschlag"));
         

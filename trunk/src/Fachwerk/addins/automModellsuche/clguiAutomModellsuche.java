@@ -6,7 +6,6 @@
 
 package Fachwerk.addins.automModellsuche;
 
-import Fachwerk.addins.automModellsuche.*;
 import java.util.*;
 
 /**
@@ -43,7 +42,7 @@ import java.util.*;
 public class clguiAutomModellsuche extends javax.swing.JDialog {
         
     private int faktor = 0;
-    private boolean LÖSCHENULLSTÄBE = true;
+    private boolean NUREINSCHRITT = false;
     private String einleitung;
     boolean OK = false;
     ResourceBundle dialogRB;
@@ -72,10 +71,11 @@ public class clguiAutomModellsuche extends javax.swing.JDialog {
             return;
         }
         else {
+            super.setTitle(tr("titel-AutomModellsuche"));
             jLabel1.setText(tr("lb-AutomModellsuche"));
             jLabel1.setToolTipText(tr("ttip-AutomModellsuche"));
-            checkbox_löscheNullstäbe.setText(tr("checkbox-AutomModellsuche"));
-            checkbox_löscheNullstäbe.setToolTipText(tr("ttip-AutomModellsuche"));
+            checkbox_nureinSchritt.setText(tr("checkbox-AutomModellsuche"));
+            checkbox_nureinSchritt.setToolTipText(tr("ttip-AutomModellsuche"));
         }
         
         pack();
@@ -100,7 +100,7 @@ public class clguiAutomModellsuche extends javax.swing.JDialog {
         feldFaktor = new javax.swing.JTextField();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jPanel5 = new javax.swing.JPanel();
-        checkbox_löscheNullstäbe = new javax.swing.JCheckBox();
+        checkbox_nureinSchritt = new javax.swing.JCheckBox();
         lbEinleitung = new javax.swing.JLabel();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -157,10 +157,10 @@ public class clguiAutomModellsuche extends javax.swing.JDialog {
 
         jPanel2.add(jPanel3);
 
-        checkbox_löscheNullstäbe.setSelected(false);
-        checkbox_löscheNullstäbe.setText("Nullstäbe löschen");
-        checkbox_löscheNullstäbe.setToolTipText("Löscht (u.a. durch den Optimierungsprozess) gesetzte Nullst\u00e4be.");
-        jPanel5.add(checkbox_löscheNullstäbe);
+        checkbox_nureinSchritt.setSelected(false);
+        checkbox_nureinSchritt.setText("Nur einen Schritt");
+        checkbox_nureinSchritt.setToolTipText("Bricht den Optimierungsprozess ab, sobald eine Stabkraft zu Null gesetzt werden konnte.");
+        jPanel5.add(checkbox_nureinSchritt);
 
         jPanel2.add(jPanel5);
 
@@ -225,8 +225,8 @@ public class clguiAutomModellsuche extends javax.swing.JDialog {
         
         faktor = eingabefaktor;
         
-        // Auch Stabkräfte skalieren?
-        LÖSCHENULLSTÄBE = checkbox_löscheNullstäbe.isSelected();
+        // Ist die Checkbox angekreuzt?
+        NUREINSCHRITT = checkbox_nureinSchritt.isSelected();
         
         return true;
     }
@@ -241,10 +241,10 @@ public class clguiAutomModellsuche extends javax.swing.JDialog {
         else return -1;
     }
     
-    /** Gibt an, ob die gesetzten Nullstäbe gelöscht werden sollen.
-     @returns LÖSCHENULLSTÄBE*/
-    public boolean getAntwort_löscheNullstäbe() {
-        return LÖSCHENULLSTÄBE;
+    /** Gibt an, ob nach nur einem Reduktionschritt der Optimierungsprozess abgebrochen weden soll.
+     @returns NUREINSCHRITT*/
+    public boolean getAntwort_nureinSchritt() {
+        return NUREINSCHRITT;
     }
     
     private void zentriere(java.awt.Frame hf) {
@@ -266,7 +266,7 @@ public class clguiAutomModellsuche extends javax.swing.JDialog {
         return übersetzt;
     }
     // Variables declaration
-    private javax.swing.JCheckBox checkbox_löscheNullstäbe;
+    private javax.swing.JCheckBox checkbox_nureinSchritt;
     private javax.swing.JTextField feldFaktor;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;

@@ -347,6 +347,11 @@ public class treillis extends clOberflaeche implements inKonstante {
     }
     
     protected void befehlBerechne() {
+        // Eigentlich nicht nötig, die berechneten Stabkräfte zurückzusetzen,
+        // falls das Modell bei Änderungen immert zurückgesetzt wird.
+        zurücksetzen(false); // TODO zum Testen neuer Funktionen auskommentieren!
+
+
         // GUI Vorarbeiten
         switch (mausAufgabe) {
             case NEUERSTAB:
@@ -386,7 +391,7 @@ public class treillis extends clOberflaeche implements inKonstante {
             Topologie[wst.von][wst.bis] = i;
             i++;
         }
-        
+
         int statUnbesth = Integer.MIN_VALUE; // Integer.MIN_VALUE bedeutet unbekannt/noch_nicht_berechnet.
         try {
             clFachwerk fachwerk = new clFachwerk(Knotenarray, Stabarray, Topologie);
@@ -1346,11 +1351,11 @@ public class treillis extends clOberflaeche implements inKonstante {
     /** Reduziert die statische Unbestimmtheit des Systems in einem Optimierungsvorgang.*/
     protected void befehlAddinAutomModellsuche() {
         int gewünschteMaxStatUnbestimmtheit = 0;
-        boolean optimierungerfolgreichbeendet = false;
-        String meldung = "";
+        boolean nureinSchritt = false;
 
         clguiAutomModellsuche dialog = new clguiAutomModellsuche(this, locale);
         gewünschteMaxStatUnbestimmtheit = dialog.getAntwort_Faktor();
+        nureinSchritt = dialog.getAntwort_nureinSchritt();
 
         // Testen, ob der Dialog abgebrochen worden ist.
         if (gewünschteMaxStatUnbestimmtheit < 0) return;
@@ -1397,6 +1402,10 @@ public class treillis extends clOberflaeche implements inKonstante {
             i++;
         }
 
+
+        boolean optimierungerfolgreichbeendet = false;
+        String meldung = "";
+
         try {
             clFachwerk fachwerk = new clFachwerk(Knotenarray, Stabarray, Topologie);
             fachwerk.setVerbose(OptionVerbose);
@@ -1414,7 +1423,7 @@ public class treillis extends clOberflaeche implements inKonstante {
                     System.out.println();
 
                     clAutomModellsuche autom = new clAutomModellsuche(Stabarray, Knotenarray, Topologie);
-                    optimierungerfolgreichbeendet = autom.optimiere(gewünschteMaxStatUnbestimmtheit);
+                    optimierungerfolgreichbeendet = autom.optimiere(gewünschteMaxStatUnbestimmtheit, nureinSchritt);
                     if (OptionVerbose) autom.resultatausgabe_direkt();
 
                     // Text
@@ -1444,6 +1453,7 @@ public class treillis extends clOberflaeche implements inKonstante {
         System.out.println("-------------------------------------------");
         System.out.println();
 
+        zurücksetzen(false);
         befehlBerechne();
         if (meldung.length() > 0) feldStatuszeile.setText(meldung);
     }

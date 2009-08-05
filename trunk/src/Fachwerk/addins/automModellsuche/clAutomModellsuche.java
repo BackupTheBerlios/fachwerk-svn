@@ -54,7 +54,7 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
     double TOLgeom = 0.001;
 
     /** Bricht den Optimierungsvorgang ab.*/
-    int maxIterationen = 19999;
+    int maxIterationen = 99999;
 
     static final boolean debug = false;
 
@@ -85,7 +85,8 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
     private int[][] Top;
 
 
-    /** Creates a new instance of clElastisch */
+    /** Creates a new instance of clAutomModellsuche.
+     * Reduziert die statische Unbestimmtheit des Systems in einem Optimierungsvorgang.*/
     public clAutomModellsuche(clStab[] Staebe, clKnoten[] Kn, int[][] Top) {
         super(Staebe);
 
@@ -169,8 +170,19 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
     }
 
     /** Führt in einem Optimierungsprozedere eine Eliminierung wenig wirksamer Stäbe durch.
-     Rückgabewert false, falls die maximale Anzahl Iterationen erreicht wurde.*/
+     Rückgabewert false, falls die maximale Anzahl Iterationen erreicht wurde.
+     @param gewünschteMaxStatUnbestimmtheit Der Reduktionsprozess wird abgebrochen,
+     * sobald die statische Bestimmtheit kleiner gleich der gewünschten ist. */
     public boolean optimiere(int gewünschteMaxStatUnbestimmtheit) {
+        return optimiere(gewünschteMaxStatUnbestimmtheit, false);
+    }
+
+    /** Führt in einem Optimierungsprozedere eine Eliminierung wenig wirksamer Stäbe durch.
+     Rückgabewert false, falls die maximale Anzahl Iterationen erreicht wurde.
+     @param gewünschteMaxStatUnbestimmtheit Der Reduktionsprozess wird abgebrochen,
+     * sobald die statische Bestimmtheit kleiner gleich der gewünschten ist.
+     @param nureinSchritt Sobald eine Stabkraft null gesetzt worden ist, den Prozess abbrechen.*/
+    public boolean optimiere(int gewünschteMaxStatUnbestimmtheit, boolean nureinSchritt) {
         assert gewünschteMaxStatUnbestimmtheit >= 0;
         if (gewünschteMaxStatUnbestimmtheit < 0) gewünschteMaxStatUnbestimmtheit = 0;
 
@@ -182,18 +194,6 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
         //boolean keinFEHLER = true;
         boolean VOLLSTÄNDIGGELÖST_OK = false;
         clFachwerk fw;
-//        clFachwerk fw = new clFachwerk(Kn, St, Top);
-//        fw.setVerbose(false);
-//        try {
-//            keinWIDERSPRUCH = fw.rechnen(OptionVorber,OptionGLS,OptionMechanismus);
-//            //int statUnbesth = fw.getStatischeUnbestimmtheit();
-//            fw.resultatausgabe_direkt();
-//            if (keinWIDERSPRUCH) VOLLSTÄNDIGGELÖST_OK = fw.istvollständiggelöst(false); // false, das resutatcheck() soeben in .rechnen() durchgeführt
-//            setCompleteSolution(fw.getCompleteSolution()); // setzt auch super.statischeUnbestimmtheit
-//        }
-//        catch (Exception e) {
-//            System.out.println(e.toString());
-//        }
 
         boolean weiter_iterieren = true;
         boolean maxIterationenErreicht = false;
@@ -207,6 +207,7 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
                 try {
                     // Knotenstatus aller Stäbe zurücksetzen (Knoten 0 gibt es nicht)
                     for (int k = 1; k < Kn.length; k++) Kn[k].zurücksetzen();
+                    for (int s = 1; s < St.length; s++) St[s].zurücksetzen(false); // setzt berechnete Stabkräfte zurück.
                     VOLLSTÄNDIGGELÖST_OK = false;
                     keinWIDERSPRUCH = true;
                     fw = new clFachwerk(Kn, St, Top);
@@ -236,6 +237,8 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
                 modellunverändert = optimiereSchritt();
             }
             else weiter_iterieren = false;
+
+            if (nureinSchritt && !modellunverändert) weiter_iterieren = false; // mind. ein Stab wurde gesetzt --> automatischen Prozess abbrechen
 
             // Abbruchkriterien
             if (iteration >= maxIterationen) {
