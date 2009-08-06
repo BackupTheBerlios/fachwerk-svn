@@ -64,7 +64,7 @@ public class treillis extends clOberflaeche implements inKonstante {
     private static final String FILEPROGNAME = "treillis";
     private static final int FILEVER = 1;
     
-    public boolean OptionVorber = true;
+    public boolean OptionVorber = false;
     public boolean OptionGLS = true;
     public boolean OptionMechanismus = true;
     private boolean OptionVerbose = false;
@@ -349,7 +349,7 @@ public class treillis extends clOberflaeche implements inKonstante {
     protected void befehlBerechne() {
         // Eigentlich nicht nötig, die berechneten Stabkräfte zurückzusetzen,
         // falls das Modell bei Änderungen immert zurückgesetzt wird.
-        zurücksetzen(false); // TODO zum Testen neuer Funktionen auskommentieren!
+        //zurücksetzen(false); // TODO zum Testen neuer Funktionen auskommentieren!
 
 
         // GUI Vorarbeiten
@@ -1409,7 +1409,7 @@ public class treillis extends clOberflaeche implements inKonstante {
         try {
             clFachwerk fachwerk = new clFachwerk(Knotenarray, Stabarray, Topologie);
             fachwerk.setVerbose(OptionVerbose);
-            keinWIDERSPRUCH = fachwerk.rechnen(OptionVorber,true,true); // OptionGLS=true, OptionMechanismus=true
+            keinWIDERSPRUCH = fachwerk.rechnen(false,true,true); // OptionVorber=false, OptionGLS=true, OptionMechanismus=true
             if (OptionVerbose) fachwerk.resultatausgabe_direkt();
             if (keinWIDERSPRUCH) {
                 VOLLSTÄNDIGGELÖST_OK = fachwerk.istvollständiggelöst(false); // false, da resutatcheck() soeben in .rechnen() durchgeführt

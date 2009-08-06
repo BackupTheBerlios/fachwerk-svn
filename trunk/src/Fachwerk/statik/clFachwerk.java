@@ -250,7 +250,9 @@ public class clFachwerk implements inKonstante {
         if (resultatcheck()) { // falls keine Widerspruch entdeckt wird:
             OKkomplett = istvollständiggelöst(false); // false, da resultatcheck() soeben durchgeführt
         }
-        else verbose = true; // gibt mehr Infos aus, wenn resultatausgabe_direkt() aufgerufen wird. // TODO ev.entfernen (wie in Fachwerk3D)
+        else {
+            if (debug) verbose = true;
+        } // gibt mehr Infos aus, wenn resultatausgabe_direkt() aufgerufen wird. // TODO ev.entfernen (wie in Fachwerk3D)
         
         if (optionMECHANISMUS && !OKkomplett) {
             boolean WIDaufgetretenStatBer = WIDERSPRUCHaufgetreten;
@@ -545,6 +547,7 @@ public class clFachwerk implements inKonstante {
                                     break;
                                 case 1: // NOCH OFFEN:  UND FEHLERBEHAFTET
                                     //fehlende Stabkraft + Lagerkraft berechnen
+                                    
                                     if (Kn[kni].getLagerbed() != VERSCHIEBLICH) {
                                         System.err.println("Programmfehler in Fachwerk.rVorberechnung: verschiebliches Lager erwartet");
                                     }
@@ -619,7 +622,7 @@ public class clFachwerk implements inKonstante {
                                     }
                                 } // Schlaufenende
                                 // Kontrolle, ob die beiden unbek Stäbe nicht auf einer Geraden liegen
-                                if (Fkt.det2x2(ax[kni][knk1], ax[kni][knk2], az[kni][knk1], az[kni][knk2]) == 0d) break;
+                                if (Math.abs(Fkt.det2x2(ax[kni][knk1], ax[kni][knk2], az[kni][knk1], az[kni][knk2])) < TOL) break;
                                 Sk = Fkt.GLS2x2(ax[kni][knk1], ax[kni][knk2], -resultX,
                                         az[kni][knk1], az[kni][knk2], -resultZ);
                                 St[Top[kni][knk1]].setKraft(BER,Sk[0]);

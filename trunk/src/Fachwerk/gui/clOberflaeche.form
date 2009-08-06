@@ -396,7 +396,6 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="buttonVorberechnung">
               <Properties>
-                <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Vorberechnung"/>
                 <Property name="toolTipText" type="java.lang.String" value="Versucht die Anzahl der Unbekannten zu reduzieren und allf&#xe4;llige Widerspr&#xfc;che zu orten.&#xa;"/>
               </Properties>

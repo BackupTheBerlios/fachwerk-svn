@@ -134,13 +134,22 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
                 if (debug) if (Double.isNaN(Nst)) System.out.println("N[Stab " +st + "] = NaN");
                 EA[st] = Double.MIN_VALUE; // Division durch 0 verhindern
                 int status = St[st].getStatus();
-                assert status != NICHTSETZBAR: "[clAutomModellsuche.optimiereSchritt] Programmfehler: Status NICHTSETZBAR z.Z. nicht verwendet.";
-                if (status == inKonstante.BER || status == inKonstante.UNBEST) {
-                    St[st].zurücksetzen(false);
-                    St[st].setKraft(GESETZT, 0);
-                    MODELL_UNVERAENDERT = false;
+                switch (status) {
+                    case UNBEST:
+                    case BER:
+                        St[st].zurücksetzen(false);
+                        St[st].setKraft(GESETZT, 0);
+                        MODELL_UNVERAENDERT = false;
+                        break;
+                    case GESETZT:
+                        assert Math.abs(St[st].getKraft()) < TOL;
+                        break;
+                    case NICHTSETZBAR:
+                        assert false: "[clAutomModellsuche.optimiereSchritt] Programmfehler: Status NICHTSETZBAR z.Z. nicht verwendet.";
+                        break;
+                    default:
+                        assert false: "[clAutomModellsuche.optimiereSchritt] Programmfehler: Status: " + status;
                 }
-                else assert status == inKonstante.GESETZT && Math.abs(St[st].getKraft()) < TOL: "Status: " + St[st].getStatus();
                 continue; // Schlaufe über Stäbe
             }
 
@@ -172,23 +181,15 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
     /** Führt in einem Optimierungsprozedere eine Eliminierung wenig wirksamer Stäbe durch.
      Rückgabewert false, falls die maximale Anzahl Iterationen erreicht wurde.
      @param gewünschteMaxStatUnbestimmtheit Der Reduktionsprozess wird abgebrochen,
-     * sobald die statische Bestimmtheit kleiner gleich der gewünschten ist. */
-    public boolean optimiere(int gewünschteMaxStatUnbestimmtheit) {
-        return optimiere(gewünschteMaxStatUnbestimmtheit, false);
-    }
-
-    /** Führt in einem Optimierungsprozedere eine Eliminierung wenig wirksamer Stäbe durch.
-     Rückgabewert false, falls die maximale Anzahl Iterationen erreicht wurde.
-     @param gewünschteMaxStatUnbestimmtheit Der Reduktionsprozess wird abgebrochen,
      * sobald die statische Bestimmtheit kleiner gleich der gewünschten ist.
      @param nureinSchritt Sobald eine Stabkraft null gesetzt worden ist, den Prozess abbrechen.*/
     public boolean optimiere(int gewünschteMaxStatUnbestimmtheit, boolean nureinSchritt) {
         assert gewünschteMaxStatUnbestimmtheit >= 0;
         if (gewünschteMaxStatUnbestimmtheit < 0) gewünschteMaxStatUnbestimmtheit = 0;
 
-        final boolean OptionVorber = true;
+        final boolean OptionVorber = false;
         final boolean OptionGLS = true;
-        final boolean OptionMechanismus = true;
+        final boolean OptionMechanismus = false;
 
         boolean keinWIDERSPRUCH = true;
         //boolean keinFEHLER = true;
@@ -217,15 +218,17 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
                     if (keinWIDERSPRUCH) {
                         VOLLSTÄNDIGGELÖST_OK = fw.istvollständiggelöst(false); // false, da resultatcheck() soeben in .rechnen() durchgeführt
                         statischeUnbestimmtheit = fw.getStatischeUnbestimmtheit();
+                    
+                        if (VOLLSTÄNDIGGELÖST_OK) { //statischeUnbestimmtheit = 0;
+                            assert statischeUnbestimmtheit == 0 : "stat. Unbestimmtheit ungleich 0: " + statischeUnbestimmtheit;
+                        } else {
+                            double[][] vollstLsg = fw.getCompleteSolution();
+                            assert vollstLsg != null : "[clAutomModellsuche.optimiere] vollstLst == null (stat.Unbesth. " + statischeUnbestimmtheit + ")";
+                            setCompleteSolution(vollstLsg); // setzt auch super.statischeUnbestimmtheit
+                        }
                     }
-                    if (VOLLSTÄNDIGGELÖST_OK && keinWIDERSPRUCH) {
-                        assert statischeUnbestimmtheit == 0: "stat. Unbestimmtheit ungleich 0: " + statischeUnbestimmtheit;
-                        //statischeUnbestimmtheit = 0;
-                    }
-                    else {
-                        double [][] vollstLsg = fw.getCompleteSolution();
-                        assert vollstLsg != null: "[clAutomModellsuche.optimiere] vollstLst == null (stat.Unbesth. " + statischeUnbestimmtheit + ")";
-                        setCompleteSolution(vollstLsg); // setzt auch super.statischeUnbestimmtheit
+                    else { // Widerspruch
+                        System.out.println("[clAutomModellsuche.optimiere] Widerspruch aufgetreten.");
                     }
                 } catch (Exception e) {
                     System.out.println(e.toString());
@@ -233,7 +236,7 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
             }
 
 
-            if (statischeUnbestimmtheit > gewünschteMaxStatUnbestimmtheit) {
+            if (statischeUnbestimmtheit > gewünschteMaxStatUnbestimmtheit && keinWIDERSPRUCH) {
                 modellunverändert = optimiereSchritt();
             }
             else weiter_iterieren = false;
@@ -359,7 +362,7 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
         fw.resultatausgabe_direkt();
 
         clAutomModellsuche autom = new clAutomModellsuche(testSt, testKn, testTop);
-        autom.optimiere(0);
+        autom.optimiere(0, false);
         autom.resultatausgabe_direkt();
 
         //double[] N = autom.getLsg();

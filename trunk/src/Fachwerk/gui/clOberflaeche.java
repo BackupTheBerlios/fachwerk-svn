@@ -772,7 +772,6 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         });
         menuRechnen.add(buttonVerbose);
 
-        buttonVorberechnung.setSelected(true);
         buttonVorberechnung.setText("Vorberechnung");
         buttonVorberechnung.setToolTipText("Versucht die Anzahl der Unbekannten zu reduzieren und allfällige Widersprüche zu orten.\n");
         buttonVorberechnung.addActionListener(new java.awt.event.ActionListener() {
