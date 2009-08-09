@@ -47,7 +47,7 @@ import Fachwerk.statik.*;
  */
 public class clAutomModellsuche extends clElastisch implements inKonstante {
 
-    static final boolean debug = true;
+    static final boolean debug = false;
 
     /** Nulltoleranz */
     private final double TOL = inKonstante.TOL_gls;
@@ -59,6 +59,8 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
     int maxIterationen = 10000000;
     /** Bricht den Optimierungsvorgang ab.*/
     int maxIterationenSeitModelländerung = 200000;
+    /** Der (primitive) Ersatzalgorithmus kommt frühestens nach dieser Anzahl Iterationen zum Einsatz.*/
+    int minIterSeitModelländ = 50;
 
 
     // Vorgabewerte Referenzwerte
@@ -275,7 +277,7 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
                 // Berechnungsschritt
                 modellunverändert = optimiereSchritt(energie);
 
-                if (modellunverändert && Math.abs(energie[0] - alteEnergie) == 0 && iterationSeitModelländerung > 3) { // die Optimierung ist festgefahren
+                if (modellunverändert && Math.abs(energie[0] - alteEnergie) < TOL_finde && iterationSeitModelländerung >= minIterSeitModelländ) { // die Optimierung ist festgefahren
                     System.out.println("");
                     System.out.println("Optimierungsprozess festgefahren, Deformationsenergie konstant: " + energie[0] + " = " + alteEnergie);
                     
@@ -300,6 +302,7 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
                         if (stabmin > 0) {
                             St[stabmin].zurücksetzen(false);
                             St[stabmin].setKraft(GESETZT, 0);
+                            for (int i = 0; i < EA.length; i++) EA[i] = EAzug[i]; // wahrscheinlich nicht nötig TODO testen
                             modellunverändert = false; // erzwingt eine Neuberechnung
                             alteEnergie = -1;
                         }

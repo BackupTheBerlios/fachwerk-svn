@@ -61,9 +61,11 @@ public class clElastisch implements inKonstante {
     protected int statischeUnbestimmtheit;
     
     /** Stabsteifigkeiten (relativ).
+     * EA wird u.U. durch clElastisch oder abgeleitete Klassen verändert.
      Stab mit Index 0 gibt es nicht.*/
     protected double[] EA;
-    /** Stabsteifigkeiten unter Zug.
+
+    /** Stabsteifigkeiten unter Zug (ungewichtete Grundsteifigkeit).
      * EAzug wird nicht verändert in clElastisch
      Stab mit Index 0 gibt es nicht.*/
     protected double[] EAzug;

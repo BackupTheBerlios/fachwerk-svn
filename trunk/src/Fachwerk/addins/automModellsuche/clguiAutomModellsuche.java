@@ -42,7 +42,7 @@ import java.util.*;
 public class clguiAutomModellsuche extends javax.swing.JDialog {
         
     private int faktor = 0;
-    private boolean AUCHSTRAGEGIE2 = false;
+    private boolean AUCHSTRAGEGIE2 = true;
     private boolean NUREINSCHRITT = false;
     private String einleitung;
     boolean OK = false;
@@ -75,8 +75,13 @@ public class clguiAutomModellsuche extends javax.swing.JDialog {
             super.setTitle(tr("titel-AutomModellsuche"));
             jLabel1.setText(tr("lb-AutomModellsuche"));
             jLabel1.setToolTipText(tr("ttip-AutomModellsuche"));
-            checkbox_nureinSchritt.setText(tr("checkbox-AutomModellsuche"));
-            checkbox_nureinSchritt.setToolTipText(tr("ttip-AutomModellsuche"));
+            jLabel6.setText(tr("lb-AutomModellsuche-max"));
+            jPanel3.setToolTipText(tr("ttip-AutomModellsuche-max"));
+            feldFaktor.setToolTipText(tr("ttip-AutomModellsuche-max"));
+            checkbox_nureinSchritt.setText(tr("chb-AutomModellsuche-nureinSchritt"));
+            checkbox_nureinSchritt.setToolTipText(tr("ttip-AutomModellsuche-nureinSchritt"));
+            checkbox_auchStrategie2.setText(tr("chb-AutomModellsuche-auchStrategie2"));
+            checkbox_auchStrategie2.setToolTipText(tr("ttip-AutomModellsuche-auchStrategie2"));
         }
         
         pack();
@@ -101,6 +106,7 @@ public class clguiAutomModellsuche extends javax.swing.JDialog {
         feldFaktor = new javax.swing.JTextField();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jPanel5 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
         checkbox_nureinSchritt = new javax.swing.JCheckBox();
         checkbox_auchStrategie2 = new javax.swing.JCheckBox();
         lbEinleitung = new javax.swing.JLabel();
@@ -139,7 +145,7 @@ public class clguiAutomModellsuche extends javax.swing.JDialog {
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Automatische Modellsuche");
-        jLabel1.setToolTipText("Eliminiert statisch überflüssige St\u00e4be in einem Optimierungsprozess.");
+        jLabel1.setToolTipText("Reduziert die statische Unbestimmtheit des Systems in einem Optimierungsvorgang.");
         jPanel4.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel4);
@@ -152,19 +158,23 @@ public class clguiAutomModellsuche extends javax.swing.JDialog {
                 feldFaktorActionPerformed(evt);
             }
         });
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("max. statische Unbestimmtheit");
 
+        jPanel3.add(jLabel6);
         jPanel3.add(feldFaktor);
+        jPanel3.setToolTipText("Gewünschte maximale statische Unbestimmtheit.");
 
         jPanel3.add(jDesktopPane1);
 
         jPanel2.add(jPanel3);
 
-        checkbox_nureinSchritt.setSelected(false);
+        checkbox_nureinSchritt.setSelected(NUREINSCHRITT);
         checkbox_nureinSchritt.setText("Nur einen Schritt");
         checkbox_nureinSchritt.setToolTipText("Bricht den Optimierungsprozess ab, sobald eine Stabkraft zu Null gesetzt werden konnte.");
         jPanel5.add(checkbox_nureinSchritt);
 
-        checkbox_auchStrategie2.setSelected(false);
+        checkbox_auchStrategie2.setSelected(AUCHSTRAGEGIE2);
         checkbox_auchStrategie2.setText("inkl. Ersatzstrategie");
         checkbox_auchStrategie2.setToolTipText("Wendet eine Ersatzstrategie an, wenn der Optimierungsprozess festfährt.");
         jPanel5.add(checkbox_auchStrategie2);
@@ -290,6 +300,7 @@ public class clguiAutomModellsuche extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JButton knopfAbbruch;
     private javax.swing.JButton knopfOK;
     private javax.swing.JLabel lbEinleitung;
