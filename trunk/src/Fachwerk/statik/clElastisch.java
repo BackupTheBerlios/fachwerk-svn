@@ -79,7 +79,8 @@ public class clElastisch implements inKonstante {
      * Vorsicht: 1 Parameter hat Index 1, Index 0 ist immer 1! */
     private double[] X;
     
-    /** gelöste Beanspruchungen, bei Fachwerk Stabkräfte*/
+    /** gelöste Beanspruchungen, bei Fachwerk Stabkräfte.
+     Vorsicht: Stab 1 hat Index 0 in N, Stab 2 Index 1, etc.*/
     protected double[] N;
     
     static final boolean debug = false; // TODO

@@ -47,6 +47,8 @@ import Fachwerk.statik.*;
  */
 public class clAutomModellsuche extends clElastisch implements inKonstante {
 
+    static final boolean debug = true;
+
     /** Nulltoleranz */
     private final double TOL = inKonstante.TOL_gls;
     
@@ -54,9 +56,9 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
     double TOLgeom = 0.001;
 
     /** Bricht den Optimierungsvorgang ab.*/
-    int maxIterationen = 99999;
-
-    static final boolean debug = false;
+    int maxIterationen = 10000000;
+    /** Bricht den Optimierungsvorgang ab.*/
+    int maxIterationenSeitModelländerung = 200000;
 
 
     // Vorgabewerte Referenzwerte
@@ -68,7 +70,7 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
     // Gewichtungen
     // bezogen auf γ_s = 1;
     /** Gewichtungsfaktor Beton-Druckstreben. Bevorzugungsfaktor * fsd/fcd * Ec/Es */
-    double γ_c = 10; // bevorzugungDruckstrebe * npl/nel = 2.5 * 16.4 / 6.6 = 10
+    double γ_c = 11; // bevorzugungDruckstrebe * npl/nel = 2.5 * 16.4 / 6.6 = 10
     /** Gewichtungsfaktor für nicht horizontal oder vertikal verlaufende Zugbänder. */
    double γ_sred = 0.005;
     /** Gewichtungsfaktor für unter 45° verlaufende Zugbänder. */
@@ -105,6 +107,11 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
 
         this.Kn = Kn;
         this.Top = Top;
+        
+        if (debug) {
+            maxIterationen = 1000;
+            maxIterationenSeitModelländerung = 200;
+        }
     }
 
     /** Führt einen Optimierungsschritt durch. Berechnet das Modell elastisch
@@ -112,8 +119,12 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
      Ist eine Stabkraft beinahe 0, wird der Stab zu null gesetzt.
      Gibt true zurück, solange das Modell nicht verändert wurde (kein Stab neu gesetzt).
      Beim Rückgabewert false muss das Fachwerkmodell neu berechnet werden. */
-    private boolean optimiereSchritt() {
+    private boolean optimiereSchritt(double[] verformungsenergie) {
         boolean MODELL_UNVERAENDERT = true;
+
+        /** Die Verformungsenegie = ∑ N * N/EA * L über alle Stäbe.
+         Dient zu Vergleichszwecken*/
+        double energie = 0;
 
         if (statischeUnbestimmtheit < 1) {
             System.err.println("[clAutomModellsuche.optimiereSchritt] statisch bestimmt, nichts zu tun");
@@ -125,10 +136,13 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
         // Steifigkeit setzen
         for (int st = 1; st < EA.length; st++) {
             double Nst = N[st - 1];
-            
+            if (debug) System.out.println("N[Stab " +st + "] = " + Nst);
+
             if (debug && Double.isNaN(Nst)) { // debug
                 System.out.println ("debugMsg: [clAutomModellsuche.optimiereSchritt] Stab " + st + " ist null.");
             }
+
+            energie += Nst * Nst / EA[st] * L[st];
 
             if (Math.abs(Nst) < TOL || Double.isNaN(Nst)) { // Nullstab
                 if (debug) if (Double.isNaN(Nst)) System.out.println("N[Stab " +st + "] = NaN");
@@ -139,6 +153,7 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
                     case BER:
                         St[st].zurücksetzen(false);
                         St[st].setKraft(GESETZT, 0);
+                        if (debug) System.out.println("Stab " +st + " zu 0 gesetzt");
                         MODELL_UNVERAENDERT = false;
                         break;
                     case GESETZT:
@@ -150,11 +165,12 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
                     default:
                         assert false: "[clAutomModellsuche.optimiereSchritt] Programmfehler: Status: " + status;
                 }
+                //if (debug) System.out.println("EA[Stab " +st + "] = " + EA[st]);
                 continue; // Schlaufe über Stäbe
             }
 
             if (Nst < 0) { // Druckstrebe
-                EA[st] = γ_c * Nst; // eigentlich Ac = Nst / fcd, infolge Normierung auf Stahl und Gewichtung verkuerzt.
+                EA[st] = -γ_c * Nst; // eigentlich Ac = |Nst| / fcd, infolge Normierung auf Stahl und Gewichtung verkuerzt.
             }
             
             else { // Zuggurt
@@ -174,22 +190,34 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
                     EA[st] = γ_sred * Nst;
                 }
             }
+            //if (debug) System.out.println("EA[Stab " +st + "] = " + EA[st]);
         }
+        verformungsenergie[0] = energie;
         return MODELL_UNVERAENDERT;
     }
 
     /** Führt in einem Optimierungsprozedere eine Eliminierung wenig wirksamer Stäbe durch.
-     Rückgabewert false, falls die maximale Anzahl Iterationen erreicht wurde.
+     Rückgabewert false, falls die Optimierung nicht zum gewünschten Ziel kam,
+     * z.B. da die maximale Anzahl Iterationen erreicht wurde.
+     * Die Strategie ist zweistufig. Zunächst werden die unwirksamen Stäbe entfernt,
+     * d.h. die gewichtete Verformungsenergie minimiert.
+     * Falls der Optimierungsprozess festfährt, wird einfach jeweils der (überzählige) Stab mit
+     * der kleinsten Kraft (aus vorheriger Optimierung) entfernt.
      @param gewünschteMaxStatUnbestimmtheit Der Reduktionsprozess wird abgebrochen,
      * sobald die statische Bestimmtheit kleiner gleich der gewünschten ist.
+     @param auchStrategie2Anwenden Wenn der Reduktionsprozess festgefahren ist,
+     * wird jeweils derjenige überzählige Stab mit der kleinsten Kraft eliminiert.
+     * (Holzhackermethode).
      @param nureinSchritt Sobald eine Stabkraft null gesetzt worden ist, den Prozess abbrechen.*/
-    public boolean optimiere(int gewünschteMaxStatUnbestimmtheit, boolean nureinSchritt) {
+    public boolean optimiere(int gewünschteMaxStatUnbestimmtheit, boolean auchStrategie2Anwenden, boolean nureinSchritt) {
         assert gewünschteMaxStatUnbestimmtheit >= 0;
         if (gewünschteMaxStatUnbestimmtheit < 0) gewünschteMaxStatUnbestimmtheit = 0;
 
+        boolean optimierungerfolgreichbeendet = false;
+
         final boolean OptionVorber = false;
         final boolean OptionGLS = true;
-        final boolean OptionMechanismus = false;
+        final boolean OptionMechanismus = false; // zu langsam
 
         boolean keinWIDERSPRUCH = true;
         //boolean keinFEHLER = true;
@@ -198,13 +226,17 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
 
         boolean weiter_iterieren = true;
         boolean maxIterationenErreicht = false;
-        int iteration = 1;
+        int iteration = 0;
+        int iterationSeitModelländerung = 0;
+        double alteEnergie = -1;
+        double[] energie = new double[1];
         boolean modellunverändert = false;
         do {
             iteration++;
-
+            iterationSeitModelländerung++;
 
             if (!modellunverändert) { // wenn zwischenzeitlich Stäbe gesetzt wurden, neu berechnen!
+                iterationSeitModelländerung = 0;
                 try {
                     // Knotenstatus aller Stäbe zurücksetzen (Knoten 0 gibt es nicht)
                     for (int k = 1; k < Kn.length; k++) Kn[k].zurücksetzen();
@@ -213,8 +245,8 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
                     keinWIDERSPRUCH = true;
                     fw = new clFachwerk(Kn, St, Top);
                     fw.setVerbose(false);
+                    fw.setQuiet(true);
                     keinWIDERSPRUCH = fw.rechnen(OptionVorber, OptionGLS, OptionMechanismus);
-                    if (debug) fw.resultatausgabe_direkt();
                     if (keinWIDERSPRUCH) {
                         VOLLSTÄNDIGGELÖST_OK = fw.istvollständiggelöst(false); // false, da resultatcheck() soeben in .rechnen() durchgeführt
                         statischeUnbestimmtheit = fw.getStatischeUnbestimmtheit();
@@ -237,14 +269,60 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
 
 
             if (statischeUnbestimmtheit > gewünschteMaxStatUnbestimmtheit && keinWIDERSPRUCH) {
-                modellunverändert = optimiereSchritt();
+                alteEnergie = energie[0];
+                if (debug) System.out.println("Iteration " + iteration);
+
+                // Berechnungsschritt
+                modellunverändert = optimiereSchritt(energie);
+
+                if (modellunverändert && Math.abs(energie[0] - alteEnergie) == 0 && iterationSeitModelländerung > 3) { // die Optimierung ist festgefahren
+                    System.out.println("");
+                    System.out.println("Optimierungsprozess festgefahren, Deformationsenergie konstant: " + energie[0] + " = " + alteEnergie);
+                    
+                    if (debug) {
+                        for (int st = 1; st <= N.length; st++) System.out.println("N[Stab " +st + "] = " + N[st-1]);
+                    }
+                    
+                    boolean reduktionsprozessAbbrechen = false;
+
+                    if (auchStrategie2Anwenden) {
+                        // Strategie:
+                        // Die kleinste (ungesetzte) Stabkraft zu Null setzen
+                        double Nmin = Double.MAX_VALUE;
+                        int stabmin = -1;
+                        for (int st = 1; st <= N.length; st++) {
+                            if (St[st].getStatus() == UNBEST && Math.abs(N[st - 1]) < Nmin) {
+                                stabmin = st;
+                                Nmin = Math.abs(N[st - 1]);
+                            }
+                        }
+
+                        if (stabmin > 0) {
+                            St[stabmin].zurücksetzen(false);
+                            St[stabmin].setKraft(GESETZT, 0);
+                            modellunverändert = false; // erzwingt eine Neuberechnung
+                            alteEnergie = -1;
+                        }
+                        else reduktionsprozessAbbrechen = true;
+                    }
+                    else reduktionsprozessAbbrechen = true;
+
+                    if (reduktionsprozessAbbrechen) {
+                        weiter_iterieren = false;
+                        System.out.println("Automatischer Reduktionsprozess abgebrochen.");
+                        System.out.println("Bitte von Hand ueberzaehlige Staebe zu Null setzen.");
+                    }
+                }
             }
-            else weiter_iterieren = false;
+            else {
+                weiter_iterieren = false;
+                if (keinWIDERSPRUCH) optimierungerfolgreichbeendet = true;
+            }
 
             if (nureinSchritt && !modellunverändert) weiter_iterieren = false; // mind. ein Stab wurde gesetzt --> automatischen Prozess abbrechen
 
             // Abbruchkriterien
-            if (iteration >= maxIterationen) {
+            if (iteration >= maxIterationen || iterationSeitModelländerung >= maxIterationenSeitModelländerung) {
                 maxIterationenErreicht = true;
                 weiter_iterieren = false;
             }
@@ -252,9 +330,12 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
         
         System.out.println();
         System.out.println("Anzahl Iterationen: " + iteration);
-        if (maxIterationenErreicht) System.out.println("Abbruch durch Erreichen der maximalen Anzahl Iterationen.");
+        if (maxIterationenErreicht) {
+            System.out.println("Anzahl Iterationen seit letzter Modellreduktion: " + iterationSeitModelländerung);
+            System.out.println("ABBRUCH durch Erreichen der maximalen Anzahl Iterationen!");
+        }
 
-        return !maxIterationenErreicht;
+        return optimierungerfolgreichbeendet;
     }
 
 
@@ -362,7 +443,7 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
         fw.resultatausgabe_direkt();
 
         clAutomModellsuche autom = new clAutomModellsuche(testSt, testKn, testTop);
-        autom.optimiere(0, false);
+        autom.optimiere(0, false, false);
         autom.resultatausgabe_direkt();
 
         //double[] N = autom.getLsg();

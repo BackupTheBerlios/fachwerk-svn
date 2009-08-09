@@ -905,6 +905,64 @@ public class treillis extends clOberflaeche implements inKonstante {
         }
         selModus = AUTOMATISCH; setKnopfStab(false); setKnopfKnoten(false);
     }
+
+    protected void befehlLöscheNullstäbe(boolean nurGesetzte) {
+        for (int i = Stabliste.size()-1; i >= 0; i--) {
+            clStab aktStab = ((clWissenderStab) Stabliste.get(i)).stab;
+            boolean stablöschen = false;
+            switch (aktStab.getStatus()) {
+                case BER:
+                    if (!nurGesetzte) {
+                        if (Math.abs(aktStab.getKraft()) < TOL_finde) stablöschen = true;
+                    }
+                    break;
+                case GESETZT:
+                    if (aktStab.getKraft() == 0) stablöschen = true;
+                    break;
+                case UNBEST:
+                default:
+                    //nichts tun
+            }
+            
+            if (stablöschen) {
+                Stabliste.remove(i);
+
+            }
+        }
+        zurücksetzen(false);
+    }
+
+    protected void befehlLöscheLoseKnoten() {
+        for (int knnr = Knotenliste.size(); knnr > 0; knnr--) {
+            // Prüfen, ob Stäbe an den Knoten angeschlossen sind.
+            clWissenderStab st; // Variable für Prüfung auf angeschlossene Stäbe.
+            boolean knotenAngeschlossen = false;
+            for (int i = 0; i < Stabliste.size(); i++) {
+                st = (clWissenderStab) Stabliste.get(i);
+                if (st.von == knnr || st.bis == knnr) {
+                    knotenAngeschlossen = true;
+                    break; // For-Schlaufe
+                }
+            }
+
+            if (!knotenAngeschlossen) {
+                // Knoten entfernen
+                Knotenliste.remove(knnr - 1);
+
+                // Anschlussknoten der verbleibenden Stäbe umnummerieren.
+                for (Iterator it = Stabliste.iterator(); it.hasNext();) {
+                    st = (clWissenderStab) it.next();
+                    if (st.von > knnr) {
+                        st.von--;
+                    }
+                    if (st.bis > knnr) {
+                        st.bis--;
+                    }
+                }
+                zurücksetzen(false);
+            }
+        }
+    }
     
     protected void befehlNeu() {
         if (Knotenliste.size() > 0) {
@@ -1351,16 +1409,19 @@ public class treillis extends clOberflaeche implements inKonstante {
     /** Reduziert die statische Unbestimmtheit des Systems in einem Optimierungsvorgang.*/
     protected void befehlAddinAutomModellsuche() {
         int gewünschteMaxStatUnbestimmtheit = 0;
+        boolean auchStrategie2Anwenden = false; // grobe Strategie, falls Optimierungsprozess festfährt.
         boolean nureinSchritt = false;
 
         clguiAutomModellsuche dialog = new clguiAutomModellsuche(this, locale);
         gewünschteMaxStatUnbestimmtheit = dialog.getAntwort_Faktor();
+        auchStrategie2Anwenden = dialog.getAntwort_auchStrategie2();
         nureinSchritt = dialog.getAntwort_nureinSchritt();
 
         // Testen, ob der Dialog abgebrochen worden ist.
         if (gewünschteMaxStatUnbestimmtheit < 0) return;
 
         zurücksetzen(false);
+        boolean wichtigeMeldung = false;
 
         // GUI Vorarbeiten
         switch (mausAufgabe) {
@@ -1409,7 +1470,7 @@ public class treillis extends clOberflaeche implements inKonstante {
         try {
             clFachwerk fachwerk = new clFachwerk(Knotenarray, Stabarray, Topologie);
             fachwerk.setVerbose(OptionVerbose);
-            keinWIDERSPRUCH = fachwerk.rechnen(false,true,true); // OptionVorber=false, OptionGLS=true, OptionMechanismus=true
+            keinWIDERSPRUCH = fachwerk.rechnen(false,true,OptionMechanismus); // OptionVorber=false, OptionGLS=true
             if (OptionVerbose) fachwerk.resultatausgabe_direkt();
             if (keinWIDERSPRUCH) {
                 VOLLSTÄNDIGGELÖST_OK = fachwerk.istvollständiggelöst(false); // false, da resutatcheck() soeben in .rechnen() durchgeführt
@@ -1423,14 +1484,17 @@ public class treillis extends clOberflaeche implements inKonstante {
                     System.out.println();
 
                     clAutomModellsuche autom = new clAutomModellsuche(Stabarray, Knotenarray, Topologie);
-                    optimierungerfolgreichbeendet = autom.optimiere(gewünschteMaxStatUnbestimmtheit, nureinSchritt);
+                    optimierungerfolgreichbeendet = autom.optimiere(gewünschteMaxStatUnbestimmtheit, auchStrategie2Anwenden, nureinSchritt);
                     if (OptionVerbose) autom.resultatausgabe_direkt();
 
                     // Text
                     if (optimierungerfolgreichbeendet) {
                         meldung = "Optimierung abgeschlossen";
                     }
-                    else meldung = "Optimierung vorzeitig abgebrochen";
+                    else {
+                        meldung = "Optimierung vorzeitig abgebrochen";
+                        wichtigeMeldung = true; // verhindert dass der Text gleich verschwindet
+                    }
                 }
             }
         }
@@ -1455,7 +1519,15 @@ public class treillis extends clOberflaeche implements inKonstante {
 
         zurücksetzen(false);
         befehlBerechne();
-        if (meldung.length() > 0) feldStatuszeile.setText(meldung);
+
+        if (wichtigeMeldung) selModus = NICHTSÄNDERN;
+        else selModus = AUTOMATISCH;
+        if (meldung.length() > 0) {
+            System.out.println("");
+            System.out.println(meldung);
+            System.out.println("");
+            feldStatuszeile.setText(meldung);
+        }
     }
     
     

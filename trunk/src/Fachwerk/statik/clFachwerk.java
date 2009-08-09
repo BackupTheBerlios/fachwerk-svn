@@ -88,6 +88,7 @@ public class clFachwerk implements inKonstante {
     private double[][] vollstLsg; // dient nur dazu, die vollständige analytische Lösung herauzugeben.
     
     private boolean verbose = false;
+    private boolean quiet = false;
     private boolean debug = false;
     
     
@@ -109,6 +110,11 @@ public class clFachwerk implements inKonstante {
     /** Gibt ausgiebig Informationen auf der Konsole aus. */
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;
+    }
+
+    /** Gibt nur sehr wenige Informationen auf der Konsole aus. */
+    public void setQuiet(boolean quiet) {
+        this.quiet = quiet;
     }
     
     /**
@@ -336,11 +342,11 @@ public class clFachwerk implements inKonstante {
                 }
             }
             if (anzangeschlStäbe < 1) {
-                System.out.println("WARNUNG: fragliche Eingabe: Der Knoten " + kni +" ist mit keinem Stab verbunden!");
+                if (!quiet) System.out.println("WARNUNG: fragliche Eingabe: Der Knoten " + kni +" ist mit keinem Stab verbunden!");
             }
             if (anzangeschlStäbe == 1) {
                 if (Kn[kni].getLagerbed() == LOS) {
-                    System.out.println("WARNUNG: fragliche Eingabe: Der Knoten " + kni +" ist ev. ungenuegend gehalten!");
+                    if (!quiet) System.out.println("WARNUNG: fragliche Eingabe: Der Knoten " + kni +" ist ev. ungenuegend gehalten!");
                 }
             }
         }
@@ -682,7 +688,7 @@ public class clFachwerk implements inKonstante {
         anzUnbek = anzUnbestSt + 2 * anzOffeneGelagerteKn;
         anzGL = 2 * anzOffeneKn + 3 + anzOffeneVerschKn;
         
-        if (true) { // if (verbose)
+        if (!quiet) {
             System.out.println("Gleichungssystem:");
             System.out.println("Anzahl Unbekannte:  " + anzUnbek);
             System.out.println("Anzahl Gleichungen: " + anzGL + " (nicht alle unabhaengig voneinander)");
@@ -1019,7 +1025,7 @@ public class clFachwerk implements inKonstante {
                     if (verbose) System.out.println("statische Unbestimmtheit: unbekannt");
                 }
                 else System.out.println("statische Unbestimmtheit: " + statischeUnbestimmtheit);
-                System.out.println("THE EQUILIBRIUM CHECK IS ONLY COMPLETE IF ALL FORCES ARE KNOWN!");
+                if (!quiet) System.out.println("THE EQUILIBRIUM CHECK IS ONLY COMPLETE IF ALL FORCES ARE KNOWN!");
                 return false;
             }
         }

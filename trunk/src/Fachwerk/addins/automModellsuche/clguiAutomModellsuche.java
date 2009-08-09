@@ -42,6 +42,7 @@ import java.util.*;
 public class clguiAutomModellsuche extends javax.swing.JDialog {
         
     private int faktor = 0;
+    private boolean AUCHSTRAGEGIE2 = false;
     private boolean NUREINSCHRITT = false;
     private String einleitung;
     boolean OK = false;
@@ -101,6 +102,7 @@ public class clguiAutomModellsuche extends javax.swing.JDialog {
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jPanel5 = new javax.swing.JPanel();
         checkbox_nureinSchritt = new javax.swing.JCheckBox();
+        checkbox_auchStrategie2 = new javax.swing.JCheckBox();
         lbEinleitung = new javax.swing.JLabel();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -161,6 +163,11 @@ public class clguiAutomModellsuche extends javax.swing.JDialog {
         checkbox_nureinSchritt.setText("Nur einen Schritt");
         checkbox_nureinSchritt.setToolTipText("Bricht den Optimierungsprozess ab, sobald eine Stabkraft zu Null gesetzt werden konnte.");
         jPanel5.add(checkbox_nureinSchritt);
+
+        checkbox_auchStrategie2.setSelected(false);
+        checkbox_auchStrategie2.setText("inkl. Ersatzstrategie");
+        checkbox_auchStrategie2.setToolTipText("Wendet eine Ersatzstrategie an, wenn der Optimierungsprozess festfährt.");
+        jPanel5.add(checkbox_auchStrategie2);
 
         jPanel2.add(jPanel5);
 
@@ -227,6 +234,7 @@ public class clguiAutomModellsuche extends javax.swing.JDialog {
         
         // Ist die Checkbox angekreuzt?
         NUREINSCHRITT = checkbox_nureinSchritt.isSelected();
+        AUCHSTRAGEGIE2 = checkbox_auchStrategie2.isSelected();
         
         return true;
     }
@@ -239,6 +247,12 @@ public class clguiAutomModellsuche extends javax.swing.JDialog {
             return antwort;
         }
         else return -1;
+    }
+
+    /** Gibt an, ob die Erstatzstrategie angewendet werden soll, wenn der Optimierungsprozess festfährt.
+     @returns AUCHSTRAGEGIE2*/
+    public boolean getAntwort_auchStrategie2() {
+        return AUCHSTRAGEGIE2;
     }
     
     /** Gibt an, ob nach nur einem Reduktionschritt der Optimierungsprozess abgebrochen weden soll.
@@ -267,6 +281,7 @@ public class clguiAutomModellsuche extends javax.swing.JDialog {
     }
     // Variables declaration
     private javax.swing.JCheckBox checkbox_nureinSchritt;
+    private javax.swing.JCheckBox checkbox_auchStrategie2;
     private javax.swing.JTextField feldFaktor;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;

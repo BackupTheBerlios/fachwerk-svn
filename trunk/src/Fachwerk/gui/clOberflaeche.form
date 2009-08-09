@@ -320,6 +320,35 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemL&#xf6;schenActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JSeparator" name="jSeparator9">
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="itemL&#xf6;scheAlleNullst&#xe4;be">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Nullst&#xe4;be l&#xf6;schen"/>
+                <Property name="toolTipText" type="java.lang.String" value="L&#xf6;scht alle Nullst&#xe4;be"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemL&#xf6;scheAlleNullst&#xe4;beActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="itemL&#xf6;scheGesetzteNullst&#xe4;be">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Gesetzte Nullst&#xe4;be l&#xf6;schen"/>
+                <Property name="toolTipText" type="java.lang.String" value="L&#xf6;scht gesetzte Nullst&#xe4;be"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemL&#xf6;scheGesetzteNullst&#xe4;beActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="itemL&#xf6;scheLoseKnoten">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Lose Knoten l&#xf6;schen"/>
+                <Property name="toolTipText" type="java.lang.String" value="L&#xf6;scht Knoten ohne angeschlossene St&#xe4;be."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemL&#xf6;scheLoseKnotenActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemAllesZur&#xfc;cksetzen">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
@@ -457,14 +486,6 @@
             </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="jSeparator7">
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="itemFindeOrt">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="finde Ort"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemFindeOrtActionPerformed"/>
-              </Events>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemAutomModellsuche">
               <Properties>
                 <Property name="text" type="java.lang.String" value="automatische Modellreduktion"/>
@@ -482,6 +503,14 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemElastischerVorschlagActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="itemFindeOrt">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="finde Ort"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemFindeOrtActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
