@@ -53,7 +53,7 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
     private final double TOL = inKonstante.TOL_gls;
     
     /** Ab wann gilt ein Stab als horizontal/vertikal/45°-diagonal?*/
-    double TOLgeom = 0.001;
+    double TOLgeom = 0.002;
 
     /** Bricht den Optimierungsvorgang ab.*/
     int maxIterationen = 10000000;
@@ -305,6 +305,7 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
                             for (int i = 0; i < EA.length; i++) EA[i] = EAzug[i]; // wahrscheinlich nicht nötig TODO testen
                             modellunverändert = false; // erzwingt eine Neuberechnung
                             alteEnergie = -1;
+                            System.out.println("Alternativer Reduktionsprozess angewendet.");
                         }
                         else reduktionsprozessAbbrechen = true;
                     }

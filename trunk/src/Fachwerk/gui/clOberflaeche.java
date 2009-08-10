@@ -151,6 +151,7 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         itemKoordTransDXF = new javax.swing.JMenuItem();
         itemSkaliereLasten = new javax.swing.JMenuItem();
         jSeparator7 = new javax.swing.JSeparator();
+        itemVerbindeAlleKnoten = new javax.swing.JMenuItem();
         itemAutomModellsuche = new javax.swing.JMenuItem();
         itemElastischerVorschlag = new javax.swing.JMenuItem();
         itemFindeOrt = new javax.swing.JMenuItem();
@@ -863,6 +864,14 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         menuAddins.add(itemSkaliereLasten);
         menuAddins.add(jSeparator7);
 
+        itemVerbindeAlleKnoten.setText("Verbinde alle Knoten");
+        itemVerbindeAlleKnoten.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemVerbindeAlleKnotenActionPerformed(evt);
+            }
+        });
+        menuAddins.add(itemVerbindeAlleKnoten);
+
         itemAutomModellsuche.setText("automatische Modellreduktion");
         itemAutomModellsuche.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1250,6 +1259,10 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         final boolean nurGesetzte = false;
         befehlLöscheNullstäbe(nurGesetzte);
 }//GEN-LAST:event_itemLöscheAlleNullstäbeActionPerformed
+
+    private void itemVerbindeAlleKnotenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemVerbindeAlleKnotenActionPerformed
+        befehlVerbindeAlleKnoten();
+}//GEN-LAST:event_itemVerbindeAlleKnotenActionPerformed
     
     private void tastenbelegen() {
         javax.swing.ActionMap am = getRootPane().getActionMap();
@@ -1550,12 +1563,14 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         itemKoordTransDXF.setToolTipText(tr("ttipKoordTransDXF"));
         itemSkaliereLasten.setText(tr("itemLastenSkalieren"));
         itemSkaliereLasten.setToolTipText(tr("ttipLastenSkalieren"));
-        itemFindeOrt.setText(tr("itemFindeOrt"));
-        itemFindeOrt.setToolTipText(tr("ttipFindeOrt"));
+        itemVerbindeAlleKnoten.setText(tr("itemVerbindeAlleKnoten"));
+        itemVerbindeAlleKnoten.setToolTipText(tr("ttipVerbindeAlleKnoten"));
         itemAutomModellsuche.setText(tr("itemAutomModellsuche"));
         itemAutomModellsuche.setToolTipText(tr("ttipAutomModellsuche"));
         itemElastischerVorschlag.setText(tr("itemElastischerVorschlag"));
         itemElastischerVorschlag.setToolTipText(tr("ttipElastischerVorschlag"));
+        itemFindeOrt.setText(tr("itemFindeOrt"));
+        itemFindeOrt.setToolTipText(tr("ttipFindeOrt"));
         
         menuHilfe.setText(tr("menuHilfe"));
         menuHilfe.setMnemonic((tr("mnHilfe")).charAt(0));
@@ -1653,6 +1668,7 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
     protected abstract void befehlAddinKoordTransFWK();
     protected abstract void befehlAddinKoordTransDXF();
     protected abstract void befehlAddinSkaliereLasten();
+    protected abstract void befehlVerbindeAlleKnoten();
     protected abstract void befehlAddinAutomModellsuche();
     protected abstract void befehlAddinRateStabkräfte();
     protected abstract void befehlAddinFindeort();
@@ -1848,6 +1864,7 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem itemStabNrAnzeigen;
     private javax.swing.JMenuItem itemStabselekt;
     private javax.swing.JMenuItem itemSystem;
+    private javax.swing.JMenuItem itemVerbindeAlleKnoten;
     private javax.swing.JMenuItem itemZoomAll;
     private javax.swing.JMenuItem itemZoomxy;
     private javax.swing.JMenuItem itemZurücksetzen;

@@ -1529,6 +1529,78 @@ public class treillis extends clOberflaeche implements inKonstante {
             feldStatuszeile.setText(meldung);
         }
     }
+
+    protected void befehlVerbindeAlleKnoten() {
+        clOK bestätige = new clOK(this, tr("okVerbindeAlleKn"), tr("okVerbindeAlleKnwarnung"), locale);
+        if (!bestätige.ok()) return;
+
+        final double TOL_eineLinie = 0.002;
+
+        int[] vonbis = new int[2];
+        int anzKnoten = Knotenliste.size();
+        for (vonbis[0] = 1; vonbis[0] < anzKnoten; vonbis[0]++) {
+            for (vonbis[1] = vonbis[0]+1; vonbis[1] <= anzKnoten; vonbis[1]++) {
+
+                // Kontrolle, ob Knoten existieren und ob sie nicht gleich sind.
+                if (vonbis[0] < 1 || vonbis[1] < 1) assert false;
+                if (vonbis[0] > anzKnoten || vonbis[1] > anzKnoten) assert false;
+                if (vonbis[0] == vonbis[1]) {
+                    assert false;
+                    continue;
+                }
+
+                // Kontrolle, ob nicht schon ein Stab zwischen diesen Knoten existiert
+                boolean stabschonvorhanden = false;
+                clWissenderStab aktWSt;
+                for (Iterator it = Stabliste.iterator(); it.hasNext();) {
+                    aktWSt = (clWissenderStab) it.next();
+                    if (aktWSt.von == vonbis[0] && aktWSt.bis == vonbis[1]) {
+                        stabschonvorhanden = true;
+                    }
+                    if (aktWSt.von == vonbis[1] && aktWSt.bis == vonbis[0]) {
+                        stabschonvorhanden = true;
+                    }
+                    if (stabschonvorhanden) {
+                        break;
+                    }
+                }
+                if (stabschonvorhanden) {
+                    continue;
+                }
+
+                // Testen, ob zwischen den beiden Knoten bereits ein Knoten liegt.
+                boolean knotendazwischen = false;
+                clKnoten aktvonkn = (clKnoten) Knotenliste.get(vonbis[0]-1);
+                clKnoten aktbiskn = (clKnoten) Knotenliste.get(vonbis[1]-1);
+                Point2D vonPkt = new Point2D.Double(aktvonkn.getX(), aktvonkn.getZ());
+                Point2D bisPkt = new Point2D.Double(aktbiskn.getX(), aktbiskn.getZ());
+                int kn = 0;
+                double maxAbstand = TOL_eineLinie * vonPkt.distance(bisPkt) / 2d;
+                for (Iterator it = Knotenliste.iterator(); it.hasNext();) {
+                    kn++;
+                    clKnoten aktkn = (clKnoten) it.next();
+                    if (kn == vonbis[0] || kn == vonbis[1]) continue; // Schlaufe über Knotenliste
+                    Point2D aktPkt = new Point2D.Double(aktkn.getX(), aktkn.getZ());
+                    if (mausimRechteck(aktPkt, vonPkt, bisPkt, maxAbstand) || mausimRechteck(aktPkt, bisPkt, vonPkt, maxAbstand)) { // diese Funktion testet, ob aktPkt zwischen vonPkt und bisPkt ist.
+                        knotendazwischen = true;
+                        break;
+                    }
+                }
+
+                if (knotendazwischen) continue;
+                
+                Stabliste.add(new clWissenderStab(new clStab(), vonbis[0], vonbis[1]));
+            }
+        }
+
+        String meldung = tr("AnzahlStaebe") + ": " + Stabliste.size();
+        System.out.println(meldung);
+
+        zurücksetzen(false);
+        aktualisieren(false, true);
+        selModus = NICHTSÄNDERN;
+        feldStatuszeile.setText(meldung);
+    }
     
     
     // ----------------
@@ -2317,7 +2389,7 @@ public class treillis extends clOberflaeche implements inKonstante {
         double t = -dmx * Math.sin(phi) + dmz * Math.cos(phi);
         if (n < 0) return false;
         if (n > Lpix) return false;
-        if (t < 0) return false;
+        if (t < -TOL_finde) return false; // eigentlich 0, führt aber aus numerischen Gründen zum Nichterkennen von einigen Punkten in befehlAddinVerbindeAlleKnoten
         if (t > Bpix) return false;
         return true;
     }
