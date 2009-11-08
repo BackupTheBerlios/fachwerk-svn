@@ -230,7 +230,9 @@ public class treillis extends clOberflaeche implements inKonstante {
             // wenn keine bekannte Option erkannt wurde:
             if (args[i].startsWith("-")) {help = true; break;}
             else {
-                if (args[i].endsWith(".dxf") || args[i].endsWith(".bgd") || args[i].endsWith(".csv")) dxfdateiname = args[i];
+                if (args[i].endsWith(".dxf") || args[i].endsWith(".bgd") || args[i].endsWith(".csv")
+                        || args[i].endsWith(".DXF") || args[i].endsWith(".BGD") || args[i].endsWith(".CSV")
+                        ) dxfdateiname = args[i];
                 else dateiname = args[i];
             }
         }
@@ -701,6 +703,7 @@ public class treillis extends clOberflaeche implements inKonstante {
         boolean dateidialogAnzeigen = true;
         if (progstart && dxfdateiname!=null) {
             if (!dxfdateiname.equals("")) dateidialogAnzeigen = false;
+            // if (dxfdateiname != null) fc.setSelectedFile(new File(dxfdateiname)); TODO nur wenn keine Fachwerkdatei geladen
         }
         try {
             if (dateidialogAnzeigen) {

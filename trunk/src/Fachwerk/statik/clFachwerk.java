@@ -253,12 +253,12 @@ public class clFachwerk implements inKonstante {
         rKnotenstatusSetzen();
         
         boolean OKkomplett = false;
-        if (resultatcheck()) { // falls keine Widerspruch entdeckt wird:
+        if (resultatcheck()) { // falls kein Widerspruch entdeckt wird:
             OKkomplett = istvollständiggelöst(false); // false, da resultatcheck() soeben durchgeführt
         }
         else {
-            if (debug) verbose = true;
-        } // gibt mehr Infos aus, wenn resultatausgabe_direkt() aufgerufen wird. // TODO ev.entfernen (wie in Fachwerk3D)
+            if (debug) verbose = true; // gibt mehr Infos aus, wenn resultatausgabe_direkt() aufgerufen wird.
+        }
         
         if (optionMECHANISMUS && !OKkomplett) {
             boolean WIDaufgetretenStatBer = WIDERSPRUCHaufgetreten;

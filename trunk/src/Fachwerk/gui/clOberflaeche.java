@@ -150,8 +150,8 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         itemKoordTransFWK = new javax.swing.JMenuItem();
         itemKoordTransDXF = new javax.swing.JMenuItem();
         itemSkaliereLasten = new javax.swing.JMenuItem();
-        jSeparator7 = new javax.swing.JSeparator();
         itemVerbindeAlleKnoten = new javax.swing.JMenuItem();
+        jSeparator7 = new javax.swing.JSeparator();
         itemAutomModellsuche = new javax.swing.JMenuItem();
         itemElastischerVorschlag = new javax.swing.JMenuItem();
         itemFindeOrt = new javax.swing.JMenuItem();
@@ -862,7 +862,6 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
             }
         });
         menuAddins.add(itemSkaliereLasten);
-        menuAddins.add(jSeparator7);
 
         itemVerbindeAlleKnoten.setText("Verbinde alle Knoten");
         itemVerbindeAlleKnoten.addActionListener(new java.awt.event.ActionListener() {
@@ -871,6 +870,7 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
             }
         });
         menuAddins.add(itemVerbindeAlleKnoten);
+        menuAddins.add(jSeparator7);
 
         itemAutomModellsuche.setText("automatische Modellreduktion");
         itemAutomModellsuche.addActionListener(new java.awt.event.ActionListener() {
@@ -1529,13 +1529,13 @@ public abstract class clOberflaeche extends javax.swing.JFrame {
         itemNeuerPkt.setText(tr("itemNeuerKn"));
         itemNeuerStab.setText(tr("itemNeuerSt"));
         itemLöschen.setText(tr("itemLoeschen"));
+        itemLöschen.setToolTipText(tr("ttipLoeschen"));
         itemLöscheAlleNullstäbe.setText(tr("itemLoescheAlleNullstaebe"));
         itemLöscheAlleNullstäbe.setToolTipText(tr("ttipLoescheAlleNullstaebe"));
         itemLöscheGesetzteNullstäbe.setText(tr("itemLoescheGesetzteNullst"));
         itemLöscheGesetzteNullstäbe.setToolTipText(tr("ttipLoescheGesetzteNullst"));
         itemLöscheLoseKnoten.setText(tr("itemLoescheLoseKnoten"));
         itemLöscheLoseKnoten.setToolTipText(tr("ttipLoescheLoseKnoten"));
-        itemLöschen.setToolTipText(tr("ttipLoeschen"));
         itemAllesZurücksetzen.setText(tr("itemAllesZurueck"));
         itemAllesZurücksetzen.setToolTipText(tr("ttipAllesZurueck"));
         itemEigenschaften.setText(tr("itemEigenschaft"));

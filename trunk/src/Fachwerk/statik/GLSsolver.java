@@ -287,7 +287,7 @@ public final class GLSsolver {
                 // Überprüfen, ob Gleichung widersprüchlich ist
                 if (alleParamNull) { // TODO ev. nochmals prüfen ob alle 0 mit geringerer Toleranz (Problem fastNull*Param ≠ 0 könnte bedeuten dass Param = 0). Zumindestens wenn noch Parameter zu vergeben.
                     double obnull = Math.abs(kontrolle[0]);
-                    if (obnull > TOL) {
+                    if (obnull > TOL) { // TODO eventuell sogar weniger streng prüfen (Faktor 2-10).
                         System.out.println("");
                         System.out.println("Widerspruch im Gleichungssystem! (Zeile "+z+") " + obnull +" ungleich 0"); // TODO: URSPRÜNGLICH ZEILE (piv) ANGEBEN!
                         System.out.println("eventuell numerisches Problem");

@@ -115,10 +115,30 @@ public final class Fkt {
             s[0] = (bz - az2 * s[1]) / az1;
             return s;
         }
-    }
-    
+    }/** Berechnet die Determinante einer 2x2-Matrix */
     public static double det2x2(double ax1, double ax2, double az1, double az2) {
         return ax1 * az2 - ax2 * az1;
+    }
+
+    /** Berechnet das Kreuzprodukt (Vektor) zweier Vektoren
+     @return Vektor */
+    public static double[] kreuzprodukt(double ux, double uy, double uz, double vx, double vy, double vz) {
+        double[] vektor = new double[3];
+        vektor[0] = det2x2(uy, vy, uz, vz);
+        vektor[1] = det2x2(uz, vz, ux, vx);
+        vektor[2] = det2x2(ux, vx, uy, vy);
+        return vektor;
+    }
+
+    /** Berechnet den Betrag (die Länge) eines Vektors
+     @return Länge */
+    public static double vektorbetrag(double[] vektor) {
+        assert vektor.length > 0;
+        double länge = 0;
+        for (int i = 0; i < vektor.length; i++) {
+            länge += vektor[i]*vektor[i];
+        }
+        return Math.sqrt(länge);
     }
     
     /** Normiert einen Vektor, der ursprüngliche Vektor bleibt unverändert

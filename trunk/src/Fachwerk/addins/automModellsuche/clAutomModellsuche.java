@@ -53,7 +53,7 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
     private final double TOL = inKonstante.TOL_gls;
     
     /** Ab wann gilt ein Stab als horizontal/vertikal/45°-diagonal?*/
-    double TOLgeom = 0.002;
+    double TOLgeom = 0.002; // > 0!
 
     /** Bricht den Optimierungsvorgang ab.*/
     int maxIterationen = 10000000;
@@ -82,8 +82,8 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
 
     /** Stablängen
      Stab mit Index 0 gibt es nicht.*/
-    protected double[] Ldx = new double[1 + anzSt];;
-    protected double[] Ldz = new double[1 + anzSt];;
+    protected double[] Ldx = new double[1 + anzSt];
+    protected double[] Ldz = new double[1 + anzSt];
     
     private clKnoten[] Kn;
     private int[][] Top;

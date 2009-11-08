@@ -62,13 +62,13 @@ public interface inKonstante {
     static final int WIDERSPRUCH = 3;
     
     // aus clFachwerk
-    final double TOL_vorberechnung = 1E-11; // um Gleichheit von Stabkräften zu erkennen
+    static final double TOL_vorberechnung = 1E-11; // um Gleichheit von Stabkräften zu erkennen
                                       // Vorschlag 1E-11
-    final double TOL_resultatcheck = 1E-10; // dito, jedoch lascherer Wert, zB. TOL des GLS-Solvers
+    static final double TOL_resultatcheck = 1E-10; // dito, jedoch lascherer Wert, zB. TOL des GLS-Solvers
     
     // aus clGLSsolver
-    final double TOL_gls = 1E-10;
+    static final double TOL_gls = 1E-10;
     
     // aus clFindeOrt (Zusätze)
-    final double TOL_finde = 1E-12;
+    static final double TOL_finde = 1E-12;
 }

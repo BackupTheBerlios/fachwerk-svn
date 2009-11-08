@@ -484,8 +484,6 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemSkaliereLastenActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JSeparator" name="jSeparator7">
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemVerbindeAlleKnoten">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Verbinde alle Knoten"/>
@@ -493,6 +491,8 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemVerbindeAlleKnotenActionPerformed"/>
               </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JSeparator" name="jSeparator7">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemAutomModellsuche">
               <Properties>
