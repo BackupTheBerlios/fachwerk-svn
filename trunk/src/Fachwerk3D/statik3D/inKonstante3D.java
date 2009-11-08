@@ -9,7 +9,7 @@ package Fachwerk3D.statik3D;
 /**
  * Fachwerk3D - treillis3D
  *
- * Copyright (c) 2004 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2004 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
  *
  * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
  * SORGFÄLTIG auf ihre PLAUSIBILITäT zu prüfen!
@@ -72,6 +72,9 @@ public interface inKonstante3D extends Fachwerk.statik.inKonstante {
     // aus clFindeOrt (Zusätze)
     final double TOL_finde = 1E-12;
     */
-    
+
+    // aus clFachwerk3D
     static final int SCHINENLAGER = 3;
+    static final double TOL_gls3D = 5E-9;
+
 }

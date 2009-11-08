@@ -81,8 +81,7 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
     //private int anzFG; // verbleibende Freiheitsgrade (unbestimmte Stabkräfte)
     
     
-    private static final double TOL = TOL_vorberechnung;
-    //private static final double TOL = 1E-11; // um Gleichheit von Stabkräften zu erkennen (in rVorberechnung)
+    private static final double TOLgls = TOL_gls3D;
     private static final double TOLresultatcheck = TOL_resultatcheck;
     //private static final double TOLresultatcheck = 1E-10; // dito, jedoch lascherer Wert, zB. TOL des GLS-Solvers
     
@@ -93,6 +92,7 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
     private double[][] vollstLsg; // dient nur dazu, die vollständige analytische Lösung herauzugeben.
     
     private boolean verbose = false;
+    private boolean quiet = false;
     private boolean debug = false;
     
     
@@ -114,6 +114,11 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
     /** Gibt ausgiebig Informationen auf der Konsole aus. */
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;
+    }
+
+    /** Gibt nur sehr wenige Informationen auf der Konsole aus. */
+    public void setQuiet(boolean quiet) {
+        this.quiet = quiet;
     }
     
     /**
@@ -294,8 +299,11 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
         rKnotenstatusSetzen();
         
         boolean OKkomplett = false;
-        if (resultatcheck()) { // falls keine Widerspruch entdeckt wird:
+        if (resultatcheck()) { // falls kein Widerspruch entdeckt wird:
             OKkomplett = istvollständiggelöst(false); // false, da resultatcheck() soeben durchgeführt
+        }
+        else {
+            if (debug) verbose = true; // gibt mehr Infos aus, wenn resultatausgabe_direkt() aufgerufen wird.
         }
         
         if (optionMECHANISMUS && !OKkomplett) {
@@ -380,11 +388,11 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
                 }
             }
             if (anzangeschlStäbe < 1) {
-                System.out.println("WARNUNG: fragliche Eingabe: Der Knoten " + kni +" ist mit keinem Stab verbunden!");
+                if (!quiet) System.out.println("WARNUNG: fragliche Eingabe: Der Knoten " + kni +" ist mit keinem Stab verbunden!");
             }
             if (anzangeschlStäbe == 1) {
                 if (Kn[kni].getLagerbed() == LOS) {
-                    System.out.println("WARNUNG: fragliche Eingabe: Der Knoten " + kni +" ist ev. ungenuegend gehalten!");
+                    if (!quiet) System.out.println("WARNUNG: fragliche Eingabe: Der Knoten " + kni +" ist ev. ungenuegend gehalten!");
                 }
             }
         }
@@ -463,7 +471,7 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
         anzUnbek = anzUnbestSt + 3 * anzOffeneGelagerteKn;
         anzGL = 3 * anzOffeneKn + 6 + 3 * anzOffeneVerschKn + anzOffeneSchinenKn; // TODO kontrollieren
         
-        if (true) { // if (verbose)
+        if (!quiet) {
             System.out.println("Gleichungssystem:");
             System.out.println("Anzahl Unbekannte:  " + anzUnbek);
             System.out.println("Anzahl Gleichungen: " + anzGL + " (nicht alle unabhaengig voneinander)");
@@ -471,6 +479,7 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
         
         if (anzUnbek == 0) {
             System.out.println("Nichts zu lösen, alles bekannt");
+            statischeUnbestimmtheit = 0;
             return; // nichts zu lösen, wenn alles bekannt.
         }
         
@@ -719,6 +728,7 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
         // GLS lösen
         System.out.print("Beginne das Gleichungssystem zu loesen... ");
         GLSsolver solver = new GLSsolver(GLS);
+        solver.setTol(TOLgls); // die standardmässige Toleranz in Fachwerk ist für bei 3D-Modellen vorkommenden grossen GLS zu streng.
         statischeUnbestimmtheit = solver.getAnzUnbestParam();
         double[][] xLsg = solver.solve();
         assert (xLsg.length == anzUnbek) : "xLsg.length = " + xLsg.length + " ungleich anzUnbek " + anzUnbek;
@@ -853,7 +863,7 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
                     if (verbose) System.out.println("statische Unbestimmtheit: unbekannt");
                 }
                 else System.out.println("statische Unbestimmtheit: " + statischeUnbestimmtheit);
-                System.out.println("THE EQUILIBRIUM CHECK IS ONLY COMPLETE IF ALL FORCES ARE KNOWN!");
+                if (!quiet) System.out.println("THE EQUILIBRIUM CHECK IS ONLY COMPLETE IF ALL FORCES ARE KNOWN!");
                 return false;
             }
         }

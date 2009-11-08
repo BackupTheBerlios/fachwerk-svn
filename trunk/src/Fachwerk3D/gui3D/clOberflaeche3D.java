@@ -134,6 +134,10 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
         itemNeuerPkt = new javax.swing.JMenuItem();
         itemNeuerStab = new javax.swing.JMenuItem();
         itemLöschen = new javax.swing.JMenuItem();
+        jSeparator9 = new javax.swing.JSeparator();
+        itemLöscheAlleNullstäbe = new javax.swing.JMenuItem();
+        itemLöscheGesetzteNullstäbe = new javax.swing.JMenuItem();
+        itemLöscheLoseKnoten = new javax.swing.JMenuItem();
         itemAllesZurücksetzen = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JSeparator();
         itemEigenschaften = new javax.swing.JMenuItem();
@@ -145,13 +149,15 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
         buttonGLS = new javax.swing.JCheckBoxMenuItem();
         buttonMechanismus = new javax.swing.JCheckBoxMenuItem();
         menuAddins = new javax.swing.JMenu();
+        itemExportInput = new javax.swing.JMenuItem();
         itemKoordTransFWK = new javax.swing.JMenuItem();
         itemKoordTransDXF = new javax.swing.JMenuItem();
         itemSkaliereLasten = new javax.swing.JMenuItem();
-        itemExportInput = new javax.swing.JMenuItem();
+        itemVerbindeAlleKnoten = new javax.swing.JMenuItem();
         jSeparator7 = new javax.swing.JSeparator();
-        itemFindeOrt = new javax.swing.JMenuItem();
+        itemAutomModellsuche = new javax.swing.JMenuItem();
         itemElastischerVorschlag = new javax.swing.JMenuItem();
+        itemFindeOrt = new javax.swing.JMenuItem();
         menuHilfe = new javax.swing.JMenu();
         itemHilfe = new javax.swing.JMenuItem();
         itemAbout = new javax.swing.JMenuItem();
@@ -758,6 +764,34 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
             }
         });
         menuFachwerk.add(itemLöschen);
+        menuFachwerk.add(jSeparator9);
+
+        itemLöscheAlleNullstäbe.setText("Nullstäbe löschen");
+        itemLöscheAlleNullstäbe.setToolTipText("Löscht alle Nullstäbe");
+        itemLöscheAlleNullstäbe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemLöscheAlleNullstäbeActionPerformed(evt);
+            }
+        });
+        menuFachwerk.add(itemLöscheAlleNullstäbe);
+
+        itemLöscheGesetzteNullstäbe.setText("Gesetzte Nullstäbe löschen");
+        itemLöscheGesetzteNullstäbe.setToolTipText("Löscht gesetzte Nullstäbe");
+        itemLöscheGesetzteNullstäbe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemLöscheGesetzteNullstäbeActionPerformed(evt);
+            }
+        });
+        menuFachwerk.add(itemLöscheGesetzteNullstäbe);
+
+        itemLöscheLoseKnoten.setText("Lose Knoten löschen");
+        itemLöscheLoseKnoten.setToolTipText("Löscht Knoten ohne angeschlossene Stäbe.");
+        itemLöscheLoseKnoten.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemLöscheLoseKnotenActionPerformed(evt);
+            }
+        });
+        menuFachwerk.add(itemLöscheLoseKnoten);
 
         itemAllesZurücksetzen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_BACK_SPACE, java.awt.event.InputEvent.ALT_MASK));
         itemAllesZurücksetzen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Fachwerk/gui/icons/clear_left.png"))); // NOI18N
@@ -841,6 +875,14 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
         menuAddins.setMnemonic('Z');
         menuAddins.setText("Zusätze");
 
+        itemExportInput.setText("Export Input");
+        itemExportInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemExportInputActionPerformed(evt);
+            }
+        });
+        menuAddins.add(itemExportInput);
+
         itemKoordTransFWK.setText("Koordinaten transformieren");
         itemKoordTransFWK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -865,22 +907,22 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
         });
         menuAddins.add(itemSkaliereLasten);
 
-        itemExportInput.setText("Export Input");
-        itemExportInput.addActionListener(new java.awt.event.ActionListener() {
+        itemVerbindeAlleKnoten.setText("Verbinde alle Knoten");
+        itemVerbindeAlleKnoten.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemExportInputActionPerformed(evt);
+                itemVerbindeAlleKnotenActionPerformed(evt);
             }
         });
-        menuAddins.add(itemExportInput);
+        menuAddins.add(itemVerbindeAlleKnoten);
         menuAddins.add(jSeparator7);
 
-        itemFindeOrt.setText("finde Ort");
-        itemFindeOrt.addActionListener(new java.awt.event.ActionListener() {
+        itemAutomModellsuche.setText("automatische Modellreduktion");
+        itemAutomModellsuche.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemFindeOrtActionPerformed(evt);
+                itemAutomModellsucheActionPerformed(evt);
             }
         });
-        menuAddins.add(itemFindeOrt);
+        menuAddins.add(itemAutomModellsuche);
 
         itemElastischerVorschlag.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, java.awt.event.InputEvent.ALT_MASK));
         itemElastischerVorschlag.setText("elastischer Vorschlag");
@@ -890,6 +932,14 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
             }
         });
         menuAddins.add(itemElastischerVorschlag);
+
+        itemFindeOrt.setText("finde Ort");
+        itemFindeOrt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemFindeOrtActionPerformed(evt);
+            }
+        });
+        menuAddins.add(itemFindeOrt);
 
         jMenuBar1.add(menuAddins);
 
@@ -992,7 +1042,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     }//GEN-LAST:event_itemKoordTransFWKActionPerformed
 
     private void itemLadenHintergrundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemLadenHintergrundActionPerformed
-        befehlLadeHintergrund();
+        befehlLadeHintergrund(false);
     }//GEN-LAST:event_itemLadenHintergrundActionPerformed
 
     private void knopfHintergrundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_knopfHintergrundActionPerformed
@@ -1251,6 +1301,28 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm
         befehlBeenden();
     }//GEN-LAST:event_exitForm
+
+    private void itemLöscheAlleNullstäbeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemLöscheAlleNullstäbeActionPerformed
+        final boolean nurGesetzte = false;
+        befehlLöscheNullstäbe(nurGesetzte);
+}//GEN-LAST:event_itemLöscheAlleNullstäbeActionPerformed
+
+    private void itemLöscheGesetzteNullstäbeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemLöscheGesetzteNullstäbeActionPerformed
+        final boolean nurGesetzte = true;
+        befehlLöscheNullstäbe(nurGesetzte);
+}//GEN-LAST:event_itemLöscheGesetzteNullstäbeActionPerformed
+
+    private void itemLöscheLoseKnotenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemLöscheLoseKnotenActionPerformed
+        befehlLöscheLoseKnoten();
+}//GEN-LAST:event_itemLöscheLoseKnotenActionPerformed
+
+    private void itemVerbindeAlleKnotenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemVerbindeAlleKnotenActionPerformed
+        befehlVerbindeAlleKnoten();
+}//GEN-LAST:event_itemVerbindeAlleKnotenActionPerformed
+
+    private void itemAutomModellsucheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAutomModellsucheActionPerformed
+        befehlAddinAutomModellsuche();
+}//GEN-LAST:event_itemAutomModellsucheActionPerformed
     
     private void tastenbelegen() {
         javax.swing.ActionMap am = getRootPane().getActionMap();
@@ -1550,6 +1622,12 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
         itemNeuerStab.setText(tr("itemNeuerSt"));
         itemLöschen.setText(tr("itemLoeschen"));
         itemLöschen.setToolTipText(tr("ttipLoeschen"));
+        itemLöscheAlleNullstäbe.setText(tr("itemLoescheAlleNullstaebe"));
+        itemLöscheAlleNullstäbe.setToolTipText(tr("ttipLoescheAlleNullstaebe"));
+        itemLöscheGesetzteNullstäbe.setText(tr("itemLoescheGesetzteNullst"));
+        itemLöscheGesetzteNullstäbe.setToolTipText(tr("ttipLoescheGesetzteNullst"));
+        itemLöscheLoseKnoten.setText(tr("itemLoescheLoseKnoten"));
+        itemLöscheLoseKnoten.setToolTipText(tr("ttipLoescheLoseKnoten"));
         itemAllesZurücksetzen.setText(tr("itemAllesZurueck"));
         itemAllesZurücksetzen.setToolTipText(tr("ttipAllesZurueck"));
         itemEigenschaften.setText(tr("itemEigenschaft"));
@@ -1569,19 +1647,23 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
         
         menuAddins.setText(tr("menuAddins"));
         menuAddins.setMnemonic((tr("mnAddins")).charAt(0));
+        itemExportInput.setText(tr("itemExportInput"));
+        itemExportInput.setToolTipText(tr("ttipExportInput"));
         itemKoordTransFWK.setText(tr("itemKoordTransFWK"));
         itemKoordTransFWK.setToolTipText(tr("ttipKoordTransFWK"));
         itemKoordTransDXF.setText(tr("itemKoordTransDXF"));
         itemKoordTransDXF.setToolTipText(tr("ttipKoordTransDXF"));
         itemSkaliereLasten.setText(tr("itemLastenSkalieren"));
         itemSkaliereLasten.setToolTipText(tr("ttipLastenSkalieren"));
-        itemExportInput.setText(tr("itemExportInput"));
-        itemExportInput.setToolTipText(tr("ttipExportInput"));
-        itemFindeOrt.setText(tr("itemFindeOrt"));
-        itemFindeOrt.setToolTipText(tr("ttipFindeOrt"));
+        itemVerbindeAlleKnoten.setText(tr("itemVerbindeAlleKnoten"));
+        itemVerbindeAlleKnoten.setToolTipText(tr("ttipVerbindeAlleKnoten"));
+        itemAutomModellsuche.setText(tr("itemAutomModellsuche"));
+        itemAutomModellsuche.setToolTipText(tr("ttipAutomModellsuche"));
         itemElastischerVorschlag.setText(tr("itemElastischerVorschlag"));
         itemElastischerVorschlag.setToolTipText(tr("ttipElastischerVorschlag"));
-        
+        itemFindeOrt.setText(tr("itemFindeOrt"));
+        itemFindeOrt.setToolTipText(tr("ttipFindeOrt"));
+
         menuHilfe.setText(tr("menuHilfe"));
         menuHilfe.setMnemonic((tr("mnHilfe")).charAt(0));
         itemHilfe.setText(tr("itemHilfe"));
@@ -1642,7 +1724,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     protected abstract void befehlDrucken();
     protected abstract void befehlDruckenGraph();
     protected abstract void befehlLaden(boolean progstart);
-    protected abstract void befehlLadeHintergrund();
+    protected abstract void befehlLadeHintergrund(boolean progstart);
     protected abstract void befehlNeu();
     protected abstract void befehlSpracheGewechselt();
     protected abstract void befehlBeenden();
@@ -1663,6 +1745,8 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     protected abstract void befehlErstelleNeuenKnoten();
     protected abstract void befehlErstelleNeuenStab();
     protected abstract void befehlLöschen();
+    protected abstract void befehlLöscheNullstäbe(boolean nurGesetzte);
+    protected abstract void befehlLöscheLoseKnoten();
     protected abstract void befehlAllesZurücksetzen();
     protected abstract void befehlEigenschaften();
     
@@ -1672,13 +1756,15 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     protected abstract void befehlOptionVorberechnung(boolean status);
     protected abstract void befehlOptionGLS(boolean status);
     protected abstract void befehlOptionMechanismus(boolean status);
-    
+
+    protected abstract void befehlAddinExportInput();
     protected abstract void befehlAddinKoordTransFWK();
     protected abstract void befehlAddinKoordTransDXF();
-    protected abstract void befehlAddinExportInput();
-    protected abstract void befehlAddinFindeort();
     protected abstract void befehlAddinSkaliereLasten();
+    protected abstract void befehlVerbindeAlleKnoten();
+    protected abstract void befehlAddinAutomModellsuche();
     protected abstract void befehlAddinRateStabkräfte();
+    protected abstract void befehlAddinFindeort();
     
     protected abstract void befehlBspdaten();
     protected abstract void befehlHilfe();
@@ -1833,6 +1919,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     protected javax.swing.JTextField feldZ;
     private javax.swing.JMenuItem itemAbout;
     private javax.swing.JMenuItem itemAllesZurücksetzen;
+    private javax.swing.JMenuItem itemAutomModellsuche;
     private javax.swing.JMenuItem itemBeenden;
     private javax.swing.JMenuItem itemBerechnen;
     private javax.swing.JMenuItem itemBlickrtg;
@@ -1857,6 +1944,9 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemLadenHintergrund;
     private javax.swing.JCheckBoxMenuItem itemLagerKrAnzeigen;
     private javax.swing.JCheckBoxMenuItem itemLastenAnzeigen;
+    private javax.swing.JMenuItem itemLöscheAlleNullstäbe;
+    private javax.swing.JMenuItem itemLöscheGesetzteNullstäbe;
+    private javax.swing.JMenuItem itemLöscheLoseKnoten;
     private javax.swing.JMenuItem itemLöschen;
     private javax.swing.JMenuItem itemNeu;
     private javax.swing.JMenuItem itemNeuerPkt;
@@ -1868,6 +1958,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem itemStabNrAnzeigen;
     private javax.swing.JMenuItem itemStabselekt;
     private javax.swing.JMenuItem itemSystem;
+    private javax.swing.JMenuItem itemVerbindeAlleKnoten;
     private javax.swing.JMenuItem itemZoomAll;
     private javax.swing.JMenuItem itemZoomxy;
     private javax.swing.JMenuItem itemZurücksetzen;
@@ -1882,6 +1973,7 @@ public abstract class clOberflaeche3D extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
+    private javax.swing.JSeparator jSeparator9;
     private javax.swing.JButton knopfAllesZurücksetzen;
     private javax.swing.JButton knopfBerechnen;
     private javax.swing.JButton knopfEigenschaften;

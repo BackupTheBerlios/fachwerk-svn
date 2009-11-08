@@ -19,6 +19,8 @@ import Fachwerk.gui.clPan;
 import Fachwerk3D.addins3D.findeOrt3D.*;
 import Fachwerk3D.addins3D.coordTransformation3D.*;
 import Fachwerk3D.addins3D.skaliereLasten3D.*;
+import Fachwerk3D.addins3D.automModellsuche3D.*;
+import Fachwerk.addins.automModellsuche.clguiAutomModellsuche;
 import Fachwerk3D.addins3D.export.*;
 import java.awt.event.MouseEvent;
 import java.util.*;
@@ -138,14 +140,39 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
         }
         neu();
     }
-    public treillis3D(Locale lc, String dateiname) {
+    public treillis3D(Locale lc, String dateiname, String dxfdateiname) {
         super("Fachwerk3D - rein statisches Fachwerkprogramm", lc);   // Titel wird in clOberflaeche überschrieben
         meldungenRB = ResourceBundle.getBundle("Fachwerk3D/locales3D/gui3D-meldungen", locale);
         if (meldungenRB == null) {
             System.err.println("FEHLER: gui-meldungen für " + locale.toString());
         }
-        this.dateiname = dateiname;
-        befehlLaden(true);
+        if (dateiname != null && !dateiname.equals("")) {
+            this.dateiname = dateiname;
+            befehlLaden(true);
+        }
+        if (dxfdateiname != null && !dxfdateiname.equals("")) {
+            this.dxfdateiname = dxfdateiname;
+            befehlLadeHintergrund(true);
+        }
+    }
+
+    /** Workaround for Windows only!
+     * FileChooser hangs if there is any broken link on desktop.
+     * (java version "1.6.0_14", Microsoft Windows XP [Version 5.1.2600])*/
+    void useWorkarounds_for_Windows() {
+        String osName = System.getProperty ("os.name");
+        if (osName.startsWith("Windows")) {
+            // don't use shell folder, it's terribly slow due to JDK bug
+            // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6317789
+            // Nachteil: Ordnerauswahl umständlich
+            final String USE_SHELL_FOLDER = "FileChooser.useShellFolder";
+            if (!Boolean.TRUE.equals(fc.getClientProperty(USE_SHELL_FOLDER))) {
+                fc.putClientProperty(USE_SHELL_FOLDER, Boolean.FALSE);
+                if (dateiname != null) fc.setSelectedFile(new File(dateiname));
+                else fc.setSelectedFile(new File(""));
+            }
+        }
+        else return; // no workaround needed on other operating systems
     }
     
     
@@ -156,10 +183,12 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
         String sprache;
         String land;
         String dateiname = "";
+        String dxfdateiname = "";
         String lookAndFeel = "Steel";
         Locale lc = Locale.getDefault();
         treillis3D fw;
         boolean help = false;
+        boolean useworkarounds = false;
         
         String titel = "" + PROGNAME + " version " + HAUPTVER + ".";
         if (UNTERVER < 10) titel += "0";
@@ -202,11 +231,18 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
                 lookAndFeel = args[i];
                 continue;
             }
+            if (args[i].equals("--safe_mode")) {
+                useworkarounds = true;
+                continue;
+            }
             
             // wenn keine bekannte Option erkannt wurde:
             if (args[i].startsWith("-")) {help = true; break;}
             else {
-                dateiname = args[i];
+                if (args[i].endsWith(".dxf") || args[i].endsWith(".bgd") || args[i].endsWith(".csv")
+                        || args[i].endsWith(".DXF") || args[i].endsWith(".BGD") || args[i].endsWith(".CSV")
+                        ) dxfdateiname = args[i];
+                else dateiname = args[i];
             }
         }
         
@@ -228,6 +264,9 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
             System.out.println("    --language_country       Language and country i.e. 'de CH', 'en GB'");
             System.out.println("    --look                   LookAndFeel: Java|System|Steel|Ocean|undef");
             System.out.println("                             or i.e. com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+            if (System.getProperty ("os.name").startsWith("Windows")) {  // Für andere Betriebssysteme keine Workarounds.
+                System.out.println("    --safe_mode              workaround for ev. FileChooser problems on Windows");
+            }
             System.out.println('\n');
             System.out.println("Example 1: fachwerk3d file.fwk3d");
             System.out.println("Example 2: fachwerk3d -l en");
@@ -280,11 +319,18 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
         }
         
         
-        if (dateiname.equals("")) {
+        if (dateiname.equals("") && dxfdateiname.equals("")) {
             fw = new treillis3D(lc);
         }
         else {
-            fw = new treillis3D(lc, dateiname);
+            fw = new treillis3D(lc, dateiname, dxfdateiname);
+        }
+
+        if (useworkarounds) {
+            String osName = System.getProperty ("os.name");
+            if (osName.startsWith("Windows")) {
+                fw.useWorkarounds_for_Windows();
+            }
         }
         
         fw.pack();
@@ -358,7 +404,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
             keinWIDERSPRUCH = fachwerk.rechnen(OptionVorber,OptionGLS,OptionMechanismus);
             statUnbesth = fachwerk.getStatischeUnbestimmtheit();
             fachwerk.resultatausgabe_direkt();
-            if (keinWIDERSPRUCH) VOLLSTÄNDIGGELÖST_OK = fachwerk.istvollständiggelöst(false); // false, das resutatcheck() soeben in .rechnen() durchgeführt
+            if (keinWIDERSPRUCH) VOLLSTÄNDIGGELÖST_OK = fachwerk.istvollständiggelöst(false); // false, da resutatcheck() soeben in .rechnen() durchgeführt
             aktualisieren(true, true);
             if (!keinWIDERSPRUCH) LayerMechanismius(true, fachwerk.getMechanismus());
             if (keinWIDERSPRUCH) LayerStKraft(true);
@@ -673,27 +719,33 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
         clInfo3D info = new clInfo3D(this, PROGNAME, HAUPTVER, UNTERVER, JAHR);
     }
     
-    protected void befehlLadeHintergrund() {
-        String prog, meldung;
+    protected void befehlLadeHintergrund(boolean progstart) {
+        String meldung;
+        boolean dateidialogAnzeigen = true;
+        if (progstart && dxfdateiname!=null) {
+            if (!dxfdateiname.equals("")) dateidialogAnzeigen = false;
+            // if (dxfdateiname != null) fc.setSelectedFile(new File(dxfdateiname)); TODO nur wenn keine Fachwerkdatei geladen
+        }
         try {
-            fc.resetChoosableFileFilters();
-            fc.addChoosableFileFilter(new StdFileFilter("dxf", "Drawing Exchange File"));
-            fc.addChoosableFileFilter(new StdFileFilter("bgd", "Background Data File"));
-            fc.addChoosableFileFilter(new StdFileFilter("csv", "Background Points"));
-            String[] filter = {"dxf","bgd","csv"};
-            fc.addChoosableFileFilter(new StdFileFilter(filter, "Drawings and Points"));
-            if (dxfdateiname != null) fc.setSelectedFile(new File(dxfdateiname));
-            else fc.setSelectedFile(new File(""));
-            int returnVal = fc.showOpenDialog(this);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File datei = fc.getSelectedFile();
-                dxfdateiname = datei.getPath();
-                dxf = new clDXF3D(dxfdateiname);
+            if (dateidialogAnzeigen) {
+                fc.resetChoosableFileFilters();
+                fc.addChoosableFileFilter(new StdFileFilter("dxf", "Drawing Exchange File"));
+                fc.addChoosableFileFilter(new StdFileFilter("bgd", "Background Data File"));
+                fc.addChoosableFileFilter(new StdFileFilter("csv", "Background Points"));
+                String[] filter = {"dxf", "bgd", "csv"};
+                fc.addChoosableFileFilter(new StdFileFilter(filter, "Drawings and Points"));
+                if (dxfdateiname != null) fc.setSelectedFile(new File(dxfdateiname));
+                else fc.setSelectedFile(new File(""));
+                int returnVal = fc.showOpenDialog(this);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File datei = fc.getSelectedFile();
+                    dxfdateiname = datei.getPath();
+                } else {
+                    LayerHintergrund(false);
+                    return;
+                }
             }
-            else {
-                LayerHintergrund(false);
-                return;
-            }
+            dxf = new clDXF3D(dxfdateiname);
         }
         catch (Exception e) {
             System.err.println(e.toString());
@@ -717,10 +769,15 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
         neu();
         String prog, meldung;
         int hauptversionsNrProg, fileversion, unterversionsNrProg;
-        
+
+        boolean dateidialogAnzeigen = true;
+        if (progstart && dateiname!=null) {
+            if (!dateiname.equals("")) dateidialogAnzeigen = false;
+        }
+
         try {
             if (dateiname != null) fc.setSelectedFile(new File(dateiname));
-            if (!progstart) {
+            if (dateidialogAnzeigen) {
                 fc.resetChoosableFileFilters();
                 fc.addChoosableFileFilter(new StdFileFilter("fwk3d", "Fachwerk3D Data"));
                 
@@ -869,6 +926,64 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
                 assert false;
         }
         selModus = AUTOMATISCH; setKnopfStab(false); setKnopfKnoten(false);
+    }
+
+    protected void befehlLöscheNullstäbe(boolean nurGesetzte) {
+        for (int i = Stabliste.size()-1; i >= 0; i--) {
+            clStab aktStab = ((clWissenderStab3D) Stabliste.get(i)).stab;
+            boolean stablöschen = false;
+            switch (aktStab.getStatus()) {
+                case BER:
+                    if (!nurGesetzte) {
+                        if (Math.abs(aktStab.getKraft()) < TOL_finde) stablöschen = true;
+                    }
+                    break;
+                case GESETZT:
+                    if (aktStab.getKraft() == 0) stablöschen = true;
+                    break;
+                case UNBEST:
+                default:
+                    //nichts tun
+            }
+
+            if (stablöschen) {
+                Stabliste.remove(i);
+
+            }
+        }
+        zurücksetzen(false);
+    }
+
+    protected void befehlLöscheLoseKnoten() {
+        for (int knnr = Knotenliste.size(); knnr > 0; knnr--) {
+            // Prüfen, ob Stäbe an den Knoten angeschlossen sind.
+            clWissenderStab3D st; // Variable für Prüfung auf angeschlossene Stäbe.
+            boolean knotenAngeschlossen = false;
+            for (int i = 0; i < Stabliste.size(); i++) {
+                st = (clWissenderStab3D) Stabliste.get(i);
+                if (st.von == knnr || st.bis == knnr) {
+                    knotenAngeschlossen = true;
+                    break; // For-Schlaufe
+                }
+            }
+
+            if (!knotenAngeschlossen) {
+                // Knoten entfernen
+                Knotenliste.remove(knnr - 1);
+
+                // Anschlussknoten der verbleibenden Stäbe umnummerieren.
+                for (Iterator it = Stabliste.iterator(); it.hasNext();) {
+                    st = (clWissenderStab3D) it.next();
+                    if (st.von > knnr) {
+                        st.von--;
+                    }
+                    if (st.bis > knnr) {
+                        st.bis--;
+                    }
+                }
+                zurücksetzen(false);
+            }
+        }
     }
     
     protected void befehlNeu() {
@@ -1037,7 +1152,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     
     protected void befehlZeigeHintergrund(boolean status) {
         if (status == true && dxf == null) { // noch kein dxf geladen.
-            befehlLadeHintergrund();
+            befehlLadeHintergrund(false);
             return;
         }
         
@@ -1199,7 +1314,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
             keinWIDERSPRUCH = fachwerk.rechnen(OptionVorber,true,OptionMechanismus); // OptionGLS=true
             if (OptionVerbose) fachwerk.resultatausgabe_direkt();
             if (keinWIDERSPRUCH) {
-                VOLLSTÄNDIGGELÖST_OK = fachwerk.istvollständiggelöst(false); // false, das resutatcheck() soeben in .rechnen() durchgeführt
+                VOLLSTÄNDIGGELÖST_OK = fachwerk.istvollständiggelöst(false); // false, da resutatcheck() soeben in .rechnen() durchgeführt
                 
                 if (VOLLSTÄNDIGGELÖST_OK) {
                     System.out.println("completely solved, nothing to guess."); // TODO übersetzen
@@ -1296,6 +1411,202 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
         if (dateiname.length() > 0) outfile = dateiname + ".out.csv";
         else outfile = "fwk3d.out.csv";
         clExportInput3D exp = new clExportInput3D(Knotenliste, Stabliste, outfile, locale);
+    }
+
+    /** Reduziert die statische Unbestimmtheit des Systems in einem Optimierungsvorgang.*/
+    protected void befehlAddinAutomModellsuche() {
+        int gewünschteMaxStatUnbestimmtheit = 0;
+        boolean auchStrategie2Anwenden = false; // grobe Strategie, falls Optimierungsprozess festfährt.
+        boolean nureinSchritt = false;
+
+        clguiAutomModellsuche dialog = new clguiAutomModellsuche(this, locale);
+        gewünschteMaxStatUnbestimmtheit = dialog.getAntwort_Faktor();
+        auchStrategie2Anwenden = dialog.getAntwort_auchStrategie2();
+        nureinSchritt = dialog.getAntwort_nureinSchritt();
+
+        // Testen, ob der Dialog abgebrochen worden ist.
+        if (gewünschteMaxStatUnbestimmtheit < 0) return;
+
+        zurücksetzen(false);
+        boolean wichtigeMeldung = false;
+
+        // GUI Vorarbeiten
+        switch (mausAufgabe) {
+            case NEUERSTAB:
+                mausAufgabe = NICHTS;
+                setKnopfNeuerStab(false);
+                break;
+            case NEUERKNOTENSNAP:
+                mausAufgabe = NICHTS;
+                setKnopfNeuerKnotenSnap(false);
+                break;
+            case NEUERKNOTEN:
+                assert false;
+                mausAufgabe = NICHTS;
+                break;
+            case ZOOMxy: // lassen
+            default:
+        }
+
+        // BEGINN
+        keinFEHLER = true;
+        VOLLSTÄNDIGGELÖST_OK = false;
+        //Datenaufbereiten
+        clKnoten3D[] Knotenarray = new clKnoten3D[Knotenliste.size() + 1];
+        clStab[] Stabarray = new clStab[Stabliste.size() + 1];
+        int[][] Topologie = new int[Knotenarray.length][Knotenarray.length];
+
+        int i = 1;
+        for (Iterator it = Knotenliste.iterator(); it.hasNext();) {
+            Knotenarray[i] = (clKnoten3D) it.next();
+            i++;
+        }
+        i = 1;
+        for (Iterator it = Stabliste.iterator(); it.hasNext();) {
+            clWissenderStab3D wst = (clWissenderStab3D) it.next();
+            Stabarray[i] = wst.stab;
+            Topologie[wst.von][wst.bis] = i;
+            i++;
+        }
+
+
+        boolean optimierungerfolgreichbeendet = false;
+        String meldung = "";
+
+        try {
+            clFachwerk3D fachwerk = new clFachwerk3D(Knotenarray, Stabarray, Topologie);
+            fachwerk.setVerbose(OptionVerbose);
+            keinWIDERSPRUCH = fachwerk.rechnen(false,true,OptionMechanismus); // OptionVorber=false, OptionGLS=true
+            if (OptionVerbose) fachwerk.resultatausgabe_direkt();
+            if (keinWIDERSPRUCH) {
+                VOLLSTÄNDIGGELÖST_OK = fachwerk.istvollständiggelöst(false); // false, da resutatcheck() soeben in .rechnen() durchgeführt
+
+                if (VOLLSTÄNDIGGELÖST_OK) {
+                    System.out.println("completely solved, nothing to guess."); // TODO übersetzen
+                }
+                else {
+                    System.out.println();
+                    System.out.println("-------------------------------------------");
+                    System.out.println();
+
+                    clAutomModellsuche3D autom = new clAutomModellsuche3D(Stabarray, Knotenarray, Topologie);
+                    optimierungerfolgreichbeendet = autom.optimiere(gewünschteMaxStatUnbestimmtheit, auchStrategie2Anwenden, nureinSchritt);
+                    if (OptionVerbose) autom.resultatausgabe_direkt();
+
+                    // Text
+                    if (optimierungerfolgreichbeendet) {
+                        meldung = "Optimierung abgeschlossen";
+                    }
+                    else {
+                        meldung = "Optimierung vorzeitig abgebrochen";
+                        wichtigeMeldung = true; // verhindert dass der Text gleich verschwindet
+                    }
+                }
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e.toString());
+            zurücksetzen(false);
+            aktualisieren(true, true);
+            // im Statusfeld FEHLER anzeigen, in Statuszeile Fehlermeldung
+            keinFEHLER = false;
+            selModus = NICHTSÄNDERN; // verhindert, dass der Text in der Statuszeile gleich verschwindet
+            feldStatusFw.setText(tr("FEHLER"));
+            feldStatuszeile.setText(e.toString());
+            System.out.println();
+            System.out.println("-------------------------------------------");
+            System.out.println();
+            return;
+        }
+
+        System.out.println();
+        System.out.println("-------------------------------------------");
+        System.out.println();
+
+        zurücksetzen(false);
+        befehlBerechne();
+
+        if (wichtigeMeldung) selModus = NICHTSÄNDERN;
+        else selModus = AUTOMATISCH;
+        if (meldung.length() > 0) {
+            System.out.println("");
+            System.out.println(meldung);
+            System.out.println("");
+            feldStatuszeile.setText(meldung);
+        }
+    }
+
+    protected void befehlVerbindeAlleKnoten() {
+        clOK bestätige = new clOK(this, tr("okVerbindeAlleKn"), tr("okVerbindeAlleKnwarnung"), locale);
+        if (!bestätige.ok()) return;
+
+        final double TOL_eineLinie = 0.002; // > 0
+
+        int[] vonbis = new int[2];
+        int anzKnoten = Knotenliste.size();
+        for (vonbis[0] = 1; vonbis[0] < anzKnoten; vonbis[0]++) {
+            for (vonbis[1] = vonbis[0]+1; vonbis[1] <= anzKnoten; vonbis[1]++) {
+
+                // Kontrolle, ob Knoten existieren und ob sie nicht gleich sind.
+                if (vonbis[0] < 1 || vonbis[1] < 1) assert false;
+                if (vonbis[0] > anzKnoten || vonbis[1] > anzKnoten) assert false;
+                if (vonbis[0] == vonbis[1]) {
+                    assert false;
+                    continue;
+                }
+
+                // Kontrolle, ob nicht schon ein Stab zwischen diesen Knoten existiert
+                boolean stabschonvorhanden = false;
+                clWissenderStab3D aktWSt;
+                for (Iterator it = Stabliste.iterator(); it.hasNext();) {
+                    aktWSt = (clWissenderStab3D) it.next();
+                    if (aktWSt.von == vonbis[0] && aktWSt.bis == vonbis[1]) {
+                        stabschonvorhanden = true;
+                    }
+                    if (aktWSt.von == vonbis[1] && aktWSt.bis == vonbis[0]) {
+                        stabschonvorhanden = true;
+                    }
+                    if (stabschonvorhanden) {
+                        break;
+                    }
+                }
+                if (stabschonvorhanden) {
+                    continue;
+                }
+
+                // Testen, ob zwischen den beiden Knoten bereits ein Knoten liegt.
+                boolean knotendazwischen = false;
+                clKnoten3D aktvonkn = (clKnoten3D) Knotenliste.get(vonbis[0]-1);
+                clKnoten3D aktbiskn = (clKnoten3D) Knotenliste.get(vonbis[1]-1);
+                Point3D vonPkt = new Point3D(aktvonkn.getX(), aktvonkn.getY(), aktvonkn.getZ());
+                Point3D bisPkt = new Point3D(aktbiskn.getX(), aktbiskn.getY(), aktbiskn.getZ());
+                int kn = 0;
+                for (Iterator it = Knotenliste.iterator(); it.hasNext();) {
+                    kn++;
+                    clKnoten3D aktkn = (clKnoten3D) it.next();
+                    if (kn == vonbis[0] || kn == vonbis[1]) continue; // Schlaufe über Knotenliste
+                    Point3D aktPkt = new Point3D(aktkn.getX(), aktkn.getY(), aktkn.getZ());
+                    // diese Funktion testet, ob aktPkt zwischen vonPkt und bisPkt ist.
+                    if (punktaufGerade(aktPkt, vonPkt, bisPkt, TOL_eineLinie)) {
+                        punktaufGerade(aktPkt, vonPkt, bisPkt, TOL_eineLinie);
+                        knotendazwischen = true;
+                        break;
+                    }
+                }
+
+                if (knotendazwischen) continue;
+
+                Stabliste.add(new clWissenderStab3D(new clStab(), vonbis[0], vonbis[1]));
+            }
+        }
+
+        String meldung = tr("AnzahlStaebe") + ": " + Stabliste.size();
+        System.out.println(meldung);
+
+        zurücksetzen(false);
+        aktualisieren(false, true);
+        selModus = NICHTSÄNDERN;
+        feldStatuszeile.setText(meldung);
     }
     
     
@@ -2054,10 +2365,40 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
         double t = -dmx * Math.sin(phi) + dmz * Math.cos(phi);
         if (n < 0) return false;
         if (n > Lpix) return false;
-        if (t < 0) return false;
+        if (t < -TOL_finde) return false; // eigentlich 0, führt aber aus numerischen Gründen zum Nichterkennen von einigen Punkten in befehlAddinVerbindeAlleKnoten
         if (t > Bpix) return false;
         return true;
         
+    }
+
+    /** Gibt an, ob ein Punkt auf der Gerade liegt, welche A und B verbindet.
+     * (Nicht auf deren Verlängerung.)
+     *  Eine relative Distanz (ca. toleranz * AB/2) zur Gerade wird als draufliegend betrachtet.
+     */
+    private boolean punktaufGerade(Point3D pkt, Point3D A, Point3D B, double toleranz) {
+        // Gerade g: AB
+        double dxG = B.getX() - A.getX();
+        double dyG = B.getY() - A.getY();
+        double dzG = B.getZ() - A.getZ();
+        double LG = Math.sqrt(dxG*dxG + dyG*dyG + dzG*dzG);
+        // Punkt pkt (von A gemessen)
+        double dx = pkt.getX() - A.getX();
+        double dy = pkt.getY() - A.getY();
+        double dz = pkt.getZ() - A.getZ();
+        double LAP = Math.sqrt(dx*dx + dy*dy + dz*dz);
+        // Punkt pkt von B gemessen
+        double LBP = pkt.distance(B);
+
+        if (LAP > LG) return false; // Punkt unmöglich zwischen A und B
+        if (LBP > LG) return false; // Punkt unmöglich zwischen A und B
+
+        // Abstand Punkt zur Gerade AB
+        // d = | (B-A) x (pkt-A) | / LG   Vektorschreibweise, d immer positiv
+        double d = Fkt.vektorbetrag(Fkt.kreuzprodukt(dx, dy, dz, dxG, dyG, dzG)) / LG;
+        double[] abstände = {LAP, LAP, LG/2d};
+        double zulAbw = toleranz * Fkt.min(abstände);
+        if (d < zulAbw) return true;
+        return false;
     }
     
     /** selektiert einen Knoten oder einen Stab in der Nähe des Mauspunktes (in Panelkoord),

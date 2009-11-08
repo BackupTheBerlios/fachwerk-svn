@@ -47,7 +47,6 @@ import Fachwerk.statik.Fkt;
  */
 public class clElastisch3D extends Fachwerk.statik.clElastisch {
     
-    boolean debug = true; // TODO
     
     /**
      * Creates a new instance of clElastisch3D
