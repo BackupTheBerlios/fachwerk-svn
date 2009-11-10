@@ -72,7 +72,7 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
     // Gewichtungen
     // bezogen auf γ_s = 1;
     /** Gewichtungsfaktor Beton-Druckstreben. Bevorzugungsfaktor * fsd/fcd * Ec/Es */
-    double γ_c = 11; // bevorzugungDruckstrebe * npl/nel = 2.5 * 16.4 / 6.6 = 10
+    double γ_c = 11; // bevorzugungDruckstrebe * npl/nel = 2.5 * 26.4 / 6.6 = 10
     /** Gewichtungsfaktor für nicht horizontal oder vertikal verlaufende Zugbänder. */
    double γ_sred = 0.005;
     /** Gewichtungsfaktor für unter 45° verlaufende Zugbänder. */

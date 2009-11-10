@@ -157,7 +157,10 @@ public final class GLSsolver {
             System.out.println("Rang R: " + alg.rank(R));
         }
         
-        assert (alg.rank(A) == alg.rank(R)) : "Rang von A ungleich Rang von R --> Programmfehler";
+        if (debug) { // sehr langsame Operation
+            assert (alg.rank(A) == alg.rank(R)) : "Rang von A ungleich Rang von R --> Programmfehler";
+            // getestet: Berechnung rank(A) minimal schneller als rank(R)
+        }
         anzUnbestParam = A.columns() - alg.rank(A);
         if (debug) System.out.println("Anz unbest Parameter: " + anzUnbestParam);
     }
