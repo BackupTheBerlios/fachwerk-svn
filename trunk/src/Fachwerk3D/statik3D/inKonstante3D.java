@@ -76,5 +76,6 @@ public interface inKonstante3D extends Fachwerk.statik.inKonstante {
     // aus clFachwerk3D
     static final int SCHINENLAGER = 3;
     static final double TOL_gls3D = 5E-9;
+    static final double TOL_resultatcheck3D = 5E-9; // dito, jedoch lascherer Wert, zB. TOL des GLS-Solvers
 
 }

@@ -82,7 +82,7 @@ public class clFachwerk3D implements Fachwerk3D.statik3D.inKonstante3D {
     
     
     private static final double TOLgls = TOL_gls3D;
-    private static final double TOLresultatcheck = TOL_resultatcheck;
+    private static final double TOLresultatcheck = TOL_resultatcheck3D;
     //private static final double TOLresultatcheck = 1E-10; // dito, jedoch lascherer Wert, zB. TOL des GLS-Solvers
     
     private boolean WIDERSPRUCHaufgetreten = false;

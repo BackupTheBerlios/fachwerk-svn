@@ -73,11 +73,11 @@ public class clAutomModellsuche3D extends clElastisch implements inKonstante {
     // Gewichtungen
     // bezogen auf γ_s = 1;
     /** Gewichtungsfaktor Beton-Druckstreben. Bevorzugungsfaktor * fsd/fcd * Ec/Es */
-    double γ_c = 11; // bevorzugungDruckstrebe * npl/nel = 2.5 * 16.4 / 6.6 = 10
+    double γ_c = 10; // bevorzugungDruckstrebe * npl/nel = 2.5 * 26.4 / 6.6 = 10
     /** Gewichtungsfaktor für in einer Achsebene verlaufende Zugbänder. */
-    double γ_sEbene = 0.05;
+    double γ_sEbene = 0.1;
     /** Gewichtungsfaktor für diagonal (dx=dy=dz) verlaufende Zugbänder. */
-    double γ_sDiag = 0.01;
+    double γ_sDiag = 0.05;
     /** Gewichtungsfaktor für ausserhalb der Achsebenen verlaufende Zugbänder. */
     double γ_sred = 0.005;
 
@@ -211,7 +211,7 @@ public class clAutomModellsuche3D extends clElastisch implements inKonstante {
                 else if (xRtg || yRtg || zRtg) { // Stab in Achsrichtung
                     EA[st] = Nst; // eigentlich As = Nst / fsd, infolge Normierung auf Stahl verkürzt
                 }
-                else if (xRtg || yRtg || zRtg) { // Stab in Achsebene
+                else if (xzEbene || xyEbene || yzEbene) { // Stab in Achsebene
                     EA[st] = γ_sEbene * Nst;
                 }
                 else if (diagonal) { // Stab dx=dy=dz
