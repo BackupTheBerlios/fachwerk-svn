@@ -79,8 +79,8 @@ public class treillis extends clOberflaeche implements inKonstante {
     
     private clHauptPanel hp; // = new clHauptPanel(null,null); // Knotenliste, Stabliste);
     ResourceBundle meldungenRB;
-    private JFileChooser fc = new JFileChooser(System.getProperty("user.home")); //Create a file chooser
-    private String dateiname = System.getProperty("user.home") + System.getProperty("file.separator") + "new.fwk";
+    private JFileChooser fc = new JFileChooser(); //Create a file chooser
+    private String dateiname = "new.fwk";
     private String dxfdateiname;
     
     private final double SNAPRADIUS = 6;
