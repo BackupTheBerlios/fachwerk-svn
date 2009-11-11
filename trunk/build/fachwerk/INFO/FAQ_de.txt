@@ -45,7 +45,7 @@
 
 
 2. Dateidialog "Speichern" oder "Laden" hängt. (nur Windows):
--------------------------------------------------------------
+   ----------------------------------------------------------
 
    Tritt unter bestimmten Umständen auf, wenn eine Fachwerkdatei per Kommandozeile geladen worden ist.
 
@@ -56,6 +56,15 @@
      Zuerst "Hintergrund laden" wählen. Danach funktioniert "Speichern".
    3) Umgehung (2)
      fachwerk mit der Option --safe_mode starten.
+     Der Dateidialog ist dann rudimentärer, das Problem sollte dafür nicht mehr auftreten.
 
 
+3. Ungenügender Speicher für grosse Modelle
+   ----------------------------------------
+
+   Unterbricht das Programm die Berechnung mit einer Fehlermeldung über ungenügenden Speicher
+   java.lang.OutOfMemoryError: Java heap space,
+   kann dem Programm mehr Speicher zugewiesen werden:
+   In der Datei fachwerk.bat/fachwerk die Option -Xmx setzen:
+   java -Xmx512m -jar fachwerk*.jar
 
