@@ -1,5 +1,5 @@
 1. Dateien mit der Endung ".fwk3d" mit Fachwerk3D verknüpfen:
----------------------------------------------------------
+   ---------------------------------------------------------
 
    Windows (ab 2000)
    -----------------
@@ -44,4 +44,13 @@
    - Hinzufügen (Rangfolge ausführender Programme):
      konsole -e fachwerk3d
 
+
+3. Ungenügender Speicher für grosse Modelle
+   ----------------------------------------
+
+   Unterbricht das Programm die Berechnung mit einer Fehlermeldung über ungenügenden Speicher
+   java.lang.OutOfMemoryError: Java heap space,
+   kann dem Programm mehr Speicher zugewiesen werden:
+   In der Datei fachwerk3d.bat/fachwerk3d die Option -Xmx setzen:
+   java -Xmx512m -jar fachwerk3d*.jar
 

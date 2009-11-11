@@ -44,6 +44,12 @@
      konsole -e fachwerk3d
 
 
+3. Insufficient memory for large models
+   ------------------------------------
 
-
+   If fachwerk3d interrups the calculation throwing the message
+   java.lang.OutOfMemoryError: Java heap space,
+   more memory can be allocated:
+   Edit the file fachwerk3d.bat/fachwerk3d and set the argument -Xmx:
+   java -Xmx512m -jar fachwerk3d*.jar
 
