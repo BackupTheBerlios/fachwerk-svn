@@ -59,7 +59,7 @@ public class treillis extends clOberflaeche implements inKonstante {
     
     private static final String PROGNAME = "Fachwerk"; // in clOberflaeche nochmals hart kodiert (Titel)
     private static final int HAUPTVER = 0;
-    private static final int UNTERVER = 33; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
+    private static final int UNTERVER = 40; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
     private static final int JAHR = 2009;
     private static final String FILEPROGNAME = "treillis";
     private static final int FILEVER = 1;
@@ -1080,9 +1080,6 @@ public class treillis extends clOberflaeche implements inKonstante {
             fc.addChoosableFileFilter(new StdFileFilter("fwk", "Fachwerk Data"));
             if (dateiname != null) fc.setSelectedFile(new File(dateiname));
             else fc.setSelectedFile(new File(""));
-            // TODO verhindern, dass Windows hängt, wenn der Dialog aus unbekannten
-            // Gründen (z.B. falsche Verknüpfungen auf Desktop) nicht angezeigt werden kann.
-            // Workaround in Methode useWorkarounds_for_Windows() eingebaut.
             int returnVal = fc.showSaveDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File datei = fc.getSelectedFile();
@@ -1578,13 +1575,13 @@ public class treillis extends clOberflaeche implements inKonstante {
                 Point2D vonPkt = new Point2D.Double(aktvonkn.getX(), aktvonkn.getZ());
                 Point2D bisPkt = new Point2D.Double(aktbiskn.getX(), aktbiskn.getZ());
                 int kn = 0;
-                double maxAbstand = TOL_eineLinie * vonPkt.distance(bisPkt) / 2d;
                 for (Iterator it = Knotenliste.iterator(); it.hasNext();) {
                     kn++;
                     clKnoten aktkn = (clKnoten) it.next();
                     if (kn == vonbis[0] || kn == vonbis[1]) continue; // Schlaufe über Knotenliste
                     Point2D aktPkt = new Point2D.Double(aktkn.getX(), aktkn.getZ());
-                    if (mausimRechteck(aktPkt, vonPkt, bisPkt, maxAbstand) || mausimRechteck(aktPkt, bisPkt, vonPkt, maxAbstand)) { // diese Funktion testet, ob aktPkt zwischen vonPkt und bisPkt ist.
+                    // diese Funktion testet, ob aktPkt zwischen vonPkt und bisPkt ist.
+                    if (punktaufGerade(aktPkt, vonPkt, bisPkt, TOL_eineLinie)) {
                         knotendazwischen = true;
                         break;
                     }
@@ -2392,9 +2389,37 @@ public class treillis extends clOberflaeche implements inKonstante {
         double t = -dmx * Math.sin(phi) + dmz * Math.cos(phi);
         if (n < 0) return false;
         if (n > Lpix) return false;
-        if (t < -TOL_finde) return false; // eigentlich 0, führt aber aus numerischen Gründen zum Nichterkennen von einigen Punkten in befehlAddinVerbindeAlleKnoten
+        if (t < -TOL_finde) return false; // eigentlich 0
         if (t > Bpix) return false;
         return true;
+    }
+
+    /** Gibt an, ob ein Punkt auf der Gerade liegt, welche A und B verbindet.
+     * (Nicht auf deren Verlängerung.)
+     *  Eine relative Distanz (ca. toleranz * AB/2) zur Gerade wird als draufliegend betrachtet.
+     */
+    private boolean punktaufGerade(Point2D pkt, Point2D A, Point2D B, double toleranz) {
+        // Gerade g: AB
+        double dxG = B.getX() - A.getX();
+        double dzG = B.getY() - A.getY();
+        double LG = Math.sqrt(dxG*dxG + dzG*dzG);
+        // Punkt pkt (von A gemessen)
+        double dx = pkt.getX() - A.getX();
+        double dz = pkt.getY() - A.getY();
+        double LAP = Math.sqrt(dx*dx + dz*dz);
+        // Punkt pkt von B gemessen
+        double LBP = pkt.distance(B);
+
+        if (LAP > LG) return false; // Punkt unmöglich zwischen A und B
+        if (LBP > LG) return false; // Punkt unmöglich zwischen A und B
+
+        // Abstand Punkt zur Gerade AB
+        // d = | (B-A) x (pkt-A) | / LG   Vektorschreibweise, d immer positiv
+        double d = Math.abs(Fkt.det2x2(dz, dzG, dx, dxG)) / LG;
+        double[] abstände = {LAP, LAP, LG/2d};
+        double zulAbw = toleranz * Fkt.min(abstände);
+        if (d < zulAbw) return true;
+        return false;
     }
     
     /** selektiert einen Knoten in der Nähe des Mauspunktes (in Panelkoord).
