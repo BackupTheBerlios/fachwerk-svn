@@ -67,7 +67,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     
     private static final String PROGNAME = "Fachwerk3D"; // in clOberflaeche nochmals hart kodiert (Titel)
     private static final int HAUPTVER = 0;
-    private static final int UNTERVER = 33; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
+    private static final int UNTERVER = 40; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
     private static final int JAHR = 2009;
     private static final String FILEPROGNAME = "treillis3D";
     private static final int FILEVER = 1;
@@ -740,7 +740,8 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File datei = fc.getSelectedFile();
                     dxfdateiname = datei.getPath();
-                } else {
+                }
+                else {
                     LayerHintergrund(false);
                     return;
                 }
@@ -777,6 +778,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
 
         try {
             if (dateiname != null) fc.setSelectedFile(new File(dateiname));
+            else fc.setSelectedFile(new File(""));
             if (dateidialogAnzeigen) {
                 fc.resetChoosableFileFilters();
                 fc.addChoosableFileFilter(new StdFileFilter("fwk3d", "Fachwerk3D Data"));
@@ -1082,6 +1084,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
             fc.resetChoosableFileFilters();
             fc.addChoosableFileFilter(new StdFileFilter("fwk3d", "Fachwerk3D Data"));
             if (dateiname != null) fc.setSelectedFile(new File(dateiname));
+            else fc.setSelectedFile(new File(""));
             int returnVal = fc.showSaveDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File datei = fc.getSelectedFile();
@@ -1588,7 +1591,6 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
                     Point3D aktPkt = new Point3D(aktkn.getX(), aktkn.getY(), aktkn.getZ());
                     // diese Funktion testet, ob aktPkt zwischen vonPkt und bisPkt ist.
                     if (punktaufGerade(aktPkt, vonPkt, bisPkt, TOL_eineLinie)) {
-                        punktaufGerade(aktPkt, vonPkt, bisPkt, TOL_eineLinie);
                         knotendazwischen = true;
                         break;
                     }
@@ -2365,14 +2367,14 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
         double t = -dmx * Math.sin(phi) + dmz * Math.cos(phi);
         if (n < 0) return false;
         if (n > Lpix) return false;
-        if (t < -TOL_finde) return false; // eigentlich 0, führt aber aus numerischen Gründen zum Nichterkennen von einigen Punkten in befehlAddinVerbindeAlleKnoten
+        if (t < -TOL_finde) return false; // eigentlich 0
         if (t > Bpix) return false;
         return true;
         
     }
 
     /** Gibt an, ob ein Punkt auf der Gerade liegt, welche A und B verbindet.
-     * (Nicht auf deren Verlängerung.)
+     *  (Nicht auf deren Verlängerung.)
      *  Eine relative Distanz (ca. toleranz * AB/2) zur Gerade wird als draufliegend betrachtet.
      */
     private boolean punktaufGerade(Point3D pkt, Point3D A, Point3D B, double toleranz) {
