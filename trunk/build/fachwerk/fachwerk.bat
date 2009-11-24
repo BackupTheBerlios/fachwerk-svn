@@ -1,3 +1,3 @@
 COLOR F0
 
-java -jar fachwerk033dev.jar --safe_mode %*
+java -jar fachwerk040dev.jar --safe_mode %*
