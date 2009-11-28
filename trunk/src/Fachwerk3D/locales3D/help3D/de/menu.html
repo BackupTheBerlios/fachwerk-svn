@@ -121,10 +121,8 @@ oder Knotens.</p>
 <br>
 </p>
 <h3>Rechnen</h3>
-<p>Das Lösen des Gleichungssystems lässt sich ausschalten. Dann wird
-lediglich überprüft, ob das Gleichgewicht der bestimmten Knoten erfüllt
-ist. Ein Knoten gilt als bestimmt, wenn alle anschliessenden Stab- und
-Lagerkräfte bekannt sind.</p>
+<p>Die nachfolgenden <a href="algorithmus.html">Berechnungsmethoden</a>
+lassen sich je ein- oder ausschalten.</p>
 <h4>Gleichungssystem lösen</h4>
 <p>Für jeden nicht bestimmten Knoten werden drei
 Gleichgewichtsbedingungen aufgestellt. Durch das äussere
@@ -132,19 +130,25 @@ Gleichgewicht kommen sechs Gleichungen dazu. Weitere für Lager mit
 einer verschieblichen resp. blockierten Richtung.<br>
 Die
 Besonderheit dieses «Solvers» liegt daran, dass er nach
-eindeutig bestimmten Stab- oder Lagerkräften sucht, obwohl das
+eindeutig bestimmten Stab- oder Lagerkräften sucht, auch wenn das
 System als Ganzes statisch unbestimmt ist.<br>
 In der Regel <i>muss
 diese Methode eingeschaltet</i> sein.</p>
 <h4>Mechnismus suchen (kinematische Methode)</h4><p>Das Programm sucht
 nach Mechanismen, die eine Gleichgewichtsverletzung beweisen. Ein
 gefundener Mechanismus wird graphisch dargestellt. Mechanismen aus
-Instabilitäten, die das Gleichgewicht nicht verletzen, werden ignoriert.</p>
+Instabilitäten, die das Gleichgewicht nicht verletzen, werden ignoriert.
+<br>Standardmässig ist die Mechanismusprüfung eingeschaltet.</p>
 <p><br></p>
 <h3>Zusätze</h3>
 <p>Dieser Menüpunkt enthält Funktionen, welche über
 die Kernaufgabe des Programms – das Berechnen von Fachwerkmodellen
 – hinausgehen.</p>
+<h4>Eingabedaten exportieren</h4>
+<p>Die Eingabedaten können in eine "komma-getrennte Werte"-Datei
+&lt;dateiname&gt;.out.csv exportiert werden. Die Datei kann mit einem
+Tabellenkalkulationsprogramm geöffnet werden. So lassen sich die
+Eingabedaten bei grossen Modellen ringer überprüfen und dokumentieren.</p>
 <h4>Koordinaten transformieren</h4>
 <p>Die Knotenkoordinaten werden zuerst skaliert, danach verschoben.</p>
 <h4>Hintergrundzeichnung transformieren</h4>
@@ -154,16 +158,36 @@ dem Fachwerkmodell abgespeichert wird, empfiehlt es sich, diese
 Transformation in einem Zeichnungsprogramm durchzuführen.</p>
 <h4>Lasten skalieren</h4>
 <p>Skaliert alle Lasten mit einem Faktor. Gesetzte Stabkräfte können auch skaliert werden.</p>
-<h4>Eingabedaten exportieren</h4>
-<p>Die Eingabedaten können in eine "komma-getrennte Werte"-Datei
-&lt;dateiname&gt;.out.csv exportiert werden. Die Datei kann mit einem
-Tabellenkalkulationsprogramm geöffnet werden. So lassen sich die
-Eingabedaten bei grossen Modellen ringer überprüfen und dokumentieren.</p>
+<h4>Alle Knoten Verbinden</h4>
+<p>Erstellt Stäbe zwischen allen Knoten. Übereinander liegend Stäbe werden vermieden. <br>
+Diese Funktion muss mit Bedacht angewendet werden, denn es ergeben sich bereits bei wenigen Knoten sehr viele Stäbe.</p>
+<h4>Automatische Modellreduktion</h4>
+<p>Eliminiert unbestimmte Stäbe bis das Modell statisch bestimmt ist (oder die gewünschte statische Bestimmtheit erreicht). 
+Der Algorithmus versucht ineffizient angeordnete, überzählige Stäbe ausfindig zu machen und setzt deren Kraft zu Null. 
+Druckstäbe werden bevorzugt, nicht achsparallele Zugstäbe benachteiligt. <br>
+Die Funktion ist sehr rechen- und speicherintensiv. Es empfiehlt sich, das Modell vor der Berechnung zu speichern.</p>
 <h4>Stabkräfte vorschlagen</h4>
 <p>Schlägt Stabkräfte bei statisch unbestimmten Systemen vor. Für die Berechnung wird 
 linear-elastisches Verhalten und ein Verhältnis von Druck- zu Zugstabsteifigkeit EA,c/EA,t = 10 
 angenommen.<br>Ob die vorgeschlagenen Stabkräfte vernünftig sind, muss von Fall zu Fall
 beurteilt werden.</p>
+<h4>Knotenposition suchen</h4>
+<p>Ein Knoten wird auf einer Gerade bewegt, bis ein Stab eine
+vorgegebene Kraft erhält.<br>Eine mögliche Anwendung
+besteht darin, einen Knoten genau so zu positionieren, dass ein
+«Nullstab» exakt die Kraft Null erreicht. Der Stab kann
+danach entfernt werden.<br>Damit dieser Menüpunkt ausgewählt
+werden kann, muss der zu verschiebende Knoten ausgewählt sein.
+Im sich öffnenden Dialog wird nach einem Vektor gefragt. Die
+Verschiebe-Gerade geht durch die bisherige Knotenkoordinate in
+Vektorrichtung. Greift am Knoten eine Last an, wird als
+Verschiebegerade der Lastvektor vorgeschlagen. Der Zielpunkt des
+Vektors fungiert gleichzeitig als zweiter Startpunkt der
+Iteration.<br>Wird keine Knotenposition gefunden, welche die
+gewünschte Stabkraft bewirkt, wird der Ausgangszustand wieder
+hergestellt. (Z.B. weil die Stabkraft unabhängig von der
+Knotenposition ist, oder weil die Berechnung mit den gewählten
+Startpunkten nicht konvergiert.)</p>
 <p><br>
 <br>
 </p>
