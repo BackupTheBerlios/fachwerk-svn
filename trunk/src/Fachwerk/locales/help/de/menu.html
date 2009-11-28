@@ -113,27 +113,27 @@ oder Knotens.</p>
 </p>
 <h3>Rechnen</h3>
 <p>Die nachfolgenden <a href="algorithmus.html">Berechnungsmethoden</a>
-lassen sich je ein- oder ausschalten. Standardmässig sind beide
-statischen Methoden eingeschaltet.</p>
+lassen sich je ein- oder ausschalten.</p>
 <h4>Vorberechnung (statische Methode)</h4>
-<p>Häufig kann die <i>Anzahl der unbekannten Stabkräfte</i>
-durch dieses Verfahren <i>reduziert</i> werden. <br>Der Algorithmus
-kann ausserdem der <i>Ortung von Widersprüchen</i> im
-Knotengleichgewicht dienen. <br>In der Regel kann die
-Vorberechnungsmethode folgenlos ausgeschaltet werden.</p>
+<p>Häufig kann die Anzahl der unbekannten Stabkräfte
+durch dieses Verfahren reduziert werden. <br>Der Algorithmus
+kann ausserdem der Ortung von Widersprüchen im
+Knotengleichgewicht dienen. <br>Standardmässig ist die
+Vorberechnungsmethode ausgeschaltet.</p>
 <h4>Gleichungssystem lösen (statische Methode)</h4>
 <p>Für jeden nicht bestimmten Knoten werden zwei
 Gleichgewichtsbedingungen aufgestellt. Durch das äussere
 Gleichgewicht kommen drei Gleichungen dazu.
 <br>Die
 Besonderheit dieses «Solvers» liegt daran, dass er nach
-eindeutig bestimmten Stab- oder Lagerkräften sucht, obwohl das
+eindeutig bestimmten Stab- oder Lagerkräften sucht, auch wenn das
 System als Ganzes statisch unbestimmt ist.<br>In der Regel <i>muss
 diese Methode eingeschaltet</i> sein.</p>
 <h4>Mechnismus suchen (kinematische Methode)</h4>Das Programm sucht
 nach Mechanismen, die eine Gleichgewichtsverletzung beweisen. Ein
 gefundener Mechanismus wird graphisch dargestellt. Mechanismen aus
-Instabilitäten, die das Gleichgewicht nicht verletzen, werden ignoriert.<p><br>
+Instabilitäten, die das Gleichgewicht nicht verletzen, werden ignoriert.
+<br>In der Regel muss die Mechanismusprüfung eingeschaltet sein.<p><br>
 </p>
 <h3>Zusätze</h3>
 <p>Dieser Menüpunkt enthält Funktionen, welche über
@@ -148,6 +148,18 @@ dem Fachwerkmodell abgespeichert wird, empfiehlt es sich, diese
 Transformation in einem Zeichnungsprogramm durchzuführen.</p>
 <h4>Lasten skalieren</h4>
 <p>Skaliert alle Lasten mit einem Faktor. Gesetzte Stabkräfte können auch skaliert werden.</p>
+<h4>Alle Knoten Verbinden</h4>
+<p>Erstellt Stäbe zwischen allen Knoten. Übereinander liegend Stäbe werden vermieden.</p>
+<h4>Automatische Modellreduktion</h4>
+<p>Eliminiert unbestimmte Stäbe bis das Modell statisch bestimmt ist (oder die gewünschte statische Bestimmtheit erreicht). 
+Der Algorithmus versucht ineffizient angeordnete, überzählige Stäbe ausfindig zu machen und setzt deren Kraft zu Null. 
+Druckstäbe werden bevorzugt, nicht achsparallele Zugstäbe benachteiligt. <br>
+Die Funktion ist rechen- und speicherintensiv. Es empfiehlt sich, das Modell vor der Berechnung zu speichern.</p>
+<h4>Stabkräfte vorschlagen</h4>
+<p>Schlägt Stabkräfte bei statisch unbestimmten Systemen vor. Für die Berechnung wird 
+linear-elastisches Verhalten und ein Verhältnis von Druck- zu Zugstabsteifigkeit EA,c/EA,t = 10 
+angenommen.<br>Ob die vorgeschlagenen Stabkräfte vernünftig sind, muss von Fall zu Fall
+beurteilt werden.</p>
 <h4>Knotenposition suchen</h4>
 <p>Ein Knoten wird auf einer Gerade bewegt, bis ein Stab eine
 vorgegebene Kraft erhält.<br>Eine mögliche Anwendung
@@ -165,11 +177,6 @@ gewünschte Stabkraft bewirkt, wird der Ausgangszustand wieder
 hergestellt. (Z.B. weil die Stabkraft unabhängig von der
 Knotenposition ist, oder weil die Berechnung mit den gewählten
 Startpunkten nicht konvergiert.)</p>
-<h4>Stabkräfte vorschlagen</h4>
-<p>Schlägt Stabkräfte bei statisch unbestimmten Systemen vor. Für die Berechnung wird 
-linear-elastisches Verhalten und ein Verhältnis von Druck- zu Zugstabsteifigkeit EA,c/EA,t = 10 
-angenommen.<br>Ob die vorgeschlagenen Stabkräfte vernünftig sind, muss von Fall zu Fall
-beurteilt werden.</p>
 <p><br><br>
 </p>
 <h3>Hilfe</h3>

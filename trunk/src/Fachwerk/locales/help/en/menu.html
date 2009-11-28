@@ -109,11 +109,11 @@ node.</p>
 </p>
 <h3>Calculation</h3>
 <p>Each of the following calculation methods can be activated or
-deactivated. Normally both static methods are activated.</p>
+deactivated.</p>
 <h4>preconditioning</h4>
-<p>Often the <i>number of unknown member forces</i> can be <i>reduced</i>
-by this method.<br>Additionally the algorithm serves to <i>localise
-inconsistencies</i> in the nodes equilibrium.<br>The 'preconditioning' can be turned off safely.</p>
+<p>Often the number of unknown member forces can be reduced
+by this method.<br>Additionally the algorithm serves to localise
+inconsistencies in the nodes equilibrium.<br>The 'preconditioning' is turned off by default.</p>
 <h4>solver</h4>
 <p>The system of equations contains two equilibrium conditions for
 each (open) node. The global equilibrium contributes three
@@ -138,6 +138,18 @@ program that is used to create the drawing, because any
 transformation done within Fachwerk will not be saved.</p>
 <h4>scaling of loads</h4>
 <p>Scales all the loads with a factor. Member forces that have been set can be scaled too.</p>
+<h4>connect all nodes</h4>
+<p>Adds a member between all the nodes. Overlapping members are omitted.</p>
+<h4>automatic model reduction</h4>
+<p>An optimisation process reduces the statical indeterminacy of the model, until the model is statically determinate (or until it has reached
+the required statical indetermincy). The algorithm tries to find inefficient members and sets their member forces to zero. 
+Compression struts are privileged, tension ties not parallel to the axis are punished. <br>
+The process consumes much computer power and memory. Therefore it is suggested to save the model before starting the calculation.</p>
+<h4>propose member forces</h4>
+<p>Proposes member forces if the system is statically indeterminate. 
+The calculation is linear-elastic and assumes a compression to 
+tension stiffness ratio  EA,c/EA,t = 10<br> One has to judge if the proposed 
+member forces are reasonable for the given case.</p>
 <h4>find node position</h4>
 <p>The selected node will be moved along a straight line, until a
 required member force is achieved.<br>Example: Find the exact node
@@ -152,11 +164,6 @@ that leads to the required member force, the initial situation will
 be restored. (I.e. because the member force is independent of the
 node position, or because the iteration using the given starting
 points does not converge.)</p>
-<h4>propose member forces</h4>
-<p>Proposes member forces if the system is statically indeterminate. 
-The calculation is linear-elastic and assumes a compression to 
-tension stiffness ratio  EA,c/EA,t = 10<br> One has to judge if the proposed 
-member forces are reasonable for the given case.</p>
 <p><br><br>
 </p>
 <h3>Help</h3>
