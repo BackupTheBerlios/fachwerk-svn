@@ -1,0 +1,56 @@
+1. Dateien mit der Endung ".fwk3d" mit Fachwerk3D verknüpfen:
+   ---------------------------------------------------------
+
+   Windows (ab 2000)
+   -----------------
+
+   - Explorer: Menü Extras - Orderoptionen
+   - Reiter Dateitypen
+   - Neu: Endung "fwk3d"
+   - Name: Fachwerk3D
+   
+   - Vorgang "Öffnen"
+   - Anwendung
+     Windows2000:
+     C:\WINNT\system32\CMD.EXE /c start /d C:\Programme\fachwerk3d C:\Programme\fachwerk3d\fachwerk3d.bat "%1"
+     
+     WindowsXP:
+     C:\Windows\system32\CMD.EXE /c start /d C:\Programme\fachwerk3d C:\Programme\fachwerk3d\fachwerk3d.bat "%1"
+     
+   - Anderes Symbol - Durchsuchen - fachwerk3d/INFO/icon-fachwerk.ico
+     
+     
+   
+   KDE (Linux)
+   -----------
+   
+   a) Zipdatei fachwerk3d*.zip nach /home/USER/programs entpackt
+   
+   - Rechtsklick auf fwk3d-Datei, Eigenschaften
+   - Auf kleines Werkzeugsymbol drücken (Dateityp bearbeiten)
+   - Beschreibung: "Fachwerk3D"
+   - Auf Symbol klicken - Sonstige Symbole auswählen:
+     "PFADzuFachwerk3D/fachwerk3d/INFO/icon-fachwerk.png" - OK
+   - Hinzufügen (Rangfolge ausführender Programme):
+     konsole --workdir '/home/USER/programs/fachwerk3d/' -e '/home/USER/programs/fachwerk3d/fachwerk3d'
+     
+   b) Installation per rpm erfolgt
+   
+   - Rechtsklick auf fwk3d-Datei, Eigenschaften
+   - Auf kleines Werkzeugsymbol drücken (Dateityp bearbeiten)
+   - Beschreibung: "Fachwerk3D"
+   - Auf Symbol klicken - Sonstige Symbole auswählen:
+     "/usr/share/doc/packages/fachwerk3d/INFO/icon-fachwerk.png" - OK
+   - Hinzufügen (Rangfolge ausführender Programme):
+     konsole -e fachwerk3d
+
+
+3. Ungenügender Speicher für grosse Modelle
+   ----------------------------------------
+
+   Unterbricht das Programm die Berechnung mit einer Fehlermeldung über ungenügenden Speicher
+   java.lang.OutOfMemoryError: Java heap space,
+   kann dem Programm mehr Speicher zugewiesen werden:
+   In der Datei fachwerk3d.bat/fachwerk3d die Option -Xmx setzen:
+   java -Xmx512m -jar fachwerk3d*.jar
+
