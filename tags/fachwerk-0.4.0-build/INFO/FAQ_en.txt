@@ -1,0 +1,69 @@
+1. How to link files ".fwk" to Fachwerk:
+   -------------------------------------
+   
+   Windows (>= 2000)
+   -----------------
+   
+   - Somewhere in Explorer you can set file types 
+   - New:  fwk
+   - Name: fachwerk
+   
+   - Process "Open"
+   - Application
+     Windows2000:
+     C:\WINNT\system32\CMD.EXE /c start /d C:\programs\fachwerk C:\programs\fachwerk\fachwerk.bat "%1"
+     
+     WindowsXP:
+     C:\Windows\system32\CMD.EXE /c start /d C:\programs\fachwerk C:\programs\fachwerk\fachwerk.bat --safe_mode "%1"
+     
+   - Other symbol - find - fachwerk/INFO/icon-fachwerk.ico
+     
+   
+     
+   KDE (Linux)
+   -----------
+   
+   a) Zip file fachwerk*.zip extracted to /home/USER/programs
+      
+   - Right click on a fwk-file, Properties
+   - Click on small icon that shows a tool.
+   - Description: "fachwerk"
+   - Click on icon - Other symbols
+     "PATHtoFachwerk/fachwerk/INFO/icon-fachwerk.png" - OK
+   - Add: (using the path to the location where you have installed fachwerk)
+     konsole --workdir '/home/USER/programs/fachwerk/' -e '/home/USER/programs/fachwerk/fachwerk'
+     
+   b) rpm used for installation
+   
+   - Right click on a fwk-file, Properties
+   - Click on small icon that shows a tool.
+   - Description: "fachwerk"
+   - Click on icon - Other symbols
+     "/usr/share/doc/packages/fachwerk/INFO/icon-fachwerk.png" - OK
+   - Add:
+     konsole -e fachwerk
+
+
+2. File dialogue "Save" oder "Load" hangs. (Windows only):
+   -------------------------------------------------------
+
+   Happens in certain circumstances when a fachwerk file is loaded using the command line.
+
+   Alternatives
+   1) Solve problem
+     Possible cause: Links on the desktop pointing to non existing files.
+   2) Work around
+     First "load background". Afterwards "save" works.
+   3) Work around (2)
+     Start fachwerk with option --safe_mode.
+
+
+3. Insufficient memory for large models
+   ------------------------------------
+
+   If fachwerk interrups the calculation throwing the message
+   java.lang.OutOfMemoryError: Java heap space,
+   more memory can be allocated:
+   Edit the file fachwerk.bat/fachwerk and set the argument -Xmx:
+   java -Xmx512m -jar fachwerk*.jar
+
