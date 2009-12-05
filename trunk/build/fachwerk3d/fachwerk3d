@@ -1,3 +1,3 @@
 #! /bin/bash
 
-java -jar fachwerk3d040.jar "$@"
+java -jar fachwerk3d041dev.jar "$@"
