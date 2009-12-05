@@ -67,7 +67,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     
     private static final String PROGNAME = "Fachwerk3D"; // in clOberflaeche nochmals hart kodiert (Titel)
     private static final int HAUPTVER = 0;
-    private static final int UNTERVER = 40; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
+    private static final int UNTERVER = 41; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
     private static final int JAHR = 2009;
     private static final String FILEPROGNAME = "treillis3D";
     private static final int FILEVER = 1;
