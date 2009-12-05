@@ -223,12 +223,6 @@ public class clElastisch implements inKonstante {
             }
             b.set(i,0, -GLS[i][0]);
         }
-        
-        /* if (debug) {
-            System.out.println(" A = " + A.toString());
-            System.out.println(" b = " + b.toString());
-            System.out.println("");
-        } */
 
         // prüfen, ob Matrix singulär
         double det = cern.colt.matrix.linalg.Algebra.DEFAULT.det(A);
@@ -242,34 +236,8 @@ public class clElastisch implements inKonstante {
         } else { //singuläre Matrix A
             System.err.println("[clElastisch.löseGLS] Problem: Matrix singulär: ");
             System.err.println(A.toString());
-
-            //x = cern.colt.matrix.linalg.Algebra.DEFAULT.solve(A, b); // TODO bestimmte Grössen berechnen
             throw new IllegalArgumentException("[clElastisch] Matrix singular");
-
-            /*
-            GLSsolver solver = new GLSsolver(GLS);
-            statischeUnbestimmtheit = solver.getAnzUnbestParam();
-            double[][] xLsg = solver.solve();
-
-            X1[0] = 1;
-            for (int i = 0; i < xLsg.length; i++) {
-                if (xLsg[i][0] == 1) {
-                    X1[i + 1] = xLsg[i][1];
-                } else { // TODO
-                    throw new IllegalArgumentException("[clElastisch] Matrix singular");
-                    //System.err.println("[clElastisch.löseGLS] Vorsicht: unbestimmte Variablen gesetzt mit Parametern 0 gesetzt! (TODO)");
-                    //X1[i + 1] = xLsg[i][1]; //TODO, nur Workaround (ev. riskant): setzt unbest. Var. zu Fixanteil + 0*Anteil_von_Unbek
-                    //assert false: "[clElastisch.löseGLS] Verhalten muss untersucht werden. Behandlung? (TODO)";
-                }
-            }
-             */
         }
-
-        /*
-        if (debug) System.out.println("");
-        if (debug) System.out.println(x.toString());
-        if (debug) System.out.println("");
-         **/
 
         return X1;
     }

@@ -279,38 +279,71 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
 
                 if (modellunverändert && Math.abs(energie[0] - alteEnergie) < TOL_finde && iterationSeitModelländerung >= minIterSeitModelländ) { // die Optimierung ist festgefahren
                     System.out.println("");
-                    System.out.println("Optimierungsprozess festgefahren, Deformationsenergie konstant: " + energie[0] + " = " + alteEnergie);
-                    
+                    System.out.print("Optimierungsprozess festgefahren, Deformationsenergie konstant");
+                    if (debug) System.out.println(": " + energie[0] + " = " + alteEnergie);
+                    else System.out.println(".");
                     if (debug) {
                         for (int st = 1; st <= N.length; st++) System.out.println("N[Stab " +st + "] = " + N[st-1]);
                     }
                     
                     boolean reduktionsprozessAbbrechen = false;
-
                     if (auchStrategie2Anwenden) {
-                        // Strategie:
-                        // Die kleinste (ungesetzte) Stabkraft zu Null setzen
-                        double Nmin = Double.MAX_VALUE;
-                        int stabmin = -1;
-                        for (int st = 1; st <= N.length; st++) {
-                            if (St[st].getStatus() == UNBEST && Math.abs(N[st - 1]) < Nmin) {
-                                stabmin = st;
-                                Nmin = Math.abs(N[st - 1]);
+                        boolean holzhackerstrategie = false;
+                        if (iterationSeitModelländerung < maxIterationenSeitModelländerung - 2) {
+                            // Strategie
+                            // Steifigkeiten quadrieren
+                            for (int i = 0; i < EA.length; i++) {
+                                EA[i] = Math.pow(EA[i], 2); // bei höheren Potenzen (>10) kann z.T. eine Matrix singulär werden
+                            }
+
+                            // testen, ob künstlich generierte Steifigkeiten nicht zu einer singulären Matrix führen.
+                            boolean numerischesproblem = false;
+                            try {
+                                rechnen();
+                            }
+                            catch (IllegalArgumentException e) {
+                                numerischesproblem = true;
+                                if (e.getMessage().equals("[clElastisch] Matrix singular")) {
+                                    System.out.println("Matrix aus Ersatzsteifigkeiten singulaer.");
+                                }
+                            }
+                            if (numerischesproblem) {
+                                System.out.println("Deblockierungsversuch \"Steifigkeiten quadrieren\" gescheitert.");
+                                holzhackerstrategie = true; // dann halt so
+                            }
+                            else {
+                                alteEnergie = -1;
+                                System.out.println("Deblockierungsversuch: Steifigkeiten quadriert");
                             }
                         }
+                        else holzhackerstrategie = true;
 
-                        if (stabmin > 0) {
-                            St[stabmin].zurücksetzen(false);
-                            St[stabmin].setKraft(GESETZT, 0);
-                            for (int i = 0; i < EA.length; i++) EA[i] = EAzug[i]; // wahrscheinlich nicht nötig TODO testen
-                            modellunverändert = false; // erzwingt eine Neuberechnung
-                            alteEnergie = -1;
-                            System.out.println("Alternativer Reduktionsprozess angewendet.");
+                        if (holzhackerstrategie) { // letzte Chance bis maxIterationenSeitModelländerung erreicht
+                            // Strategie:
+                            // Die kleinste (ungesetzte) Stabkraft zu Null setzen
+                            double Nmin = Double.MAX_VALUE;
+                            int stabmin = -1;
+                            for (int st = 1; st <= N.length; st++) {
+                                if (St[st].getStatus() == UNBEST && Math.abs(N[st - 1]) < Nmin) {
+                                    stabmin = st;
+                                    Nmin = Math.abs(N[st - 1]);
+                                }
+                            }
+                            if (stabmin > 0) {
+                                St[stabmin].zurücksetzen(false);
+                                St[stabmin].setKraft(GESETZT, 0);
+                                for (int i = 0; i < EA.length; i++) EA[i] = EAzug[i]; // wahrscheinlich nicht nötig TODO testen
+                                modellunverändert = false; // erzwingt eine Neuberechnung
+                                alteEnergie = -1;
+                                System.out.println("Alternativer Reduktionsprozess angewendet. (Stab " + stabmin + ")");
+                            } else {
+                                reduktionsprozessAbbrechen = true;
+                            }
                         }
-                        else reduktionsprozessAbbrechen = true;
                     }
-                    else reduktionsprozessAbbrechen = true;
+                    else reduktionsprozessAbbrechen = true; // wenn auchStrategie2Anwenden==false
 
+                    
                     if (reduktionsprozessAbbrechen) {
                         weiter_iterieren = false;
                         System.out.println("Automatischer Reduktionsprozess abgebrochen.");
@@ -318,6 +351,8 @@ public class clAutomModellsuche extends clElastisch implements inKonstante {
                     }
                 }
             }
+
+
             else {
                 weiter_iterieren = false;
                 if (keinWIDERSPRUCH) optimierungerfolgreichbeendet = true;
