@@ -712,7 +712,9 @@ public class treillis extends clOberflaeche implements inKonstante {
                 fc.addChoosableFileFilter(new StdFileFilter("bgd", "Background Data File"));
                 fc.addChoosableFileFilter(new StdFileFilter("csv", "Background Points"));
                 String[] filter = {"dxf", "bgd", "csv"};
-                fc.addChoosableFileFilter(new StdFileFilter(filter, "Drawings and Points"));
+                StdFileFilter filefilter = new StdFileFilter(filter, "Drawings and Points");
+                fc.addChoosableFileFilter(filefilter);
+                fc.setFileFilter(filefilter);
                 if (dxfdateiname != null) fc.setSelectedFile(new File(dxfdateiname));
                 else fc.setSelectedFile(new File(""));
                 int returnVal = fc.showOpenDialog(this);
@@ -760,7 +762,9 @@ public class treillis extends clOberflaeche implements inKonstante {
             else fc.setSelectedFile(new File(""));
             if (dateidialogAnzeigen) {
                 fc.resetChoosableFileFilters();
-                fc.addChoosableFileFilter(new StdFileFilter("fwk", "Fachwerk Data"));
+                StdFileFilter filefilter = new StdFileFilter("fwk", "Fachwerk Data");
+                fc.addChoosableFileFilter(filefilter);
+                fc.setFileFilter(filefilter);
                 
                 int returnVal = fc.showOpenDialog(this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -1077,7 +1081,9 @@ public class treillis extends clOberflaeche implements inKonstante {
         String meldung = "";
         try {
             fc.resetChoosableFileFilters();
-            fc.addChoosableFileFilter(new StdFileFilter("fwk", "Fachwerk Data"));
+            StdFileFilter filefilter = new StdFileFilter("fwk", "Fachwerk Data");
+            fc.addChoosableFileFilter(filefilter);
+            fc.setFileFilter(filefilter);
             if (dateiname != null) fc.setSelectedFile(new File(dateiname));
             else fc.setSelectedFile(new File(""));
             int returnVal = fc.showSaveDialog(this);
