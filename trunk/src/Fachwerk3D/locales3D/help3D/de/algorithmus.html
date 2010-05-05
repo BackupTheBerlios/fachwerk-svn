@@ -16,7 +16,7 @@ Gleichgewicht sechs Gleichungen aufgestellt (∑F<sub>x </sub>= 0, ∑F<sub>y
 </sub>= 0, ∑F<sub>z</sub>= 0, ∑M<sub>x,bez0</sub> = 0,
 ∑M<sub>y,bez0</sub> = 0, ∑M<sub>z,bez0</sub> = 0).
 Für jedes verschiebliche Lager kommen drei Gleichungen (davon zwei
-linear unabhängige), für jedes Schinenlager noch eine Gleichung hinzu.</p>
+linear unabhängige), für jedes Schienenlager noch eine Gleichung hinzu.</p>
 <p>Bei statisch unbestimmten Systemen
 entsteht ein Gleichungssystem, welches mehr Unbekannte als
 unabhängige Gleichungen enthält. Die <i>Besonderheit dieses
@@ -49,14 +49,14 @@ Mathematikbibliothek «colt» des CERN verwendet.</p>
 <h4>Mechanismus suchen (kinematische Methode)</h4>
 <p>Das Programm sucht systematisch nach Mechanismen, die die Gleichgewichtsbedingungen verletzen.</p>
 <p>Konkret werden die kinematischen Beziehungen aufgestellt: 
-(nicht gesetze) Stäbe und Lagerbedingungen. Unbekannt sind die
+(nicht gesetzte) Stäbe und Lagerbedingungen. Unbekannt sind die
 Knotenverschiebungen. Weiter wird die Gleichung für die
 Leistung der Mechanismen (Leistung der äusseren Lasten sowie der
-gesetzen Stabkräfte) aufgestellt. Das Gleichungssystem wird gelöst
+gesetzten Stabkräfte) aufgestellt. Das Gleichungssystem wird gelöst
 (siehe Solver). Wenn die Leistung ungleich Null ist, resp. von
 unbekannten Variablen abhängt, ist bewiesen, dass das System nicht im
 Gleichgewicht ist. Mechanismen die keinen Beitrag an die Leistung
-bringen ("normale Instablilitäten") werden vernachlässigt. Hat das
+bringen ("normale Instabilitäten") werden vernachlässigt. Hat das
 System mehrere Freiheitsgrade (die zu einer Gleichgewichtsverletzung
 führen), &nbsp;wird für die graphische Darstellung mittels
 Zufallsgenerator ein Mechanismus kombiniert (keine physikalisches

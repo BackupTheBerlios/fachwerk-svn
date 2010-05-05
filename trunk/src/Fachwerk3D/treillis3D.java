@@ -35,7 +35,7 @@ import java.awt.print.*;
 /**
  * Fachwerk3D - treillis3D
  *
- * Copyright (c) 2003 - 2009 A.Vontobel <qwert2003@users.sourceforge.net>
+ * Copyright (c) 2003 - 2010 A.Vontobel <qwert2003@users.sourceforge.net>
  *                                      <qwert2003@users.berlios.de>
  *
  * Das Programm könnte FEHLER enthalten. Sämtliche Resultate sind
@@ -68,7 +68,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
     private static final String PROGNAME = "Fachwerk3D"; // in clOberflaeche nochmals hart kodiert (Titel)
     private static final int HAUPTVER = 0;
     private static final int UNTERVER = 41; // zweistellig, d.h. für Ver 1.3 UNTERVER = 30
-    private static final int JAHR = 2009;
+    private static final int JAHR = 2010;
     private static final String FILEPROGNAME = "treillis3D";
     private static final int FILEVER = 1;
     
@@ -1001,6 +1001,7 @@ public class treillis3D extends clOberflaeche3D implements inKonstante3D {
         fc.setSelectedFile(new File(""));
         dateiname = "";
         this.setTitle(PROGNAME);
+
         neu();
     }
     
