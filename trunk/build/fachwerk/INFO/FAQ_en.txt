@@ -44,7 +44,7 @@
      konsole -e fachwerk
 
 
-2. File dialogue "Save" oder "Load" hangs. (Windows only):
+2. File dialogue "Save" or "Load" hangs. (Windows only):
    -------------------------------------------------------
 
    Happens in certain circumstances when a fachwerk file is loaded using the command line.
@@ -61,7 +61,7 @@
 3. Insufficient memory for large models
    ------------------------------------
 
-   If fachwerk interrups the calculation throwing the message
+   If fachwerk interrupts the calculation throwing the message
    java.lang.OutOfMemoryError: Java heap space,
    more memory can be allocated:
    Edit the file fachwerk.bat/fachwerk and set the argument -Xmx:

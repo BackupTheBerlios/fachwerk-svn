@@ -4,7 +4,7 @@
    Windows (ab 2000)
    -----------------
 
-   - Explorer: Menü Extras - Orderoptionen
+   - Explorer: Menü Extras - Ordneroptionen
    - Reiter Dateitypen
    - Neu: Endung "fwk"
    - Name: fachwerk
