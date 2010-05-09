@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Categories=Education;Engineering;
+Name=Fachwerk
+Comment=Calculates strut-and-tie models used by structural engineers.
+Comment[de]=Programm für Bauingenieure, um Fachwerkmodelle zu berechnen.
+Type=Application
+Icon=fachwerk
+Exec=fachwerk
+Terminal=1
+StartupNotify=true

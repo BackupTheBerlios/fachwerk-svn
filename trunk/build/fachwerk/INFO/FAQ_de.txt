@@ -17,7 +17,7 @@
      WindowsXP:     
      C:\Windows\system32\CMD.EXE /c start /d C:\Programme\fachwerk C:\Programme\fachwerk\fachwerk.bat --safe_mode "%1"
      
-   - Anderes Symbol - Durchsuchen - fachwerk/INFO/icon-fachwerk.ico
+   - Anderes Symbol - Durchsuchen - fachwerk/INFO/fachwerk.ico
      
      
    KDE (Linux)
@@ -29,7 +29,7 @@
    - Auf kleines Werkzeugsymbol drücken (Dateityp bearbeiten)
    - Beschreibung: "fachwerk"
    - Auf Symbol klicken - Sonstige Symbole auswählen:
-     "PFADzuFachwerk/fachwerk/INFO/icon-fachwerk.png" - OK
+     "PFADzuFachwerk/fachwerk/INFO/fachwerk.png" - OK
    - Hinzufügen (Rangfolge ausführender Programme):
      konsole --workdir '/home/USER/programs/fachwerk/' -e '/home/USER/programs/fachwerk/fachwerk'
      
@@ -39,7 +39,7 @@
    - Auf kleines Werkzeugsymbol drücken (Dateityp bearbeiten)
    - Beschreibung: "fachwerk"
    - Auf Symbol klicken - Sonstige Symbole auswählen:
-     "/usr/share/doc/packages/fachwerk/INFO/icon-fachwerk.png" - OK
+     "/usr/share/doc/packages/fachwerk/INFO/fachwerk.png" - OK
    - Hinzufügen (Rangfolge ausführender Programme):
      konsole -e fachwerk
 

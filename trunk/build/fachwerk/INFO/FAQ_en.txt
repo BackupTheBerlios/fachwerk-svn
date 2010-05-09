@@ -16,7 +16,7 @@
      WindowsXP:
      C:\Windows\system32\CMD.EXE /c start /d C:\programs\fachwerk C:\programs\fachwerk\fachwerk.bat --safe_mode "%1"
      
-   - Other symbol - find - fachwerk/INFO/icon-fachwerk.ico
+   - Other symbol - find - fachwerk/INFO/fachwerk.ico
      
    
      
@@ -29,7 +29,7 @@
    - Click on small icon that shows a tool.
    - Description: "fachwerk"
    - Click on icon - Other symbols
-     "PATHtoFachwerk/fachwerk/INFO/icon-fachwerk.png" - OK
+     "PATHtoFachwerk/fachwerk/INFO/fachwerk.png" - OK
    - Add: (using the path to the location where you have installed fachwerk)
      konsole --workdir '/home/USER/programs/fachwerk/' -e '/home/USER/programs/fachwerk/fachwerk'
      
@@ -39,7 +39,7 @@
    - Click on small icon that shows a tool.
    - Description: "fachwerk"
    - Click on icon - Other symbols
-     "/usr/share/doc/packages/fachwerk/INFO/icon-fachwerk.png" - OK
+     "/usr/share/doc/packages/fachwerk/INFO/fachwerk.png" - OK
    - Add:
      konsole -e fachwerk
 
