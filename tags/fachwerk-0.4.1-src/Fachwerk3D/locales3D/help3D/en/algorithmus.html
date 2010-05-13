@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title></title>
+</head>
+<body dir="ltr" lang="de-CH">
+<h1>Algorithmus, Programmierung</h1>
+<h2>Algorithmus</h2>
+<h4>Gleichungssystem lösen (Solver)</h4>
+<p>Für jeden noch nicht bestimmten
+Knoten werden drei Gleichgewichts-Gleichungen aufgestellt. Ein Knoten
+gilt als bestimmt, wenn die Kräfte aller angeschlossenen Stäbe
+(und Lager) bekannt sind. Zusätzlich werden durch das äussere
+Gleichgewicht sechs Gleichungen aufgestellt (∑F<sub>x </sub>= 0, ∑F<sub>y
+</sub>= 0, ∑F<sub>z</sub>= 0, ∑M<sub>x,bez0</sub> = 0,
+∑M<sub>y,bez0</sub> = 0, ∑M<sub>z,bez0</sub> = 0).
+Für jedes verschiebliche Lager kommen drei Gleichungen (davon zwei
+linear unabhängige), für jedes Schinenlager noch eine Gleichung hinzu.</p>
+<p>Bei statisch unbestimmten Systemen
+entsteht ein Gleichungssystem, welches mehr Unbekannte als
+unabhängige Gleichungen enthält. Die <i>Besonderheit dieses
+«Solvers»</i> liegt darin, dass er trotzdem nach
+eindeutig bestimmten Unbekannten (hier Stab- oder Lagerkräfte)
+sucht, obwohl das System als Ganzes unendlich viele Lösungen
+enthält (eben statisch unbestimmt).</p>
+<p>Zunächst wird das
+Gleichungssystem durch eine Links-Rechts- (resp. Lower-Upper-)
+Zerlegung ungefähr in Dreiecksform gebracht. Von der schmälsten
+Zeile aus wird Zeile für Zeile nach der Unbekannten aufgelöst.
+Sind mehrere Unbekannte vorhanden, werden (ausser für eine
+Unbekannte, nach der aufgelöst wird) Variablen eingesetzt. Jede
+Unbekannte, die am Schluss keine Abhängigkeit von Variablen hat,
+ist eindeutig bestimmt.</p>
+<p>Eine numerische Schwierigkeit besteht
+darin zu erkennen, wann Gleichungen unabhängig voneinander sind
+und wann Unbekannte unabhängig von Variablen sind. In beiden
+Fällen muss entschieden werden, ob ein Zahlwert als Null
+angenommen werden soll. Im Solver werden Zahlen mit einem Absolutwert
+kleiner als 10<sup>-10</sup> zu Null angenommen. Diese Toleranz wurde
+durch Ausprobieren festgelegt und muss sich durch den weiteren
+Einsatz des Programmes bestätigen. Falls Kräfte mit mehr
+als vier Stellen vor dem Komma (≥
+10000 kN !) verwendet werden, vergrössert sich das Risiko, dass
+die Berechnung mit einer Fehlermeldung abbricht.</p>
+<p>Für die L-U-Zerlegung wird die
+Mathematikbibliothek «colt» des CERN verwendet.</p>
+<h4></h4>
+<h4>Mechanismus suchen (kinematische Methode)</h4>
+<p>Das Programm sucht systematisch nach Mechanismen, die die Gleichgewichtsbedingungen verletzen.</p>
+<p>Konkret werden die kinematischen Beziehungen aufgestellt: 
+(nicht gesetzte) Stäbe und Lagerbedingungen. Unbekannt sind die
+Knotenverschiebungen. Weiter wird die Gleichung für die
+Leistung der Mechanismen (Leistung der äusseren Lasten sowie der
+gesetzten Stabkräfte) aufgestellt. Das Gleichungssystem wird gelöst
+(siehe Solver). Wenn die Leistung ungleich Null ist, resp. von
+unbekannten Variablen abhängt, ist bewiesen, dass das System nicht im
+Gleichgewicht ist. Mechanismen die keinen Beitrag an die Leistung
+bringen ("normale Instabilitäten") werden vernachlässigt. Hat das
+System mehrere Freiheitsgrade (die zu einer Gleichgewichtsverletzung
+führen), &nbsp;wird für die graphische Darstellung mittels
+Zufallsgenerator ein Mechanismus kombiniert (keine physikalisches
+Kriterium).</p>
+<h4></h4>
+<h4>Stabkräfte vorschlagen (elastische Berechnung)</h4>
+<p>Berechnet statisch unbestimmte Stabkräfte elastisch.</p>
+<p>Die Stabsteifigkeiten können nicht vorgegeben werden. Stattdessen wird 
+ein konstantes Verhältnis Druck- zu Zugstabsteifigkeit EA,c/EA,t = 10 angenommen.
+In einfachen Fällen kann diese fixe Annahme, die eine iterative Berechnung bedingt, 
+zu vernünftigen Resultaten führen. Dies muss jedoch von Fall zu Fall überprüft werden 
+und trifft insbesondere nicht zu, wenn Stäbe vorgespannt sind.</p>
+<p>Die elastische Berechnung verwendet einen statischen Ansatz. Im Gegensatz zur 
+Finite-Elemente-Methode können dadurch auch instabile (kinematische) Modelle 
+berechnet werden. Die vollständige (algebraische) Lösung des Gleichungssystems der Gleichgewichtsbedingungen 
+enthält für einige Stabkräfte Abhängigkeiten von unbestimmten Variablen. Die Anzahl dieser 
+Variablen entspricht der statischen Unbestimmtheit des Systems.<br>Für die elastische Berechnung 
+wird nun (pro statische Unbestimmtheit) eine kinematische Bedingung aufgestellt. Verwendet wird 
+die Arbeitsgleichung: als statisch zulässiger Belastungszustand wird jeweils 
+∂N<sub>i</sub>/∂Variable<sub>j</sub> (Stabkraft in Abhängigkeit aller Variablen 
+abgeleitet nach jeweils einer Variablen) gewählt. Die dazugehörige Verformung wird durch 
+Integration des stat. zul. Belastungszustandes mit dem effektiven Verformungszustand über alle Stäbe 
+berechnet und muss Null sein:<br>u = ∑ (alle Stäbe i) Li * Ni/EAi * ∂Ni/∂Variable  = 0<br>
+Die Berechnung sucht also die Lösung mit der minimalen komplementären Energie und 
+ist analog zur Methode von Castigliano.</p>
+<p>Wenn die elastische Lösung bekannt ist, wird pro statische Unbestimmtheit eine Stabkraft gesetzt. Welche der (durch das Gleichgewicht alleine) unbestimmten Stäbe gesetzt werden, ist einigermassen willkürlich. Die aufgrund der elastischen Berechnung
+gesetzten Stabkräfte werden vom Programm wie manuell gesetzte Stabkräfte behandelt.</p>
+<h4></h4>
+
+<h2>Datenstruktur</h2>
+<p>Die benutzte Datenstruktur macht Gebrauch von der
+Objekt-Orientierung der Programmiersprache Java. Die nachfolgende
+Auflistung der Information der entsprechende «Klassen»
+ist nicht vollständig.</p>
+<h4>Knoten</h4>
+<ul>
+  <li>
+    <p>Koordinaten (x, y, z)</p>
+  </li>
+  <li>
+    <p>Knotenstatus (offen, fertig, Widerspruch)</p>
+  </li>
+  <li>
+    <p>Lagerbedingung (los, fix, verschieblich (1 blockierte Rtg.),
+Schinenlager (1 freie Rtg.) inkl. der freien/blockierten Richtung)</p>
+  </li>
+  <li>
+    <p>Lagerstatus (unbestimmt, berechnet)</p>
+  </li>
+  <li>
+    <p>Lagerkräfte (A<sub>x</sub>. Ay. A<sub>z</sub>)</p>
+  </li>
+  <li>
+    <p>Lasten (L<sub>x</sub>, L<sub>y</sub>, L<sub>z</sub>)</p>
+  </li>
+</ul>
+<p>Ein Knoten weiss nicht, mit welchen Stäben er verbunden ist.</p>
+<h4>Stäbe</h4>
+<ul>
+  <li>
+    <p>Status (unbestimmt, gesetzt, berechnet)</p>
+  </li>
+  <li>
+    <p>Kraft</p>
+  </li>
+</ul>
+<p>Ein Stab weiss nicht, mit welchen Knoten er verbunden ist.</p>
+<p>Im graphischen Teil wurde die Stabklasse durch die Information der
+Endknoten ergänzt.</p>
+<h4>Topologie</h4>
+<p>Symmetrische Tabelle (Array) mit Knoten als Indizes und der
+Stabnummer als Wert (im Schnittpunkt). Diese Tabelle wird für
+jede Berechnung neu aufgebaut.</p>
+<p>Im graphischen Teil existiert die Topologie-Tabelle nicht, deren
+Funktion nimmt die erweiterte Stabklasse.</p>
+</body>
+</html>
