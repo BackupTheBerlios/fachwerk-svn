@@ -1,0 +1,62 @@
+1. Dateien mit der Endung ".fwk" mit Fachwerk verknüpfen:
+---------------------------------------------------------
+
+   Windows (XP)
+   ------------
+
+   - Explorer: Menü Extras - Ordneroptionen
+   - Reiter Dateitypen
+   - Neu: Endung "fwk"
+   - Name: fachwerk
+   
+   - Vorgang "Öffnen"
+   - Anwendung:
+     C:\Windows\system32\CMD.EXE /c start /d C:\Programme\fachwerk C:\Programme\fachwerk\fachwerk.bat --safe_mode "%1"
+     
+   - Anderes Symbol - Durchsuchen - fachwerk/INFO/fachwerk.ico
+     
+     
+   Linux
+   -----
+     
+   a) Installation per rpm oder deb erfolgt
+   
+      Die Dateiverknüpfungen werden automatisch erstellt.
+
+   
+   b) Zipdatei fachwerk*.zip nach /home/USER/programs entpackt
+     
+      KDE:
+   - Rechtsklick auf fwk-Datei, Eigenschaften
+   - Auf kleines Werkzeugsymbol drücken (Dateityp bearbeiten)
+   - Beschreibung: "fachwerk"
+   - Auf Symbol klicken - Sonstige Symbole auswählen:
+     "PFADzuFachwerk/fachwerk/INFO/fachwerk.png" - OK
+   - Hinzufügen (Rangfolge ausführender Programme):
+     konsole --workdir '/home/USER/programs/fachwerk/' -e '/home/USER/programs/fachwerk/fachwerk'
+
+
+2. Dateidialog "Speichern" oder "Laden" hängt. (nur Windows):
+   ----------------------------------------------------------
+
+   Tritt unter bestimmten Umständen auf, wenn eine Fachwerkdatei per Kommandozeile geladen worden ist.
+
+   Varianten
+   1) Problembehebung
+     Mögliche Ursache: Auf dem Desktop sind Links auf nicht mehr existierende Dateien vorhanden.
+   2) Umgehung
+     Zuerst "Hintergrund laden" wählen. Danach funktioniert "Speichern".
+   3) Umgehung (2)
+     fachwerk mit der Option --safe_mode starten.
+     Der Dateidialog ist dann rudimentärer, das Problem sollte dafür nicht mehr auftreten.
+
+
+3. Ungenügender Speicher für grosse Modelle
+   ----------------------------------------
+
+   Unterbricht das Programm die Berechnung mit einer Fehlermeldung über ungenügenden Speicher
+   java.lang.OutOfMemoryError: Java heap space,
+   kann dem Programm mehr Speicher zugewiesen werden:
+   In der Datei fachwerk.bat/fachwerk die Option -Xmx setzen:
+   java -Xmx512m -jar fachwerk*.jar
+

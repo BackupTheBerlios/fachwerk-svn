@@ -1,0 +1,14 @@
+The complete source code is written in Java (1.4).
+
+javac compiler options:
+-source 1.4
+-target 1.4
+-encoding UTF8
+-classpath .:colt.jar:tcldxf.jar
+
+main class: Fachwerk.treillis
+
+
+Netbeans has been used to compile the code to class files, although it is possible to compile it from the command line.
+
+Packaging (jar file, source code archive) has been done on Linux using the accompanying build script. The path names in the bash script are hard coded and must be adjusted to the computer used.

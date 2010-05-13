@@ -1,0 +1,61 @@
+1. How to link files ".fwk" to Fachwerk:
+   -------------------------------------
+   
+   Windows (XP)
+   ------------
+   
+   - Somewhere in Explorer you can set file types 
+   - New:  fwk
+   - Name: fachwerk
+   
+   - Process "Open"
+   - Application:
+     C:\Windows\system32\CMD.EXE /c start /d C:\programs\fachwerk C:\programs\fachwerk\fachwerk.bat --safe_mode "%1"
+     
+   - Other symbol - find - fachwerk/INFO/fachwerk.ico
+     
+   
+     
+   Linux
+   -----
+     
+   a) rpm or deb used for installation
+   
+      File association done by the installer.
+
+   
+   b) Zip file fachwerk*.zip extracted to /home/USER/programs
+      
+      KDE:
+   - Right click on a fwk-file, Properties
+   - Click on small icon that shows a tool.
+   - Description: "fachwerk"
+   - Click on icon - Other symbols
+     "PATHtoFachwerk/fachwerk/INFO/fachwerk.png" - OK
+   - Add: (using the path to the location where you have installed fachwerk)
+     konsole --workdir '/home/USER/programs/fachwerk/' -e '/home/USER/programs/fachwerk/fachwerk'
+
+
+2. File dialogue "Save" or "Load" hangs. (Windows only):
+   -------------------------------------------------------
+
+   Happens in certain circumstances when a fachwerk file is loaded using the command line.
+
+   Alternatives
+   1) Solve problem
+     Possible cause: Links on the desktop pointing to non existing files.
+   2) Work around
+     First "load background". Afterwards "save" works.
+   3) Work around (2)
+     Start fachwerk with option --safe_mode.
+
+
+3. Insufficient memory for large models
+   ------------------------------------
+
+   If fachwerk interrupts the calculation throwing the message
+   java.lang.OutOfMemoryError: Java heap space,
+   more memory can be allocated:
+   Edit the file fachwerk.bat/fachwerk and set the argument -Xmx:
+   java -Xmx512m -jar fachwerk*.jar
+
