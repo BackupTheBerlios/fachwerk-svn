@@ -23,6 +23,7 @@ Vendor:         none
 Packager:       A. Vontobel <qwert2003@users.berlios.de>
 License:        GPL
 Requires:       java
+Prefix:         /usr
 
 %description
 Fachwerk calculates strut-and-tie models used by structural 
@@ -48,28 +49,34 @@ chmod -R a+rX,g-w,o-w .
 %build 
 cd $RPM_BUILD_DIR/fachwerk
 echo '#! /bin/bash' > fachwerk
-echo "java -jar /usr/share/%{name}/"%{fachwerkjar}' "$@"' >> fachwerk
+echo 'java -jar $(dirname $0)/../share/'%{name}/%{fachwerkjar}' "$@"' >> fachwerk
 
 %install
 cd $RPM_BUILD_DIR
-mkdir -p $RPM_BUILD_ROOT/usr/share/%{name}
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{name}
 mkdir -p $RPM_BUILD_ROOT%{_bindir}
 mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
 mkdir -p $RPM_BUILD_ROOT%{_docdir}/%{name}
-cp -p fachwerk/fachwerk*.jar $RPM_BUILD_ROOT/usr/share/%{name}
+cp -p fachwerk/fachwerk*.jar $RPM_BUILD_ROOT%{_datadir}/%{name}
 cp -p fachwerk/fachwerk $RPM_BUILD_ROOT%{_bindir}
-cp -pr fachwerk/lib $RPM_BUILD_ROOT/usr/share/%{name}
+cp -pr fachwerk/lib $RPM_BUILD_ROOT%{_datadir}/%{name}
 cp -pr fachwerk/INFO $RPM_BUILD_ROOT%{_docdir}/%{name}
 mv $RPM_BUILD_ROOT%{_docdir}/%{name}/INFO/manpage/fachwerk.1.gz $RPM_BUILD_ROOT%{_mandir}/man1
 cp -pr fachwerk/src $RPM_BUILD_ROOT%{_docdir}/%{name}
 cp -pr fachwerk/examples $RPM_BUILD_ROOT%{_docdir}/%{name}
 
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/mimetypes
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/48x48/apps
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/48x48/mimetypes
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/mime/packages/
 cp -p fachwerk/INFO/fachwerk.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps
+cp -p fachwerk/INFO/fachwerk.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/mimetypes/application-x-%{name}.svg
 cp -p fachwerk/INFO/fachwerk.png $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/48x48/apps
+cp -p fachwerk/INFO/fachwerk.png $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/48x48/mimetypes/application-x-%{name}.png
 cp -p fachwerk/src/%{name}.desktop $RPM_BUILD_ROOT%{_datadir}/applications
+cp -p fachwerk/src/%{name}.xml $RPM_BUILD_ROOT%{_datadir}/mime/packages/
 
 rm -rf $RPM_BUILD_DIR/fachwerk
 
@@ -79,16 +86,26 @@ rm -rf $RPM_BUILD_ROOT
 
 %files 
 %defattr(-,root,root,0755)
-/usr/share/%{name}
+%{_datadir}/%{name}
 %doc %{_docdir}/%{name}/INFO
 %doc %{_docdir}/%{name}/src
 %doc %{_docdir}/%{name}/examples
 %{_bindir}/fachwerk
 %{_mandir}/man1/fachwerk.1*
+%{_datadir}/icons/hicolor/scalable/mimetypes/application-x-%{name}.svg
 %{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 %{_datadir}/icons/hicolor/48x48/apps/%{name}.png
+%{_datadir}/icons/hicolor/48x48/mimetypes/application-x-%{name}.png
 %{_datadir}/applications/%{name}.desktop
+%{_datadir}/mime/packages/%{name}.xml
+
+%post
+/usr/bin/update-mime-database %{_datadir}/mime >/dev/null
+
+%postun
+/usr/bin/update-mime-database %{_datadir}/mime >/dev/null
+
 
 %changelog 
-* Sun May 09 2010 Adrian Vontobel <qwert2003@users.berlios.de> 0.4.1-1
+* Thu May 13 2010 Adrian Vontobel <qwert2003@users.berlios.de> 0.4.1-1
 - Initial rpm release.

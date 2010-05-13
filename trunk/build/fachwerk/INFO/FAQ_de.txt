@@ -1,8 +1,8 @@
 1. Dateien mit der Endung ".fwk" mit Fachwerk verknüpfen:
 ---------------------------------------------------------
 
-   Windows (ab 2000)
-   -----------------
+   Windows (XP)
+   ------------
 
    - Explorer: Menü Extras - Ordneroptionen
    - Reiter Dateitypen
@@ -10,21 +10,23 @@
    - Name: fachwerk
    
    - Vorgang "Öffnen"
-   - Anwendung
-     Windows2000:
-     C:\WINNT\system32\CMD.EXE /c start /d C:\Programme\fachwerk C:\Programme\fachwerk\fachwerk.bat "%1"
-     
-     WindowsXP:     
+   - Anwendung:
      C:\Windows\system32\CMD.EXE /c start /d C:\Programme\fachwerk C:\Programme\fachwerk\fachwerk.bat --safe_mode "%1"
      
    - Anderes Symbol - Durchsuchen - fachwerk/INFO/fachwerk.ico
      
      
-   KDE (Linux)
-   -----------
-   
-   a) Zipdatei fachwerk*.zip nach /home/USER/programs entpackt
+   Linux
+   -----
      
+   a) Installation per rpm oder deb erfolgt
+   
+      Die Dateiverknüpfungen werden automatisch erstellt.
+
+   
+   b) Zipdatei fachwerk*.zip nach /home/USER/programs entpackt
+     
+      KDE:
    - Rechtsklick auf fwk-Datei, Eigenschaften
    - Auf kleines Werkzeugsymbol drücken (Dateityp bearbeiten)
    - Beschreibung: "fachwerk"
@@ -32,16 +34,6 @@
      "PFADzuFachwerk/fachwerk/INFO/fachwerk.png" - OK
    - Hinzufügen (Rangfolge ausführender Programme):
      konsole --workdir '/home/USER/programs/fachwerk/' -e '/home/USER/programs/fachwerk/fachwerk'
-     
-   b) Installation per rpm erfolgt
-   
-   - Rechtsklick auf fwk-Datei, Eigenschaften
-   - Auf kleines Werkzeugsymbol drücken (Dateityp bearbeiten)
-   - Beschreibung: "fachwerk"
-   - Auf Symbol klicken - Sonstige Symbole auswählen:
-     "/usr/share/doc/packages/fachwerk/INFO/fachwerk.png" - OK
-   - Hinzufügen (Rangfolge ausführender Programme):
-     konsole -e fachwerk
 
 
 2. Dateidialog "Speichern" oder "Laden" hängt. (nur Windows):
