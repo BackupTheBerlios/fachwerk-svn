@@ -1,0 +1,18 @@
+The complete source code is written in Java (1.4).
+Fachwerk3D depends on Fachwerk, see below.
+
+javac compiler options:
+-source 1.4
+-target 1.4
+-encoding UTF8
+-classpath .:colt.jar:tcldxf.jar
+
+main class: Fachwerk3D.treillis3D
+
+
+Netbeans has been used to compile the code to class files, although it is possible to compile it from the command line.
+
+Packaging (jar file, source code archive) has been done on Linux using the accompanying build script. The path names in the bash script are hard coded and must be adjusted to the computer used.
+
+Fachwerk3D depends on many files files from Fachwerk. The script contains the list of these files.
+An easier way to resolve the issue is to include fachwerk.jar as a library. This requires slightly more memory, as unnecessary files are included.
