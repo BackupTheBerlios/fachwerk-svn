@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-fachwerk3d">
+    <comment>Fachwerk 3D model</comment>
+    <comment xml:lang="de">Fachwerk-3D-Modell</comment>
+    <glob pattern="*.fwk3d"/>
+  </mime-type>
+  <mime-type type="image/vnd.bgd">
+    <sub-class-of type="text/plain"/>
+    <comment>Background drawing</comment>
+    <comment xml:lang="de">Hintergrundzeichnung</comment>
+    <glob pattern="*.bgd"/>
+  </mime-type>
+</mime-info>

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Categories=Education;Engineering;
+MimeType=application/x-fachwerk3d;image/vnd.bgd;image/vnd.dxf;
+Name=Fachwerk3D
+Comment=Calculates spatial strut-and-tie models used by structural engineers.
+Comment[de]=Programm für Bauingenieure, um räumliche Fachwerkmodelle zu berechnen.
+Type=Application
+Icon=fachwerk3d
+Exec=fachwerk3d %F
+Terminal=true
+StartupNotify=true
